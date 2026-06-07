@@ -2,20 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators, FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { TemplateService } from '../../services/template.service';
-import { TemplateResponse, Criteria } from '../../types';
+import { ScriptService } from '../../services/script.service';
+import { ScriptResponse, Criteria } from '../../types';
 import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
-  selector: 'app-template-builder',
+  selector: 'app-script-builder',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule, LucideAngularModule],
-  templateUrl: './template-builder.component.html',
-  styleUrls: ['./template-builder.component.css']
+  templateUrl: './script-builder.component.html',
+  styleUrls: ['./script-builder.component.css']
 })
-export class TemplateBuilderComponent implements OnInit {
-  templateForm: FormGroup;
-  selectedTemplate: TemplateResponse | null = null;
+export class ScriptBuilderComponent implements OnInit {
+  scriptForm: FormGroup;
+  selectedScript: ScriptResponse | null = null;
   isEditMode: boolean = false;
   loading: boolean = false;
   successMessage: string = '';
@@ -29,11 +29,11 @@ export class TemplateBuilderComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private templateService: TemplateService,
+    private scriptService: ScriptService,
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.templateForm = this.fb.group({
+    this.scriptForm = this.fb.group({
       name: ['', Validators.required],
       newVersion: [false],
       criteria: this.fb.array([])
@@ -46,21 +46,21 @@ export class TemplateBuilderComponent implements OnInit {
       const version = params['version'];
       if (id && version) {
         this.isEditMode = true;
-        this.loadTemplateForEdit(id, Number(version));
+        this.loadScriptForEdit(id, Number(version));
       } else {
         this.resetForm();
       }
     });
   }
 
-  loadTemplateForEdit(id: string, version: number): void {
+  loadScriptForEdit(id: string, version: number): void {
     this.loading = true;
-    this.templateService.getActiveTemplates().subscribe({
+    this.scriptService.getActiveScripts().subscribe({
       next: (res) => {
-        const found = res.find(t => t.id === id && t.version === version);
+        const found = res.find(s => s.id === id && s.version === version);
         if (found) {
-          this.selectedTemplate = found;
-          this.templateForm.patchValue({
+          this.selectedScript = found;
+          this.scriptForm.patchValue({
             name: found.name || '',
             newVersion: false
           });
@@ -70,19 +70,19 @@ export class TemplateBuilderComponent implements OnInit {
             found.criteria.forEach(c => this.addCriteria(c));
           }
         } else {
-          this.errorMessage = 'Template nao encontrado ou inativo.';
+          this.errorMessage = 'Roteiro nao encontrado ou inativo.';
         }
         this.loading = false;
       },
       error: () => {
-        this.errorMessage = 'Erro ao carregar templates.';
+        this.errorMessage = 'Erro ao carregar roteiros.';
         this.loading = false;
       }
     });
   }
 
   get criteria(): FormArray {
-    return this.templateForm.get('criteria') as FormArray;
+    return this.scriptForm.get('criteria') as FormArray;
   }
 
   addCriteria(crit?: Criteria): void {
@@ -138,20 +138,20 @@ export class TemplateBuilderComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.selectedTemplate = null;
+    this.selectedScript = null;
     this.isEditMode = false;
     this.errorMessage = '';
     this.successMessage = '';
     this.criteria.clear();
-    this.templateForm.reset({
+    this.scriptForm.reset({
       name: '',
       newVersion: false
     });
   }
 
   onSubmit(): void {
-    if (this.templateForm.invalid || this.criteria.length === 0) {
-      this.errorMessage = 'Preencha todos os campos obrigatórios corretamente.';
+    if (this.scriptForm.invalid || this.criteria.length === 0) {
+      this.errorMessage = 'Preencha todos os campos obrigatorios corretamente.';
       return;
     }
 
@@ -159,35 +159,35 @@ export class TemplateBuilderComponent implements OnInit {
     this.errorMessage = '';
     this.successMessage = '';
 
-    const payload = this.templateForm.value;
+    const payload = this.scriptForm.value;
 
-    if (this.isEditMode && this.selectedTemplate) {
-      this.templateService.updateTemplate(this.selectedTemplate.id, {
+    if (this.isEditMode && this.selectedScript) {
+      this.scriptService.updateScript(this.selectedScript.id, {
         name: payload.name,
         newVersion: payload.newVersion,
         criteria: payload.criteria
       }).subscribe({
         next: () => {
           this.loading = false;
-          this.router.navigate(['/templates']);
+          this.router.navigate(['/roteiros']);
         },
         error: () => {
           this.loading = false;
-          this.errorMessage = 'Erro ao atualizar template.';
+          this.errorMessage = 'Erro ao atualizar roteiro.';
         }
       });
     } else {
-      this.templateService.createTemplate({
+      this.scriptService.createScript({
         name: payload.name,
         criteria: payload.criteria
       }).subscribe({
         next: () => {
           this.loading = false;
-          this.router.navigate(['/templates']);
+          this.router.navigate(['/roteiros']);
         },
         error: () => {
           this.loading = false;
-          this.errorMessage = 'Erro ao criar template.';
+          this.errorMessage = 'Erro ao criar roteiro.';
         }
       });
     }

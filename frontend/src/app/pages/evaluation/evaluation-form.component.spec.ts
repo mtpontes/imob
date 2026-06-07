@@ -5,9 +5,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of, throwError } from 'rxjs';
 import { EvaluationFormComponent } from './evaluation-form.component';
 import { PropertyService } from '../../services/property.service';
-import { TemplateService } from '../../services/template.service';
+import { ScriptService } from '../../services/script.service';
 import { EvaluationService } from '../../services/evaluation.service';
-import { PropertyResponse, TemplateResponse, EvaluationResponse } from '../../types';
+import { PropertyResponse, ScriptResponse, EvaluationResponse } from '../../types';
 import { importProvidersFrom } from '@angular/core';
 import { 
   LucideAngularModule, 
@@ -22,7 +22,7 @@ describe('EvaluationFormComponent', () => {
   let fixture: ComponentFixture<EvaluationFormComponent>;
   
   let propertyServiceMock: any;
-  let templateServiceMock: any;
+  let scriptServiceMock: any;
   let evaluationServiceMock: any;
   let router: Router;
 
@@ -38,13 +38,13 @@ describe('EvaluationFormComponent', () => {
     createdAt: '2026-06-07T12:00:00Z'
   };
 
-  const mockTemplates: TemplateResponse[] = [
+  const mockScripts: ScriptResponse[] = [
     {
-      id: 'temp-1',
+      id: 'script-1',
       version: 1,
       isActive: true,
       createdAt: '2026-06-07T10:00:00Z',
-      name: 'Protocolo de Vistoria Padrao',
+      name: 'Roteiro de Vistoria Padrão',
       criteria: [
         { id: 'crit-1', label: 'Localizacao', type: 'range', isScorable: true, weight: 3, min: 1, max: 5 },
         { id: 'crit-2', label: 'Vaga Coberta', type: 'bool', isScorable: true, weight: 1 },
@@ -57,8 +57,8 @@ describe('EvaluationFormComponent', () => {
     {
       propertyId: 'prop-123',
       createdAt: '2026-06-07T14:00:00Z',
-      templateId: 'temp-1',
-      templateVersion: 1,
+      scriptId: 'script-1',
+      scriptVersion: 1,
       finalScore: 75.0,
       notes: 'Visita boa',
       answers: { 'crit-1': 4, 'crit-2': true, 'crit-3': 'OK' },
@@ -71,8 +71,8 @@ describe('EvaluationFormComponent', () => {
       getProperties: jasmine.createSpy('getProperties').and.returnValue(of([mockProperty]))
     };
 
-    templateServiceMock = {
-      getActiveTemplates: jasmine.createSpy('getActiveTemplates').and.returnValue(of(mockTemplates))
+    scriptServiceMock = {
+      getActiveScripts: jasmine.createSpy('getActiveScripts').and.returnValue(of(mockScripts))
     };
 
     evaluationServiceMock = {
@@ -85,7 +85,7 @@ describe('EvaluationFormComponent', () => {
       imports: [ReactiveFormsModule, RouterTestingModule, EvaluationFormComponent],
       providers: [
         { provide: PropertyService, useValue: propertyServiceMock },
-        { provide: TemplateService, useValue: templateServiceMock },
+        { provide: ScriptService, useValue: scriptServiceMock },
         { provide: EvaluationService, useValue: evaluationServiceMock },
         {
           provide: ActivatedRoute,
@@ -112,26 +112,26 @@ describe('EvaluationFormComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should load property and templates on init', () => {
+  it('should load property and scripts on init', () => {
     // Arrange & Act (feito no setup)
 
     // Assert
     expect(component).toBeTruthy();
     expect(propertyServiceMock.getProperties).toHaveBeenCalled();
     expect(component.property).toEqual(mockProperty);
-    expect(templateServiceMock.getActiveTemplates).toHaveBeenCalled();
-    expect(component.templates.length).toBe(1);
+    expect(scriptServiceMock.getActiveScripts).toHaveBeenCalled();
+    expect(component.scripts.length).toBe(1);
   });
 
-  it('should build form dynamic controls on template selection', () => {
+  it('should build form dynamic controls on script selection', () => {
     // Arrange
-    const event = { target: { value: 'temp-1' } } as unknown as Event;
+    const event = { target: { value: 'script-1' } } as unknown as Event;
 
     // Act
-    component.onTemplateChange(event);
+    component.onScriptChange(event);
 
     // Assert
-    expect(component.selectedTemplate).toEqual(mockTemplates[0]);
+    expect(component.selectedScript).toEqual(mockScripts[0]);
     expect(component.evaluationForm).toBeDefined();
     const answersGroup = component.evaluationForm?.get('answers');
     expect(answersGroup).toBeDefined();
@@ -142,8 +142,8 @@ describe('EvaluationFormComponent', () => {
 
   it('should calculate weighted score in real time', () => {
     // Arrange
-    const event = { target: { value: 'temp-1' } } as unknown as Event;
-    component.onTemplateChange(event);
+    const event = { target: { value: 'script-1' } } as unknown as Event;
+    component.onScriptChange(event);
 
     // Act & Assert 1: Valores default (crit-1 = 1, crit-2 = false)
     // crit-1 (range 1-5, val=1): proportion = (1-1)/(5-1) = 0. Pontos = 0 * 3 = 0.
@@ -181,8 +181,8 @@ describe('EvaluationFormComponent', () => {
 
   it('should call createEvaluation on submit and navigate to property page', () => {
     // Arrange
-    const event = { target: { value: 'temp-1' } } as unknown as Event;
-    component.onTemplateChange(event);
+    const event = { target: { value: 'script-1' } } as unknown as Event;
+    component.onScriptChange(event);
     component.evaluationForm?.get('answers.crit-1')?.setValue(5);
     component.evaluationForm?.get('answers.crit-2')?.setValue(true);
     component.evaluationForm?.get('answers.crit-3')?.setValue('Texto obs');
@@ -195,8 +195,8 @@ describe('EvaluationFormComponent', () => {
     // Assert
     expect(evaluationServiceMock.createEvaluation).toHaveBeenCalledWith({
       propertyId: 'prop-123',
-      templateId: 'temp-1',
-      templateVersion: 1,
+      scriptId: 'script-1',
+      scriptVersion: 1,
       answers: {
         'crit-1': 5,
         'crit-2': true,
@@ -205,21 +205,21 @@ describe('EvaluationFormComponent', () => {
       notes: 'Minhas anotacoes',
       mediaKeys: ['key/1.jpg']
     });
-    expect(component.successMessage).toBe('Avaliacao salva com sucesso!');
+    expect(component.successMessage).toBe('Avaliação salva com sucesso!');
     expect(router.navigate).toHaveBeenCalledWith(['/properties', 'prop-123']);
   });
 
   it('should set error message when createEvaluation fails', () => {
     // Arrange
-    const event = { target: { value: 'temp-1' } } as unknown as Event;
-    component.onTemplateChange(event);
+    const event = { target: { value: 'script-1' } } as unknown as Event;
+    component.onScriptChange(event);
     evaluationServiceMock.createEvaluation.and.returnValue(throwError(() => new Error('Error')));
 
     // Act
     component.onSubmit();
 
     // Assert
-    expect(component.errorMessage).toBe('Erro ao salvar avaliacao.');
+    expect(component.errorMessage).toBe('Erro ao salvar avaliação.');
     expect(component.loading).toBeFalse();
   });
 });

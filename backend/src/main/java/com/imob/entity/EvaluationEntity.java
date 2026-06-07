@@ -14,8 +14,8 @@ public class EvaluationEntity {
     private String workspaceId;
     private String propertyId;
     private String createdAt;
-    private String templateId;
-    private int templateVersion;
+    private String scriptId;
+    private int scriptVersion;
     private double finalScore;
     private String notes;
     private List<String> mediaKeys;
@@ -47,20 +47,20 @@ public class EvaluationEntity {
         this.createdAt = createdAt;
     }
 
-    public String getTemplateId() {
-        return this.templateId;
+    public String getScriptId() {
+        return this.scriptId;
     }
 
-    public void setTemplateId(String templateId) {
-        this.templateId = templateId;
+    public void setScriptId(String scriptId) {
+        this.scriptId = scriptId;
     }
 
-    public int getTemplateVersion() {
-        return this.templateVersion;
+    public int getScriptVersion() {
+        return this.scriptVersion;
     }
 
-    public void setTemplateVersion(int templateVersion) {
-        this.templateVersion = templateVersion;
+    public void setScriptVersion(int scriptVersion) {
+        this.scriptVersion = scriptVersion;
     }
 
     public double getFinalScore() {
@@ -101,21 +101,21 @@ public class EvaluationEntity {
         map.put("SK", AttributeValue.builder().s("EVALUATION#" + this.propertyId + "#" + this.createdAt).build());
         map.put("propertyId", AttributeValue.builder().s(this.propertyId).build());
         map.put("createdAt", AttributeValue.builder().s(this.createdAt).build());
-        map.put("templateId", AttributeValue.builder().s(this.templateId).build());
-        map.put("templateVersion", AttributeValue.builder().n(String.valueOf(this.templateVersion)).build());
+        map.put("scriptId", AttributeValue.builder().s(this.scriptId).build());
+        map.put("scriptVersion", AttributeValue.builder().n(String.valueOf(this.scriptVersion)).build());
         map.put("finalScore", AttributeValue.builder().n(String.valueOf(this.finalScore)).build());
         if (this.notes != null) 
             map.put("notes", AttributeValue.builder().s(this.notes).build());
 
         try {
-            var mediaKeysJson = objectMapper.writeValueAsString(this.mediaKeys);
+            String mediaKeysJson = objectMapper.writeValueAsString(this.mediaKeys);
             map.put("mediaKeys", AttributeValue.builder().s(mediaKeysJson).build());
         } catch (Exception e) {
             map.put("mediaKeys", AttributeValue.builder().s("[]").build());
         }
 
         try {
-            var answersJson = objectMapper.writeValueAsString(this.answers);
+            String answersJson = objectMapper.writeValueAsString(this.answers);
             map.put("answers", AttributeValue.builder().s(answersJson).build());
         } catch (Exception e) {
             map.put("answers", AttributeValue.builder().s("{}").build());
@@ -127,20 +127,20 @@ public class EvaluationEntity {
     public static EvaluationEntity fromAttributeMap(Map<String, AttributeValue> map) {
         if (map == null || map.isEmpty()) 
             return null;
-        var entity = new EvaluationEntity();
-        var pk = map.get("PK").s();
+        EvaluationEntity entity = new EvaluationEntity();
+        String pk = map.get("PK").s();
         entity.setWorkspaceId(pk.substring("WORKSPACE#".length()));
         entity.setPropertyId(map.get("propertyId").s());
         entity.setCreatedAt(map.get("createdAt").s());
-        entity.setTemplateId(map.get("templateId").s());
-        entity.setTemplateVersion(Integer.parseInt(map.get("templateVersion").n()));
+        entity.setScriptId(map.get("scriptId").s());
+        entity.setScriptVersion(Integer.parseInt(map.get("scriptVersion").n()));
         entity.setFinalScore(Double.parseDouble(map.get("finalScore").n()));
         if (map.containsKey("notes")) 
             entity.setNotes(map.get("notes").s());
 
         if (map.containsKey("mediaKeys")) {
             try {
-                var json = map.get("mediaKeys").s();
+                String json = map.get("mediaKeys").s();
                 List<String> list = objectMapper.readValue(json, new TypeReference<List<String>>() {});
                 entity.setMediaKeys(list);
             } catch (Exception e) {
@@ -152,7 +152,7 @@ public class EvaluationEntity {
 
         if (map.containsKey("answers")) {
             try {
-                var json = map.get("answers").s();
+                String json = map.get("answers").s();
                 Map<String, Object> answersMap = objectMapper.readValue(json, new TypeReference<Map<String, Object>>() {});
                 entity.setAnswers(answersMap);
             } catch (Exception e) {

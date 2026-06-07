@@ -8,18 +8,18 @@ export interface Criteria {
   max?: number;
 }
 
-export interface CreateTemplateRequest {
+export interface CreateScriptRequest {
   name: string;
   criteria: Criteria[];
 }
 
-export interface UpdateTemplateRequest {
+export interface UpdateScriptRequest {
   name: string;
   newVersion: boolean;
   criteria: Criteria[];
 }
 
-export interface TemplateResponse {
+export interface ScriptResponse {
   id: string;
   version: number;
   isActive: boolean;
@@ -52,8 +52,8 @@ export interface PropertyResponse {
 
 export interface CreateEvaluationRequest {
   propertyId: string;
-  templateId: string;
-  templateVersion: number;
+  scriptId: string;
+  scriptVersion: number;
   answers: { [key: string]: any };
   notes: string;
   mediaKeys: string[];
@@ -62,8 +62,8 @@ export interface CreateEvaluationRequest {
 export interface EvaluationResponse {
   propertyId: string;
   createdAt: string;
-  templateId: string;
-  templateVersion: number;
+  scriptId: string;
+  scriptVersion: number;
   finalScore: number;
   notes: string;
   answers: { [key: string]: any };

@@ -14,25 +14,31 @@ echo -e "==================================================${RESET}"
 echo -e "\n${CYAN}[1/4] Subindo container LocalStack...${RESET}"
 docker compose up -d
 
-# 2. Aguardar LocalStack estar pronto (porta 4566 acessivel dentro do container)
-echo -e "\n${CYAN}[2/4] Aguardando LocalStack na porta 4566...${RESET}"
+# 2. Aguardar LocalStack S3 (4566) e DynamoDB Local (8000) estarem prontos
+echo -e "\n${CYAN}[2/4] Aguardando LocalStack S3 na porta 4566...${RESET}"
 until docker exec localstack bash -c "echo > /dev/tcp/localhost/4566" 2>/dev/null; do
     sleep 1
 done
-# Aguarda adicional para todos os servicos internos (DynamoDB e S3) inicializarem
-sleep 4
-echo -e "${GREEN}LocalStack esta online!${RESET}"
+echo -e "${GREEN}LocalStack S3 esta online!${RESET}"
 
-# 3. Criar tabela DynamoDB se nao existir (usando awslocal pre-configurado no container)
+echo -e "\n${CYAN}Aguardando DynamoDB Local na porta 8000...${RESET}"
+until docker exec localstack bash -c "echo > /dev/tcp/dynamodb/8000" 2>/dev/null; do
+    sleep 1
+done
+echo -e "${GREEN}DynamoDB Local esta online!${RESET}"
+
+# 3. Criar tabela DynamoDB se nao existir (usando awslocal no localstack apontando para o dynamodb)
 echo -e "\n${CYAN}[3/4] Provisionando recursos AWS locais...${RESET}"
 
 echo -e "Verificando tabela 'ImobAppDB'..."
 if docker exec localstack awslocal dynamodb describe-table \
+    --endpoint-url http://dynamodb:8000 \
     --table-name ImobAppDB > /dev/null 2>&1; then
     echo -e "${GREEN}Tabela 'ImobAppDB' ja existe.${RESET}"
 else
     echo -e "${YELLOW}Criando tabela 'ImobAppDB'...${RESET}"
     docker exec localstack awslocal dynamodb create-table \
+        --endpoint-url http://dynamodb:8000 \
         --table-name ImobAppDB \
         --attribute-definitions AttributeName=PK,AttributeType=S AttributeName=SK,AttributeType=S \
         --key-schema AttributeName=PK,KeyType=HASH AttributeName=SK,KeyType=RANGE \

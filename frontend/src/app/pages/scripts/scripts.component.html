@@ -1,0 +1,50 @@
+<section class="templates-list-section">
+  <div class="page-header">
+    <div class="page-title-area">
+      <h1>Roteiros de Avaliação</h1>
+      <p>Gerencie os formulários dinâmicos de vistorias e pontuações</p>
+    </div>
+    <button class="btn btn-primary" (click)="createNewScript()" id="btn-create-template-redirect">
+      <lucide-icon name="plus"></lucide-icon>
+      <span>Criar Roteiro</span>
+    </button>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert error-alert">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="scripts.length === 0 && !loading" class="empty-state glass" id="templates-empty-state">
+    <lucide-icon name="clipboard-list"></lucide-icon>
+    <h3>Nenhum roteiro cadastrado</h3>
+    <p>Crie um roteiro estruturado para avaliar seus imóveis com notas e pesos.</p>
+    <button class="btn btn-primary" (click)="createNewScript()" style="margin-top: 1rem;">
+      <lucide-icon name="plus"></lucide-icon>
+      <span>Criar Novo Roteiro</span>
+    </button>
+  </div>
+
+  <div class="templates-list-container" *ngIf="scripts.length > 0">
+    <div *ngFor="let s of scripts" class="template-row glass" (click)="editScript(s.id, s.version)">
+      <div class="template-row-info">
+        <h3>
+          {{ s.name || 'Roteiro de Vistoria' }} 
+          <span class="ver-badge">v{{ s.version }}</span>
+          <span class="status-badge-active">Ativo</span>
+        </h3>
+        <div class="template-row-meta">
+          <span>Criado em: {{ s.createdAt | date:'dd/MM/yyyy' }}</span>
+          <span>•</span>
+          <span>{{ s.criteria.length }} critérios</span>
+        </div>
+      </div>
+      
+      <div class="template-row-actions">
+        <button class="btn btn-outline" (click)="$event.stopPropagation(); editScript(s.id, s.version)" [id]="'btn-edit-template-' + s.id">
+          <lucide-icon name="edit-3"></lucide-icon>
+          <span>Ver / Editar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

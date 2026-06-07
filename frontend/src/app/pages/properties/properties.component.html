@@ -23,6 +23,11 @@
       />
     </div>
     <div class="filter-actions">
+      <select id="property-filter-status" class="select-styled" (change)="onStatusFilterChange($event)">
+        <option value="all">Todos os Imóveis</option>
+        <option value="evaluated">Avaliados</option>
+        <option value="pending">Não Avaliados</option>
+      </select>
       <select id="property-sort" class="select-styled" (change)="onSortChange($event)">
         <option value="recent">Mais Recentes</option>
         <option value="price-asc">Menor Preco</option>

@@ -90,7 +90,7 @@
             <span class="date">{{ ev.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
           </div>
           <div class="history-item-body">
-            <span class="template-info">Protocolo: v{{ ev.templateVersion }} ({{ ev.templateId.substring(0,8) }})</span>
+            <span class="template-info">Roteiro: v{{ ev.scriptVersion }} ({{ ev.scriptId.substring(0,8) }})</span>
             <p class="notes" *ngIf="ev.notes">"{{ ev.notes }}"</p>
             
             <div class="media-preview" *ngIf="ev.mediaUrls && ev.mediaUrls.length > 0">
@@ -109,7 +109,7 @@
     <div class="modal-content glass" *ngIf="selectedEvaluation">
       <div class="modal-header">
         <div>
-          <h3 id="modal-eval-title">Detalhes da Avaliacao</h3>
+          <h3 id="modal-eval-title">Detalhes da Avaliação</h3>
           <span class="modal-subtitle" id="modal-eval-date">Realizada em {{ selectedEvaluation.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
         </div>
         <button class="btn btn-icon" (click)="closeModal()">
@@ -125,8 +125,8 @@
             <span class="value" id="modal-eval-score">{{ selectedEvaluation.finalScore | number:'1.2-2' }}</span>
           </div>
           <div class="modal-template-used">
-            <span class="label">Template Utilizado</span>
-            <span class="value" id="modal-eval-template">{{ selectedTemplateName }} (v{{ selectedEvaluation.templateVersion }})</span>
+            <span class="label">Roteiro Utilizado</span>
+            <span class="value" id="modal-eval-template">{{ selectedScriptName }} (v{{ selectedEvaluation.scriptVersion }})</span>
           </div>
         </div>
 
@@ -134,23 +134,23 @@
           <h4>Respostas do Checklist</h4>
           <div class="answers-list" id="modal-eval-answers">
             <div *ngFor="let key of objectKeys(selectedEvaluation.answers)" class="answer-item-row">
-              <span class="question">{{ getCriteriaLabel(selectedEvaluation.templateId, selectedEvaluation.templateVersion, key) }}:</span>
+              <span class="question">{{ getCriteriaLabel(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) }}:</span>
               
               <!-- Caso seja booleano -->
-              <span *ngIf="getCriteriaType(selectedEvaluation.templateId, selectedEvaluation.templateVersion, key) === 'bool'" 
+              <span *ngIf="getCriteriaType(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) === 'bool'" 
                     class="value-badge" 
                     [class.success]="selectedEvaluation.answers[key] === true"
                     [class.error]="selectedEvaluation.answers[key] !== true">
-                {{ selectedEvaluation.answers[key] === true ? 'Atende' : 'Nao Atende' }}
+                {{ selectedEvaluation.answers[key] === true ? 'Atende' : 'Não Atende' }}
               </span>
 
               <!-- Caso seja range -->
-              <span *ngIf="getCriteriaType(selectedEvaluation.templateId, selectedEvaluation.templateVersion, key) === 'range'" class="value-text">
+              <span *ngIf="getCriteriaType(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) === 'range'" class="value-text">
                 Nota: <strong>{{ selectedEvaluation.answers[key] }}</strong>
               </span>
 
               <!-- Caso seja texto -->
-              <span *ngIf="getCriteriaType(selectedEvaluation.templateId, selectedEvaluation.templateVersion, key) === 'text'" class="value-text notes">
+              <span *ngIf="getCriteriaType(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) === 'text'" class="value-text notes">
                 {{ selectedEvaluation.answers[key] }}
               </span>
             </div>

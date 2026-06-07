@@ -159,4 +159,50 @@ describe('PropertiesComponent', () => {
     // Assert
     expect(router.navigate).toHaveBeenCalledWith(['/properties/create']);
   });
+
+  it('should filter properties by evaluated status', () => {
+    // Arrange
+    // Simula que o imóvel prop-1 tem 1 avaliação, e o prop-2 tem 0 avaliações
+    component.propertyEvaluationsCount = { 'prop-1': 1, 'prop-2': 0 };
+    const event = { target: { value: 'evaluated' } } as unknown as Event;
+
+    // Act
+    component.onStatusFilterChange(event);
+
+    // Assert
+    expect(component.statusFilter).toBe('evaluated');
+    expect(component.filteredProperties.length).toBe(1);
+    expect(component.filteredProperties[0].id).toBe('prop-1');
+  });
+
+  it('should filter properties by pending (non-evaluated) status', () => {
+    // Arrange
+    // Simula que o imóvel prop-1 tem 1 avaliação, e o prop-2 tem 0 avaliações
+    component.propertyEvaluationsCount = { 'prop-1': 1, 'prop-2': 0 };
+    const event = { target: { value: 'pending' } } as unknown as Event;
+
+    // Act
+    component.onStatusFilterChange(event);
+
+    // Assert
+    expect(component.statusFilter).toBe('pending');
+    expect(component.filteredProperties.length).toBe(1);
+    expect(component.filteredProperties[0].id).toBe('prop-2');
+  });
+
+  it('should combine evaluated status filter and price descending sort', () => {
+    // Arrange
+    // Configura prop-1 (preço: 500k) e prop-2 (preço: 800k) como avaliados
+    component.propertyEvaluationsCount = { 'prop-1': 1, 'prop-2': 2 };
+    
+    // Act
+    component.statusFilter = 'evaluated';
+    component.sortBy = 'price-desc';
+    component.applyFilterAndSort();
+
+    // Assert
+    expect(component.filteredProperties.length).toBe(2);
+    expect(component.filteredProperties[0].id).toBe('prop-2'); // 800k deve vir primeiro
+    expect(component.filteredProperties[1].id).toBe('prop-1'); // 500k deve vir depois
+  });
 });

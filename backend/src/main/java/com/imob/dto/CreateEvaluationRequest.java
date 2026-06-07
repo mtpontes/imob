@@ -7,8 +7,8 @@ import java.util.Map;
 @RegisterForReflection
 public class CreateEvaluationRequest {
     private String propertyId;
-    private String templateId;
-    private int templateVersion;
+    private String scriptId;
+    private int scriptVersion;
     private String notes;
     private List<String> mediaKeys;
     private Map<String, Object> answers;
@@ -21,20 +21,20 @@ public class CreateEvaluationRequest {
         this.propertyId = propertyId;
     }
 
-    public String getTemplateId() {
-        return this.templateId;
+    public String getScriptId() {
+        return this.scriptId;
     }
 
-    public void setTemplateId(String templateId) {
-        this.templateId = templateId;
+    public void setScriptId(String scriptId) {
+        this.scriptId = scriptId;
     }
 
-    public int getTemplateVersion() {
-        return this.templateVersion;
+    public int getScriptVersion() {
+        return this.scriptVersion;
     }
 
-    public void setTemplateVersion(int templateVersion) {
-        this.templateVersion = templateVersion;
+    public void setScriptVersion(int scriptVersion) {
+        this.scriptVersion = scriptVersion;
     }
 
     public String getNotes() {

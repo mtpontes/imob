@@ -44,6 +44,7 @@ cdk.out/
 # --- Docker & LocalStack ---
 .localstack/
 data/
+containers/
 
 # --- Testing ---
 coverage/

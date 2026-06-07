@@ -40,32 +40,38 @@
         </div>
       </div>
 
-      <!-- Seleção de Template -->
+      <!-- Seleção de Roteiro -->
       <div class="form-group" id="eval-template-select-container" style="margin-bottom: 2rem;">
-        <label for="eval-template-select">Selecione o Protocolo / Template de Avaliacao</label>
+        <label for="eval-template-select">Selecione o Roteiro de Avaliação</label>
         <select 
           id="eval-template-select" 
           class="select-styled" 
           required 
-          (change)="onTemplateChange($event)"
+          (change)="onScriptChange($event)"
         >
-          <option value="">-- Escolha um template ativo --</option>
-          <option *ngFor="let t of templates" [value]="t.id">
-            {{ t.name || 'Protocolo de Vistoria' }} (v{{ t.version }})
+          <option value="">-- Escolha um roteiro ativo --</option>
+          <option *ngFor="let p of scripts" [value]="p.id">
+            {{ p.name || 'Roteiro de Vistoria' }} (v{{ p.version }})
           </option>
         </select>
       </div>
 
       <!-- Formulário de critérios gerados dinamicamente -->
-      <form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()" *ngIf="selectedTemplate && evaluationForm" id="evaluation-submit-form">
+      <form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()" *ngIf="selectedScript && evaluationForm" id="evaluation-submit-form">
         
         <div class="dynamic-criteria-title">
-          <h3>Vistoria e Criterios de Nota</h3>
-          <p>Responda de acordo com as condicoes identificadas no local</p>
+          <h3>Vistoria e Critérios de Nota</h3>
+          <p>Responda de acordo com as condições identificadas no local</p>
         </div>
         
         <div formGroupName="answers" class="eval-dynamic-fields-container">
-          <div *ngFor="let criteria of selectedTemplate.criteria" class="criteria-item-field glass-card-nested" style="margin-bottom: 1.5rem; padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01);">
+          <label 
+            *ngFor="let criteria of selectedScript.criteria" 
+            [attr.for]="criteria.type === 'bool' ? 'input-criteria-' + criteria.id : null"
+            class="criteria-item-field glass-card-nested"
+            [class.clickable-bool-card]="criteria.type === 'bool'"
+            style="display: block; margin-bottom: 1.5rem; padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01);"
+          >
             
             <div class="criteria-field-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
               <span class="criteria-label" style="font-weight: 600; font-size: 0.95rem;">{{ criteria.label }}</span>
@@ -79,7 +85,7 @@
               <textarea
                 [formControlName]="criteria.id"
                 [id]="'input-criteria-' + criteria.id"
-                placeholder="Insira as anotacoes de avaliacao..."
+                placeholder="Insira as anotações de avaliação..."
                 rows="3"
                 style="padding: 0.85rem 1rem;"
               ></textarea>
@@ -87,16 +93,16 @@
 
             <!-- Input Switch Boolean -->
             <div *ngIf="criteria.type === 'bool'" class="input-container switch-container" style="display: flex; align-items: center; gap: 1rem;">
-              <label class="switch">
+              <span class="switch">
                 <input
                   type="checkbox"
                   [formControlName]="criteria.id"
                   [id]="'input-criteria-' + criteria.id"
                 />
                 <span class="slider-switch round"></span>
-              </label>
+              </span>
               <span class="switch-value" style="font-size: 0.85rem; font-weight: 500; color: var(--text-secondary);">
-                {{ evaluationForm.get('answers.' + criteria.id)?.value ? 'Atende' : 'Nao Atende' }}
+                {{ evaluationForm.get('answers.' + criteria.id)?.value ? 'Atende' : 'Não Atende' }}
               </span>
             </div>
 
@@ -119,25 +125,25 @@
               />
             </div>
 
-          </div>
+          </label>
         </div>
 
         <!-- Notas adicionais da vistoria -->
         <div class="form-group mt-6">
-          <label for="eval-notes">Notas Gerais e Observacoes da Visita</label>
+          <label for="eval-notes">Notas Gerais e Observações da Visita</label>
           <textarea 
             id="eval-notes" 
             formControlName="notes" 
             rows="4" 
-            placeholder="Escreva observacoes tecnicas sobre rachaduras, umidade, potencial de reforma ou observacoes de vizinhanca..."
+            placeholder="Escreva observações técnicas sobre rachaduras, umidade, potencial de reforma ou observações de vizinhança..."
             style="padding: 0.85rem 1rem;"
           ></textarea>
         </div>
 
         <!-- Upload de fotos real via S3 pre-signed url -->
         <div class="photo-upload-section">
-          <h3>Fotos do Imovel (Object Storage S3)</h3>
-          <p class="subtitle">As fotos sao enviadas direto para o Amazon S3 usando urls pre-assinadas temporarias</p>
+          <h3>Fotos do Imóvel (Object Storage S3)</h3>
+          <p class="subtitle">As fotos são enviadas direto para o Amazon S3 usando urls pré-assinadas temporárias</p>
           
           <div class="upload-zone" (click)="photoInput.click()" id="photo-upload-zone">
             <input 
@@ -150,7 +156,7 @@
             />
             <lucide-icon name="camera"></lucide-icon>
             <span>Clique para tirar foto ou selecionar da galeria</span>
-            <p class="hint">Suporta multiplos uploads diretos no S3 Bucket</p>
+            <p class="hint">Suporta múltiplos uploads diretos no S3 Bucket</p>
           </div>
           
           <!-- Lista de fotos carregadas/processadas -->
@@ -180,9 +186,9 @@
     </div>
 
     <!-- Lado Direito: Resumo da Nota em tempo real -->
-    <div class="evaluation-sidebar-card glass" *ngIf="selectedTemplate && evaluationForm" id="eval-sidebar-score-card">
+    <div class="evaluation-sidebar-card glass" *ngIf="selectedScript && evaluationForm" id="eval-sidebar-score-card">
       <h3>Resultado Preliminar</h3>
-      <p class="subtitle">Pontuacao instantanea baseada nos criterios respondidos e nos pesos configurados</p>
+      <p class="subtitle">Pontuação preliminar baseada nos critérios respondidos e nos pesos configurados</p>
       
       <div class="score-visualizer">
         <div class="score-circle" [class]="scoreBadgeClass">
@@ -194,18 +200,18 @@
 
       <div class="score-info-items">
         <div class="info-item">
-          <span class="label">Criterios Avaliados</span>
+          <span class="label">Critérios Avaliados</span>
           <span class="value" id="live-score-criteria-count">{{ getScorableCriteriaCount() }}</span>
         </div>
         <div class="info-item">
-          <span class="label">Media Ponderada</span>
+          <span class="label">Média Ponderada</span>
           <span class="value" id="live-score-formula">Soma(Nota x Peso) / Soma(Pesos)</span>
         </div>
       </div>
 
       <div class="score-warning-box">
         <lucide-icon name="shield-check"></lucide-icon>
-        <span>Notas geradas serverless via Lambda Quarkus Native na confirmacao do envio.</span>
+        <span>Notas geradas serverless via Lambda Quarkus Native na confirmação do envio.</span>
       </div>
     </div>
 

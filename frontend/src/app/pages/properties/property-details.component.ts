@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PropertyService } from '../../services/property.service';
 import { EvaluationService } from '../../services/evaluation.service';
-import { TemplateService } from '../../services/template.service';
-import { PropertyResponse, EvaluationResponse, TemplateResponse } from '../../types';
+import { ScriptService } from '../../services/script.service';
+import { PropertyResponse, EvaluationResponse, ScriptResponse } from '../../types';
 import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
@@ -18,21 +18,21 @@ export class PropertyDetailsComponent implements OnInit {
   propertyId: string = '';
   property?: PropertyResponse;
   evaluations: EvaluationResponse[] = [];
-  templates: TemplateResponse[] = [];
+  scripts: ScriptResponse[] = [];
   loading: boolean = false;
   errorMessage: string = '';
 
   // Controle do Modal
   isModalOpen: boolean = false;
   selectedEvaluation: EvaluationResponse | null = null;
-  selectedTemplateName: string = '';
+  selectedScriptName: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private propertyService: PropertyService,
     private evaluationService: EvaluationService,
-    private templateService: TemplateService
+    private scriptService: ScriptService
   ) {}
 
   ngOnInit(): void {
@@ -41,7 +41,7 @@ export class PropertyDetailsComponent implements OnInit {
       if (this.propertyId) {
         this.loadProperty();
         this.loadEvaluations();
-        this.loadTemplates();
+        this.loadScripts();
       }
     });
   }
@@ -52,12 +52,12 @@ export class PropertyDetailsComponent implements OnInit {
       next: (res) => {
         this.property = res.find(p => p.id === this.propertyId);
         if (!this.property) {
-          this.errorMessage = 'Imovel nao encontrado.';
+          this.errorMessage = 'Imóvel não encontrado.';
         }
         this.loading = false;
       },
       error: () => {
-        this.errorMessage = 'Erro ao carregar dados do imovel.';
+        this.errorMessage = 'Erro ao carregar dados do imóvel.';
         this.loading = false;
       }
     });
@@ -69,24 +69,24 @@ export class PropertyDetailsComponent implements OnInit {
         this.evaluations = res.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       },
       error: () => {
-        this.errorMessage = 'Erro ao carregar historico de avaliacoes.';
+        this.errorMessage = 'Erro ao carregar histórico de avaliações.';
       }
     });
   }
 
-  loadTemplates(): void {
-    this.templateService.getActiveTemplates().subscribe({
+  loadScripts(): void {
+    this.scriptService.getActiveScripts().subscribe({
       next: (res) => {
-        this.templates = res;
+        this.scripts = res;
       },
       error: () => {}
     });
   }
 
-  getCriteriaLabel(templateId: string, templateVersion: number, criteriaId: string): string {
-    const template = this.templates.find(t => t.id === templateId && t.version === templateVersion);
-    if (template) {
-      const criteria = template.criteria.find(c => c.id === criteriaId);
+  getCriteriaLabel(scriptId: string, scriptVersion: number, criteriaId: string): string {
+    const script = this.scripts.find(s => s.id === scriptId && s.version === scriptVersion);
+    if (script) {
+      const criteria = script.criteria.find(c => c.id === criteriaId);
       if (criteria) {
         return criteria.label;
       }
@@ -94,10 +94,10 @@ export class PropertyDetailsComponent implements OnInit {
     return criteriaId;
   }
 
-  getCriteriaType(templateId: string, templateVersion: number, criteriaId: string): string {
-    const template = this.templates.find(t => t.id === templateId && t.version === templateVersion);
-    if (template) {
-      const criteria = template.criteria.find(c => c.id === criteriaId);
+  getCriteriaType(scriptId: string, scriptVersion: number, criteriaId: string): string {
+    const script = this.scripts.find(s => s.id === scriptId && s.version === scriptVersion);
+    if (script) {
+      const criteria = script.criteria.find(c => c.id === criteriaId);
       if (criteria) {
         return criteria.type;
       }
@@ -109,15 +109,15 @@ export class PropertyDetailsComponent implements OnInit {
     this.selectedEvaluation = ev;
     this.isModalOpen = true;
 
-    // Busca o nome do template no backend se existir
-    const tpl = this.templates.find(t => t.id === ev.templateId && t.version === ev.templateVersion);
-    this.selectedTemplateName = tpl && tpl.name ? tpl.name : `Protocolo #${ev.templateId.substring(0, 5)}`;
+    // Busca o nome do roteiro no backend se existir
+    const scr = this.scripts.find(s => s.id === ev.scriptId && s.version === ev.scriptVersion);
+    this.selectedScriptName = scr && scr.name ? scr.name : `Roteiro #${ev.scriptId.substring(0, 5)}`;
   }
 
   closeModal(): void {
     this.isModalOpen = false;
     this.selectedEvaluation = null;
-    this.selectedTemplateName = '';
+    this.selectedScriptName = '';
   }
 
   startNewEvaluation(): void {

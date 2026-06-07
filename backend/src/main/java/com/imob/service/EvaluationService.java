@@ -1,7 +1,7 @@
 package com.imob.service;
 
 import com.imob.dto.CriteriaDTO;
-import com.imob.entity.TemplateEntity;
+import com.imob.entity.ScriptEntity;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -11,23 +11,23 @@ import java.util.Map;
 @RegisterForReflection
 public class EvaluationService {
 
-    public double calculateFinalScore(TemplateEntity template, Map<String, Object> answers) {
-        if (template == null || template.getCriteria() == null || template.getCriteria().isEmpty() || answers == null || answers.isEmpty()) 
+    public double calculateFinalScore(ScriptEntity script, Map<String, Object> answers) {
+        if (script == null || script.getCriteria() == null || script.getCriteria().isEmpty() || answers == null || answers.isEmpty()) 
             return 0.0;
 
-        var totalWeight = 0.0;
-        var earnedPoints = 0.0;
+        double totalWeight = 0.0;
+        double earnedPoints = 0.0;
 
-        for (var criteria : template.getCriteria()) {
+        for (CriteriaDTO criteria : script.getCriteria()) {
             if (!criteria.isScorable()) 
                 continue;
 
-            var rawValue = answers.get(criteria.getId());
+            Object rawValue = answers.get(criteria.getId());
             if (rawValue == null) 
                 continue;
 
-            var weight = criteria.getWeight();
-            var pointsForCriteria = this.calculateCriteriaPoints(criteria, rawValue);
+            double weight = criteria.getWeight();
+            double pointsForCriteria = this.calculateCriteriaPoints(criteria, rawValue);
             
             earnedPoints += pointsForCriteria;
             totalWeight += weight;
@@ -37,30 +37,30 @@ public class EvaluationService {
             return 0.0;
 
         // Retorna a pontuacao normalizada de 0.0 a 100.0
-        var score = (earnedPoints / totalWeight) * 100.0;
+        double score = (earnedPoints / totalWeight) * 100.0;
         
         // Arredonda para 2 casas decimais
         return Math.round(score * 100.0) / 100.0;
     }
 
     private double calculateCriteriaPoints(CriteriaDTO criteria, Object rawValue) {
-        var weight = criteria.getWeight();
-        var type = criteria.getType();
+        double weight = criteria.getWeight();
+        String type = criteria.getType();
 
         if ("bool".equalsIgnoreCase(type)) {
-            var val = this.convertToBoolean(rawValue);
+            boolean val = this.convertToBoolean(rawValue);
             if (val) 
                 return weight;
             return 0.0;
         }
 
         if ("range".equalsIgnoreCase(type)) {
-            var val = this.convertToDouble(rawValue);
+            Double val = this.convertToDouble(rawValue);
             if (val == null) 
                 return 0.0;
 
-            var min = criteria.getMin() != null ? criteria.getMin() : 0.0;
-            var max = criteria.getMax() != null ? criteria.getMax() : 100.0;
+            double min = criteria.getMin() != null ? criteria.getMin() : 0.0;
+            double max = criteria.getMax() != null ? criteria.getMax() : 100.0;
 
             if (max <= min) 
                 return 0.0;
@@ -71,7 +71,7 @@ public class EvaluationService {
             if (val >= max) 
                 return weight;
 
-            var proportion = (val - min) / (max - min);
+            double proportion = (val - min) / (max - min);
             return proportion * weight;
         }
 

@@ -6,7 +6,7 @@ import com.imob.dto.EvaluationResponse;
 import com.imob.dto.GenerateUploadUrlRequest;
 import com.imob.dto.GenerateUploadUrlResponse;
 import com.imob.entity.EvaluationEntity;
-import com.imob.entity.TemplateEntity;
+import com.imob.entity.ScriptEntity;
 import com.imob.dto.CriteriaDTO;
 import com.imob.repository.DynamoDbRepository;
 import com.imob.service.EvaluationService;
@@ -49,19 +49,19 @@ public class EvaluationResource {
     public Response createEvaluation(CreateEvaluationRequest request) {
         String workspaceId = this.userContext.getWorkspaceId();
         
-        // Valida se o template existe e esta ativo
-        TemplateEntity template = this.repository.getTemplate(workspaceId, request.getTemplateId(), request.getTemplateVersion());
-        if (template == null || !template.isActive()) 
+        // Valida se o roteiro existe e esta ativo
+        ScriptEntity script = this.repository.getScript(workspaceId, request.getScriptId(), request.getScriptVersion());
+        if (script == null || !script.isActive()) 
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"Template nao encontrado ou inativo\"}")
+                    .entity("{\"error\":\"Roteiro nao encontrado ou inativo\"}")
                     .build();
 
-        // Valida se todas as respostas sao para criterios cadastrados no template
+        // Valida se todas as respostas sao para criterios cadastrados no roteiro
         if (request.getAnswers() != null) {
             for (String criteriaId : request.getAnswers().keySet()) {
                 boolean exists = false;
-                if (template.getCriteria() != null) {
-                    for (CriteriaDTO crit : template.getCriteria()) {
+                if (script.getCriteria() != null) {
+                    for (CriteriaDTO crit : script.getCriteria()) {
                         if (crit.getId().equals(criteriaId)) {
                             exists = true;
                             break;
@@ -70,20 +70,20 @@ public class EvaluationResource {
                 }
                 if (!exists) 
                     return Response.status(Response.Status.BAD_REQUEST)
-                            .entity("{\"error\":\"Respostas contem criterios nao cadastrados no template\"}")
+                            .entity("{\"error\":\"Respostas contem criterios nao cadastrados no roteiro\"}")
                             .build();
             }
         }
 
-        // Calcula score final baseado nos criterios do template e respostas fornecidas
-        double score = this.evaluationService.calculateFinalScore(template, request.getAnswers());
+        // Calcula score final baseado nos criterios do roteiro e respostas fornecidas
+        double score = this.evaluationService.calculateFinalScore(script, request.getAnswers());
 
         EvaluationEntity entity = new EvaluationEntity();
         entity.setWorkspaceId(workspaceId);
         entity.setPropertyId(request.getPropertyId());
         entity.setCreatedAt(Instant.now().toString());
-        entity.setTemplateId(request.getTemplateId());
-        entity.setTemplateVersion(request.getTemplateVersion());
+        entity.setScriptId(request.getScriptId());
+        entity.setScriptVersion(request.getScriptVersion());
         entity.setFinalScore(score);
         entity.setNotes(request.getNotes());
         entity.setMediaKeys(request.getMediaKeys());
@@ -137,8 +137,8 @@ public class EvaluationResource {
         var resp = new EvaluationResponse();
         resp.setPropertyId(entity.getPropertyId());
         resp.setCreatedAt(entity.getCreatedAt());
-        resp.setTemplateId(entity.getTemplateId());
-        resp.setTemplateVersion(entity.getTemplateVersion());
+        resp.setScriptId(entity.getScriptId());
+        resp.setScriptVersion(entity.getScriptVersion());
         resp.setFinalScore(entity.getFinalScore());
         resp.setNotes(entity.getNotes());
         resp.setAnswers(entity.getAnswers());

@@ -1,7 +1,7 @@
 package com.imob.api;
 
 import com.imob.dto.CriteriaDTO;
-import com.imob.entity.TemplateEntity;
+import com.imob.entity.ScriptEntity;
 import com.imob.entity.EvaluationEntity;
 import com.imob.repository.DynamoDbRepository;
 import com.imob.service.S3Service;
@@ -36,35 +36,34 @@ public class EvaluationResourceTest {
 
     @BeforeEach
     public void setup() {
-        // Arrange comum para o AuthFilter
+        // Arrange
         GetItemResponse getItemResponse = GetItemResponse.builder()
                 .item(Map.of("workspaceId", AttributeValue.builder().s("workspace_test").build()))
                 .build();
-
         Mockito.when(this.dynamoDbClient.getItem(Mockito.any(GetItemRequest.class)))
                 .thenReturn(getItemResponse);
     }
 
     @Test
-    public void shouldRejectEvaluationWithInactiveTemplate() {
+    public void shouldRejectEvaluationWithInactiveScript() {
         // Arrange
-        String templateId = "temp-inactive";
+        String scriptId = "script-inactive";
         int version = 1;
 
-        TemplateEntity template = new TemplateEntity();
-        template.setWorkspaceId("workspace_test");
-        template.setId(templateId);
-        template.setVersion(version);
-        template.setActive(false); // Inativo!
-        template.setCriteria(List.of());
+        ScriptEntity script = new ScriptEntity();
+        script.setWorkspaceId("workspace_test");
+        script.setId(scriptId);
+        script.setVersion(version);
+        script.setActive(false); // Inativo!
+        script.setCriteria(List.of());
 
-        Mockito.when(this.repository.getTemplate("workspace_test", templateId, version))
-                .thenReturn(template);
+        Mockito.when(this.repository.getScript("workspace_test", scriptId, version))
+                .thenReturn(script);
 
         Map<String, Object> payload = Map.of(
                 "propertyId", "prop-123",
-                "templateId", templateId,
-                "templateVersion", version,
+                "scriptId", scriptId,
+                "scriptVersion", version,
                 "answers", Map.of(),
                 "notes", "Nota fiscal",
                 "mediaKeys", List.of()
@@ -80,13 +79,13 @@ public class EvaluationResourceTest {
                 .then()
                 .statusCode(400)
                 .contentType(ContentType.JSON)
-                .body("error", is("Template nao encontrado ou inativo"));
+                .body("error", is("Roteiro nao encontrado ou inativo"));
     }
 
     @Test
     public void shouldRejectEvaluationWithInvalidCriteriaAnswer() {
         // Arrange
-        String templateId = "temp-active";
+        String scriptId = "script-active";
         int version = 1;
 
         CriteriaDTO c1 = new CriteriaDTO();
@@ -95,21 +94,21 @@ public class EvaluationResourceTest {
         c1.setWeight(10.0);
         c1.setType("bool");
 
-        TemplateEntity template = new TemplateEntity();
-        template.setWorkspaceId("workspace_test");
-        template.setId(templateId);
-        template.setVersion(version);
-        template.setActive(true);
-        template.setCriteria(List.of(c1));
+        ScriptEntity script = new ScriptEntity();
+        script.setWorkspaceId("workspace_test");
+        script.setId(scriptId);
+        script.setVersion(version);
+        script.setActive(true);
+        script.setCriteria(List.of(c1));
 
-        Mockito.when(this.repository.getTemplate("workspace_test", templateId, version))
-                .thenReturn(template);
+        Mockito.when(this.repository.getScript("workspace_test", scriptId, version))
+                .thenReturn(script);
 
-        // Answers contem 'c2' que nao pertence ao template (apenas 'c1' pertence)
+        // Answers contem 'c2' que nao pertence ao roteiro (apenas 'c1' pertence)
         Map<String, Object> payload = Map.of(
                 "propertyId", "prop-123",
-                "templateId", templateId,
-                "templateVersion", version,
+                "scriptId", scriptId,
+                "scriptVersion", version,
                 "answers", Map.of("c1", true, "c2", "invalido"),
                 "notes", "Nota fiscal",
                 "mediaKeys", List.of()
@@ -125,13 +124,13 @@ public class EvaluationResourceTest {
                 .then()
                 .statusCode(400)
                 .contentType(ContentType.JSON)
-                .body("error", is("Respostas contem criterios nao cadastrados no template"));
+                .body("error", is("Respostas contem criterios nao cadastrados no roteiro"));
     }
 
     @Test
     public void shouldCreateEvaluationAndCalculateScore() {
         // Arrange
-        String templateId = "temp-active";
+        String scriptId = "script-active";
         int version = 1;
 
         CriteriaDTO c1 = new CriteriaDTO();
@@ -140,20 +139,20 @@ public class EvaluationResourceTest {
         c1.setWeight(10.0);
         c1.setType("bool");
 
-        TemplateEntity template = new TemplateEntity();
-        template.setWorkspaceId("workspace_test");
-        template.setId(templateId);
-        template.setVersion(version);
-        template.setActive(true);
-        template.setCriteria(List.of(c1));
+        ScriptEntity script = new ScriptEntity();
+        script.setWorkspaceId("workspace_test");
+        script.setId(scriptId);
+        script.setVersion(version);
+        script.setActive(true);
+        script.setCriteria(List.of(c1));
 
-        Mockito.when(this.repository.getTemplate("workspace_test", templateId, version))
-                .thenReturn(template);
+        Mockito.when(this.repository.getScript("workspace_test", scriptId, version))
+                .thenReturn(script);
 
         Map<String, Object> payload = Map.of(
                 "propertyId", "prop-123",
-                "templateId", templateId,
-                "templateVersion", version,
+                "scriptId", scriptId,
+                "scriptVersion", version,
                 "answers", Map.of("c1", true),
                 "notes", "Nota fiscal",
                 "mediaKeys", List.of()
@@ -210,8 +209,8 @@ public class EvaluationResourceTest {
         eval.setWorkspaceId("workspace_test");
         eval.setPropertyId(propertyId);
         eval.setCreatedAt("2026-06-03T10:00:00Z");
-        eval.setTemplateId("temp-1");
-        eval.setTemplateVersion(1);
+        eval.setScriptId("script-1");
+        eval.setScriptVersion(1);
         eval.setFinalScore(75.0);
         eval.setNotes("Test note");
         eval.setMediaKeys(List.of("workspace_test/uploads/foto1.jpg"));
@@ -236,6 +235,7 @@ public class EvaluationResourceTest {
 
         Mockito.verify(this.repository, Mockito.times(1))
                 .getEvaluationsByProperty("workspace_test", propertyId);
+
         Mockito.verify(this.s3Service, Mockito.times(1))
                 .generateGetPresignedUrl("workspace_test/uploads/foto1.jpg", java.time.Duration.ofHours(1));
     }

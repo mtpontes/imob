@@ -1,10 +1,9 @@
 package com.imob.api;
-
 import com.imob.context.UserContext;
-import com.imob.dto.CreateTemplateRequest;
-import com.imob.dto.TemplateResponse;
-import com.imob.dto.UpdateTemplateRequest;
-import com.imob.entity.TemplateEntity;
+import com.imob.dto.CreateScriptRequest;
+import com.imob.dto.ScriptResponse;
+import com.imob.dto.UpdateScriptRequest;
+import com.imob.entity.ScriptEntity;
 import com.imob.repository.DynamoDbRepository;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.ws.rs.Consumes;
@@ -16,99 +15,82 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-@Path("/api/templates")
+@Path("/api/scripts")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @RegisterForReflection
-public class TemplateResource {
-
+public class ScriptResource {
     private final UserContext userContext;
     private final DynamoDbRepository repository;
-
-    public TemplateResource(UserContext userContext, DynamoDbRepository repository) {
+    public ScriptResource(UserContext userContext, DynamoDbRepository repository) {
         this.userContext = userContext;
         this.repository = repository;
     }
-
     @GET
-    public List<TemplateResponse> getActiveTemplates() {
+    public List<ScriptResponse> getActiveScripts() {
         String workspaceId = this.userContext.getWorkspaceId();
-        List<TemplateEntity> entities = this.repository.getActiveTemplates(workspaceId);
+        List<ScriptEntity> entities = this.repository.getActiveScripts(workspaceId);
         
-        List<TemplateResponse> responses = new ArrayList<>();
-        for (TemplateEntity entity : entities) {
+        List<ScriptResponse> responses = new ArrayList<>();
+        for (ScriptEntity entity : entities) {
             responses.add(this.mapToResponse(entity));
         }
         return responses;
     }
-
     @POST
-    public Response createTemplate(CreateTemplateRequest request) {
+    public Response createScript(CreateScriptRequest request) {
         String workspaceId = this.userContext.getWorkspaceId();
-        String templateId = UUID.randomUUID().toString();
-
-        var entity = new TemplateEntity();
+        String scriptId = UUID.randomUUID().toString();
+        var entity = new ScriptEntity();
         entity.setWorkspaceId(workspaceId);
-        entity.setId(templateId);
+        entity.setId(scriptId);
         entity.setVersion(1);
         entity.setActive(true);
         entity.setCreatedAt(Instant.now().toString());
         entity.setCriteria(request.getCriteria());
         entity.setName(request.getName());
-
-        this.repository.saveTemplate(entity);
-
+        this.repository.saveScript(entity);
         return Response.status(Response.Status.CREATED)
                 .entity(this.mapToResponse(entity))
                 .build();
     }
-
     @PUT
     @Path("/{id}")
-    public Response updateTemplate(@PathParam("id") String templateId, UpdateTemplateRequest request) {
+    public Response updateScript(@PathParam("id") String scriptId, UpdateScriptRequest request) {
         String workspaceId = this.userContext.getWorkspaceId();
-        List<TemplateEntity> allVersions = this.repository.getAllVersionsOfTemplate(workspaceId, templateId);
-
+        List<ScriptEntity> allVersions = this.repository.getAllVersionsOfScript(workspaceId, scriptId);
         if (allVersions.isEmpty()) 
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{\"error\":\"Template nao encontrado\"}")
+                    .entity("{\"error\":\"Roteiro nao encontrado\"}")
                     .build();
-
         // Encontra a maior versao existente
-        TemplateEntity latestEntity = null;
-        for (TemplateEntity v : allVersions) {
+        ScriptEntity latestEntity = null;
+        for (ScriptEntity v : allVersions) {
             if (latestEntity == null || v.getVersion() > latestEntity.getVersion()) 
                 latestEntity = v;
         }
-
         if (latestEntity == null) 
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{\"error\":\"Template nao encontrado\"}")
+                    .entity("{\"error\":\"Roteiro nao encontrado\"}")
                     .build();
-
         if (request.isNewVersion()) {
             // Regra de Nova Versao: marca o antigo como inativo
             latestEntity.setActive(false);
-            this.repository.saveTemplate(latestEntity);
-
+            this.repository.saveScript(latestEntity);
             // Cria novo item com version = current + 1
-            var newEntity = new TemplateEntity();
+            var newEntity = new ScriptEntity();
             newEntity.setWorkspaceId(workspaceId);
-            newEntity.setId(templateId);
+            newEntity.setId(scriptId);
             newEntity.setVersion(latestEntity.getVersion() + 1);
             newEntity.setActive(true);
             newEntity.setCreatedAt(Instant.now().toString());
             newEntity.setCriteria(request.getCriteria());
             newEntity.setName(request.getName());
-
-            this.repository.saveTemplate(newEntity);
-
+            this.repository.saveScript(newEntity);
             return Response.ok(this.mapToResponse(newEntity)).build();
         } else {
             // Regra de Sobrescrita Total: PutItem mantendo o mesmo ID e versao
@@ -116,14 +98,12 @@ public class TemplateResource {
             latestEntity.setName(request.getName());
             latestEntity.setCreatedAt(Instant.now().toString());
             
-            this.repository.saveTemplate(latestEntity);
-
+            this.repository.saveScript(latestEntity);
             return Response.ok(this.mapToResponse(latestEntity)).build();
         }
     }
-
-    private TemplateResponse mapToResponse(TemplateEntity entity) {
-        var resp = new TemplateResponse();
+    private ScriptResponse mapToResponse(ScriptEntity entity) {
+        var resp = new ScriptResponse();
         resp.setId(entity.getId());
         resp.setVersion(entity.getVersion());
         resp.setActive(entity.isActive());

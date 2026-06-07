@@ -21,6 +21,7 @@ export class PropertiesComponent implements OnInit {
   
   searchQuery: string = '';
   sortBy: string = 'recent';
+  statusFilter: string = 'all';
   
   loading: boolean = false;
   errorMessage: string = '';
@@ -62,9 +63,11 @@ export class PropertiesComponent implements OnInit {
           } else {
             this.propertyEvaluationsCount[p.id] = 0;
           }
+          this.applyFilterAndSort();
         },
         error: () => {
           this.propertyEvaluationsCount[p.id] = 0;
+          this.applyFilterAndSort();
         }
       });
     });
@@ -82,13 +85,26 @@ export class PropertiesComponent implements OnInit {
     this.applyFilterAndSort();
   }
 
+  onStatusFilterChange(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.statusFilter = select.value;
+    this.applyFilterAndSort();
+  }
+
   applyFilterAndSort(): void {
     let result = [...this.properties];
     const query = this.searchQuery.toLowerCase().trim();
 
-    // Filtro
+    // Filtro de Busca por Texto
     if (query) {
       result = result.filter(p => p.address.toLowerCase().includes(query));
+    }
+
+    // Filtro de Status de Avaliação
+    if (this.statusFilter === 'evaluated') {
+      result = result.filter(p => this.propertyEvaluationsCount[p.id] !== undefined && this.propertyEvaluationsCount[p.id] > 0);
+    } else if (this.statusFilter === 'pending') {
+      result = result.filter(p => this.propertyEvaluationsCount[p.id] === undefined || this.propertyEvaluationsCount[p.id] === 0);
     }
 
     // Ordenação

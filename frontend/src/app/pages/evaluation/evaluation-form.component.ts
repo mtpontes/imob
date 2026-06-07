@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PropertyService } from '../../services/property.service';
-import { TemplateService } from '../../services/template.service';
+import { ScriptService } from '../../services/script.service';
 import { EvaluationService } from '../../services/evaluation.service';
-import { PropertyResponse, TemplateResponse, Criteria } from '../../types';
+import { PropertyResponse, ScriptResponse, Criteria } from '../../types';
 import { LucideAngularModule } from 'lucide-angular';
 
 interface UploadItem {
@@ -25,8 +25,8 @@ interface UploadItem {
 export class EvaluationFormComponent implements OnInit {
   propertyId: string = '';
   property?: PropertyResponse;
-  templates: TemplateResponse[] = [];
-  selectedTemplate?: TemplateResponse;
+  scripts: ScriptResponse[] = [];
+  selectedScript?: ScriptResponse;
 
   evaluationForm?: FormGroup;
   currentScore: number = 0;
@@ -42,7 +42,7 @@ export class EvaluationFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private propertyService: PropertyService,
-    private templateService: TemplateService,
+    private scriptService: ScriptService,
     private evaluationService: EvaluationService
   ) {}
 
@@ -51,7 +51,7 @@ export class EvaluationFormComponent implements OnInit {
       this.propertyId = params['propertyId'];
       if (this.propertyId) {
         this.loadProperty();
-        this.loadTemplates();
+        this.loadScripts();
       }
     });
   }
@@ -61,19 +61,19 @@ export class EvaluationFormComponent implements OnInit {
       next: (res) => {
         this.property = res.find(p => p.id === this.propertyId);
         if (!this.property) {
-          this.errorMessage = 'Imovel nao encontrado.';
+          this.errorMessage = 'Imóvel não encontrado.';
         }
       },
-      error: () => this.errorMessage = 'Erro ao carregar dados do imovel.'
+      error: () => this.errorMessage = 'Erro ao carregar dados do imóvel.'
     });
   }
 
-  loadTemplates(): void {
-    this.templateService.getActiveTemplates().subscribe({
+  loadScripts(): void {
+    this.scriptService.getActiveScripts().subscribe({
       next: (res) => {
-        this.templates = res;
+        this.scripts = res;
       },
-      error: () => this.errorMessage = 'Erro ao carregar templates de avaliacao.'
+      error: () => this.errorMessage = 'Erro ao carregar roteiros de avaliação.'
     });
   }
 
@@ -92,9 +92,9 @@ export class EvaluationFormComponent implements OnInit {
   }
 
   isAnyScorableAnswered(): boolean {
-    if (!this.selectedTemplate || !this.evaluationForm) return false;
+    if (!this.selectedScript || !this.evaluationForm) return false;
     const answers = this.evaluationForm.value.answers;
-    return this.selectedTemplate.criteria.some(criteria => {
+    return this.selectedScript.criteria.some(criteria => {
       if (!criteria.isScorable) return false;
       const val = answers[criteria.id];
       return val !== null && val !== undefined && val !== '';
@@ -102,9 +102,9 @@ export class EvaluationFormComponent implements OnInit {
   }
 
   getScorableCriteriaCount(): string {
-    if (!this.selectedTemplate || !this.evaluationForm) return '0/0';
+    if (!this.selectedScript || !this.evaluationForm) return '0/0';
     const answers = this.evaluationForm.value.answers;
-    const scorable = this.selectedTemplate.criteria.filter(c => c.isScorable);
+    const scorable = this.selectedScript.criteria.filter(c => c.isScorable);
     let answered = 0;
     scorable.forEach(c => {
       const val = answers[c.id];
@@ -115,23 +115,23 @@ export class EvaluationFormComponent implements OnInit {
     return `${answered}/${scorable.length}`;
   }
 
-  onTemplateChange(event: Event): void {
+  onScriptChange(event: Event): void {
     const target = event.target as HTMLSelectElement;
-    const templateId = target.value;
+    const scriptId = target.value;
     
-    this.selectedTemplate = this.templates.find(t => t.id === templateId);
-    if (this.selectedTemplate) {
-      this.buildForm(this.selectedTemplate);
+    this.selectedScript = this.scripts.find(s => s.id === scriptId);
+    if (this.selectedScript) {
+      this.buildForm(this.selectedScript);
     } else {
       this.evaluationForm = undefined;
       this.currentScore = 0;
     }
   }
 
-  buildForm(template: TemplateResponse): void {
+  buildForm(script: ScriptResponse): void {
     const answersGroup: { [key: string]: any } = {};
 
-    template.criteria.forEach((criteria: Criteria) => {
+    script.criteria.forEach((criteria: Criteria) => {
       if (criteria.type === 'bool') {
         answersGroup[criteria.id] = [false];
       } else if (criteria.type === 'range') {
@@ -158,7 +158,7 @@ export class EvaluationFormComponent implements OnInit {
   }
 
   calculateLocalScore(): void {
-    if (!this.selectedTemplate || !this.evaluationForm) {
+    if (!this.selectedScript || !this.evaluationForm) {
       this.currentScore = 0;
       return;
     }
@@ -167,7 +167,7 @@ export class EvaluationFormComponent implements OnInit {
     let totalWeight = 0;
     let earnedPoints = 0;
 
-    this.selectedTemplate.criteria.forEach((criteria: Criteria) => {
+    this.selectedScript.criteria.forEach((criteria: Criteria) => {
       if (!criteria.isScorable) {
         return;
       }
@@ -257,8 +257,8 @@ export class EvaluationFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (!this.selectedTemplate || !this.evaluationForm || this.evaluationForm.invalid) {
-      this.errorMessage = 'Por favor, preencha o formulario corretamente.';
+    if (!this.selectedScript || !this.evaluationForm || this.evaluationForm.invalid) {
+      this.errorMessage = 'Por favor, preencha o formulário corretamente.';
       return;
     }
 
@@ -269,7 +269,7 @@ export class EvaluationFormComponent implements OnInit {
     const answersMap: { [key: string]: any } = {};
     const answers = this.evaluationForm.value.answers;
     
-    this.selectedTemplate.criteria.forEach((criteria: Criteria) => {
+    this.selectedScript.criteria.forEach((criteria: Criteria) => {
       const val = answers[criteria.id];
       if (criteria.type === 'bool') {
         answersMap[criteria.id] = val === true || val === 'true';
@@ -282,8 +282,8 @@ export class EvaluationFormComponent implements OnInit {
 
     const request = {
       propertyId: this.propertyId,
-      templateId: this.selectedTemplate.id,
-      templateVersion: this.selectedTemplate.version,
+      scriptId: this.selectedScript.id,
+      scriptVersion: this.selectedScript.version,
       answers: answersMap,
       notes: this.evaluationForm.value.notes || '',
       mediaKeys: this.uploadedMediaKeys
@@ -292,12 +292,12 @@ export class EvaluationFormComponent implements OnInit {
     this.evaluationService.createEvaluation(request).subscribe({
       next: () => {
         this.loading = false;
-        this.successMessage = 'Avaliacao salva com sucesso!';
+        this.successMessage = 'Avaliação salva com sucesso!';
         this.router.navigate(['/properties', this.propertyId]);
       },
       error: () => {
         this.loading = false;
-        this.errorMessage = 'Erro ao salvar avaliacao.';
+        this.errorMessage = 'Erro ao salvar avaliação.';
       }
     });
   }

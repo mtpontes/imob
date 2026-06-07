@@ -2,7 +2,7 @@ package com.imob.repository;
 
 import com.imob.entity.EvaluationEntity;
 import com.imob.entity.PropertyEntity;
-import com.imob.entity.TemplateEntity;
+import com.imob.entity.ScriptEntity;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -31,20 +31,20 @@ public class DynamoDbRepository {
         this.tableName = tableName;
     }
 
-    // --- TEMPLATES ---
+    // --- SCRIPTS ---
 
-    public void saveTemplate(TemplateEntity template) {
+    public void saveScript(ScriptEntity script) {
         PutItemRequest putReq = PutItemRequest.builder()
                 .tableName(this.tableName)
-                .item(template.toAttributeMap())
+                .item(script.toAttributeMap())
                 .build();
         this.dynamoDb.putItem(putReq);
     }
 
-    public TemplateEntity getTemplate(String workspaceId, String templateId, int version) {
+    public ScriptEntity getScript(String workspaceId, String scriptId, int version) {
         Map<String, AttributeValue> key = new HashMap<>();
         key.put("PK", AttributeValue.builder().s("WORKSPACE#" + workspaceId).build());
-        key.put("SK", AttributeValue.builder().s("TEMPLATE#" + templateId + "#v" + version).build());
+        key.put("SK", AttributeValue.builder().s("SCRIPT#" + scriptId + "#v" + version).build());
 
         GetItemRequest getReq = GetItemRequest.builder()
                 .tableName(this.tableName)
@@ -53,13 +53,13 @@ public class DynamoDbRepository {
 
         GetItemResponse res = this.dynamoDb.getItem(getReq);
         if (res.hasItem()) 
-            return TemplateEntity.fromAttributeMap(res.item());
+            return ScriptEntity.fromAttributeMap(res.item());
         return null;
     }
 
-    public List<TemplateEntity> getActiveTemplates(String workspaceId) {
+    public List<ScriptEntity> getActiveScripts(String workspaceId) {
         String pk = "WORKSPACE#" + workspaceId;
-        String skPrefix = "TEMPLATE#";
+        String skPrefix = "SCRIPT#";
 
         Map<String, String> attributeNames = new HashMap<>();
         attributeNames.put("#pk", "PK");
@@ -77,20 +77,20 @@ public class DynamoDbRepository {
                 .build();
 
         QueryResponse res = this.dynamoDb.query(queryReq);
-        List<TemplateEntity> list = new ArrayList<>();
+        List<ScriptEntity> list = new ArrayList<>();
         if (res.hasItems()) {
             for (Map<String, AttributeValue> item : res.items()) {
-                TemplateEntity template = TemplateEntity.fromAttributeMap(item);
-                if (template != null && template.isActive()) 
-                    list.add(template);
+                ScriptEntity script = ScriptEntity.fromAttributeMap(item);
+                if (script != null && script.isActive()) 
+                    list.add(script);
             }
         }
         return list;
     }
 
-    public List<TemplateEntity> getAllVersionsOfTemplate(String workspaceId, String templateId) {
+    public List<ScriptEntity> getAllVersionsOfScript(String workspaceId, String scriptId) {
         String pk = "WORKSPACE#" + workspaceId;
-        String skPrefix = "TEMPLATE#" + templateId + "#v";
+        String skPrefix = "SCRIPT#" + scriptId + "#v";
 
         Map<String, String> attributeNames = new HashMap<>();
         attributeNames.put("#pk", "PK");
@@ -108,12 +108,12 @@ public class DynamoDbRepository {
                 .build();
 
         QueryResponse res = this.dynamoDb.query(queryReq);
-        List<TemplateEntity> list = new ArrayList<>();
+        List<ScriptEntity> list = new ArrayList<>();
         if (res.hasItems()) {
             for (Map<String, AttributeValue> item : res.items()) {
-                TemplateEntity template = TemplateEntity.fromAttributeMap(item);
-                if (template != null) 
-                    list.add(template);
+                ScriptEntity script = ScriptEntity.fromAttributeMap(item);
+                if (script != null) 
+                    list.add(script);
             }
         }
         return list;
