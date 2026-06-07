@@ -7,9 +7,9 @@ import com.imob.dto.GenerateUploadUrlRequest;
 import com.imob.dto.GenerateUploadUrlResponse;
 import com.imob.entity.EvaluationEntity;
 import com.imob.entity.ScriptEntity;
-import com.imob.dto.CriteriaDTO;
 import com.imob.repository.DynamoDbRepository;
 import com.imob.service.EvaluationService;
+import com.imob.service.EvaluationValidator;
 import com.imob.service.S3Service;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.ws.rs.Consumes;
@@ -39,36 +39,14 @@ public class EvaluationResource {
     private final DynamoDbRepository repository;
     private final EvaluationService evaluationService;
     private final S3Service s3Service;
+    private final EvaluationValidator evaluationValidator;
 
     @POST
     public Response createEvaluation(CreateEvaluationRequest request) {
         String workspaceId = this.userContext.getWorkspaceId();
         
-        // Valida se o roteiro existe e esta ativo
         ScriptEntity script = this.repository.getScript(workspaceId, request.getScriptId(), request.getScriptVersion());
-        if (script == null || !script.isActive()) 
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"Roteiro nao encontrado ou inativo\"}")
-                    .build();
-
-        // Valida se todas as respostas sao para criterios cadastrados no roteiro
-        if (request.getAnswers() != null) {
-            for (String criteriaId : request.getAnswers().keySet()) {
-                boolean exists = false;
-                if (script.getCriteria() != null) {
-                    for (CriteriaDTO crit : script.getCriteria()) {
-                        if (crit.getId().equals(criteriaId)) {
-                            exists = true;
-                            break;
-                        }
-                    }
-                }
-                if (!exists) 
-                    return Response.status(Response.Status.BAD_REQUEST)
-                            .entity("{\"error\":\"Respostas contem criterios nao cadastrados no roteiro\"}")
-                            .build();
-            }
-        }
+        this.evaluationValidator.validate(request, script);
 
         // Calcula score final baseado nos criterios do roteiro e respostas fornecidas
         double score = this.evaluationService.calculateFinalScore(script, request.getAnswers());
@@ -109,10 +87,7 @@ public class EvaluationResource {
     public Response generateUploadUrl(GenerateUploadUrlRequest request) {
         String workspaceId = this.userContext.getWorkspaceId();
         
-        if (request.getFileName() == null || request.getFileName().isBlank()) 
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"Nome do arquivo nao informado\"}")
-                    .build();
+        this.evaluationValidator.validateUploadRequest(request.getFileName());
 
         String uuid = UUID.randomUUID().toString();
         // workspaceId/uploads/uuid_fileName

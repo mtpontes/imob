@@ -15,9 +15,9 @@ import java.util.Map;
 @Setter
 @RegisterForReflection
 public class EvaluationEntity {
+    private String createdAt;
     private String workspaceId;
     private String propertyId;
-    private String createdAt;
     private String scriptId;
     private int scriptVersion;
     private double finalScore;
