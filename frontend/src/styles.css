@@ -1,0 +1,28 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #0f0a1c;
+  min-height: 100vh;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  color: #ffffff;
+}
+
+/* Estiliza globalmente os spin-buttons de inputs numericos em navegadores Webkit (Chrome, Safari, Edge) */
+input[type=number]::-webkit-inner-spin-button {
+  cursor: pointer;
+  filter: invert(1) brightness(1.8);
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  margin-left: 5px;
+}
+
+input[type=number]::-webkit-inner-spin-button:hover {
+  opacity: 1;
+}
+
+/* Mantem aparencia padrao de numero no Firefox */
+input[type=number] {
+  -moz-appearance: number-input !important;
+}

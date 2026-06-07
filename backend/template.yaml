@@ -1,0 +1,148 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS SAM template for ImobApp backend and infrastructure
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+
+Resources:
+  # 1. Cognito User Pool para autenticacao
+  ImobAppUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: ImobAppUserPool
+      UsernameAttributes:
+        - email
+      AutoVerifiedAttributes:
+        - email
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: true
+          RequireUppercase: true
+
+  ImobAppUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: ImobAppUserPoolClient
+      UserPoolId: !Ref ImobAppUserPool
+      GenerateSecret: false
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+        - ALLOW_USER_SRP_AUTH
+
+  # 2. API Gateway HTTP API integrado com Cognito JWT Authorizer
+  ImobAppHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowHeaders:
+          - Content-Type
+          - Authorization
+          - X-User-Email
+        AllowMethods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - OPTIONS
+        AllowOrigins:
+          - http://localhost:4200
+          - https://*.vercel.app
+        MaxAge: 3600
+      Auth:
+        DefaultAuthorizer: CognitoAuthorizer
+        Authorizers:
+          CognitoAuthorizer:
+            IdentitySource: $request.header.Authorization
+            JwtConfiguration:
+              Audience:
+                - !Ref ImobAppUserPoolClient
+              Issuer: !Sub https://cognito-idp.${AWS::Region}.amazonaws.com/${ImobAppUserPool}
+
+  # 3. Tabela DynamoDB com Single-Table Design
+  ImobAppTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ImobAppDB
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SK
+          AttributeType: S
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: SK
+          KeyType: RANGE
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  # 4. S3 Bucket para armazenamento de fotos (acesso via Pre-Signed URLs)
+  ImobAppBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - '*'
+            AllowedMethods:
+              - GET
+              - PUT
+              - POST
+              - DELETE
+              - HEAD
+            AllowedOrigins:
+              - http://localhost:4200
+              - https://*.vercel.app
+            MaxAge: 3600
+
+  # 5. Lambda Function rodando Quarkus nativo
+  ImobAppFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: io.quarkus.amazon.lambda.runtime.QuarkusStreamHandler::handleRequest
+      Runtime: provided.al2023
+      CodeUri: target/function.zip
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ImobAppTable
+        - S3CrudPolicy:
+            BucketName: !Ref ImobAppBucket
+      Environment:
+        Variables:
+          IMOB_TABLE_NAME: !Ref ImobAppTable
+          IMOB_BUCKET_NAME: !Ref ImobAppBucket
+          DISABLE_SIGNAL_HANDLERS: true
+      Events:
+        HttpApiProxy:
+          Type: HttpApi
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+            ApiId: !Ref ImobAppHttpApi
+
+Outputs:
+  ApiUrl:
+    Description: HTTP API Gateway URL
+    Value: !Sub https://${ImobAppHttpApi}.execute-api.${AWS::Region}.amazonaws.com
+  UserPoolId:
+    Description: Cognito User Pool ID
+    Value: !Ref ImobAppUserPool
+  UserPoolClientId:
+    Description: Cognito User Pool Client ID
+    Value: !Ref ImobAppUserPoolClient
+  BucketName:
+    Description: S3 Bucket Name
+    Value: !Ref ImobAppBucket

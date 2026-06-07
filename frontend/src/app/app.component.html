@@ -1,0 +1,20 @@
+<nav class="navbar" *ngIf="isLoggedIn()" id="app-navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand" routerLink="/properties">
+      <span class="logo-badge">I</span>
+      <span class="brand-name">ImobApp</span>
+    </div>
+    
+    <div class="navbar-links">
+      <a routerLink="/properties" routerLinkActive="active" class="nav-link" id="nav-link-properties">Imoveis</a>
+      <a routerLink="/template-builder" routerLinkActive="active" class="nav-link" id="nav-link-templates">Templates</a>
+    </div>
+
+    <div class="navbar-user">
+      <span class="user-email" id="navbar-user-email">{{ userEmail }}</span>
+      <button (click)="logout()" class="btn-logout" id="btn-navbar-logout">Sair</button>
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>

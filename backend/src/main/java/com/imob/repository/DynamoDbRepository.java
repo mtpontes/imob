@@ -1,0 +1,225 @@
+package com.imob.repository;
+
+import com.imob.entity.EvaluationEntity;
+import com.imob.entity.PropertyEntity;
+import com.imob.entity.TemplateEntity;
+import io.quarkus.runtime.annotations.RegisterForReflection;
+import jakarta.enterprise.context.ApplicationScoped;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
+import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.QueryRequest;
+import software.amazon.awssdk.services.dynamodb.model.QueryResponse;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@ApplicationScoped
+@RegisterForReflection
+public class DynamoDbRepository {
+
+    private final DynamoDbClient dynamoDb;
+    private final String tableName;
+
+    public DynamoDbRepository(DynamoDbClient dynamoDb, @ConfigProperty(name = "imob.table.name") String tableName) {
+        this.dynamoDb = dynamoDb;
+        this.tableName = tableName;
+    }
+
+    // --- TEMPLATES ---
+
+    public void saveTemplate(TemplateEntity template) {
+        PutItemRequest putReq = PutItemRequest.builder()
+                .tableName(this.tableName)
+                .item(template.toAttributeMap())
+                .build();
+        this.dynamoDb.putItem(putReq);
+    }
+
+    public TemplateEntity getTemplate(String workspaceId, String templateId, int version) {
+        Map<String, AttributeValue> key = new HashMap<>();
+        key.put("PK", AttributeValue.builder().s("WORKSPACE#" + workspaceId).build());
+        key.put("SK", AttributeValue.builder().s("TEMPLATE#" + templateId + "#v" + version).build());
+
+        GetItemRequest getReq = GetItemRequest.builder()
+                .tableName(this.tableName)
+                .key(key)
+                .build();
+
+        GetItemResponse res = this.dynamoDb.getItem(getReq);
+        if (res.hasItem()) 
+            return TemplateEntity.fromAttributeMap(res.item());
+        return null;
+    }
+
+    public List<TemplateEntity> getActiveTemplates(String workspaceId) {
+        String pk = "WORKSPACE#" + workspaceId;
+        String skPrefix = "TEMPLATE#";
+
+        Map<String, String> attributeNames = new HashMap<>();
+        attributeNames.put("#pk", "PK");
+        attributeNames.put("#sk", "SK");
+
+        Map<String, AttributeValue> attributeValues = new HashMap<>();
+        attributeValues.put(":pk", AttributeValue.builder().s(pk).build());
+        attributeValues.put(":skPrefix", AttributeValue.builder().s(skPrefix).build());
+
+        QueryRequest queryReq = QueryRequest.builder()
+                .tableName(this.tableName)
+                .keyConditionExpression("#pk = :pk AND begins_with(#sk, :skPrefix)")
+                .expressionAttributeNames(attributeNames)
+                .expressionAttributeValues(attributeValues)
+                .build();
+
+        QueryResponse res = this.dynamoDb.query(queryReq);
+        List<TemplateEntity> list = new ArrayList<>();
+        if (res.hasItems()) {
+            for (Map<String, AttributeValue> item : res.items()) {
+                TemplateEntity template = TemplateEntity.fromAttributeMap(item);
+                if (template != null && template.isActive()) 
+                    list.add(template);
+            }
+        }
+        return list;
+    }
+
+    public List<TemplateEntity> getAllVersionsOfTemplate(String workspaceId, String templateId) {
+        String pk = "WORKSPACE#" + workspaceId;
+        String skPrefix = "TEMPLATE#" + templateId + "#v";
+
+        Map<String, String> attributeNames = new HashMap<>();
+        attributeNames.put("#pk", "PK");
+        attributeNames.put("#sk", "SK");
+
+        Map<String, AttributeValue> attributeValues = new HashMap<>();
+        attributeValues.put(":pk", AttributeValue.builder().s(pk).build());
+        attributeValues.put(":skPrefix", AttributeValue.builder().s(skPrefix).build());
+
+        QueryRequest queryReq = QueryRequest.builder()
+                .tableName(this.tableName)
+                .keyConditionExpression("#pk = :pk AND begins_with(#sk, :skPrefix)")
+                .expressionAttributeNames(attributeNames)
+                .expressionAttributeValues(attributeValues)
+                .build();
+
+        QueryResponse res = this.dynamoDb.query(queryReq);
+        List<TemplateEntity> list = new ArrayList<>();
+        if (res.hasItems()) {
+            for (Map<String, AttributeValue> item : res.items()) {
+                TemplateEntity template = TemplateEntity.fromAttributeMap(item);
+                if (template != null) 
+                    list.add(template);
+            }
+        }
+        return list;
+    }
+
+    // --- PROPERTIES ---
+
+    public void saveProperty(PropertyEntity property) {
+        PutItemRequest putReq = PutItemRequest.builder()
+                .tableName(this.tableName)
+                .item(property.toAttributeMap())
+                .build();
+        this.dynamoDb.putItem(putReq);
+    }
+
+    public PropertyEntity getProperty(String workspaceId, String propertyId) {
+        Map<String, AttributeValue> key = new HashMap<>();
+        key.put("PK", AttributeValue.builder().s("WORKSPACE#" + workspaceId).build());
+        key.put("SK", AttributeValue.builder().s("PROPERTY#" + propertyId).build());
+
+        GetItemRequest getReq = GetItemRequest.builder()
+                .tableName(this.tableName)
+                .key(key)
+                .build();
+
+        GetItemResponse res = this.dynamoDb.getItem(getReq);
+        if (res.hasItem()) 
+            return PropertyEntity.fromAttributeMap(res.item());
+        return null;
+    }
+
+    public List<PropertyEntity> getProperties(String workspaceId) {
+        String pk = "WORKSPACE#" + workspaceId;
+        String skPrefix = "PROPERTY#";
+
+        Map<String, String> attributeNames = new HashMap<>();
+        attributeNames.put("#pk", "PK");
+        attributeNames.put("#sk", "SK");
+
+        Map<String, AttributeValue> attributeValues = new HashMap<>();
+        attributeValues.put(":pk", AttributeValue.builder().s(pk).build());
+        attributeValues.put(":skPrefix", AttributeValue.builder().s(skPrefix).build());
+
+        QueryRequest queryReq = QueryRequest.builder()
+                .tableName(this.tableName)
+                .keyConditionExpression("#pk = :pk AND begins_with(#sk, :skPrefix)")
+                .expressionAttributeNames(attributeNames)
+                .expressionAttributeValues(attributeValues)
+                .build();
+
+        QueryResponse res = this.dynamoDb.query(queryReq);
+        List<PropertyEntity> list = new ArrayList<>();
+        if (res.hasItems()) {
+            for (Map<String, AttributeValue> item : res.items()) {
+                PropertyEntity property = PropertyEntity.fromAttributeMap(item);
+                if (property != null) 
+                    list.add(property);
+            }
+        }
+        
+        // Ordena por data de criacao decrescente
+        list.sort((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()));
+        return list;
+    }
+
+    // --- EVALUATIONS ---
+
+    public void saveEvaluation(EvaluationEntity evaluation) {
+        PutItemRequest putReq = PutItemRequest.builder()
+                .tableName(this.tableName)
+                .item(evaluation.toAttributeMap())
+                .build();
+        this.dynamoDb.putItem(putReq);
+    }
+
+    public List<EvaluationEntity> getEvaluationsByProperty(String workspaceId, String propertyId) {
+        String pk = "WORKSPACE#" + workspaceId;
+        String skPrefix = "EVALUATION#" + propertyId + "#";
+
+        Map<String, String> attributeNames = new HashMap<>();
+        attributeNames.put("#pk", "PK");
+        attributeNames.put("#sk", "SK");
+
+        Map<String, AttributeValue> attributeValues = new HashMap<>();
+        attributeValues.put(":pk", AttributeValue.builder().s(pk).build());
+        attributeValues.put(":skPrefix", AttributeValue.builder().s(skPrefix).build());
+
+        QueryRequest queryReq = QueryRequest.builder()
+                .tableName(this.tableName)
+                .keyConditionExpression("#pk = :pk AND begins_with(#sk, :skPrefix)")
+                .expressionAttributeNames(attributeNames)
+                .expressionAttributeValues(attributeValues)
+                .build();
+
+        QueryResponse res = this.dynamoDb.query(queryReq);
+        List<EvaluationEntity> list = new ArrayList<>();
+        if (res.hasItems()) {
+            for (Map<String, AttributeValue> item : res.items()) {
+                EvaluationEntity evaluation = EvaluationEntity.fromAttributeMap(item);
+                if (evaluation != null) 
+                    list.add(evaluation);
+            }
+        }
+        
+        // Ordena por data de criacao decrescente (a SK ja contem a data, mas garantimos em memoria)
+        list.sort((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()));
+        return list;
+    }
+}

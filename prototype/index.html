@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ImobApp - Avaliação de Imóveis</title>
+  
+  <!-- Fontes Premium -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Estilos Globais e Efeitos -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- App Wrapper -->
+  <div id="app" class="app-container logged-out">
+    
+    <!-- Tela de Login (Cognito Simulation) -->
+    <section id="view-login" class="view active">
+      <div class="login-card-wrapper">
+        <div class="login-logo-area">
+          <div class="logo-icon">
+            <i data-lucide="building-2"></i>
+          </div>
+          <h1>Imob<span>App</span></h1>
+          <p>Plataforma de Avaliação de Imóveis</p>
+        </div>
+        
+        <div class="login-card glass">
+          <h2>Bem-vindo de volta</h2>
+          <p class="subtitle">Acesse sua conta para gerenciar visitas e avaliações</p>
+          
+          <form id="login-form">
+            <div class="form-group">
+              <label for="login-email">E-mail corporativo</label>
+              <div class="input-wrapper">
+                <i data-lucide="mail"></i>
+                <input type="email" id="login-email" required placeholder="ex: corretor@email.com">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="login-password">Senha</label>
+              <div class="input-wrapper">
+                <i data-lucide="lock"></i>
+                <input type="password" id="login-password" required placeholder="••••••••">
+              </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block btn-glowing">
+              <span>Entrar com Cognito</span>
+              <i data-lucide="arrow-right"></i>
+            </button>
+
+            <button type="button" id="btn-bypass-login" class="btn btn-outline btn-block" style="margin-top: 1rem;">
+              <span>Acesso Rápido (Bypass)</span>
+              <i data-lucide="zap"></i>
+            </button>
+          </form>
+          
+          <div class="login-footer">
+            <p>Ambiente seguro e serverless de alta performance.</p>
+          </div>
+        </div>
+        
+        <!-- Dicas de multi-tenant no protótipo -->
+        <div class="demo-info-box glass">
+          <i data-lucide="info"></i>
+          <span><strong>Dica de Teste:</strong> Emails diferentes criam Workspaces diferentes e isolam os dados localmente!</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Header Geral (Oculto em Login) -->
+    <header class="app-header glass">
+      <div class="header-brand">
+        <div class="brand-logo" onclick="appRouter.navigate('properties')">
+          <i data-lucide="building-2"></i>
+          <span>ImobApp</span>
+        </div>
+        <div class="workspace-badge" id="current-workspace-badge">
+          <i data-lucide="briefcase"></i>
+          <span id="workspace-name-display">Workspace Principal</span>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <div class="user-profile">
+          <div class="avatar" id="user-avatar-initials">US</div>
+          <div class="user-info">
+            <span class="user-email" id="user-email-display">usuario@email.com</span>
+            <span class="user-role">Corretor Avaliador</span>
+          </div>
+        </div>
+        <button id="btn-logout" class="btn btn-icon btn-logout" title="Sair">
+          <i data-lucide="log-out"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="app-main">
+      
+      <!-- VIEW: Lista de Imóveis (Properties) -->
+      <section id="view-properties" class="view">
+        <div class="page-header">
+          <div class="page-title-area">
+            <h1>Imóveis Cadastrados</h1>
+            <p>Selecione um imóvel para avaliar ou gerenciar visitas</p>
+          </div>
+          <button class="btn btn-primary" onclick="appRouter.navigate('property-create')">
+            <i data-lucide="plus"></i>
+            <span>Novo Imóvel</span>
+          </button>
+        </div>
+
+        <!-- Barra de busca e filtros -->
+        <div class="filters-bar glass">
+          <div class="search-input-wrapper">
+            <i data-lucide="search"></i>
+            <input type="text" id="property-search" placeholder="Buscar por endereço ou detalhes...">
+          </div>
+          <div class="filter-actions">
+            <select id="property-sort" class="select-styled">
+              <option value="recent">Mais Recentes</option>
+              <option value="price-asc">Menor Preço</option>
+              <option value="price-desc">Maior Preço</option>
+              <option value="sqm-desc">Maior Área (m²)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Lista/Grid de Imóveis -->
+        <div id="properties-grid" class="properties-grid">
+          <!-- Carregado via JS -->
+        </div>
+        
+        <!-- Empty State -->
+        <div id="properties-empty-state" class="empty-state glass hide">
+          <i data-lucide="home"></i>
+          <h3>Nenhum imóvel cadastrado</h3>
+          <p>Adicione o primeiro imóvel ao seu workspace para começar as avaliações.</p>
+          <button class="btn btn-primary" onclick="appRouter.navigate('property-create')">
+            <i data-lucide="plus"></i>
+            <span>Cadastrar Imóvel</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- VIEW: Cadastrar Imóvel -->
+      <section id="view-property-create" class="view">
+        <div class="page-header">
+          <div class="page-title-area">
+            <button class="btn btn-text-back" onclick="appRouter.navigate('properties')">
+              <i data-lucide="chevron-left"></i>
+              <span>Voltar para Imóveis</span>
+            </button>
+            <h1>Cadastrar Novo Imóvel</h1>
+            <p>Adicione os detalhes estruturais do imóvel visitado</p>
+          </div>
+        </div>
+
+        <div class="form-container-card glass">
+          <form id="property-form">
+            <div class="form-grid">
+              
+              <div class="form-group span-full">
+                <label for="prop-address">Endereço Completo</label>
+                <div class="input-wrapper">
+                  <i data-lucide="map-pin"></i>
+                  <input type="text" id="prop-address" required placeholder="Rua, número, bairro, cidade - UF">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="prop-price">Preço Anunciado (R$)</label>
+                <div class="input-wrapper">
+                  <i data-lucide="dollar-sign"></i>
+                  <input type="number" id="prop-price" required min="0" step="0.01" placeholder="Ex: 450000">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="prop-sqm">Área Útil (m²)</label>
+                <div class="input-wrapper">
+                  <i data-lucide="maximize-2"></i>
+                  <input type="number" id="prop-sqm" required min="1" placeholder="Ex: 85">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="prop-bedrooms">Quartos</label>
+                <div class="input-wrapper">
+                  <i data-lucide="bed"></i>
+                  <input type="number" id="prop-bedrooms" required min="0" placeholder="Ex: 3">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="prop-bathrooms">Banheiros</label>
+                <div class="input-wrapper">
+                  <i data-lucide="bath"></i>
+                  <input type="number" id="prop-bathrooms" required min="0" placeholder="Ex: 2">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="prop-parking">Vagas de Garagem</label>
+                <div class="input-wrapper">
+                  <i data-lucide="car"></i>
+                  <input type="number" id="prop-parking" required min="0" placeholder="Ex: 1">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="prop-url">Link do Anúncio (Opcional)</label>
+                <div class="input-wrapper">
+                  <i data-lucide="link"></i>
+                  <input type="url" id="prop-url" placeholder="https://portal-imobiliario.com.br/imovel">
+                </div>
+              </div>
+
+            </div>
+
+            <div class="form-actions-footer">
+              <button type="button" class="btn btn-outline" onclick="appRouter.navigate('properties')">Cancelar</button>
+              <button type="submit" class="btn btn-primary">Salvar Imóvel</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- VIEW: Lista de Templates de Avaliação -->
+      <section id="view-templates" class="view">
+        <div class="page-header">
+          <div class="page-title-area">
+            <h1>Templates de Avaliação</h1>
+            <p>Gerencie os formulários dinâmicos de vistorias e pontuações</p>
+          </div>
+          <button class="btn btn-primary" onclick="appRouter.navigate('template-create')">
+            <i data-lucide="plus"></i>
+            <span>Criar Template</span>
+          </button>
+        </div>
+
+        <div id="templates-list-container" class="templates-list-container">
+          <!-- Carregado via JS -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="templates-empty-state" class="empty-state glass hide">
+          <i data-lucide="clipboard-list"></i>
+          <h3>Nenhum template cadastrado</h3>
+          <p>Crie um protocolo estruturado para avaliar seus imóveis com notas e pesos.</p>
+          <button class="btn btn-primary" onclick="appRouter.navigate('template-create')">
+            <i data-lucide="plus"></i>
+            <span>Criar Novo Template</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- VIEW: Criador/Editor de Templates -->
+      <section id="view-template-builder" class="view">
+        <div class="page-header">
+          <div class="page-title-area">
+            <button class="btn btn-text-back" onclick="appRouter.navigate('templates')">
+              <i data-lucide="chevron-left"></i>
+              <span>Voltar para Templates</span>
+            </button>
+            <h1 id="template-builder-title">Criar Novo Template</h1>
+            <p>Monte o formulário dinâmico adicionando os critérios avaliativos</p>
+          </div>
+        </div>
+
+        <div class="template-builder-grid">
+          
+          <!-- Lado Esquerdo: Metadados e Critérios -->
+          <div class="builder-main-card glass">
+            <form id="template-builder-form">
+              <input type="hidden" id="builder-template-id">
+              <input type="hidden" id="builder-template-version" value="1">
+              
+              <div class="form-group">
+                <label for="builder-template-name">Nome do Template</label>
+                <div class="input-wrapper">
+                  <i data-lucide="tag"></i>
+                  <input type="text" id="builder-template-name" required placeholder="Ex: Avaliação Padrão Residencial, Alto Padrão">
+                </div>
+              </div>
+
+              <!-- Lista de critérios adicionados -->
+              <div class="builder-criteria-section">
+                <div class="criteria-header">
+                  <h3>Critérios de Avaliação</h3>
+                  <span class="criteria-count" id="builder-criteria-count">0 adicionados</span>
+                </div>
+                
+                <div id="builder-criteria-list" class="builder-criteria-list">
+                  <!-- Lista de critérios dinâmicos -->
+                  <div class="criteria-empty-list-placeholder">
+                    Nenhum critério adicionado. Use o painel lateral para adicionar critérios ao seu template.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Opção de Edição: Nova Versão ou Sobrescrita -->
+              <div id="builder-version-control-box" class="version-control-box glass hide">
+                <h4>Salvamento e Controle de Versão</h4>
+                <p>Este template já possui dados persistidos. Escolha o comportamento de salvamento:</p>
+                
+                <div class="version-options">
+                  <label class="radio-card">
+                    <input type="radio" name="template-save-version" value="overwrite" checked>
+                    <div class="radio-content">
+                      <span class="radio-title">Sobrescrever Versão Atual (<span class="current-ver-badge">v1</span>)</span>
+                      <span class="radio-desc">Substitui o template atual inteiramente. Útil para corrigir erros rápidos.</span>
+                    </div>
+                  </label>
+                  
+                  <label class="radio-card">
+                    <input type="radio" name="template-save-version" value="new-version">
+                    <div class="radio-content">
+                      <span class="radio-title">Criar Nova Versão (<span class="next-ver-badge">v2</span>)</span>
+                      <span class="radio-desc">Desativa a versão anterior e gera uma nova. As avaliações antigas continuam associadas à versão anterior.</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-actions-footer">
+                <button type="button" class="btn btn-outline" onclick="appRouter.navigate('templates')">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Salvar Template</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Lado Direito: Adicionar Critério -->
+          <div class="builder-sidebar-card glass">
+            <h3>Adicionar Critério</h3>
+            <p class="subtitle">Adicione perguntas ou itens de vistoria para compor a ficha técnica</p>
+            
+            <form id="add-criteria-form">
+              <div class="form-group">
+                <label for="crit-label">Rótulo / Pergunta</label>
+                <input type="text" id="crit-label" required placeholder="Ex: Estado de conservação da pintura">
+              </div>
+
+              <div class="form-group">
+                <label for="crit-type">Tipo de Resposta</label>
+                <select id="crit-type" class="select-styled" required>
+                  <option value="bool">Sim / Não (Check/Toggle)</option>
+                  <option value="range">Escala de 1 a 10 (Range)</option>
+                  <option value="text">Texto Livre (Observação)</option>
+                </select>
+              </div>
+
+              <div class="form-group row-checkbox" id="crit-scorable-wrapper">
+                <label class="checkbox-container">
+                  <input type="checkbox" id="crit-is-scorable" checked>
+                  <span class="checkmark"></span>
+                  <span class="checkbox-text">Pontuável (Gera nota de avaliação)</span>
+                </label>
+              </div>
+
+              <div class="form-group" id="crit-weight-wrapper">
+                <label for="crit-weight">Peso do Critério (Multiplicador)</label>
+                <div class="range-input-container">
+                  <input type="range" id="crit-weight" min="1" max="5" value="1">
+                  <span class="range-value" id="crit-weight-val">1x</span>
+                </div>
+                <span class="field-hint">Critérios com peso maior influenciam mais na nota final.</span>
+              </div>
+
+              <button type="submit" class="btn btn-outline btn-block">
+                <i data-lucide="plus-circle"></i>
+                <span>Adicionar ao Template</span>
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- VIEW: Executar Avaliação (Nova Avaliação) -->
+      <section id="view-evaluation-create" class="view">
+        <div class="page-header">
+          <div class="page-title-area">
+            <button class="btn btn-text-back" id="btn-eval-back">
+              <i data-lucide="chevron-left"></i>
+              <span>Voltar</span>
+            </button>
+            <h1>Nova Avaliação</h1>
+            <p>Preencha os critérios e anexe fotos da visita técnica</p>
+          </div>
+        </div>
+
+        <div class="evaluation-container-grid">
+          
+          <!-- Lado Esquerdo: Formulário Dinâmico -->
+          <div class="evaluation-main-card glass">
+            <div class="eval-property-summary-bar">
+              <div class="summary-item">
+                <i data-lucide="map-pin"></i>
+                <div>
+                  <span class="label">Propriedade</span>
+                  <span class="value" id="eval-property-address">Rua dos Bobos, 0</span>
+                </div>
+              </div>
+              <div class="summary-item">
+                <i data-lucide="dollar-sign"></i>
+                <div>
+                  <span class="label">Preço</span>
+                  <span class="value" id="eval-property-price">R$ 0,00</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Seleção de Template -->
+            <div class="form-group" id="eval-template-select-container">
+              <label for="eval-template-select">Selecione o Protocolo / Template de Avaliação</label>
+              <select id="eval-template-select" class="select-styled" required>
+                <option value="">-- Escolha um template --</option>
+                <!-- Carregado via JS -->
+              </select>
+            </div>
+
+            <!-- Formulário de critérios gerados dinamicamente -->
+            <form id="evaluation-form" class="hide">
+              <input type="hidden" id="eval-property-id">
+              
+              <div class="dynamic-criteria-title">
+                <h3>Vistoria e Critérios de Nota</h3>
+                <p>Responda de acordo com as condições identificadas no local</p>
+              </div>
+              
+              <div id="eval-dynamic-fields-container" class="eval-dynamic-fields-container">
+                <!-- Injetado dinamicamente via JS -->
+              </div>
+
+              <!-- Notas adicionais da vistoria -->
+              <div class="form-group mt-6">
+                <label for="eval-notes">Notas Gerais e Observações da Visita</label>
+                <textarea id="eval-notes" rows="4" placeholder="Escreva observações técnicas sobre rachaduras, umidade, potencial de reforma ou observações de vizinhança..."></textarea>
+              </div>
+
+              <!-- Upload de fotos fictício via S3 pre-signed url -->
+              <div class="photo-upload-section">
+                <h3>Fotos do Imóvel (Object Storage S3)</h3>
+                <p class="subtitle">As fotos são enviadas direto para o Amazon S3 usando urls pré-assinadas temporárias</p>
+                
+                <div class="upload-zone" id="photo-upload-zone">
+                  <input type="file" id="photo-input" multiple accept="image/*" class="hide">
+                  <i data-lucide="camera"></i>
+                  <span>Clique para tirar foto ou selecionar da galeria</span>
+                  <p class="hint">Suporta múltiplos uploads diretos no S3 Bucket</p>
+                </div>
+                
+                <!-- Lista de fotos carregadas/processadas -->
+                <div class="uploaded-photos-grid" id="uploaded-photos-preview-grid">
+                  <!-- Exibe thumbnails das fotos e status do upload fictício -->
+                </div>
+              </div>
+
+              <div class="form-actions-footer">
+                <button type="button" class="btn btn-outline" id="btn-eval-cancel">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Concluir e Registrar Visita</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Lado Direito: Resumo da Nota em tempo real -->
+          <div class="evaluation-sidebar-card glass hide" id="eval-sidebar-score-card">
+            <h3>Resultado Preliminar</h3>
+            <p class="subtitle">Pontuação instantânea baseada nos critérios respondidos e nos pesos configurados</p>
+            
+            <div class="score-visualizer">
+              <div class="score-circle">
+                <span class="score-num" id="live-score-value">0.0</span>
+                <span class="score-max">/ 10</span>
+              </div>
+              <div class="score-badge" id="live-score-badge">Neutro</div>
+            </div>
+
+            <div class="score-info-items">
+              <div class="info-item">
+                <span class="label">Critérios Avaliados</span>
+                <span class="value" id="live-score-criteria-count">0/0</span>
+              </div>
+              <div class="info-item">
+                <span class="label">Média Ponderada</span>
+                <span class="value" id="live-score-formula">Soma(Nota x Peso) / Soma(Pesos)</span>
+              </div>
+            </div>
+
+            <div class="score-warning-box">
+              <i data-lucide="shield-check"></i>
+              <span>Notas geradas serverless via Lambda Quarkus Native na confirmação do envio.</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- VIEW: Detalhes do Imóvel & Histórico de Avaliações -->
+      <section id="view-property-details" class="view">
+        <div class="page-header">
+          <div class="page-title-area">
+            <button class="btn btn-text-back" onclick="appRouter.navigate('properties')">
+              <i data-lucide="chevron-left"></i>
+              <span>Voltar para Imóveis</span>
+            </button>
+            <h1 id="details-prop-address">Endereço do Imóvel</h1>
+            <p>Histórico completo de vistorias técnicas e evolução de notas</p>
+          </div>
+          
+          <button class="btn btn-primary" id="btn-details-new-eval">
+            <i data-lucide="clipboard"></i>
+            <span>Nova Avaliação</span>
+          </button>
+        </div>
+
+        <div class="details-layout-grid">
+          
+          <!-- Esquerda: Ficha do Imóvel -->
+          <div class="details-info-card glass">
+            <h3>Ficha Técnica</h3>
+            <p class="subtitle">Especificações estruturais básicas do imóvel</p>
+            
+            <div class="property-specs-list">
+              <div class="spec-item">
+                <span class="spec-label">Preço Declarado</span>
+                <span class="spec-value highlight" id="details-prop-price">R$ 0,00</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Área Útil</span>
+                <span class="spec-value" id="details-prop-sqm">0 m²</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Quartos</span>
+                <span class="spec-value" id="details-prop-bedrooms">0 dormitórios</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Banheiros</span>
+                <span class="spec-value" id="details-prop-bathrooms">0 banheiros</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Vagas</span>
+                <span class="spec-value" id="details-prop-parking">0 vagas</span>
+              </div>
+              <div class="spec-item" id="details-prop-url-container">
+                <span class="spec-label">Link Anúncio</span>
+                <a href="#" target="_blank" class="spec-value link" id="details-prop-url">Acessar Anúncio <i data-lucide="external-link"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Direita: Histórico de Visitas -->
+          <div class="details-history-card glass">
+            <div class="history-card-header">
+              <h3>Histórico de Avaliações</h3>
+              <p class="subtitle">Registros de avaliações, notas e checklists ordenados por data</p>
+            </div>
+
+            <div id="evaluation-history-list" class="evaluation-history-list">
+              <!-- Injetado via JS -->
+            </div>
+            
+            <!-- Empty state avaliações -->
+            <div id="evaluations-empty-state" class="empty-state-mini glass hide">
+              <i data-lucide="clipboard"></i>
+              <h4>Nenhuma avaliação registrada</h4>
+              <p>Este imóvel ainda não foi avaliado. Registre a primeira visita para gerar notas.</p>
+              <button class="btn btn-outline" id="btn-details-empty-new-eval">
+                <i data-lucide="plus"></i>
+                <span>Avaliar Agora</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Barra de Navegação Inferior (Foco em Mobile/PWA) -->
+    <nav class="app-nav glass">
+      <button class="nav-item active" id="nav-item-properties" onclick="appRouter.navigate('properties')">
+        <i data-lucide="home"></i>
+        <span>Imóveis</span>
+      </button>
+      <button class="nav-item" id="nav-item-templates" onclick="appRouter.navigate('templates')">
+        <i data-lucide="clipboard-list"></i>
+        <span>Templates</span>
+      </button>
+    </nav>
+    
+  </div>
+
+  <!-- Modal para visualização detalhada de respostas de uma avaliação -->
+  <div id="evaluation-details-modal" class="modal-wrapper hide">
+    <div class="modal-backdrop" onclick="appRouter.closeModal()"></div>
+    <div class="modal-content glass">
+      <div class="modal-header">
+        <div>
+          <h3 id="modal-eval-title">Detalhes da Avaliação</h3>
+          <span class="modal-subtitle" id="modal-eval-date">Realizada em 00/00/0000</span>
+        </div>
+        <button class="btn btn-icon" onclick="appRouter.closeModal()">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        
+        <div class="modal-score-banner">
+          <div class="modal-score-visual">
+            <span class="label">Nota Final</span>
+            <span class="value" id="modal-eval-score">0.0</span>
+          </div>
+          <div class="modal-template-used">
+            <span class="label">Template Utilizado</span>
+            <span class="value" id="modal-eval-template">Nome do Template (v1)</span>
+          </div>
+        </div>
+
+        <div class="modal-answers-section">
+          <h4>Respostas do Checklist</h4>
+          <div class="answers-list" id="modal-eval-answers">
+            <!-- Injetado via JS -->
+          </div>
+        </div>
+
+        <div class="modal-notes-section">
+          <h4>Observações</h4>
+          <p id="modal-eval-notes">Sem observações.</p>
+        </div>
+
+        <div class="modal-photos-section">
+          <h4>Galeria de Fotos (S3 Pre-Signed URLs)</h4>
+          <div class="modal-photos-grid" id="modal-eval-photos">
+            <!-- Injetado via JS -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Lógica da Aplicação -->
+  <script src="app.js"></script>
+</body>
+</html>

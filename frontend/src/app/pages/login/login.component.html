@@ -1,0 +1,54 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="logo-area">
+      <div class="logo-badge">I</div>
+      <h2>ImobApp</h2>
+      <p class="subtitle">Avaliacao e Vistoria de Imoveis</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input 
+          type="email" 
+          id="email" 
+          formControlName="email" 
+          placeholder="Digite seu e-mail"
+          [class.error]="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
+        />
+        <span class="error-msg" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.hasError('required')">
+          E-mail e obrigatorio.
+        </span>
+        <span class="error-msg" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.hasError('email')">
+          E-mail invalido.
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Senha</label>
+        <input 
+          type="password" 
+          id="password" 
+          formControlName="password" 
+          placeholder="Digite sua senha"
+          [class.error]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+        />
+        <span class="error-msg" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')">
+          Senha e obrigatoria.
+        </span>
+        <span class="error-msg" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.hasError('minlength')">
+          Senha deve conter ao menos 6 caracteres.
+        </span>
+      </div>
+
+      <div class="error-banner" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid || loading">
+        <span *ngIf="!loading">Acessar</span>
+        <span *ngIf="loading" class="spinner"></span>
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,123 @@
+<div class="builder-container">
+  <!-- Barra Lateral de Selecao de Templates -->
+  <div class="sidebar">
+    <h3>Templates Ativos</h3>
+    <button class="btn-new" (click)="resetForm()">Criar Novo Template</button>
+    <div class="template-list">
+      <div 
+        *ngFor="let t of templates" 
+        class="template-item" 
+        [class.active]="selectedTemplate?.id === t.id"
+        (click)="selectTemplate(t)"
+      >
+        <span class="template-name">Template v{{ t.version }}</span>
+        <span class="template-date">{{ t.createdAt | date:'shortDate' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Area Principal do Formulario -->
+  <div class="main-content">
+    <div class="header-back">
+      <a routerLink="/properties" class="btn-back" id="btn-back-to-properties-from-builder">
+        ← Voltar para Imoveis
+      </a>
+    </div>
+
+    <div class="header-area">
+      <h2>{{ isEditMode ? 'Editar Template (v' + selectedTemplate?.version + ')' : 'Novo Template de Avaliacao' }}</h2>
+      <p class="subtitle">Adicione criterios de vistoria com seus respectivos tipos e pesos para pontuacao automatica.</p>
+    </div>
+
+    <form [formGroup]="templateForm" (ngSubmit)="onSubmit()">
+      <!-- Opcao de Nova Versao se for Edicao -->
+      <div class="version-control" *ngIf="isEditMode">
+        <label class="checkbox-container">
+          <input type="checkbox" formControlName="newVersion" />
+          <span class="checkmark"></span>
+          Salvar como nova versao (incrementa a versao e desativa a versao anterior)
+        </label>
+      </div>
+
+      <!-- Checklist de Criterios -->
+      <div class="criteria-section">
+        <h3>Criterios de Vistoria</h3>
+        
+        <div formArrayName="criteria" class="criteria-list">
+          <div 
+            *ngFor="let crit of criteria.controls; let i = index" 
+            [formGroupName]="i" 
+            class="criteria-card"
+          >
+            <div class="card-header">
+              <h4>Criterio #{{ i + 1 }}</h4>
+              <button type="button" class="btn-remove" (click)="removeCriteria(i)">Remover</button>
+            </div>
+
+            <div class="grid-form">
+              <div class="form-field">
+                <label>Identificador (ID unico)</label>
+                <input type="text" formControlName="id" placeholder="ex: fachada_limpeza" />
+              </div>
+
+              <div class="form-field">
+                <label>Rotulo do Campo (Label)</label>
+                <input type="text" formControlName="label" placeholder="ex: Limpeza da Fachada" />
+              </div>
+
+              <div class="form-field">
+                <label>Tipo do Criterio</label>
+                <select formControlName="type">
+                  <option value="text">Texto Livre</option>
+                  <option value="bool">Verdadeiro / Falso (Sim/Nao)</option>
+                  <option value="range">Escala Numerica (Range)</option>
+                </select>
+              </div>
+
+              <div class="form-field checkbox-field">
+                <label class="checkbox-container">
+                  <input type="checkbox" formControlName="isScorable" />
+                  <span class="checkmark"></span>
+                  Gera Pontuacao?
+                </label>
+              </div>
+
+              <div class="form-field" *ngIf="crit.get('isScorable')?.value">
+                <label>Peso para Nota (Weight)</label>
+                <input type="number" formControlName="weight" step="0.5" min="0" />
+              </div>
+
+              <!-- Configuracao Extra para Range -->
+              <div class="range-config-group" *ngIf="crit.get('type')?.value === 'range'">
+                <div class="form-field">
+                  <label>Valor Minimo</label>
+                  <input type="number" formControlName="min" />
+                </div>
+                <div class="form-field">
+                  <label>Valor Maximo</label>
+                  <input type="number" formControlName="max" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="btn-add" (click)="addCriteria()">Adicionar Criterio</button>
+      </div>
+
+      <div class="message-banner success" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+      <div class="message-banner error" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="action-bar">
+        <button type="submit" class="btn-submit" [disabled]="templateForm.invalid || criteria.length === 0 || loading">
+          <span *ngIf="!loading">Salvar Template</span>
+          <span *ngIf="loading" class="spinner"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
