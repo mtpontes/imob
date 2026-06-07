@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PropertyService } from '../../services/property.service';
 import { ScriptService } from '../../services/script.service';
 import { EvaluationService } from '../../services/evaluation.service';
-import { PropertyResponse, ScriptResponse, Criteria } from '../../types';
+import { PropertyResponse, ScriptResponse, Criteria, UpdateEvaluationRequest, EvaluationResponse } from '../../types';
 import { LucideAngularModule } from 'lucide-angular';
 
 interface UploadItem {
@@ -28,6 +28,10 @@ export class EvaluationFormComponent implements OnInit {
   scripts: ScriptResponse[] = [];
   selectedScript?: ScriptResponse;
 
+  isEditMode: boolean = false;
+  createdAt: string = '';
+  evaluationToEdit?: EvaluationResponse;
+
   evaluationForm?: FormGroup;
   currentScore: number = 0;
   uploadedMediaKeys: string[] = [];
@@ -49,11 +53,71 @@ export class EvaluationFormComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.propertyId = params['propertyId'];
+      this.createdAt = params['createdAt'] || '';
+      this.isEditMode = !!this.createdAt;
       if (this.propertyId) {
         this.loadProperty();
-        this.loadScripts();
+        if (this.isEditMode) {
+          this.loadEvaluationAndScript();
+        } else {
+          this.loadScripts();
+        }
       }
     });
+  }
+
+  loadEvaluationAndScript(): void {
+    this.loading = true;
+    this.evaluationService.getEvaluation(this.propertyId, this.createdAt).subscribe({
+      next: (evalRes) => {
+        this.evaluationToEdit = evalRes;
+        this.uploadedMediaKeys = evalRes.mediaKeys || [];
+        if (evalRes.mediaUrls) {
+          this.uploads = evalRes.mediaUrls.map(url => ({
+            name: this.getFileNameFromUrl(url),
+            progress: 100,
+            loading: false,
+            success: true
+          }));
+        }
+
+        this.scriptService.getScript(evalRes.scriptId, evalRes.scriptVersion).subscribe({
+          next: (script) => {
+            if (!this.scripts.some(s => s.id === script.id && s.version === script.version)) {
+              this.scripts.push(script);
+            }
+            this.selectedScript = script;
+            this.buildForm(script);
+
+            if (this.evaluationForm) {
+              this.evaluationForm.patchValue({
+                answers: evalRes.answers,
+                notes: evalRes.notes
+              });
+              this.calculateLocalScore();
+            }
+            this.loading = false;
+          },
+          error: () => {
+            this.errorMessage = 'Erro ao carregar roteiro associado a avaliacao.';
+            this.loading = false;
+          }
+        });
+      },
+      error: () => {
+        this.errorMessage = 'Erro ao carregar avaliacao para edicao.';
+        this.loading = false;
+      }
+    });
+  }
+
+  getFileNameFromUrl(url: string): string {
+    try {
+      const parts = url.split('?')[0].split('/');
+      return parts[parts.length - 1];
+    } catch {
+      return 'foto.jpg';
+    }
   }
 
   loadProperty(): void {
@@ -135,7 +199,7 @@ export class EvaluationFormComponent implements OnInit {
       if (criteria.type === 'bool') {
         answersGroup[criteria.id] = [false];
       } else if (criteria.type === 'range') {
-        const minVal = criteria.min !== undefined ? criteria.min : 1;
+        const minVal = criteria.min !== undefined ? criteria.min : 0;
         answersGroup[criteria.id] = [minVal, [Validators.required]];
       } else {
         answersGroup[criteria.id] = [''];
@@ -164,53 +228,7 @@ export class EvaluationFormComponent implements OnInit {
     }
 
     const answers = this.evaluationForm.value.answers;
-    let totalWeight = 0;
-    let earnedPoints = 0;
-
-    this.selectedScript.criteria.forEach((criteria: Criteria) => {
-      if (!criteria.isScorable) {
-        return;
-      }
-
-      const val = answers[criteria.id];
-      if (val === null || val === undefined || val === '') {
-        return;
-      }
-
-      const weight = criteria.weight;
-      let points = 0;
-
-      if (criteria.type === 'bool') {
-        if (val === true || val === 'true') {
-          points = weight;
-        }
-      } else if (criteria.type === 'range') {
-        const numVal = Number(val);
-        const min = criteria.min !== undefined ? criteria.min : 1;
-        const max = criteria.max !== undefined ? criteria.max : 10;
-
-        if (max > min) {
-          if (numVal <= min) {
-            points = 0;
-          } else if (numVal >= max) {
-            points = weight;
-          } else {
-            const proportion = (numVal - min) / (max - min);
-            points = proportion * weight;
-          }
-        }
-      }
-
-      earnedPoints += points;
-      totalWeight += weight;
-    });
-
-    if (totalWeight === 0) {
-      this.currentScore = 0;
-    } else {
-      const score = (earnedPoints / totalWeight) * 100;
-      this.currentScore = Math.round(score * 100) / 100;
-    }
+    this.currentScore = this.evaluationService.calculateScore(this.selectedScript, answers);
   }
 
   onFileSelected(event: Event): void {
@@ -289,17 +307,37 @@ export class EvaluationFormComponent implements OnInit {
       mediaKeys: this.uploadedMediaKeys
     };
 
-    this.evaluationService.createEvaluation(request).subscribe({
-      next: () => {
-        this.loading = false;
-        this.successMessage = 'Avaliação salva com sucesso!';
-        this.router.navigate(['/properties', this.propertyId]);
-      },
-      error: () => {
-        this.loading = false;
-        this.errorMessage = 'Erro ao salvar avaliação.';
-      }
-    });
+    if (this.isEditMode) {
+      const updateReq: UpdateEvaluationRequest = {
+        notes: request.notes,
+        answers: request.answers,
+        mediaKeys: request.mediaKeys
+      };
+
+      this.evaluationService.updateEvaluation(this.propertyId, this.createdAt, updateReq).subscribe({
+        next: () => {
+          this.loading = false;
+          this.successMessage = 'Avaliação atualizada com sucesso!';
+          this.router.navigate(['/properties', this.propertyId]);
+        },
+        error: () => {
+          this.loading = false;
+          this.errorMessage = 'Erro ao atualizar avaliação.';
+        }
+      });
+    } else {
+      this.evaluationService.createEvaluation(request).subscribe({
+        next: () => {
+          this.loading = false;
+          this.successMessage = 'Avaliação salva com sucesso!';
+          this.router.navigate(['/properties', this.propertyId]);
+        },
+        error: () => {
+          this.loading = false;
+          this.errorMessage = 'Erro ao salvar avaliação.';
+        }
+      });
+    }
   }
 
   cancelEvaluation(): void {

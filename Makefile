@@ -22,4 +22,3 @@ infra-up:
 
 infra-down:
 	docker compose down -v --remove-orphans
-

@@ -6,6 +6,7 @@ import { PropertiesComponent } from './properties.component';
 import { PropertyService } from '../../services/property.service';
 import { EvaluationService } from '../../services/evaluation.service';
 import { PropertyResponse } from '../../types';
+import { ScriptService } from '../../services/script.service';
 import { importProvidersFrom } from '@angular/core';
 import { 
   LucideAngularModule, 
@@ -20,6 +21,7 @@ describe('PropertiesComponent', () => {
   let fixture: ComponentFixture<PropertiesComponent>;
   let propertyServiceMock: any;
   let evaluationServiceMock: any;
+  let scriptServiceMock: any;
   let router: Router;
 
   const mockProperties: PropertyResponse[] = [
@@ -53,7 +55,12 @@ describe('PropertiesComponent', () => {
     };
 
     evaluationServiceMock = {
-      getEvaluationsByProperty: jasmine.createSpy('getEvaluationsByProperty').and.returnValue(of([]))
+      getEvaluationsByProperty: jasmine.createSpy('getEvaluationsByProperty').and.returnValue(of([])),
+      calculateScore: () => 100
+    };
+
+    scriptServiceMock = {
+      getScript: jasmine.createSpy('getScript').and.returnValue(of({}))
     };
 
     await TestBed.configureTestingModule({
@@ -61,6 +68,7 @@ describe('PropertiesComponent', () => {
       providers: [
         { provide: PropertyService, useValue: propertyServiceMock },
         { provide: EvaluationService, useValue: evaluationServiceMock },
+        { provide: ScriptService, useValue: scriptServiceMock },
         importProvidersFrom(
           LucideAngularModule.pick({
             Mail, Lock, ArrowRight, Zap, Building2, Info, Briefcase, LogOut, Plus, Search, 

@@ -17,6 +17,8 @@ export class ScriptsComponent implements OnInit {
   loading: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
+  isConfirmDeleteOpen: boolean = false;
+  scriptToDeleteId: string | null = null;
 
   constructor(
     private scriptService: ScriptService,
@@ -47,5 +49,33 @@ export class ScriptsComponent implements OnInit {
 
   createNewScript(): void {
     this.router.navigate(['/roteiros/builder']);
+  }
+
+  requestDeleteScript(event: Event, id: string): void {
+    event.stopPropagation();
+    this.scriptToDeleteId = id;
+    this.isConfirmDeleteOpen = true;
+  }
+
+  cancelDelete(): void {
+    this.isConfirmDeleteOpen = false;
+    this.scriptToDeleteId = null;
+  }
+
+  confirmDelete(): void {
+    if (!this.scriptToDeleteId) return;
+    const idToDelete = this.scriptToDeleteId;
+    this.cancelDelete();
+    this.scriptService.deleteScript(idToDelete).subscribe({
+      next: () => {
+        this.scripts = this.scripts.filter(s => s.id !== idToDelete);
+        this.successMessage = 'Roteiro excluído com sucesso.';
+        setTimeout(() => this.successMessage = '', 3000);
+      },
+      error: () => {
+        this.errorMessage = 'Erro ao excluir o roteiro. Tente novamente.';
+        setTimeout(() => this.errorMessage = '', 4000);
+      }
+    });
   }
 }

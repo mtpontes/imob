@@ -4,6 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { PropertyService } from '../../services/property.service';
 import { EvaluationService } from '../../services/evaluation.service';
 import { PropertyResponse } from '../../types';
+import { ScriptService } from '../../services/script.service';
 import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
@@ -29,6 +30,7 @@ export class PropertiesComponent implements OnInit {
   constructor(
     private propertyService: PropertyService,
     private evaluationService: EvaluationService,
+    private scriptService: ScriptService,
     private router: Router
   ) {}
 
@@ -58,12 +60,23 @@ export class PropertiesComponent implements OnInit {
         next: (evals) => {
           if (evals && evals.length > 0) {
             const sorted = evals.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-            this.propertyScores[p.id] = sorted[0].finalScore;
-            this.propertyEvaluationsCount[p.id] = evals.length;
+            const latestEval = sorted[0];
+            this.scriptService.getScript(latestEval.scriptId, latestEval.scriptVersion).subscribe({
+              next: (script) => {
+                this.propertyScores[p.id] = this.evaluationService.calculateScore(script, latestEval.answers);
+                this.propertyEvaluationsCount[p.id] = evals.length;
+                this.applyFilterAndSort();
+              },
+              error: () => {
+                this.propertyScores[p.id] = 0;
+                this.propertyEvaluationsCount[p.id] = evals.length;
+                this.applyFilterAndSort();
+              }
+            });
           } else {
             this.propertyEvaluationsCount[p.id] = 0;
+            this.applyFilterAndSort();
           }
-          this.applyFilterAndSort();
         },
         error: () => {
           this.propertyEvaluationsCount[p.id] = 0;

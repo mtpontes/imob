@@ -7,23 +7,47 @@
         <lucide-icon name="building-2"></lucide-icon>
         <span>ImobApp</span>
       </div>
-      <div class="workspace-badge" id="current-workspace-badge">
+      <div class="workspace-badge desktop-only" id="current-workspace-badge">
         <lucide-icon name="briefcase"></lucide-icon>
         <span id="workspace-name-display">Workspace: {{ workspaceName }}</span>
       </div>
     </div>
     
     <div class="header-actions">
-      <div class="user-profile">
-        <div class="avatar" id="user-avatar-initials">{{ userInitials }}</div>
-        <div class="user-info">
-          <span class="user-email" id="user-email-display">{{ userEmail }}</span>
-          <span class="user-role">Corretor Avaliador</span>
+      <div class="user-profile-menu-container">
+        <!-- Perfil clicável -->
+        <div class="user-profile clickable" (click)="toggleProfileMenu($event)" id="user-profile-toggle">
+          <div class="avatar" id="user-avatar-initials">{{ userInitials }}</div>
+          <div class="user-info desktop-only">
+            <span class="user-email" id="user-email-display">{{ userEmail }}</span>
+            <span class="user-role">Corretor Avaliador</span>
+          </div>
+          <lucide-icon name="chevron-down" class="chevron-profile desktop-only"></lucide-icon>
+        </div>
+
+        <!-- Backdrop invisível para fechar o menu ao clicar fora -->
+        <div class="dropdown-backdrop" *ngIf="isProfileMenuOpen" (click)="closeProfileMenu()"></div>
+
+        <!-- Menu Dropdown de Perfil -->
+        <div class="profile-dropdown glass" *ngIf="isProfileMenuOpen" id="profile-dropdown-menu">
+          <div class="dropdown-user-details mobile-only">
+            <span class="dropdown-user-email">{{ userEmail }}</span>
+            <span class="dropdown-user-role">Corretor Avaliador</span>
+          </div>
+          
+          <div class="dropdown-workspace mobile-only">
+            <lucide-icon name="briefcase"></lucide-icon>
+            <span>Workspace: {{ workspaceName }}</span>
+          </div>
+          
+          <div class="dropdown-divider mobile-only"></div>
+          
+          <button (click)="logout()" id="btn-logout" class="dropdown-item btn-logout-item">
+            <lucide-icon name="log-out"></lucide-icon>
+            <span>Sair</span>
+          </button>
         </div>
       </div>
-      <button (click)="logout()" id="btn-logout" class="btn btn-icon btn-logout" title="Sair">
-        <lucide-icon name="log-out"></lucide-icon>
-      </button>
     </div>
   </header>
 

@@ -20,7 +20,7 @@ public class EvaluationEntity {
     private String propertyId;
     private String scriptId;
     private int scriptVersion;
-    private double finalScore;
+
     private String notes;
     private List<String> mediaKeys;
     private Map<String, Object> answers;
@@ -35,7 +35,7 @@ public class EvaluationEntity {
         map.put("createdAt", AttributeValue.builder().s(this.createdAt).build());
         map.put("scriptId", AttributeValue.builder().s(this.scriptId).build());
         map.put("scriptVersion", AttributeValue.builder().n(String.valueOf(this.scriptVersion)).build());
-        map.put("finalScore", AttributeValue.builder().n(String.valueOf(this.finalScore)).build());
+
         if (this.notes != null) 
             map.put("notes", AttributeValue.builder().s(this.notes).build());
 
@@ -66,7 +66,7 @@ public class EvaluationEntity {
         entity.setCreatedAt(map.get("createdAt").s());
         entity.setScriptId(map.get("scriptId").s());
         entity.setScriptVersion(Integer.parseInt(map.get("scriptVersion").n()));
-        entity.setFinalScore(Double.parseDouble(map.get("finalScore").n()));
+
         if (map.containsKey("notes")) 
             entity.setNotes(map.get("notes").s());
 

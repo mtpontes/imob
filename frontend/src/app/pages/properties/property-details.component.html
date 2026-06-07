@@ -76,26 +76,39 @@
       </div>
 
       <div class="evaluation-history-list" *ngIf="evaluations.length > 0" id="evaluation-history-list">
-        <div *ngFor="let ev of evaluations; let i = index" class="history-item glass" (click)="openEvaluationDetails(ev)">
-          <div class="history-item-header">
-            <div class="score-display-mini">
-              <span class="score-badge" 
-                    [class.low]="ev.finalScore < 50" 
-                    [class.medium]="ev.finalScore >= 50 && ev.finalScore < 80" 
-                    [class.high]="ev.finalScore >= 80"
-                    [id]="'eval-score-' + i">
-                {{ ev.finalScore | number:'1.2-2' }} pts
-              </span>
+        <div *ngFor="let ev of evaluations; let i = index" class="history-item-card glass" (click)="openEvaluationDetails(ev)">
+          <div class="history-item-left">
+            <div class="history-item-score-badge"
+                 [class.low]="(evaluationScores[ev.propertyId + '_' + ev.createdAt] ?? 0) < 50"
+                 [class.medium]="(evaluationScores[ev.propertyId + '_' + ev.createdAt] ?? 0) >= 50 && (evaluationScores[ev.propertyId + '_' + ev.createdAt] ?? 0) < 80"
+                 [class.high]="(evaluationScores[ev.propertyId + '_' + ev.createdAt] ?? 0) >= 80"
+                 [id]="'eval-score-' + i">
+              <span>{{ (evaluationScores[ev.propertyId + '_' + ev.createdAt] ?? 0) | number:'1.0-0' }}</span>
             </div>
-            <span class="date">{{ ev.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
-          </div>
-          <div class="history-item-body">
-            <span class="template-info">Roteiro: v{{ ev.scriptVersion }} ({{ ev.scriptId.substring(0,8) }})</span>
-            <p class="notes" *ngIf="ev.notes">"{{ ev.notes }}"</p>
             
-            <div class="media-preview" *ngIf="ev.mediaUrls && ev.mediaUrls.length > 0">
-              <span class="media-label"><lucide-icon name="camera"></lucide-icon> {{ ev.mediaUrls.length }} foto(s) registrada(s)</span>
+            <div class="history-item-info">
+              <h4 style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary);">
+                {{ getScriptName(ev.scriptId, ev.scriptVersion) }} (v{{ ev.scriptVersion }})
+              </h4>
+              <div class="history-item-meta">
+                <span>
+                  <lucide-icon name="calendar" style="width: 12px; height: 12px; margin-right: 2px;"></lucide-icon>
+                  {{ ev.createdAt | date:'dd/MM/yyyy HH:mm' }}
+                </span>
+                <span *ngIf="ev.mediaUrls && ev.mediaUrls.length > 0">•</span>
+                <span *ngIf="ev.mediaUrls && ev.mediaUrls.length > 0">
+                  <lucide-icon name="camera" style="width: 12px; height: 12px; margin-right: 2px;"></lucide-icon>
+                  {{ ev.mediaUrls.length }} foto(s)
+                </span>
+              </div>
+              <p class="notes" *ngIf="ev.notes" style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.4rem; font-style: italic;">
+                "{{ ev.notes }}"
+              </p>
             </div>
+          </div>
+          
+          <div class="history-item-right">
+            <lucide-icon name="chevron-right" style="width: 16px; height: 16px;"></lucide-icon>
           </div>
         </div>
       </div>
@@ -120,38 +133,36 @@
       <div class="modal-body">
         
         <div class="modal-score-banner">
-          <div class="modal-score-visual">
-            <span class="label">Nota Final</span>
-            <span class="value" id="modal-eval-score">{{ selectedEvaluation.finalScore | number:'1.2-2' }}</span>
-          </div>
-          <div class="modal-template-used">
-            <span class="label">Roteiro Utilizado</span>
-            <span class="value" id="modal-eval-template">{{ selectedScriptName }} (v{{ selectedEvaluation.scriptVersion }})</span>
-          </div>
+          <span class="label">Nota Final</span>
+          <span class="label">Roteiro Utilizado</span>
+          <span class="value score-value" id="modal-eval-score">{{ evaluationScores[selectedEvaluation.propertyId + '_' + selectedEvaluation.createdAt] | number:'1.2-2' }}</span>
+          <span class="value template-value" id="modal-eval-template">{{ selectedScriptName }} (v{{ selectedEvaluation.scriptVersion }})</span>
         </div>
 
         <div class="modal-answers-section">
           <h4>Respostas do Checklist</h4>
           <div class="answers-list" id="modal-eval-answers">
-            <div *ngFor="let key of objectKeys(selectedEvaluation.answers)" class="answer-item-row">
-              <span class="question">{{ getCriteriaLabel(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) }}:</span>
+            <div *ngFor="let key of objectKeys(selectedEvaluation.answers)" class="answer-item">
+              <span class="crit-title">{{ getCriteriaLabel(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) }}</span>
               
               <!-- Caso seja booleano -->
               <span *ngIf="getCriteriaType(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) === 'bool'" 
-                    class="value-badge" 
-                    [class.success]="selectedEvaluation.answers[key] === true"
-                    [class.error]="selectedEvaluation.answers[key] !== true">
+                    class="crit-ans" 
+                    [class.yes]="selectedEvaluation.answers[key] === true"
+                    [class.no]="selectedEvaluation.answers[key] !== true"
+                    style="display: inline-flex; align-items: center; gap: 0.25rem;">
+                <lucide-icon [name]="selectedEvaluation.answers[key] === true ? 'check' : 'x'" style="width: 14px; height: 14px;"></lucide-icon>
                 {{ selectedEvaluation.answers[key] === true ? 'Atende' : 'Não Atende' }}
               </span>
 
               <!-- Caso seja range -->
-              <span *ngIf="getCriteriaType(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) === 'range'" class="value-text">
-                Nota: <strong>{{ selectedEvaluation.answers[key] }}</strong>
+              <span *ngIf="getCriteriaType(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) === 'range'" class="crit-ans score-val">
+                {{ selectedEvaluation.answers[key] }} / 5
               </span>
 
               <!-- Caso seja texto -->
-              <span *ngIf="getCriteriaType(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) === 'text'" class="value-text notes">
-                {{ selectedEvaluation.answers[key] }}
+              <span *ngIf="getCriteriaType(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) === 'text'" class="crit-ans text-desc" style="font-weight: normal; color: var(--text-secondary); font-style: italic;">
+                "{{ selectedEvaluation.answers[key] }}"
               </span>
             </div>
           </div>
@@ -173,6 +184,40 @@
           </div>
         </div>
 
+        <!-- Acoes da avaliacao (Editar e Excluir) -->
+        <div class="modal-actions" style="display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: flex-end; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 1.25rem;">
+          <button class="btn btn-outline" (click)="editEvaluation(selectedEvaluation)" id="btn-modal-edit-eval" style="color: var(--text-primary); border-color: rgba(255,255,255,0.15);">
+            <lucide-icon name="edit-3" style="width: 16px; height: 16px; margin-right: 0.5rem;"></lucide-icon>
+            <span>Editar</span>
+          </button>
+          <button class="btn btn-danger" (click)="deleteEvaluation(selectedEvaluation)" id="btn-modal-delete-eval" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2);">
+            <lucide-icon name="trash-2" style="width: 16px; height: 16px; margin-right: 0.5rem;"></lucide-icon>
+            <span>Excluir</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal customizado de confirmação de exclusão -->
+  <div id="confirm-delete-modal" class="modal-wrapper" [class.hide]="!isConfirmDeleteOpen">
+    <div class="modal-backdrop" (click)="cancelDelete()"></div>
+    <div class="modal-content delete-confirm-modal-content glass">
+      <div class="delete-confirm-body">
+        <div class="alert-icon-wrapper">
+          <lucide-icon name="alert-triangle"></lucide-icon>
+        </div>
+        <h3>Excluir Avaliação?</h3>
+        <p>Esta ação não pode ser desfeita. A avaliação selecionada será removida permanentemente do histórico do imóvel.</p>
+      </div>
+
+      <div class="delete-confirm-footer">
+        <button class="btn btn-outline" (click)="cancelDelete()" id="btn-cancel-delete">Cancelar</button>
+        <button class="btn btn-danger-filled" (click)="confirmDelete()" id="btn-confirm-delete-exec">
+          <lucide-icon name="trash-2"></lucide-icon>
+          <span>Confirmar Exclusão</span>
+        </button>
       </div>
     </div>
   </div>

@@ -6,7 +6,7 @@
         <lucide-icon name="chevron-left"></lucide-icon>
         <span>Voltar</span>
       </button>
-      <h1>Nova Avaliacao</h1>
+      <h1>{{ isEditMode ? 'Editar Avaliação' : 'Nova Avaliação' }}</h1>
       <p>Preencha os criterios e anexe fotos da visita tecnica</p>
     </div>
   </div>
@@ -48,6 +48,8 @@
           class="select-styled" 
           required 
           (change)="onScriptChange($event)"
+          [disabled]="isEditMode"
+          [value]="selectedScript?.id || ''"
         >
           <option value="">-- Escolha um roteiro ativo --</option>
           <option *ngFor="let p of scripts" [value]="p.id">
@@ -109,16 +111,16 @@
             <!-- Input Slider Range -->
             <div *ngIf="criteria.type === 'range'" class="input-container range-container" style="display: flex; flex-direction: column; gap: 0.5rem;">
               <div class="range-labels" style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted);">
-                <span>Min: {{ criteria.min || 1 }}</span>
+                <span>Min: {{ criteria.min ?? 0 }}</span>
                 <span class="range-current-value" [id]="'current-val-' + criteria.id" style="font-weight: 700; color: #e100ff;">
                   Nota: {{ evaluationForm.get('answers.' + criteria.id)?.value }}
                 </span>
-                <span>Max: {{ criteria.max || 10 }}</span>
+                <span>Max: {{ criteria.max ?? 5 }}</span>
               </div>
               <input
                 type="range"
-                [min]="criteria.min || 1"
-                [max]="criteria.max || 10"
+                [min]="criteria.min ?? 0"
+                [max]="criteria.max ?? 5"
                 [formControlName]="criteria.id"
                 [id]="'input-criteria-' + criteria.id"
                 class="range-slider"
@@ -177,7 +179,7 @@
         <div class="form-actions-footer">
           <button type="button" class="btn btn-outline" (click)="cancelEvaluation()" id="btn-eval-cancel">Cancelar</button>
           <button type="submit" [disabled]="loading" class="btn btn-primary" id="btn-save-evaluation">
-            <span *ngIf="!loading">Concluir e Registrar Visita</span>
+            <span *ngIf="!loading">{{ isEditMode ? 'Salvar Alterações' : 'Concluir e Registrar Visita' }}</span>
             <span *ngIf="loading" class="spinner"></span>
           </button>
         </div>

@@ -169,7 +169,6 @@ public class EvaluationResourceTest {
                 .statusCode(201)
                 .contentType(ContentType.JSON)
                 .body("propertyId", is("prop-123"))
-                .body("finalScore", is(100.0f))
                 .body("notes", is("Nota fiscal"));
 
         Mockito.verify(this.repository, Mockito.times(1))
@@ -211,7 +210,7 @@ public class EvaluationResourceTest {
         eval.setCreatedAt("2026-06-03T10:00:00Z");
         eval.setScriptId("script-1");
         eval.setScriptVersion(1);
-        eval.setFinalScore(75.0);
+
         eval.setNotes("Test note");
         eval.setMediaKeys(List.of("workspace_test/uploads/foto1.jpg"));
         eval.setAnswers(Map.of());
@@ -238,5 +237,141 @@ public class EvaluationResourceTest {
 
         Mockito.verify(this.s3Service, Mockito.times(1))
                 .generateGetPresignedUrl("workspace_test/uploads/foto1.jpg", java.time.Duration.ofHours(1));
+    }
+
+    @Test
+    public void shouldGetEvaluation() {
+        // Arrange
+        String propertyId = "prop-123";
+        String createdAt = "2026-06-07T22:24:45Z";
+
+        EvaluationEntity eval = new EvaluationEntity();
+        eval.setWorkspaceId("workspace_test");
+        eval.setPropertyId(propertyId);
+        eval.setCreatedAt(createdAt);
+        eval.setScriptId("script-1");
+        eval.setScriptVersion(1);
+        eval.setNotes("Notes initial");
+        eval.setMediaKeys(List.of());
+        eval.setAnswers(Map.of());
+
+        Mockito.when(this.repository.getEvaluation("workspace_test", propertyId, createdAt))
+                .thenReturn(eval);
+
+        // Act & Assert
+        given()
+                .header("X-User-Email", "test@imob.com")
+                .when()
+                .get("/api/evaluations/" + propertyId + "/date/" + createdAt)
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("propertyId", is(propertyId))
+                .body("createdAt", is(createdAt))
+                .body("notes", is("Notes initial"));
+
+        Mockito.verify(this.repository, Mockito.times(1))
+                .getEvaluation("workspace_test", propertyId, createdAt);
+    }
+
+    @Test
+    public void shouldReturnNotFoundWhenGettingNonexistentEvaluation() {
+        // Arrange
+        String propertyId = "prop-123";
+        String createdAt = "2026-06-07T22:24:45Z";
+
+        Mockito.when(this.repository.getEvaluation("workspace_test", propertyId, createdAt))
+                .thenReturn(null);
+
+        // Act & Assert
+        given()
+                .header("X-User-Email", "test@imob.com")
+                .when()
+                .get("/api/evaluations/" + propertyId + "/date/" + createdAt)
+                .then()
+                .statusCode(404);
+    }
+
+    @Test
+    public void shouldUpdateEvaluation() {
+        // Arrange
+        String propertyId = "prop-123";
+        String createdAt = "2026-06-07T22:24:45Z";
+        String scriptId = "script-active";
+        int version = 1;
+
+        EvaluationEntity existing = new EvaluationEntity();
+        existing.setWorkspaceId("workspace_test");
+        existing.setPropertyId(propertyId);
+        existing.setCreatedAt(createdAt);
+        existing.setScriptId(scriptId);
+        existing.setScriptVersion(version);
+        existing.setNotes("Notes initial");
+        existing.setMediaKeys(List.of());
+        existing.setAnswers(Map.of());
+
+        Mockito.when(this.repository.getEvaluation("workspace_test", propertyId, createdAt))
+                .thenReturn(existing);
+
+        ScriptEntity script = new ScriptEntity();
+        script.setWorkspaceId("workspace_test");
+        script.setId(scriptId);
+        script.setVersion(version);
+        script.setActive(true);
+        script.setCriteria(List.of());
+
+        Mockito.when(this.repository.getScript("workspace_test", scriptId, version))
+                .thenReturn(script);
+
+        Map<String, Object> payload = Map.of(
+                "notes", "Notes updated",
+                "answers", Map.of(),
+                "mediaKeys", List.of()
+        );
+
+        // Act & Assert
+        given()
+                .header("X-User-Email", "test@imob.com")
+                .contentType(ContentType.JSON)
+                .body(payload)
+                .when()
+                .put("/api/evaluations/" + propertyId + "/date/" + createdAt)
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("propertyId", is(propertyId))
+                .body("createdAt", is(createdAt))
+                .body("notes", is("Notes updated"));
+
+        Mockito.verify(this.repository, Mockito.times(1))
+                .saveEvaluation(Mockito.any(EvaluationEntity.class));
+    }
+
+    @Test
+    public void shouldDeleteEvaluation() {
+        // Arrange
+        String propertyId = "prop-123";
+        String createdAt = "2026-06-07T22:24:45Z";
+
+        EvaluationEntity existing = new EvaluationEntity();
+        existing.setWorkspaceId("workspace_test");
+        existing.setPropertyId(propertyId);
+        existing.setCreatedAt(createdAt);
+        existing.setScriptId("script-1");
+        existing.setScriptVersion(1);
+
+        Mockito.when(this.repository.getEvaluation("workspace_test", propertyId, createdAt))
+                .thenReturn(existing);
+
+        // Act & Assert
+        given()
+                .header("X-User-Email", "test@imob.com")
+                .when()
+                .delete("/api/evaluations/" + propertyId + "/date/" + createdAt)
+                .then()
+                .statusCode(204);
+
+        Mockito.verify(this.repository, Mockito.times(1))
+                .deleteEvaluation("workspace_test", propertyId, createdAt);
     }
 }

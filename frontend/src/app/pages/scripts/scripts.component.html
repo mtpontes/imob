@@ -14,6 +14,10 @@
     {{ errorMessage }}
   </div>
 
+  <div *ngIf="successMessage" class="alert success-alert">
+    {{ successMessage }}
+  </div>
+
   <div *ngIf="scripts.length === 0 && !loading" class="empty-state glass" id="templates-empty-state">
     <lucide-icon name="clipboard-list"></lucide-icon>
     <h3>Nenhum roteiro cadastrado</h3>
@@ -43,6 +47,32 @@
         <button class="btn btn-outline" (click)="$event.stopPropagation(); editScript(s.id, s.version)" [id]="'btn-edit-template-' + s.id">
           <lucide-icon name="edit-3"></lucide-icon>
           <span>Ver / Editar</span>
+        </button>
+        <button class="btn btn-danger" (click)="requestDeleteScript($event, s.id)" [id]="'btn-delete-template-' + s.id">
+          <lucide-icon name="trash-2"></lucide-icon>
+          <span>Excluir</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal customizado de confirmação de exclusão -->
+  <div id="confirm-delete-script-modal" class="modal-wrapper" [class.hide]="!isConfirmDeleteOpen">
+    <div class="modal-backdrop" (click)="cancelDelete()"></div>
+    <div class="modal-content delete-confirm-modal-content glass">
+      <div class="delete-confirm-body">
+        <div class="alert-icon-wrapper">
+          <lucide-icon name="alert-triangle"></lucide-icon>
+        </div>
+        <h3>Excluir Roteiro?</h3>
+        <p>Esta ação não pode ser desfeita. Todas as versões do roteiro serão removidas permanentemente.</p>
+      </div>
+
+      <div class="delete-confirm-footer">
+        <button class="btn btn-outline" (click)="cancelDelete()" id="btn-cancel-delete-script">Cancelar</button>
+        <button class="btn btn-danger-filled" (click)="confirmDelete()" id="btn-confirm-delete-script-exec">
+          <lucide-icon name="trash-2"></lucide-icon>
+          <span>Confirmar Exclusão</span>
         </button>
       </div>
     </div>

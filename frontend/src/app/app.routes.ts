@@ -16,6 +16,7 @@ export const routes: Routes = [
   { path: 'roteiros/builder', component: ScriptBuilderComponent },
   { path: 'roteiros/builder/:id/:version', component: ScriptBuilderComponent },
   { path: 'evaluate/:propertyId', component: EvaluationFormComponent },
+  { path: 'evaluate/:propertyId/edit/:createdAt', component: EvaluationFormComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' }
 ];

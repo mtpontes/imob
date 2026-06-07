@@ -9,14 +9,8 @@ import java.util.Map;
 @Getter
 @Setter
 @RegisterForReflection
-public class EvaluationResponse {
-    private String propertyId;
-    private String createdAt;
-    private String scriptId;
-    private int scriptVersion;
-
+public class UpdateEvaluationRequest {
     private String notes;
-    private List<String> mediaUrls;
     private List<String> mediaKeys;
     private Map<String, Object> answers;
 }

@@ -1,5 +1,5 @@
 <section class="template-builder-section">
-  
+
   <div class="page-header">
     <div class="page-title-area">
       <button class="btn btn-text-back" routerLink="/roteiros">
@@ -19,23 +19,18 @@
   </div>
 
   <div class="template-builder-grid">
-    
+
     <!-- Lado Esquerdo: Metadados e Critérios -->
     <div class="builder-main-card glass">
       <form [formGroup]="scriptForm" (ngSubmit)="onSubmit()">
-        
+
         <div class="form-group">
           <label for="template-name">Nome do Roteiro</label>
           <div class="input-wrapper">
             <lucide-icon name="tag"></lucide-icon>
-            <input 
-              type="text" 
-              id="template-name" 
-              formControlName="name" 
-              required 
+            <input type="text" id="template-name" formControlName="name" required
               placeholder="Ex: Avaliação Padrão Residencial, Alto Padrão"
-              [class.error]="scriptForm.get('name')?.touched && scriptForm.get('name')?.invalid"
-            />
+              [class.error]="scriptForm.get('name')?.touched && scriptForm.get('name')?.invalid" />
           </div>
           <span *ngIf="scriptForm.get('name')?.touched && scriptForm.get('name')?.invalid" class="error-text">
             O nome do roteiro é obrigatório.
@@ -48,17 +43,13 @@
             <h3>Critérios de Avaliação</h3>
             <span class="criteria-count" id="builder-criteria-count">{{ criteria.length }} adicionado(s)</span>
           </div>
-          
+
           <div class="builder-criteria-list" formArrayName="criteria">
             <div class="criteria-empty-list-placeholder" *ngIf="criteria.length === 0">
               Nenhum critério adicionado. Use o painel lateral para adicionar critérios ao seu roteiro.
             </div>
 
-            <div 
-              *ngFor="let crit of criteria.controls; let i = index" 
-              [formGroupName]="i" 
-              class="criteria-item-row"
-            >
+            <div *ngFor="let crit of criteria.controls; let i = index" [formGroupName]="i" class="criteria-item-row">
               <div class="criteria-item-left">
                 <div class="criteria-drag-handle">
                   <lucide-icon name="grip-vertical"></lucide-icon>
@@ -67,7 +58,8 @@
                   <span class="crit-name">{{ crit.get('label')?.value }}</span>
                   <div class="crit-meta-tags">
                     <span class="crit-badge type">
-                       {{ crit.get('type')?.value === 'bool' ? 'Sim / Não' : crit.get('type')?.value === 'range' ? 'Escala 1-10' : 'Texto' }}
+                      {{ crit.get('type')?.value === 'bool' ? 'Sim / Não' : crit.get('type')?.value === 'range' ?
+                      'Escala 0-5' : 'Texto' }}
                     </span>
                     <span class="crit-badge scorable" *ngIf="crit.get('isScorable')?.value">
                       Pontuável
@@ -78,13 +70,9 @@
                   </div>
                 </div>
               </div>
-              
-              <button 
-                type="button" 
-                class="btn btn-icon btn-logout" 
-                (click)="removeCriteria(i)" 
-                style="width: 32px; height: 32px;"
-              >
+
+              <button type="button" class="btn btn-icon btn-logout" (click)="removeCriteria(i)"
+                style="width: 32px; height: 32px;">
                 <lucide-icon name="trash-2" style="width: 14px; height: 14px;"></lucide-icon>
               </button>
             </div>
@@ -95,21 +83,25 @@
         <div class="version-control-box glass" *ngIf="isEditMode && selectedScript">
           <h4>Salvamento e Controle de Versão</h4>
           <p>Este roteiro já possui dados persistidos. Escolha o comportamento de salvamento:</p>
-          
+
           <div class="version-options">
             <label class="radio-card">
               <input type="radio" [value]="false" formControlName="newVersion" name="newVersion">
               <div class="radio-content">
-                <span class="radio-title">Sobrescrever Versão Atual (<span class="current-ver-badge">v{{ selectedScript.version }}</span>)</span>
-                <span class="radio-desc">Substitui o roteiro atual inteiramente. Útil para corrigir erros rápidos.</span>
+                <span class="radio-title">Sobrescrever Versão Atual (<span class="current-ver-badge">v{{
+                    selectedScript.version }}</span>)</span>
+                <span class="radio-desc">Substitui o roteiro atual inteiramente. Útil para corrigir erros
+                  rápidos.</span>
               </div>
             </label>
-            
+
             <label class="radio-card">
               <input type="radio" [value]="true" formControlName="newVersion" name="newVersion">
               <div class="radio-content">
-                <span class="radio-title">Criar Nova Versão (<span class="next-ver-badge">v{{ selectedScript.version + 1 }}</span>)</span>
-                <span class="radio-desc">Desativa a versão anterior e gera uma nova. As avaliações antigas continuam associadas à versão anterior.</span>
+                <span class="radio-title">Criar Nova Versão (<span class="next-ver-badge">v{{ selectedScript.version + 1
+                    }}</span>)</span>
+                <span class="radio-desc">Desativa a versão anterior e gera uma nova. As avaliações antigas continuam
+                  associadas à versão anterior.</span>
               </div>
             </label>
           </div>
@@ -117,7 +109,8 @@
 
         <div class="form-actions-footer">
           <button type="button" class="btn btn-outline" routerLink="/roteiros">Cancelar</button>
-          <button type="submit" [disabled]="scriptForm.invalid || criteria.length === 0 || loading" class="btn btn-primary">
+          <button type="submit" [disabled]="scriptForm.invalid || criteria.length === 0 || loading"
+            class="btn btn-primary">
             <span *ngIf="!loading">Salvar Roteiro</span>
             <span *ngIf="loading" class="spinner"></span>
           </button>
@@ -129,44 +122,47 @@
     <div class="builder-sidebar-card glass">
       <h3>Adicionar Critério</h3>
       <p class="subtitle">Adicione perguntas ou itens de vistoria para compor a ficha técnica</p>
-      
+
       <form (ngSubmit)="addCriteriaLocal()">
         <div class="form-group">
           <label for="crit-label">Rótulo / Pergunta</label>
-          <input 
-            type="text" 
-            id="crit-label" 
-            required 
-            placeholder="Ex: Estado de conservação da pintura"
-            [(ngModel)]="newCritLabel"
-            name="newCritLabel"
-          />
+          <input type="text" id="crit-label" required placeholder="Ex: Estado de conservação da pintura"
+            [(ngModel)]="newCritLabel" name="newCritLabel" />
         </div>
 
         <div class="form-group">
-          <label for="crit-type">Tipo de Resposta</label>
-          <select 
-            id="crit-type" 
-            class="select-styled" 
-            required
-            [(ngModel)]="newCritType"
-            name="newCritType"
-            (change)="onTypeChange()"
-          >
-            <option value="bool">Sim / Não (Check/Toggle)</option>
-            <option value="range">Escala de 1 a 10 (Range)</option>
-            <option value="text">Texto Livre (Observação)</option>
-          </select>
+          <label>Tipo de Resposta</label>
+          <div class="segmented-control-group glass-card-nested">
+            <button 
+              type="button" 
+              class="segment-item" 
+              [class.active]="newCritType === 'bool'"
+              (click)="selectCritType('bool')"
+            >
+              Sim / Não
+            </button>
+            <button 
+              type="button" 
+              class="segment-item" 
+              [class.active]="newCritType === 'range'"
+              (click)="selectCritType('range')"
+            >
+              Escala 0-5
+            </button>
+            <button 
+              type="button" 
+              class="segment-item" 
+              [class.active]="newCritType === 'text'"
+              (click)="selectCritType('text')"
+            >
+              Texto
+            </button>
+          </div>
         </div>
 
         <div class="form-group row-checkbox" id="crit-scorable-wrapper" *ngIf="newCritType !== 'text'">
           <label class="checkbox-container">
-            <input 
-              type="checkbox" 
-              id="crit-is-scorable"
-              [(ngModel)]="newCritIsScorable"
-              name="newCritIsScorable"
-            />
+            <input type="checkbox" id="crit-is-scorable" [(ngModel)]="newCritIsScorable" name="newCritIsScorable" />
             <span class="checkmark"></span>
             <span class="checkbox-text">Pontuável (Gera nota de avaliação)</span>
           </label>
@@ -175,14 +171,7 @@
         <div class="form-group" id="crit-weight-wrapper" *ngIf="newCritType !== 'text' && newCritIsScorable">
           <label for="crit-weight">Peso do Critério (Multiplicador)</label>
           <div class="range-input-container">
-            <input 
-              type="range" 
-              id="crit-weight" 
-              min="1" 
-              max="5" 
-              [(ngModel)]="newCritWeight"
-              name="newCritWeight"
-            />
+            <input type="range" id="crit-weight" min="1" max="5" [(ngModel)]="newCritWeight" name="newCritWeight" />
             <span class="range-value" id="crit-weight-val">{{ newCritWeight }}x</span>
           </div>
           <span class="field-hint">Critérios com peso maior influenciam mais na nota final.</span>

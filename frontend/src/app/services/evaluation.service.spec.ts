@@ -30,7 +30,7 @@ describe('EvaluationService', () => {
 
   it('should create evaluation', () => {
     const newRequest: CreateEvaluationRequest = { propertyId: 'prop-1', scriptId: 'script-1', scriptVersion: 1, answers: {}, notes: '', mediaKeys: [] };
-    const dummyResponse: EvaluationResponse = { propertyId: 'prop-1', createdAt: '2026', scriptId: 'script-1', scriptVersion: 1, finalScore: 100, notes: '', answers: {}, mediaUrls: [] };
+    const dummyResponse: EvaluationResponse = { propertyId: 'prop-1', createdAt: '2026', scriptId: 'script-1', scriptVersion: 1, notes: '', answers: {}, mediaUrls: [] };
 
     service.createEvaluation(newRequest).subscribe(response => {
       expect(response).toEqual(dummyResponse);
@@ -44,7 +44,7 @@ describe('EvaluationService', () => {
 
   it('should fetch evaluations by property', () => {
     const dummyEvaluations: EvaluationResponse[] = [
-      { propertyId: 'prop-1', createdAt: '2026', scriptId: 'script-1', scriptVersion: 1, finalScore: 100, notes: '', answers: {}, mediaUrls: [] }
+      { propertyId: 'prop-1', createdAt: '2026', scriptId: 'script-1', scriptVersion: 1, notes: '', answers: {}, mediaUrls: [] }
     ];
 
     service.getEvaluationsByProperty('prop-1').subscribe(evaluations => {
@@ -83,5 +83,23 @@ describe('EvaluationService', () => {
     expect(req.request.method).toBe('PUT');
     expect(req.request.headers.get('Content-Type')).toBe('image/jpeg');
     req.flush(null);
+  });
+
+  it('should calculate score correctly', () => {
+    const dummyScript = {
+      id: 'script-1',
+      version: 1,
+      isActive: true,
+      createdAt: '2026',
+      name: 'Roteiro',
+      criteria: [
+        { id: 'crit-1', label: 'Item 1', type: 'bool' as const, isScorable: true, weight: 2 },
+        { id: 'crit-2', label: 'Item 2', type: 'range' as const, isScorable: true, weight: 3, min: 1, max: 5 }
+      ]
+    };
+    const answers = { 'crit-1': true, 'crit-2': 3 };
+
+    const score = service.calculateScore(dummyScript, answers);
+    expect(score).toBe(70);
   });
 });

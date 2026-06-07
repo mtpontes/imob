@@ -2,6 +2,7 @@ package com.imob.service;
 
 import com.imob.dto.CriteriaDTO;
 import com.imob.dto.CreateEvaluationRequest;
+import com.imob.dto.UpdateEvaluationRequest;
 import com.imob.entity.ScriptEntity;
 import com.imob.exception.EvaluationErrorCode;
 import com.imob.exception.EvaluationException;
@@ -17,6 +18,12 @@ public class EvaluationValidator {
 
     public void validate(CreateEvaluationRequest request, ScriptEntity script) {
         this.validateScript(script);
+        this.validateAnswers(request.getAnswers(), script);
+    }
+
+    public void validate(UpdateEvaluationRequest request, ScriptEntity script) {
+        if (script == null)
+            throw new EvaluationException(EvaluationErrorCode.SCRIPT_NOT_FOUND_OR_INACTIVE);
         this.validateAnswers(request.getAnswers(), script);
     }
 

@@ -59,15 +59,21 @@ export interface CreateEvaluationRequest {
   mediaKeys: string[];
 }
 
+export interface UpdateEvaluationRequest {
+  notes: string;
+  answers: { [key: string]: any };
+  mediaKeys: string[];
+}
+
 export interface EvaluationResponse {
   propertyId: string;
   createdAt: string;
   scriptId: string;
   scriptVersion: number;
-  finalScore: number;
   notes: string;
   answers: { [key: string]: any };
   mediaUrls: string[];
+  mediaKeys?: string[];
 }
 
 export interface GenerateUploadUrlRequest {

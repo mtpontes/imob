@@ -13,8 +13,18 @@ import { LucideAngularModule } from 'lucide-angular';
 })
 export class AppComponent {
   title = 'frontend';
+  isProfileMenuOpen = false;
 
   constructor(private authService: AuthService) {}
+
+  toggleProfileMenu(event: Event): void {
+    event.stopPropagation();
+    this.isProfileMenuOpen = !this.isProfileMenuOpen;
+  }
+
+  closeProfileMenu(): void {
+    this.isProfileMenuOpen = false;
+  }
 
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();

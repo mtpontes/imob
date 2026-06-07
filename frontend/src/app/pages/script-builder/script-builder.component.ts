@@ -92,8 +92,8 @@ export class ScriptBuilderComponent implements OnInit {
       type: [crit?.type || 'bool', Validators.required],
       isScorable: [crit?.isScorable ?? true],
       weight: [crit?.weight ?? 1, [Validators.required, Validators.min(0)]],
-      min: [crit?.min ?? 1],
-      max: [crit?.max ?? 10]
+      min: [crit?.min ?? 0],
+      max: [crit?.max ?? 5]
     });
 
     this.criteria.push(critGroup);
@@ -114,8 +114,8 @@ export class ScriptBuilderComponent implements OnInit {
       type: this.newCritType,
       isScorable: this.newCritType === 'text' ? false : this.newCritIsScorable,
       weight: this.newCritType === 'text' ? 0 : this.newCritWeight,
-      min: this.newCritType === 'range' ? 1 : undefined,
-      max: this.newCritType === 'range' ? 10 : undefined
+      min: this.newCritType === 'range' ? 0 : undefined,
+      max: this.newCritType === 'range' ? 5 : undefined
     };
 
     this.addCriteria(newCrit);
@@ -135,6 +135,11 @@ export class ScriptBuilderComponent implements OnInit {
       this.newCritIsScorable = true;
       this.newCritWeight = 1;
     }
+  }
+
+  selectCritType(type: 'text' | 'bool' | 'range'): void {
+    this.newCritType = type;
+    this.onTypeChange();
   }
 
   resetForm(): void {

@@ -9,6 +9,7 @@ import com.imob.repository.DynamoDbRepository;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
@@ -45,6 +46,18 @@ public class ScriptResource {
         }
 
         return responses;
+    }
+
+    @GET
+    @Path("/{id}/version/{version}")
+    public Response getScriptByIdAndVersion(@PathParam("id") String scriptId, @PathParam("version") int version) {
+        String workspaceId = this.userContext.getWorkspaceId();
+        ScriptEntity entity = this.repository.getScript(workspaceId, scriptId, version);
+        if (entity == null) 
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"error\":\"Roteiro nao encontrado\"}")
+                    .build();
+        return Response.ok(this.mapToResponse(entity)).build();
     }
 
     @POST
@@ -119,6 +132,22 @@ public class ScriptResource {
 
             return Response.ok(this.mapToResponse(latestEntity)).build();
         }
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response deleteScript(@PathParam("id") String scriptId) {
+        String workspaceId = this.userContext.getWorkspaceId();
+        List<ScriptEntity> versions = this.repository.getAllVersionsOfScript(workspaceId, scriptId);
+
+        if (versions.isEmpty())
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"error\":\"Roteiro nao encontrado\"}")
+                    .build();
+
+        this.repository.deleteAllVersionsOfScript(workspaceId, scriptId);
+
+        return Response.noContent().build();
     }
 
     private ScriptResponse mapToResponse(ScriptEntity entity) {

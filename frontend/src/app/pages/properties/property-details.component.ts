@@ -26,6 +26,11 @@ export class PropertyDetailsComponent implements OnInit {
   isModalOpen: boolean = false;
   selectedEvaluation: EvaluationResponse | null = null;
   selectedScriptName: string = '';
+  evaluationScores: { [key: string]: number | undefined } = {};
+  
+  // Controle do Modal de Exclusão Customizado
+  isConfirmDeleteOpen: boolean = false;
+  evaluationToDelete: EvaluationResponse | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -67,10 +72,25 @@ export class PropertyDetailsComponent implements OnInit {
     this.evaluationService.getEvaluationsByProperty(this.propertyId).subscribe({
       next: (res) => {
         this.evaluations = res.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        this.calculateEvaluationsScores();
       },
       error: () => {
         this.errorMessage = 'Erro ao carregar histórico de avaliações.';
       }
+    });
+  }
+
+  calculateEvaluationsScores(): void {
+    this.evaluations.forEach(ev => {
+      this.scriptService.getScript(ev.scriptId, ev.scriptVersion).subscribe({
+        next: (script) => {
+          const score = this.evaluationService.calculateScore(script, ev.answers);
+          this.evaluationScores[`${ev.propertyId}_${ev.createdAt}`] = score;
+        },
+        error: () => {
+          this.evaluationScores[`${ev.propertyId}_${ev.createdAt}`] = 0;
+        }
+      });
     });
   }
 
@@ -105,6 +125,11 @@ export class PropertyDetailsComponent implements OnInit {
     return 'text';
   }
 
+  getScriptName(scriptId: string, scriptVersion: number): string {
+    const scr = this.scripts.find(s => s.id === scriptId && s.version === scriptVersion);
+    return scr && scr.name ? scr.name : `Roteiro #${scriptId.substring(0, 5)}`;
+  }
+
   openEvaluationDetails(ev: EvaluationResponse): void {
     this.selectedEvaluation = ev;
     this.isModalOpen = true;
@@ -118,6 +143,36 @@ export class PropertyDetailsComponent implements OnInit {
     this.isModalOpen = false;
     this.selectedEvaluation = null;
     this.selectedScriptName = '';
+  }
+
+  editEvaluation(ev: EvaluationResponse): void {
+    this.closeModal();
+    this.router.navigate(['/evaluate', this.propertyId, 'edit', ev.createdAt]);
+  }
+
+  deleteEvaluation(ev: EvaluationResponse): void {
+    this.evaluationToDelete = ev;
+    this.isConfirmDeleteOpen = true;
+  }
+
+  confirmDelete(): void {
+    if (!this.evaluationToDelete) return;
+    this.evaluationService.deleteEvaluation(this.propertyId, this.evaluationToDelete.createdAt).subscribe({
+      next: () => {
+        this.closeModal();
+        this.cancelDelete();
+        this.loadEvaluations();
+      },
+      error: () => {
+        this.errorMessage = 'Erro ao excluir a avaliação.';
+        this.cancelDelete();
+      }
+    });
+  }
+
+  cancelDelete(): void {
+    this.isConfirmDeleteOpen = false;
+    this.evaluationToDelete = null;
   }
 
   startNewEvaluation(): void {

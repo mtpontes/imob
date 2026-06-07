@@ -59,7 +59,6 @@ describe('EvaluationFormComponent', () => {
       createdAt: '2026-06-07T14:00:00Z',
       scriptId: 'script-1',
       scriptVersion: 1,
-      finalScore: 75.0,
       notes: 'Visita boa',
       answers: { 'crit-1': 4, 'crit-2': true, 'crit-3': 'OK' },
       mediaUrls: ['https://s3.com/foto.jpg']
@@ -75,10 +74,12 @@ describe('EvaluationFormComponent', () => {
       getActiveScripts: jasmine.createSpy('getActiveScripts').and.returnValue(of(mockScripts))
     };
 
+    const realEvaluationService = new EvaluationService(null as any);
     evaluationServiceMock = {
       createEvaluation: jasmine.createSpy('createEvaluation').and.returnValue(of(mockEvaluations[0])),
       generateUploadUrl: jasmine.createSpy('generateUploadUrl').and.returnValue(of({ uploadUrl: 'http://s3-upload', s3Key: 'key/1.jpg' })),
-      uploadFileToS3: jasmine.createSpy('uploadFileToS3').and.returnValue(of({}))
+      uploadFileToS3: jasmine.createSpy('uploadFileToS3').and.returnValue(of({})),
+      calculateScore: (script: any, answers: any) => realEvaluationService.calculateScore(script, answers)
     };
 
     await TestBed.configureTestingModule({

@@ -8,6 +8,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
 import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
@@ -119,6 +120,21 @@ public class DynamoDbRepository {
         return list;
     }
 
+    public void deleteAllVersionsOfScript(String workspaceId, String scriptId) {
+        List<ScriptEntity> versions = this.getAllVersionsOfScript(workspaceId, scriptId);
+        for (ScriptEntity version : versions) {
+            Map<String, AttributeValue> key = new HashMap<>();
+            key.put("PK", AttributeValue.builder().s("WORKSPACE#" + workspaceId).build());
+            key.put("SK", AttributeValue.builder().s("SCRIPT#" + scriptId + "#v" + version.getVersion()).build());
+
+            DeleteItemRequest delReq = DeleteItemRequest.builder()
+                    .tableName(this.tableName)
+                    .key(key)
+                    .build();
+            this.dynamoDb.deleteItem(delReq);
+        }
+    }
+
     // --- PROPERTIES ---
 
     public void saveProperty(PropertyEntity property) {
@@ -221,5 +237,33 @@ public class DynamoDbRepository {
         // Ordena por data de criacao decrescente (a SK ja contem a data, mas garantimos em memoria)
         list.sort((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()));
         return list;
+    }
+
+    public EvaluationEntity getEvaluation(String workspaceId, String propertyId, String createdAt) {
+        Map<String, AttributeValue> key = new HashMap<>();
+        key.put("PK", AttributeValue.builder().s("WORKSPACE#" + workspaceId).build());
+        key.put("SK", AttributeValue.builder().s("EVALUATION#" + propertyId + "#" + createdAt).build());
+
+        GetItemRequest getReq = GetItemRequest.builder()
+                .tableName(this.tableName)
+                .key(key)
+                .build();
+
+        GetItemResponse res = this.dynamoDb.getItem(getReq);
+        if (res.hasItem())
+            return EvaluationEntity.fromAttributeMap(res.item());
+        return null;
+    }
+
+    public void deleteEvaluation(String workspaceId, String propertyId, String createdAt) {
+        Map<String, AttributeValue> key = new HashMap<>();
+        key.put("PK", AttributeValue.builder().s("WORKSPACE#" + workspaceId).build());
+        key.put("SK", AttributeValue.builder().s("EVALUATION#" + propertyId + "#" + createdAt).build());
+
+        DeleteItemRequest delReq = DeleteItemRequest.builder()
+                .tableName(this.tableName)
+                .key(key)
+                .build();
+        this.dynamoDb.deleteItem(delReq);
     }
 }

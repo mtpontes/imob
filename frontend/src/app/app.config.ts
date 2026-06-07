@@ -37,7 +37,11 @@ import {
   CheckCircle, 
   AlertTriangle, 
   AlertCircle,
-  Clipboard
+  Clipboard,
+  Calendar,
+  ChevronRight,
+  ChevronDown,
+  Check
 } from 'lucide-angular';
 
 import { routes } from './app.routes';
@@ -89,7 +93,11 @@ export const appConfig: ApplicationConfig = {
         CheckCircle, 
         AlertTriangle, 
         AlertCircle,
-        Clipboard
+        Clipboard,
+        Calendar,
+        ChevronRight,
+        ChevronDown,
+        Check
       })
     )
   ]

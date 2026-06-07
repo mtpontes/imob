@@ -70,6 +70,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+lucide-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Background Glowing Orbs */
 body::before,
 body::after {
@@ -138,6 +144,7 @@ body::after {
   background: hsla(222, 47%, 7%, 0.8);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
+  border-radius: 0 !important;
 }
 
 .header-brand {
@@ -2098,28 +2105,25 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .modal-score-banner {
-  display: flex;
-  gap: 2rem;
-  padding: 1rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 2rem;
+  row-gap: 0.25rem;
+  padding: 1rem 1.5rem;
   background: var(--bg-secondary);
   border-radius: var(--radius-sm);
   border: 1px solid var(--glass-border);
   margin-bottom: 1.5rem;
+  align-items: baseline;
 }
 
-.modal-score-visual {
-  display: flex;
-  flex-direction: column;
-}
-
-.modal-score-visual .label,
-.modal-template-used .label {
+.modal-score-banner .label {
   font-size: 0.7rem;
   color: var(--text-muted);
   text-transform: uppercase;
 }
 
-.modal-score-visual .value {
+.modal-score-banner .score-value {
   font-size: 1.75rem;
   font-weight: 800;
   color: var(--primary-light);
@@ -2127,10 +2131,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
   font-family: var(--font-heading);
 }
 
-.modal-template-used .value {
+.modal-score-banner .template-value {
   font-size: 1rem;
   font-weight: 600;
-  margin-top: 0.25rem;
   display: block;
 }
 
@@ -2399,4 +2402,553 @@ input[type=number]::-webkit-inner-spin-button:hover {
 /* Mantem aparencia padrao de numero no Firefox */
 input[type=number] {
   -moz-appearance: number-input !important;
+}
+
+/* ==========================================================================
+   MELHORIAS DE RESPONSIVIDADE MOBILE & DROPDOWN DE PERFIL
+   ========================================================================== */
+
+/* Classes Utilitárias de Visibilidade */
+.mobile-only {
+  display: block !important;
+}
+.desktop-only {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none !important;
+  }
+  .desktop-only {
+    display: block !important;
+  }
+}
+
+/* Container do Menu do Perfil do Usuário */
+.user-profile-menu-container {
+  position: relative;
+}
+
+.user-profile.clickable {
+  cursor: pointer;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid transparent;
+}
+
+.user-profile.clickable:hover {
+  background: var(--glass-hover);
+  border-color: var(--glass-border);
+}
+
+.chevron-profile {
+  width: 14px;
+  height: 14px;
+  color: var(--text-muted);
+  transition: transform var(--transition-fast);
+}
+
+/* Backdrop invisível para fechar menu ao clicar fora */
+.dropdown-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 190;
+  background: transparent;
+}
+
+/* Menu Dropdown com Glassmorphism */
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  right: 0;
+  width: 240px;
+  background: hsla(222, 47%, 11%, 0.95);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg), 0 10px 30px rgba(0, 0, 0, 0.6);
+  padding: 0.75rem;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  animation: dropdownFadeIn var(--transition-fast) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-user-details {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0.75rem 0.25rem;
+}
+
+.dropdown-user-email {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  word-break: break-all;
+}
+
+.dropdown-user-role {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.dropdown-workspace {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.dropdown-workspace lucide-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--primary-light);
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: var(--glass-border);
+  margin: 0.25rem 0;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: var(--transition-fast);
+}
+
+.dropdown-item lucide-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.dropdown-item:hover {
+  background: var(--glass-hover);
+  color: var(--text-primary);
+}
+
+.btn-logout-item {
+  color: var(--danger) !important;
+}
+
+.btn-logout-item:hover {
+  background: hsla(350, 80%, 60%, 0.1) !important;
+  color: var(--danger) !important;
+}
+
+/* Breakpoint Mobile (larguras abaixo de 768px) */
+@media (max-width: 767px) {
+  /* Cabeçalho geral */
+  .app-header {
+    padding: 0.85rem 1.25rem;
+  }
+  
+  .brand-logo {
+    font-size: 1.35rem;
+  }
+
+  /* Ajuste no padding geral da página */
+  .app-main {
+    padding: 1.5rem 1.25rem 6.5rem;
+  }
+
+  /* Cabeçalhos de páginas */
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .page-title-area h1 {
+    font-size: 1.75rem;
+  }
+
+  .page-header .btn {
+    width: 100%;
+  }
+
+  /* Barra de Filtros e Busca de Imóveis */
+  .filters-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1rem !important;
+    padding: 1rem !important;
+  }
+
+  .filters-bar .filter-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .filters-bar .filter-actions select {
+    width: 100%;
+    font-size: 0.85rem;
+    padding: 0.75rem 2rem 0.75rem 0.75rem;
+  }
+
+  .filters-bar .search-input-wrapper input {
+    padding: 0.75rem 1rem 0.75rem 3rem !important;
+    font-size: 0.9rem;
+  }
+
+  /* Grid de Imóveis */
+  .properties-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .property-card {
+    padding: 1.25rem;
+  }
+
+  /* Builder de Protocolos (Roteiros) */
+  .template-builder-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .builder-main-card {
+    padding: 1.25rem;
+  }
+
+  .builder-sidebar-card {
+    position: relative;
+    top: 0;
+    padding: 1.25rem;
+  }
+
+  /* Formulário de Avaliação e Sidebar */
+  .evaluation-container-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .evaluation-container-grid .evaluation-sidebar-card {
+    grid-row: 1; /* Posiciona o placar de score no topo do formulário */
+    position: relative;
+    top: 0;
+    padding: 1.5rem;
+  }
+
+  .evaluation-container-grid .evaluation-main-card {
+    grid-row: 2;
+    padding: 1.25rem;
+  }
+
+  .eval-property-summary-bar {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .summary-item {
+    font-size: 0.85rem;
+  }
+
+  /* Modal de Histórico de Vistorias */
+  .modal-content {
+    padding: 1.25rem;
+    max-height: 90vh;
+  }
+
+  .modal-score-banner {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 0.85rem;
+  }
+
+  .modal-header h3 {
+    font-size: 1.15rem;
+  }
+
+  /* Tela de Detalhes do Imóvel */
+  .details-layout-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .details-info-card {
+    position: relative !important;
+    top: 0 !important;
+    padding: 1.25rem !important;
+  }
+
+  .details-history-card {
+    padding: 1.25rem !important;
+  }
+
+  .history-item-card {
+    padding: 1rem !important;
+  }
+
+  .history-item-left {
+    gap: 0.75rem !important;
+  }
+
+  .history-item-score-badge {
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .delete-confirm-modal-content {
+    padding: 1.5rem !important;
+  }
+
+  .delete-confirm-footer {
+    flex-direction: column-reverse !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+  }
+
+  .delete-confirm-footer .btn {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* Listagem de Roteiros */
+  .template-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 1.25rem !important;
+    padding: 1.25rem !important;
+  }
+
+  .template-row-info h3 {
+    font-size: 1.15rem !important;
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+  }
+
+  .template-row-meta {
+    margin-top: 0.5rem !important;
+    gap: 0.75rem !important;
+  }
+
+  .template-row-actions {
+    width: 100% !important;
+  }
+
+  .template-row-actions .btn {
+    width: 100% !important;
+  }
+}
+
+/* ==========================================================================
+   MODAL DE CONFIRMAÇÃO DE EXCLUSÃO CUSTOMIZADO
+   ========================================================================== */
+
+.delete-confirm-modal-content {
+  max-width: 420px !important;
+  padding: 2.25rem !important;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.delete-confirm-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.error-alert {
+  background: rgba(239, 68, 68, 0.1);
+  color: hsl(350, 80%, 65%);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.success-alert {
+  background: rgba(34, 197, 94, 0.1);
+  color: hsl(142, 70%, 55%);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.alert-icon-wrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-round);
+  background: hsla(350, 80%, 60%, 0.15);
+  border: 1px solid hsla(350, 80%, 60%, 0.25);
+  color: var(--danger);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px hsla(350, 80%, 60%, 0.2);
+  margin-bottom: 0.5rem;
+  animation: pulseWarning 2s infinite ease-in-out;
+}
+
+.alert-icon-wrapper lucide-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes pulseWarning {
+  0% {
+    box-shadow: 0 0 0 0 hsla(350, 80%, 60%, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    box-shadow: 0 0 0 10px hsla(350, 80%, 60%, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 hsla(350, 80%, 60%, 0);
+    transform: scale(1);
+  }
+}
+
+.delete-confirm-body h3 {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.delete-confirm-body p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.delete-confirm-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.delete-confirm-footer .btn {
+  flex: 1;
+}
+
+.btn-danger-filled {
+  background: var(--danger);
+  color: white;
+  border: 1px solid var(--danger);
+}
+
+.btn-danger-filled:hover {
+  background: hsl(350, 80%, 65%);
+  border-color: hsl(350, 80%, 70%);
+  box-shadow: 0 0 15px hsla(350, 80%, 60%, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-danger-filled:active {
+  transform: translateY(0);
+}
+
+.btn-danger {
+  background: rgba(239, 68, 68, 0.08);
+  color: var(--danger);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.btn-danger:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.45);
+  box-shadow: 0 0 12px hsla(350, 80%, 60%, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-danger:active {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   SEGMENTED CONTROL (CUSTOM SELECT SUBSTITUTE)
+   ========================================================================== */
+
+.segmented-control-group {
+  display: flex;
+  background: var(--bg-secondary);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+  width: 100%;
+}
+
+.segment-item {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.65rem 0.5rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+  text-align: center;
+  outline: none;
+}
+
+.segment-item:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.segment-item.active {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  box-shadow: var(--shadow-glow);
 }

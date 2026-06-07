@@ -5,16 +5,18 @@ import com.imob.dto.CreateEvaluationRequest;
 import com.imob.dto.EvaluationResponse;
 import com.imob.dto.GenerateUploadUrlRequest;
 import com.imob.dto.GenerateUploadUrlResponse;
+import com.imob.dto.UpdateEvaluationRequest;
 import com.imob.entity.EvaluationEntity;
 import com.imob.entity.ScriptEntity;
 import com.imob.repository.DynamoDbRepository;
-import com.imob.service.EvaluationService;
 import com.imob.service.EvaluationValidator;
 import com.imob.service.S3Service;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -37,7 +39,7 @@ public class EvaluationResource {
 
     private final UserContext userContext;
     private final DynamoDbRepository repository;
-    private final EvaluationService evaluationService;
+
     private final S3Service s3Service;
     private final EvaluationValidator evaluationValidator;
 
@@ -48,8 +50,7 @@ public class EvaluationResource {
         ScriptEntity script = this.repository.getScript(workspaceId, request.getScriptId(), request.getScriptVersion());
         this.evaluationValidator.validate(request, script);
 
-        // Calcula score final baseado nos criterios do roteiro e respostas fornecidas
-        double score = this.evaluationService.calculateFinalScore(script, request.getAnswers());
+
 
         EvaluationEntity entity = new EvaluationEntity();
         entity.setWorkspaceId(workspaceId);
@@ -57,7 +58,7 @@ public class EvaluationResource {
         entity.setCreatedAt(Instant.now().toString());
         entity.setScriptId(request.getScriptId());
         entity.setScriptVersion(request.getScriptVersion());
-        entity.setFinalScore(score);
+
         entity.setNotes(request.getNotes());
         entity.setMediaKeys(request.getMediaKeys());
         entity.setAnswers(request.getAnswers());
@@ -103,13 +104,62 @@ public class EvaluationResource {
         return Response.ok(response).build();
     }
 
+    @GET
+    @Path("/{propertyId}/date/{createdAt}")
+    public Response getEvaluation(
+            @PathParam("propertyId") String propertyId,
+            @PathParam("createdAt") String createdAt) {
+        String workspaceId = this.userContext.getWorkspaceId();
+        EvaluationEntity entity = this.repository.getEvaluation(workspaceId, propertyId, createdAt);
+        if (entity == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(this.mapToResponse(entity)).build();
+    }
+
+    @PUT
+    @Path("/{propertyId}/date/{createdAt}")
+    public Response updateEvaluation(
+            @PathParam("propertyId") String propertyId,
+            @PathParam("createdAt") String createdAt,
+            UpdateEvaluationRequest request) {
+        String workspaceId = this.userContext.getWorkspaceId();
+        EvaluationEntity entity = this.repository.getEvaluation(workspaceId, propertyId, createdAt);
+        if (entity == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        ScriptEntity script = this.repository.getScript(workspaceId, entity.getScriptId(), entity.getScriptVersion());
+        this.evaluationValidator.validate(request, script);
+
+        entity.setNotes(request.getNotes());
+        entity.setMediaKeys(request.getMediaKeys());
+        entity.setAnswers(request.getAnswers());
+
+        this.repository.saveEvaluation(entity);
+
+        return Response.ok(this.mapToResponse(entity)).build();
+    }
+
+    @DELETE
+    @Path("/{propertyId}/date/{createdAt}")
+    public Response deleteEvaluation(
+            @PathParam("propertyId") String propertyId,
+            @PathParam("createdAt") String createdAt) {
+        String workspaceId = this.userContext.getWorkspaceId();
+        EvaluationEntity entity = this.repository.getEvaluation(workspaceId, propertyId, createdAt);
+        if (entity == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        this.repository.deleteEvaluation(workspaceId, propertyId, createdAt);
+        return Response.noContent().build();
+    }
+
     private EvaluationResponse mapToResponse(EvaluationEntity entity) {
         var resp = new EvaluationResponse();
         resp.setPropertyId(entity.getPropertyId());
         resp.setCreatedAt(entity.getCreatedAt());
         resp.setScriptId(entity.getScriptId());
         resp.setScriptVersion(entity.getScriptVersion());
-        resp.setFinalScore(entity.getFinalScore());
+
         resp.setNotes(entity.getNotes());
         resp.setAnswers(entity.getAnswers());
 
@@ -121,6 +171,7 @@ public class EvaluationResource {
             }
         }
         resp.setMediaUrls(mediaUrls);
+        resp.setMediaKeys(entity.getMediaKeys());
         return resp;
     }
 }
