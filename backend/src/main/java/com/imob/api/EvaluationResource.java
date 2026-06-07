@@ -20,6 +20,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import lombok.RequiredArgsConstructor;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -31,19 +32,13 @@ import java.util.UUID;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @RegisterForReflection
+@RequiredArgsConstructor
 public class EvaluationResource {
 
     private final UserContext userContext;
     private final DynamoDbRepository repository;
     private final EvaluationService evaluationService;
     private final S3Service s3Service;
-
-    public EvaluationResource(UserContext userContext, DynamoDbRepository repository, EvaluationService evaluationService, S3Service s3Service) {
-        this.userContext = userContext;
-        this.repository = repository;
-        this.evaluationService = evaluationService;
-        this.s3Service = s3Service;
-    }
 
     @POST
     public Response createEvaluation(CreateEvaluationRequest request) {

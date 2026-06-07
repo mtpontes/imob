@@ -13,6 +13,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import lombok.RequiredArgsConstructor;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -23,15 +24,11 @@ import java.util.UUID;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @RegisterForReflection
+@RequiredArgsConstructor
 public class PropertyResource {
 
     private final UserContext userContext;
     private final DynamoDbRepository repository;
-
-    public PropertyResource(UserContext userContext, DynamoDbRepository repository) {
-        this.userContext = userContext;
-        this.repository = repository;
-    }
 
     @GET
     public List<PropertyResponse> getProperties() {

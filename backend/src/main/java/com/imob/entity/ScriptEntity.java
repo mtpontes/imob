@@ -1,12 +1,19 @@
 package com.imob.entity;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.imob.dto.CriteriaDTO;
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import lombok.Getter;
+import lombok.Setter;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+@Getter
+@Setter
 @RegisterForReflection
 public class ScriptEntity {
     private String workspaceId;
@@ -16,49 +23,8 @@ public class ScriptEntity {
     private String createdAt;
     private List<CriteriaDTO> criteria;
     private String name;
+
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    public String getWorkspaceId() {
-        return this.workspaceId;
-    }
-    public void setWorkspaceId(String workspaceId) {
-        this.workspaceId = workspaceId;
-    }
-    public String getId() {
-        return this.id;
-    }
-    public void setId(String id) {
-        this.id = id;
-    }
-    public int getVersion() {
-        return this.version;
-    }
-    public void setVersion(int version) {
-        this.version = version;
-    }
-    public boolean isActive() {
-        return this.isActive;
-    }
-    public void setActive(boolean active) {
-        this.isActive = active;
-    }
-    public String getCreatedAt() {
-        return this.createdAt;
-    }
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-    public List<CriteriaDTO> getCriteria() {
-        return this.criteria;
-    }
-    public void setCriteria(List<CriteriaDTO> criteria) {
-        this.criteria = criteria;
-    }
-    public String getName() {
-        return this.name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
     public Map<String, AttributeValue> toAttributeMap() {
         Map<String, AttributeValue> map = new HashMap<>();
         map.put("PK", AttributeValue.builder().s("WORKSPACE#" + this.workspaceId).build());

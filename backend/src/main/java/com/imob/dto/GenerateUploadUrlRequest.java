@@ -1,16 +1,12 @@
 package com.imob.dto;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @RegisterForReflection
 public class GenerateUploadUrlRequest {
     private String fileName;
-
-    public String getFileName() {
-        return this.fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
 }
