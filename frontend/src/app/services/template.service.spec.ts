@@ -25,15 +25,19 @@ describe('TemplateService', () => {
   });
 
   it('should be created', () => {
+    // Arrange & Act & Assert
     expect(service).toBeTruthy();
   });
 
   it('should fetch active templates', () => {
+    // Arrange
     const dummyTemplates: TemplateResponse[] = [
-      { id: '1', version: 1, isActive: true, createdAt: '2026-06-04', criteria: [] }
+      { id: '1', version: 1, isActive: true, createdAt: '2026-06-04', criteria: [], name: 'Protocolo Padrao' }
     ];
 
+    // Act
     service.getActiveTemplates().subscribe(templates => {
+      // Assert
       expect(templates.length).toBe(1);
       expect(templates).toEqual(dummyTemplates);
     });
@@ -44,10 +48,13 @@ describe('TemplateService', () => {
   });
 
   it('should create template', () => {
-    const newRequest: CreateTemplateRequest = { criteria: [] };
-    const dummyResponse: TemplateResponse = { id: '2', version: 1, isActive: true, createdAt: '2026-06-04', criteria: [] };
+    // Arrange
+    const newRequest: CreateTemplateRequest = { name: 'Novo Protocolo', criteria: [] };
+    const dummyResponse: TemplateResponse = { id: '2', version: 1, isActive: true, createdAt: '2026-06-04', criteria: [], name: 'Novo Protocolo' };
 
+    // Act
     service.createTemplate(newRequest).subscribe(response => {
+      // Assert
       expect(response).toEqual(dummyResponse);
     });
 
@@ -58,10 +65,13 @@ describe('TemplateService', () => {
   });
 
   it('should update template', () => {
-    const updateRequest: UpdateTemplateRequest = { newVersion: false, criteria: [] };
-    const dummyResponse: TemplateResponse = { id: '1', version: 1, isActive: true, createdAt: '2026-06-04', criteria: [] };
+    // Arrange
+    const updateRequest: UpdateTemplateRequest = { name: 'Protocolo Atualizado', newVersion: false, criteria: [] };
+    const dummyResponse: TemplateResponse = { id: '1', version: 1, isActive: true, createdAt: '2026-06-04', criteria: [], name: 'Protocolo Atualizado' };
 
+    // Act
     service.updateTemplate('1', updateRequest).subscribe(response => {
+      // Assert
       expect(response).toEqual(dummyResponse);
     });
 

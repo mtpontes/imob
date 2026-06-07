@@ -60,6 +60,7 @@ public class TemplateResource {
         entity.setActive(true);
         entity.setCreatedAt(Instant.now().toString());
         entity.setCriteria(request.getCriteria());
+        entity.setName(request.getName());
 
         this.repository.saveTemplate(entity);
 
@@ -104,6 +105,7 @@ public class TemplateResource {
             newEntity.setActive(true);
             newEntity.setCreatedAt(Instant.now().toString());
             newEntity.setCriteria(request.getCriteria());
+            newEntity.setName(request.getName());
 
             this.repository.saveTemplate(newEntity);
 
@@ -111,6 +113,7 @@ public class TemplateResource {
         } else {
             // Regra de Sobrescrita Total: PutItem mantendo o mesmo ID e versao
             latestEntity.setCriteria(request.getCriteria());
+            latestEntity.setName(request.getName());
             latestEntity.setCreatedAt(Instant.now().toString());
             
             this.repository.saveTemplate(latestEntity);
@@ -126,6 +129,7 @@ public class TemplateResource {
         resp.setActive(entity.isActive());
         resp.setCreatedAt(entity.getCreatedAt());
         resp.setCriteria(entity.getCriteria());
+        resp.setName(entity.getName());
         return resp;
     }
 }

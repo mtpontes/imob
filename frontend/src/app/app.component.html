@@ -1,20 +1,47 @@
-<nav class="navbar" *ngIf="isLoggedIn()" id="app-navbar">
-  <div class="navbar-container">
-    <div class="navbar-brand" routerLink="/properties">
-      <span class="logo-badge">I</span>
-      <span class="brand-name">ImobApp</span>
+<div [class.logged-out]="!isLoggedIn()" class="app-container">
+  
+  <!-- Header Geral (Oculto em Login) -->
+  <header class="app-header glass" *ngIf="isLoggedIn()">
+    <div class="header-brand">
+      <div class="brand-logo" routerLink="/properties">
+        <lucide-icon name="building-2"></lucide-icon>
+        <span>ImobApp</span>
+      </div>
+      <div class="workspace-badge" id="current-workspace-badge">
+        <lucide-icon name="briefcase"></lucide-icon>
+        <span id="workspace-name-display">Workspace: {{ workspaceName }}</span>
+      </div>
     </div>
     
-    <div class="navbar-links">
-      <a routerLink="/properties" routerLinkActive="active" class="nav-link" id="nav-link-properties">Imoveis</a>
-      <a routerLink="/template-builder" routerLinkActive="active" class="nav-link" id="nav-link-templates">Templates</a>
+    <div class="header-actions">
+      <div class="user-profile">
+        <div class="avatar" id="user-avatar-initials">{{ userInitials }}</div>
+        <div class="user-info">
+          <span class="user-email" id="user-email-display">{{ userEmail }}</span>
+          <span class="user-role">Corretor Avaliador</span>
+        </div>
+      </div>
+      <button (click)="logout()" id="btn-logout" class="btn btn-icon btn-logout" title="Sair">
+        <lucide-icon name="log-out"></lucide-icon>
+      </button>
     </div>
+  </header>
 
-    <div class="navbar-user">
-      <span class="user-email" id="navbar-user-email">{{ userEmail }}</span>
-      <button (click)="logout()" class="btn-logout" id="btn-navbar-logout">Sair</button>
-    </div>
-  </div>
-</nav>
+  <!-- Barra de Navegação Inferior (Foco em Mobile/PWA) -->
+  <nav class="app-nav glass" *ngIf="isLoggedIn()">
+    <button class="nav-item" routerLink="/properties" routerLinkActive="active" id="nav-item-properties">
+      <lucide-icon name="home"></lucide-icon>
+      <span>Imoveis</span>
+    </button>
+    <button class="nav-item" routerLink="/templates" routerLinkActive="active" id="nav-item-templates">
+      <lucide-icon name="clipboard-list"></lucide-icon>
+      <span>Templates</span>
+    </button>
+  </nav>
 
-<router-outlet></router-outlet>
+  <!-- Main Content Area -->
+  <main class="app-main">
+    <router-outlet></router-outlet>
+  </main>
+
+</div>

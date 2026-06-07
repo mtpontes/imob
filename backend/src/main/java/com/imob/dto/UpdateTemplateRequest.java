@@ -7,6 +7,7 @@ import java.util.List;
 public class UpdateTemplateRequest {
     private List<CriteriaDTO> criteria;
     private boolean newVersion;
+    private String name;
 
     public List<CriteriaDTO> getCriteria() {
         return this.criteria;
@@ -22,5 +23,13 @@ public class UpdateTemplateRequest {
 
     public void setNewVersion(boolean newVersion) {
         this.newVersion = newVersion;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -8,6 +8,14 @@ import { PropertyService } from '../../services/property.service';
 import { TemplateService } from '../../services/template.service';
 import { EvaluationService } from '../../services/evaluation.service';
 import { PropertyResponse, TemplateResponse, EvaluationResponse } from '../../types';
+import { importProvidersFrom } from '@angular/core';
+import { 
+  LucideAngularModule, 
+  Mail, Lock, ArrowRight, Zap, Building2, Info, Briefcase, LogOut, Plus, Search, 
+  Home, ClipboardList, ChevronLeft, MapPin, DollarSign, Maximize2, Bed, Bath, 
+  Car, Link, Tag, PlusCircle, ShieldCheck, Camera, ExternalLink, Edit3, Eye, 
+  EyeOff, GripVertical, Trash2, X, CheckCircle, AlertTriangle, AlertCircle, Clipboard
+} from 'lucide-angular';
 
 describe('EvaluationFormComponent', () => {
   let component: EvaluationFormComponent;
@@ -27,7 +35,7 @@ describe('EvaluationFormComponent', () => {
     bathrooms: 2,
     parking: 1,
     url: '',
-    createdAt: '2026-06-04T12:00:00Z'
+    createdAt: '2026-06-07T12:00:00Z'
   };
 
   const mockTemplates: TemplateResponse[] = [
@@ -35,7 +43,8 @@ describe('EvaluationFormComponent', () => {
       id: 'temp-1',
       version: 1,
       isActive: true,
-      createdAt: '2026-06-04T10:00:00Z',
+      createdAt: '2026-06-07T10:00:00Z',
+      name: 'Protocolo de Vistoria Padrao',
       criteria: [
         { id: 'crit-1', label: 'Localizacao', type: 'range', isScorable: true, weight: 3, min: 1, max: 5 },
         { id: 'crit-2', label: 'Vaga Coberta', type: 'bool', isScorable: true, weight: 1 },
@@ -47,7 +56,7 @@ describe('EvaluationFormComponent', () => {
   const mockEvaluations: EvaluationResponse[] = [
     {
       propertyId: 'prop-123',
-      createdAt: '2026-06-04T14:00:00Z',
+      createdAt: '2026-06-07T14:00:00Z',
       templateId: 'temp-1',
       templateVersion: 1,
       finalScore: 75.0,
@@ -68,7 +77,6 @@ describe('EvaluationFormComponent', () => {
 
     evaluationServiceMock = {
       createEvaluation: jasmine.createSpy('createEvaluation').and.returnValue(of(mockEvaluations[0])),
-      getEvaluationsByProperty: jasmine.createSpy('getEvaluationsByProperty').and.returnValue(of(mockEvaluations)),
       generateUploadUrl: jasmine.createSpy('generateUploadUrl').and.returnValue(of({ uploadUrl: 'http://s3-upload', s3Key: 'key/1.jpg' })),
       uploadFileToS3: jasmine.createSpy('uploadFileToS3').and.returnValue(of({}))
     };
@@ -84,7 +92,15 @@ describe('EvaluationFormComponent', () => {
           useValue: {
             params: of({ propertyId: 'prop-123' })
           }
-        }
+        },
+        importProvidersFrom(
+          LucideAngularModule.pick({
+            Mail, Lock, ArrowRight, Zap, Building2, Info, Briefcase, LogOut, Plus, Search, 
+            Home, ClipboardList, ChevronLeft, MapPin, DollarSign, Maximize2, Bed, Bath, 
+            Car, Link, Tag, PlusCircle, ShieldCheck, Camera, ExternalLink, Edit3, Eye, 
+            EyeOff, GripVertical, Trash2, X, CheckCircle, AlertTriangle, AlertCircle, Clipboard
+          })
+        )
       ]
     }).compileComponents();
 
@@ -96,7 +112,7 @@ describe('EvaluationFormComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should load property, templates and history on init', () => {
+  it('should load property and templates on init', () => {
     // Arrange & Act (feito no setup)
 
     // Assert
@@ -105,8 +121,6 @@ describe('EvaluationFormComponent', () => {
     expect(component.property).toEqual(mockProperty);
     expect(templateServiceMock.getActiveTemplates).toHaveBeenCalled();
     expect(component.templates.length).toBe(1);
-    expect(evaluationServiceMock.getEvaluationsByProperty).toHaveBeenCalledWith('prop-123');
-    expect(component.pastEvaluations.length).toBe(1);
   });
 
   it('should build form dynamic controls on template selection', () => {
@@ -165,7 +179,7 @@ describe('EvaluationFormComponent', () => {
     expect(component.uploads[0].success).toBeTrue();
   });
 
-  it('should call createEvaluation on submit and reload history', () => {
+  it('should call createEvaluation on submit and navigate to property page', () => {
     // Arrange
     const event = { target: { value: 'temp-1' } } as unknown as Event;
     component.onTemplateChange(event);
@@ -192,7 +206,7 @@ describe('EvaluationFormComponent', () => {
       mediaKeys: ['key/1.jpg']
     });
     expect(component.successMessage).toBe('Avaliacao salva com sucesso!');
-    expect(evaluationServiceMock.getEvaluationsByProperty).toHaveBeenCalledTimes(2); // init e pos-save
+    expect(router.navigate).toHaveBeenCalledWith(['/properties', 'prop-123']);
   });
 
   it('should set error message when createEvaluation fails', () => {

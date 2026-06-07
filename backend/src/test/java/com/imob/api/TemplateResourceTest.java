@@ -51,6 +51,7 @@ public class TemplateResourceTest {
         template.setActive(true);
         template.setCreatedAt("2026-05-30T00:00:00Z");
         template.setCriteria(List.of());
+        template.setName("Template Residencial Padrao");
 
         Mockito.when(this.repository.getActiveTemplates("workspace_test"))
                 .thenReturn(List.of(template));
@@ -65,7 +66,8 @@ public class TemplateResourceTest {
                 .contentType(ContentType.JSON)
                 .body("[0].id", is("template-123"))
                 .body("[0].version", is(1))
-                .body("[0].isActive", is(true));
+                .body("[0].isActive", is(true))
+                .body("[0].name", is("Template Residencial Padrao"));
     }
 
     @Test
@@ -79,6 +81,7 @@ public class TemplateResourceTest {
         criteriaDto.setWeight(10.0);
 
         var payload = Map.of(
+                "name", "Template Teste",
                 "criteria", List.of(criteriaDto)
         );
 
@@ -94,6 +97,7 @@ public class TemplateResourceTest {
                 .contentType(ContentType.JSON)
                 .body("version", is(1))
                 .body("isActive", is(true))
+                .body("name", is("Template Teste"))
                 .body("criteria[0].id", is("crit-1"));
         
         Mockito.verify(this.repository, Mockito.times(1))
@@ -111,6 +115,7 @@ public class TemplateResourceTest {
         existingTemplate.setActive(true);
         existingTemplate.setCreatedAt("2026-05-30T00:00:00Z");
         existingTemplate.setCriteria(List.of());
+        existingTemplate.setName("Nome Antigo");
 
         Mockito.when(this.repository.getAllVersionsOfTemplate("workspace_test", templateId))
                 .thenReturn(List.of(existingTemplate));
@@ -123,6 +128,7 @@ public class TemplateResourceTest {
         criteriaDto.setWeight(0.0);
 
         Map<String, Object> payload = Map.of(
+                "name", "Nome Novo",
                 "newVersion", false,
                 "criteria", List.of(criteriaDto)
         );
@@ -140,6 +146,7 @@ public class TemplateResourceTest {
                 .body("id", is(templateId))
                 .body("version", is(1))
                 .body("isActive", is(true))
+                .body("name", is("Nome Novo"))
                 .body("criteria[0].id", is("crit-new"));
 
         Mockito.verify(this.repository, Mockito.times(1))
@@ -157,6 +164,7 @@ public class TemplateResourceTest {
         existingTemplate.setActive(true);
         existingTemplate.setCreatedAt("2026-05-30T00:00:00Z");
         existingTemplate.setCriteria(List.of());
+        existingTemplate.setName("Nome Antigo");
 
         Mockito.when(this.repository.getAllVersionsOfTemplate("workspace_test", templateId))
                 .thenReturn(List.of(existingTemplate));
@@ -169,6 +177,7 @@ public class TemplateResourceTest {
         criteriaDto.setWeight(0.0);
 
         Map<String, Object> payload = Map.of(
+                "name", "Nome Nova Versao",
                 "newVersion", true,
                 "criteria", List.of(criteriaDto)
         );
@@ -186,6 +195,7 @@ public class TemplateResourceTest {
                 .body("id", is(templateId))
                 .body("version", is(2))
                 .body("isActive", is(true))
+                .body("name", is("Nome Nova Versao"))
                 .body("criteria[0].id", is("crit-new"));
 
         // O saveTemplate deve ser chamado 2 vezes (uma para inativar a antiga, outra para salvar a nova)

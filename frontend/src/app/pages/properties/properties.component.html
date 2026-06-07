@@ -1,204 +1,107 @@
-<div class="properties-container">
-  <header class="properties-header">
-    <h1>Meus Imoveis</h1>
-    <p class="header-subtitle">Gerenciamento e Avaliacao de Imoveis de Alta Performance</p>
-  </header>
+<section class="properties-list-section">
+  
+  <div class="page-header">
+    <div class="page-title-area">
+      <h1>Imoveis Cadastrados</h1>
+      <p>Selecione um imovel para avaliar ou gerenciar visitas</p>
+    </div>
+    <button class="btn btn-primary" (click)="navigateToCreate()" id="btn-new-property-redirect">
+      <lucide-icon name="plus"></lucide-icon>
+      <span>Novo Imovel</span>
+    </button>
+  </div>
 
-  <div class="main-content">
-    <!-- Formulario de Cadastro -->
-    <aside class="form-section">
-      <div class="glass-card form-card">
-        <h2>Cadastrar Imovel</h2>
-        <p class="card-subtitle">Insira as informacoes do imovel para iniciar as avaliacoes</p>
+  <!-- Barra de busca e filtros -->
+  <div class="filters-bar glass">
+    <div class="search-input-wrapper">
+      <lucide-icon name="search"></lucide-icon>
+      <input 
+        type="text" 
+        id="property-search" 
+        placeholder="Buscar por endereco ou detalhes..."
+        (input)="onSearch($event)"
+      />
+    </div>
+    <div class="filter-actions">
+      <select id="property-sort" class="select-styled" (change)="onSortChange($event)">
+        <option value="recent">Mais Recentes</option>
+        <option value="price-asc">Menor Preco</option>
+        <option value="price-desc">Maior Preco</option>
+        <option value="sqm-desc">Maior Area (m²)</option>
+      </select>
+    </div>
+  </div>
 
-        <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()" id="property-registration-form">
-          <div *ngIf="errorMessage" class="alert error-alert" id="error-message-banner">
-            {{ errorMessage }}
+  <div *ngIf="errorMessage" class="alert error-alert">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Lista/Grid de Imóveis -->
+  <div id="properties-grid" class="properties-grid" *ngIf="filteredProperties.length > 0">
+    <div 
+      *ngFor="let p of filteredProperties" 
+      class="property-card glass" 
+      (click)="navigateToDetails(p.id)"
+      [id]="'property-card-' + p.id"
+    >
+      <div class="property-card-header">
+        <h3>{{ p.address }}</h3>
+        
+        <!-- Badge de Score se houver avaliacao -->
+        <div 
+          *ngIf="propertyScores[p.id] !== undefined; else noScore" 
+          class="property-score-badge"
+          [class.low]="propertyScores[p.id] < 50"
+          [class.medium]="propertyScores[p.id] >= 50 && propertyScores[p.id] < 80"
+          [class.high]="propertyScores[p.id] >= 80"
+          [id]="'property-score-' + p.id"
+        >
+          <span>{{ propertyScores[p.id] | number:'1.1-1' }}</span>
+          <span class="score-lbl">Score</span>
+        </div>
+
+        <ng-template #noScore>
+          <div class="property-score-badge none" [id]="'property-score-none-' + p.id">
+            <span class="score-num">-</span>
+            <span class="score-lbl">Sem nota</span>
           </div>
-          <div *ngIf="successMessage" class="alert success-alert" id="success-message-banner">
-            {{ successMessage }}
-          </div>
-
-          <div class="form-group">
-            <label for="address">Endereco</label>
-            <input
-              type="text"
-              id="address"
-              formControlName="address"
-              placeholder="Ex: Av. Paulista, 1000 - Ap 42"
-              [class.error]="propertyForm.get('address')?.touched && propertyForm.get('address')?.invalid"
-            />
-            <span *ngIf="propertyForm.get('address')?.touched && propertyForm.get('address')?.invalid" class="error-text">
-              Endereco e obrigatorio.
-            </span>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="price">Valor (R$)</label>
-              <input
-                type="text"
-                id="price"
-                formControlName="price"
-                placeholder="Ex: 550.000"
-                (input)="onPriceInput($event)"
-                (keydown)="blockNegativeAndDecimal($event)"
-                [class.error]="propertyForm.get('price')?.touched && propertyForm.get('price')?.invalid"
-              />
-              <span *ngIf="propertyForm.get('price')?.touched && propertyForm.get('price')?.invalid" class="error-text">
-                Valor invalido.
-              </span>
-            </div>
-
-            <div class="form-group">
-              <label for="sqm">Area (m²)</label>
-              <input
-                type="number"
-                id="sqm"
-                formControlName="sqm"
-                min="1"
-                placeholder="Ex: 85"
-                (keydown)="blockNegative($event)"
-                [class.error]="propertyForm.get('sqm')?.touched && propertyForm.get('sqm')?.invalid"
-              />
-              <span *ngIf="propertyForm.get('sqm')?.touched && propertyForm.get('sqm')?.invalid" class="error-text">
-                Area invalida.
-              </span>
-            </div>
-          </div>
-
-          <div class="form-row three-cols">
-            <div class="form-group">
-              <label for="bedrooms">Quartos</label>
-              <input
-                type="number"
-                id="bedrooms"
-                formControlName="bedrooms"
-                min="0"
-                placeholder="Ex: 2"
-                (keydown)="blockNegativeAndDecimal($event)"
-                [class.error]="propertyForm.get('bedrooms')?.touched && propertyForm.get('bedrooms')?.invalid"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="bathrooms">Banheiros</label>
-              <input
-                type="number"
-                id="bathrooms"
-                formControlName="bathrooms"
-                min="0"
-                placeholder="Ex: 2"
-                (keydown)="blockNegativeAndDecimal($event)"
-                [class.error]="propertyForm.get('bathrooms')?.touched && propertyForm.get('bathrooms')?.invalid"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="parking">Vagas</label>
-              <input
-                type="number"
-                id="parking"
-                formControlName="parking"
-                min="0"
-                placeholder="Ex: 1"
-                (keydown)="blockNegativeAndDecimal($event)"
-                [class.error]="propertyForm.get('parking')?.touched && propertyForm.get('parking')?.invalid"
-              />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="url">URL de Referencia (Anuncio)</label>
-            <input
-              type="url"
-              id="url"
-              formControlName="url"
-              placeholder="Ex: https://imobiliaria.com/imovel"
-            />
-          </div>
-
-          <button type="submit" [disabled]="loading" class="btn-submit" id="btn-save-property">
-            <span *ngIf="!loading">Salvar Imovel</span>
-            <span *ngIf="loading" class="spinner"></span>
-          </button>
-        </form>
-      </div>
-    </aside>
-
-    <!-- Listagem em Bento Grid -->
-    <main class="list-section">
-      <div class="section-title-area">
-        <h2>Imoveis Cadastrados</h2>
-        <span class="count-badge" id="properties-count">{{ properties.length }} imoveis</span>
+        </ng-template>
       </div>
 
-      <div *ngIf="properties.length === 0 && !loading" class="empty-state glass-card" id="empty-properties-state">
-        <p>Nenhum imovel cadastrado neste workspace.</p>
-        <p class="empty-sub">Utilize o formulario ao lado para cadastrar seu primeiro imovel.</p>
-      </div>
-
-      <div class="bento-grid" id="properties-grid">
-        <div *ngFor="let property of properties; let i = index" class="bento-card glass-card" [ngClass]="'card-size-' + (i % 3 + 1)">
-          <div class="card-header">
-            <span class="price-tag">R$ {{ property.price | number:'1.0-0' }}</span>
-            
-            <!-- Badge de Score se houver avaliacao -->
-            <span *ngIf="propertyScores[property.id] !== undefined" 
-                  class="score-badge" 
-                  [class.low]="propertyScores[property.id] < 50"
-                  [class.medium]="propertyScores[property.id] >= 50 && propertyScores[property.id] < 80"
-                  [class.high]="propertyScores[property.id] >= 80"
-                  [id]="'property-score-' + property.id">
-              {{ propertyScores[property.id] | number:'1.2-2' }} pts
-            </span>
-
-            <span class="m2-price">R$ {{ (property.price / property.sqm) | number:'1.0-0' }}/m²</span>
-          </div>
-
-          <div class="card-body">
-            <h3>{{ property.address }}</h3>
-            
-            <div class="property-features">
-              <div class="feature-item">
-                <span class="feature-label">Area</span>
-                <span class="feature-value">{{ property.sqm }} m²</span>
-              </div>
-              <div class="feature-item">
-                <span class="feature-label">Quartos</span>
-                <span class="feature-value">{{ property.bedrooms }}</span>
-              </div>
-              <div class="feature-item">
-                <span class="feature-label">Banheiros</span>
-                <span class="feature-value">{{ property.bathrooms }}</span>
-              </div>
-              <div class="feature-item">
-                <span class="feature-label">Vagas</span>
-                <span class="feature-value">{{ property.parking }}</span>
-              </div>
-            </div>
-
-            <div *ngIf="property.url" class="ref-link-container">
-              <a [href]="property.url" target="_blank" class="ref-link" [id]="'property-link-' + property.id">
-                Ver anuncio original
-              </a>
-            </div>
-          </div>
-
-          <div class="card-footer">
-            <div class="eval-counter" *ngIf="propertyEvaluationsCount[property.id] !== undefined" [id]="'eval-count-' + property.id">
-              <span class="counter-text">{{ propertyEvaluationsCount[property.id] === 0 ? 'Nenhuma avaliacao' : propertyEvaluationsCount[property.id] + ' avaliacao(oes) realizada(s)' }}</span>
-            </div>
-            <button 
-              (click)="evaluateProperty(property.id)" 
-              class="btn-evaluate" 
-              [id]="'btn-evaluate-' + property.id"
-            >
-              Iniciar Avaliacao
-            </button>
-          </div>
+      <div class="property-specs">
+        <div class="spec-pill">
+          <lucide-icon name="maximize-2"></lucide-icon>
+          <span>{{ p.sqm }} m²</span>
+        </div>
+        <div class="spec-pill">
+          <lucide-icon name="bed"></lucide-icon>
+          <span>{{ p.bedrooms }} Qtd</span>
+        </div>
+        <div class="spec-pill">
+          <lucide-icon name="car"></lucide-icon>
+          <span>{{ p.parking }} Vagas</span>
         </div>
       </div>
-    </main>
+
+      <div class="property-card-footer">
+        <div class="prop-price-lbl">R$ {{ p.price | number:'1.2-2' }}</div>
+        <div class="prop-evals-count" *ngIf="propertyEvaluationsCount[p.id] !== undefined" [id]="'eval-count-' + p.id">
+          <lucide-icon name="clipboard"></lucide-icon>
+          <span>{{ propertyEvaluationsCount[p.id] }} {{ propertyEvaluationsCount[p.id] === 1 ? 'visita' : 'visitas' }}</span>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+
+  <!-- Empty State -->
+  <div id="properties-empty-state" class="empty-state glass" *ngIf="filteredProperties.length === 0 && !loading" id="properties-empty-state">
+    <lucide-icon name="home"></lucide-icon>
+    <h3>Nenhum imovel cadastrado</h3>
+    <p>Adicione o primeiro imovel ao seu workspace para comecar as avaliacoes.</p>
+    <button class="btn btn-primary" (click)="navigateToCreate()">
+      <lucide-icon name="plus"></lucide-icon>
+      <span>Cadastrar Imovel</span>
+    </button>
+  </div>
+
+</section>

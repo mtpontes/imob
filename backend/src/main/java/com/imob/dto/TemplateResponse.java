@@ -10,6 +10,15 @@ public class TemplateResponse {
     private boolean isActive;
     private String createdAt;
     private List<CriteriaDTO> criteria;
+    private String name;
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getId() {
         return this.id;

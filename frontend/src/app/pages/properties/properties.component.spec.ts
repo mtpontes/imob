@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of, throwError } from 'rxjs';
@@ -7,13 +6,21 @@ import { PropertiesComponent } from './properties.component';
 import { PropertyService } from '../../services/property.service';
 import { EvaluationService } from '../../services/evaluation.service';
 import { PropertyResponse } from '../../types';
+import { importProvidersFrom } from '@angular/core';
+import { 
+  LucideAngularModule, 
+  Mail, Lock, ArrowRight, Zap, Building2, Info, Briefcase, LogOut, Plus, Search, 
+  Home, ClipboardList, ChevronLeft, MapPin, DollarSign, Maximize2, Bed, Bath, 
+  Car, Link, Tag, PlusCircle, ShieldCheck, Camera, ExternalLink, Edit3, Eye, 
+  EyeOff, GripVertical, Trash2, X, CheckCircle, AlertTriangle, AlertCircle, Clipboard
+} from 'lucide-angular';
 
 describe('PropertiesComponent', () => {
   let component: PropertiesComponent;
   let fixture: ComponentFixture<PropertiesComponent>;
   let propertyServiceMock: any;
   let evaluationServiceMock: any;
-  let routerMock: any;
+  let router: Router;
 
   const mockProperties: PropertyResponse[] = [
     {
@@ -42,34 +49,40 @@ describe('PropertiesComponent', () => {
 
   beforeEach(async () => {
     propertyServiceMock = {
-      getProperties: jasmine.createSpy('getProperties').and.returnValue(of(mockProperties)),
-      createProperty: jasmine.createSpy('createProperty').and.returnValue(of(mockProperties[0]))
+      getProperties: jasmine.createSpy('getProperties').and.returnValue(of(mockProperties))
     };
 
     evaluationServiceMock = {
       getEvaluationsByProperty: jasmine.createSpy('getEvaluationsByProperty').and.returnValue(of([]))
     };
 
-    routerMock = {
-      navigate: jasmine.createSpy('navigate')
-    };
-
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, RouterTestingModule, PropertiesComponent],
+      imports: [RouterTestingModule, PropertiesComponent],
       providers: [
         { provide: PropertyService, useValue: propertyServiceMock },
         { provide: EvaluationService, useValue: evaluationServiceMock },
-        { provide: Router, useValue: routerMock }
+        importProvidersFrom(
+          LucideAngularModule.pick({
+            Mail, Lock, ArrowRight, Zap, Building2, Info, Briefcase, LogOut, Plus, Search, 
+            Home, ClipboardList, ChevronLeft, MapPin, DollarSign, Maximize2, Bed, Bath, 
+            Car, Link, Tag, PlusCircle, ShieldCheck, Camera, ExternalLink, Edit3, Eye, 
+            EyeOff, GripVertical, Trash2, X, CheckCircle, AlertTriangle, AlertCircle, Clipboard
+          })
+        )
       ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(PropertiesComponent);
     component = fixture.componentInstance;
+    
+    router = TestBed.inject(Router);
+    spyOn(router, 'navigate');
+    
     fixture.detectChanges();
   });
 
   it('should create and load properties on init', () => {
-    // Arrange & Act (ocorre no beforeEach/detectChanges)
+    // Arrange & Act (occorre no setup/beforeEach)
 
     // Assert
     expect(component).toBeTruthy();
@@ -86,86 +99,64 @@ describe('PropertiesComponent', () => {
     component.loadProperties();
 
     // Assert
-    expect(component.errorMessage).toBe('Erro ao carregar imóveis.');
+    expect(component.errorMessage).toBe('Erro ao carregar imoveis.');
   });
 
-  it('should mark form as invalid and set error message on invalid submit', () => {
+  it('should filter properties by search query', () => {
     // Arrange
-    component.propertyForm.patchValue({
-      address: '',
-      price: '-100', // Invalido: negativo
-      sqm: 0       // Invalido: min(1)
-    });
+    const event = { target: { value: 'Flores' } } as unknown as Event;
 
     // Act
-    component.onSubmit();
+    component.onSearch(event);
 
     // Assert
-    expect(component.propertyForm.invalid).toBeTrue();
-    expect(component.errorMessage).toBe('Preencha todos os campos obrigatorios corretamente.');
-    expect(propertyServiceMock.createProperty).not.toHaveBeenCalled();
+    expect(component.searchQuery).toBe('Flores');
+    expect(component.filteredProperties.length).toBe(1);
+    expect(component.filteredProperties[0].address).toContain('Rua das Flores');
   });
 
-  it('should call createProperty and reload properties on valid submit', () => {
+  it('should sort properties by price asc', () => {
     // Arrange
-    component.propertyForm.patchValue({
-      address: 'Nova Casa, 789',
-      price: '600.000',
-      sqm: 120,
-      bedrooms: 3,
-      bathrooms: 2,
-      parking: 2,
-      url: 'https://exemplo.com'
-    });
+    const event = { target: { value: 'price-asc' } } as unknown as Event;
 
     // Act
-    const formValidBeforeSubmit = component.propertyForm.valid;
-    component.onSubmit();
+    component.onSortChange(event);
 
     // Assert
-    expect(formValidBeforeSubmit).toBeTrue();
-    expect(propertyServiceMock.createProperty).toHaveBeenCalledWith({
-      address: 'Nova Casa, 789',
-      price: 600000,
-      sqm: 120,
-      bedrooms: 3,
-      bathrooms: 2,
-      parking: 2,
-      url: 'https://exemplo.com'
-    });
-    expect(component.successMessage).toBe('Imovel cadastrado com sucesso!');
-    expect(propertyServiceMock.getProperties).toHaveBeenCalledTimes(2); // no init e apos salvar
+    expect(component.sortBy).toBe('price-asc');
+    expect(component.filteredProperties[0].id).toBe('prop-1'); // 500k vs 800k
+    expect(component.filteredProperties[1].id).toBe('prop-2');
   });
 
-  it('should handle error on failed property creation', () => {
+  it('should sort properties by price desc', () => {
     // Arrange
-    component.propertyForm.patchValue({
-      address: 'Nova Casa, 789',
-      price: '600.000',
-      sqm: 120,
-      bedrooms: 3,
-      bathrooms: 2,
-      parking: 2,
-      url: ''
-    });
-    propertyServiceMock.createProperty.and.returnValue(throwError(() => new Error('Error')));
+    const event = { target: { value: 'price-desc' } } as unknown as Event;
 
     // Act
-    component.onSubmit();
+    component.onSortChange(event);
 
     // Assert
-    expect(component.errorMessage).toBe('Erro ao cadastrar imovel.');
-    expect(component.loading).toBeFalse();
+    expect(component.sortBy).toBe('price-desc');
+    expect(component.filteredProperties[0].id).toBe('prop-2'); // 800k vs 500k
+    expect(component.filteredProperties[1].id).toBe('prop-1');
   });
 
-  it('should navigate to evaluation page on evaluateProperty call', () => {
+  it('should navigate to details on navigateToDetails call', () => {
     // Arrange
     const propertyId = 'prop-123';
 
     // Act
-    component.evaluateProperty(propertyId);
+    component.navigateToDetails(propertyId);
 
     // Assert
-    expect(routerMock.navigate).toHaveBeenCalledWith(['/evaluate', propertyId]);
+    expect(router.navigate).toHaveBeenCalledWith(['/properties', propertyId]);
+  });
+
+  it('should navigate to create page on navigateToCreate call', () => {
+    // Arrange & Act
+    component.navigateToCreate();
+
+    // Assert
+    expect(router.navigate).toHaveBeenCalledWith(['/properties/create']);
   });
 });

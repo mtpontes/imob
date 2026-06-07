@@ -5,7 +5,8 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PropertyService } from '../../services/property.service';
 import { TemplateService } from '../../services/template.service';
 import { EvaluationService } from '../../services/evaluation.service';
-import { PropertyResponse, TemplateResponse, EvaluationResponse, Criteria } from '../../types';
+import { PropertyResponse, TemplateResponse, Criteria } from '../../types';
+import { LucideAngularModule } from 'lucide-angular';
 
 interface UploadItem {
   name: string;
@@ -17,7 +18,7 @@ interface UploadItem {
 @Component({
   selector: 'app-evaluation-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, LucideAngularModule],
   templateUrl: './evaluation-form.component.html',
   styleUrls: ['./evaluation-form.component.css']
 })
@@ -26,7 +27,6 @@ export class EvaluationFormComponent implements OnInit {
   property?: PropertyResponse;
   templates: TemplateResponse[] = [];
   selectedTemplate?: TemplateResponse;
-  pastEvaluations: EvaluationResponse[] = [];
 
   evaluationForm?: FormGroup;
   currentScore: number = 0;
@@ -34,7 +34,6 @@ export class EvaluationFormComponent implements OnInit {
   uploads: UploadItem[] = [];
 
   loading: boolean = false;
-  loadingHistory: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
 
@@ -53,7 +52,6 @@ export class EvaluationFormComponent implements OnInit {
       if (this.propertyId) {
         this.loadProperty();
         this.loadTemplates();
-        this.loadPastEvaluations();
       }
     });
   }
@@ -79,18 +77,42 @@ export class EvaluationFormComponent implements OnInit {
     });
   }
 
-  loadPastEvaluations(): void {
-    this.loadingHistory = true;
-    this.evaluationService.getEvaluationsByProperty(this.propertyId).subscribe({
-      next: (res) => {
-        this.pastEvaluations = res.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-        this.loadingHistory = false;
-      },
-      error: () => {
-        this.errorMessage = 'Erro ao carregar historico de avaliacoes.';
-        this.loadingHistory = false;
+  get scoreBadgeText(): string {
+    if (this.currentScore === 0 && !this.isAnyScorableAnswered()) return 'Aguardando';
+    if (this.currentScore < 50) return 'Ruim';
+    if (this.currentScore >= 50 && this.currentScore < 80) return 'Regular';
+    return 'Excelente';
+  }
+
+  get scoreBadgeClass(): string {
+    if (this.currentScore === 0 && !this.isAnyScorableAnswered()) return 'none';
+    if (this.currentScore < 50) return 'low';
+    if (this.currentScore >= 50 && this.currentScore < 80) return 'medium';
+    return 'high';
+  }
+
+  isAnyScorableAnswered(): boolean {
+    if (!this.selectedTemplate || !this.evaluationForm) return false;
+    const answers = this.evaluationForm.value.answers;
+    return this.selectedTemplate.criteria.some(criteria => {
+      if (!criteria.isScorable) return false;
+      const val = answers[criteria.id];
+      return val !== null && val !== undefined && val !== '';
+    });
+  }
+
+  getScorableCriteriaCount(): string {
+    if (!this.selectedTemplate || !this.evaluationForm) return '0/0';
+    const answers = this.evaluationForm.value.answers;
+    const scorable = this.selectedTemplate.criteria.filter(c => c.isScorable);
+    let answered = 0;
+    scorable.forEach(c => {
+      const val = answers[c.id];
+      if (val !== null && val !== undefined && val !== '') {
+        answered++;
       }
     });
+    return `${answered}/${scorable.length}`;
   }
 
   onTemplateChange(event: Event): void {
@@ -151,7 +173,7 @@ export class EvaluationFormComponent implements OnInit {
       }
 
       const val = answers[criteria.id];
-      if (val === null || val === undefined) {
+      if (val === null || val === undefined || val === '') {
         return;
       }
 
@@ -164,8 +186,8 @@ export class EvaluationFormComponent implements OnInit {
         }
       } else if (criteria.type === 'range') {
         const numVal = Number(val);
-        const min = criteria.min !== undefined ? criteria.min : 0;
-        const max = criteria.max !== undefined ? criteria.max : 100;
+        const min = criteria.min !== undefined ? criteria.min : 1;
+        const max = criteria.max !== undefined ? criteria.max : 10;
 
         if (max > min) {
           if (numVal <= min) {
@@ -194,8 +216,9 @@ export class EvaluationFormComponent implements OnInit {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      this.uploadFile(file);
+      for (let i = 0; i < input.files.length; i++) {
+        this.uploadFile(input.files[i]);
+      }
     }
   }
 
@@ -246,7 +269,6 @@ export class EvaluationFormComponent implements OnInit {
     const answersMap: { [key: string]: any } = {};
     const answers = this.evaluationForm.value.answers;
     
-    // Converte os valores para os tipos esperados do backend Quarkus
     this.selectedTemplate.criteria.forEach((criteria: Criteria) => {
       const val = answers[criteria.id];
       if (criteria.type === 'bool') {
@@ -271,16 +293,16 @@ export class EvaluationFormComponent implements OnInit {
       next: () => {
         this.loading = false;
         this.successMessage = 'Avaliacao salva com sucesso!';
-        this.evaluationForm = undefined;
-        this.selectedTemplate = undefined;
-        this.uploadedMediaKeys = [];
-        this.uploads = [];
-        this.loadPastEvaluations();
+        this.router.navigate(['/properties', this.propertyId]);
       },
       error: () => {
         this.loading = false;
         this.errorMessage = 'Erro ao salvar avaliacao.';
       }
     });
+  }
+
+  cancelEvaluation(): void {
+    this.router.navigate(['/properties', this.propertyId]);
   }
 }

@@ -1,0 +1,154 @@
+<section class="property-create-section">
+  <div class="page-header">
+    <div class="page-title-area">
+      <button class="btn btn-text-back" routerLink="/properties">
+        <lucide-icon name="chevron-left"></lucide-icon>
+        <span>Voltar para Imoveis</span>
+      </button>
+      <h1>Cadastrar Novo Imovel</h1>
+      <p>Adicione os detalhes estruturais do imovel visitado</p>
+    </div>
+  </div>
+
+  <div class="form-container-card glass">
+    <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
+      
+      <div *ngIf="errorMessage" class="alert error-alert" id="error-message-banner">
+        {{ errorMessage }}
+      </div>
+      <div *ngIf="successMessage" class="alert success-alert" id="success-message-banner">
+        {{ successMessage }}
+      </div>
+
+      <div class="form-grid">
+        
+        <div class="form-group span-full">
+          <label for="address">Endereco Completo</label>
+          <div class="input-wrapper">
+            <lucide-icon name="map-pin"></lucide-icon>
+            <input 
+              type="text" 
+              id="address" 
+              formControlName="address" 
+              required 
+              placeholder="Rua, numero, bairro, cidade - UF"
+              [class.error]="propertyForm.get('address')?.touched && propertyForm.get('address')?.invalid"
+            />
+          </div>
+          <span *ngIf="propertyForm.get('address')?.touched && propertyForm.get('address')?.invalid" class="error-text">
+            Endereco e obrigatorio.
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="price">Preco Anunciado (R$)</label>
+          <div class="input-wrapper">
+            <lucide-icon name="dollar-sign"></lucide-icon>
+            <input 
+              type="text" 
+              id="price" 
+              formControlName="price" 
+              required 
+              placeholder="Ex: 450.000"
+              (input)="onPriceInput($event)"
+              (keydown)="blockNegativeAndDecimal($event)"
+              [class.error]="propertyForm.get('price')?.touched && propertyForm.get('price')?.invalid"
+            />
+          </div>
+          <span *ngIf="propertyForm.get('price')?.touched && propertyForm.get('price')?.invalid" class="error-text">
+            Preco e obrigatorio.
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="sqm">Area Util (m²)</label>
+          <div class="input-wrapper">
+            <lucide-icon name="maximize-2"></lucide-icon>
+            <input 
+              type="number" 
+              id="sqm" 
+              formControlName="sqm" 
+              required 
+              placeholder="Ex: 85"
+              (keydown)="blockNegative($event)"
+              [class.error]="propertyForm.get('sqm')?.touched && propertyForm.get('sqm')?.invalid"
+            />
+          </div>
+          <span *ngIf="propertyForm.get('sqm')?.touched && propertyForm.get('sqm')?.invalid" class="error-text">
+            Area invalida.
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label for="bedrooms">Quartos</label>
+          <div class="input-wrapper">
+            <lucide-icon name="bed"></lucide-icon>
+            <input 
+              type="number" 
+              id="bedrooms" 
+              formControlName="bedrooms" 
+              required 
+              placeholder="Ex: 3"
+              (keydown)="blockNegativeAndDecimal($event)"
+              [class.error]="propertyForm.get('bedrooms')?.touched && propertyForm.get('bedrooms')?.invalid"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="bathrooms">Banheiros</label>
+          <div class="input-wrapper">
+            <lucide-icon name="bath"></lucide-icon>
+            <input 
+              type="number" 
+              id="bathrooms" 
+              formControlName="bathrooms" 
+              required 
+              placeholder="Ex: 2"
+              (keydown)="blockNegativeAndDecimal($event)"
+              [class.error]="propertyForm.get('bathrooms')?.touched && propertyForm.get('bathrooms')?.invalid"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="parking">Vagas de Garagem</label>
+          <div class="input-wrapper">
+            <lucide-icon name="car"></lucide-icon>
+            <input 
+              type="number" 
+              id="parking" 
+              formControlName="parking" 
+              required 
+              placeholder="Ex: 1"
+              (keydown)="blockNegativeAndDecimal($event)"
+              [class.error]="propertyForm.get('parking')?.touched && propertyForm.get('parking')?.invalid"
+            />
+          </div>
+        </div>
+
+        <div class="form-group span-full">
+          <label for="url">Link do Anuncio (Opcional)</label>
+          <div class="input-wrapper">
+            <lucide-icon name="link"></lucide-icon>
+            <input 
+              type="url" 
+              id="url" 
+              formControlName="url" 
+              placeholder="https://portal-imobiliario.com.br/imovel"
+            />
+          </div>
+        </div>
+
+      </div>
+
+      <div class="form-actions-footer">
+        <button type="button" class="btn btn-outline" routerLink="/properties">Cancelar</button>
+        <button type="submit" [disabled]="propertyForm.invalid || loading" class="btn btn-primary">
+          <span *ngIf="!loading">Salvar Imovel</span>
+          <span *ngIf="loading" class="spinner"></span>
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

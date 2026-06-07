@@ -1,43 +1,83 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators, FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TemplateService } from '../../services/template.service';
 import { TemplateResponse, Criteria } from '../../types';
+import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'app-template-builder',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule, LucideAngularModule],
   templateUrl: './template-builder.component.html',
   styleUrls: ['./template-builder.component.css']
 })
 export class TemplateBuilderComponent implements OnInit {
-  templates: TemplateResponse[] = [];
-  selectedTemplate: TemplateResponse | null = null;
   templateForm: FormGroup;
+  selectedTemplate: TemplateResponse | null = null;
   isEditMode: boolean = false;
+  loading: boolean = false;
   successMessage: string = '';
   errorMessage: string = '';
-  loading: boolean = false;
+
+  // Painel de Adicionar Criterio
+  newCritLabel: string = '';
+  newCritType: 'text' | 'bool' | 'range' = 'bool';
+  newCritIsScorable: boolean = true;
+  newCritWeight: number = 1;
 
   constructor(
     private fb: FormBuilder,
-    private templateService: TemplateService
+    private templateService: TemplateService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.templateForm = this.fb.group({
+      name: ['', Validators.required],
       newVersion: [false],
       criteria: this.fb.array([])
     });
   }
 
   ngOnInit(): void {
-    this.loadTemplates();
+    this.route.params.subscribe(params => {
+      const id = params['id'];
+      const version = params['version'];
+      if (id && version) {
+        this.isEditMode = true;
+        this.loadTemplateForEdit(id, Number(version));
+      } else {
+        this.resetForm();
+      }
+    });
   }
 
-  loadTemplates(): void {
+  loadTemplateForEdit(id: string, version: number): void {
+    this.loading = true;
     this.templateService.getActiveTemplates().subscribe({
-      next: (res) => this.templates = res,
-      error: () => this.errorMessage = 'Erro ao carregar templates.'
+      next: (res) => {
+        const found = res.find(t => t.id === id && t.version === version);
+        if (found) {
+          this.selectedTemplate = found;
+          this.templateForm.patchValue({
+            name: found.name || '',
+            newVersion: false
+          });
+          
+          this.criteria.clear();
+          if (found.criteria) {
+            found.criteria.forEach(c => this.addCriteria(c));
+          }
+        } else {
+          this.errorMessage = 'Template nao encontrado ou inativo.';
+        }
+        this.loading = false;
+      },
+      error: () => {
+        this.errorMessage = 'Erro ao carregar templates.';
+        this.loading = false;
+      }
     });
   }
 
@@ -47,13 +87,13 @@ export class TemplateBuilderComponent implements OnInit {
 
   addCriteria(crit?: Criteria): void {
     const critGroup = this.fb.group({
-      id: [crit?.id || '', Validators.required],
+      id: [crit?.id || 'crit_' + Math.random().toString(36).substr(2, 9), Validators.required],
       label: [crit?.label || '', Validators.required],
       type: [crit?.type || 'bool', Validators.required],
       isScorable: [crit?.isScorable ?? true],
-      weight: [crit?.weight ?? 1.0, [Validators.required, Validators.min(0)]],
-      min: [crit?.min ?? 0.0, Validators.min(0)],
-      max: [crit?.max ?? 10.0, Validators.min(0)]
+      weight: [crit?.weight ?? 1, [Validators.required, Validators.min(0)]],
+      min: [crit?.min ?? 1],
+      max: [crit?.max ?? 10]
     });
 
     this.criteria.push(critGroup);
@@ -63,21 +103,37 @@ export class TemplateBuilderComponent implements OnInit {
     this.criteria.removeAt(index);
   }
 
-  selectTemplate(template: TemplateResponse): void {
-    this.selectedTemplate = template;
-    this.isEditMode = true;
-    this.errorMessage = '';
-    this.successMessage = '';
-    
-    // Limpa criterios existentes
-    this.criteria.clear();
+  addCriteriaLocal(): void {
+    if (!this.newCritLabel.trim()) {
+      return;
+    }
 
-    // Habilita campo newVersion no form
-    this.templateForm.patchValue({ newVersion: false });
+    const newCrit: Criteria = {
+      id: 'crit_' + Math.random().toString(36).substr(2, 9),
+      label: this.newCritLabel.trim(),
+      type: this.newCritType,
+      isScorable: this.newCritType === 'text' ? false : this.newCritIsScorable,
+      weight: this.newCritType === 'text' ? 0 : this.newCritWeight,
+      min: this.newCritType === 'range' ? 1 : undefined,
+      max: this.newCritType === 'range' ? 10 : undefined
+    };
 
-    // Preenche criterios do template selecionado
-    if (template.criteria) {
-      template.criteria.forEach(c => this.addCriteria(c));
+    this.addCriteria(newCrit);
+
+    // Limpa painel
+    this.newCritLabel = '';
+    this.newCritType = 'bool';
+    this.newCritIsScorable = true;
+    this.newCritWeight = 1;
+  }
+
+  onTypeChange(): void {
+    if (this.newCritType === 'text') {
+      this.newCritIsScorable = false;
+      this.newCritWeight = 0;
+    } else {
+      this.newCritIsScorable = true;
+      this.newCritWeight = 1;
     }
   }
 
@@ -87,13 +143,15 @@ export class TemplateBuilderComponent implements OnInit {
     this.errorMessage = '';
     this.successMessage = '';
     this.criteria.clear();
-    this.templateForm.patchValue({ newVersion: false });
-    this.addCriteria(); // Adiciona um criterio em branco inicial
+    this.templateForm.reset({
+      name: '',
+      newVersion: false
+    });
   }
 
   onSubmit(): void {
     if (this.templateForm.invalid || this.criteria.length === 0) {
-      this.errorMessage = 'Por favor, preencha todos os campos obrigatórios corretamente.';
+      this.errorMessage = 'Preencha todos os campos obrigatórios corretamente.';
       return;
     }
 
@@ -105,16 +163,13 @@ export class TemplateBuilderComponent implements OnInit {
 
     if (this.isEditMode && this.selectedTemplate) {
       this.templateService.updateTemplate(this.selectedTemplate.id, {
+        name: payload.name,
         newVersion: payload.newVersion,
         criteria: payload.criteria
       }).subscribe({
-        next: (res) => {
+        next: () => {
           this.loading = false;
-          this.successMessage = payload.newVersion 
-            ? 'Nova versao do template salva com sucesso!' 
-            : 'Template atualizado com sucesso!';
-          this.loadTemplates();
-          this.selectTemplate(res);
+          this.router.navigate(['/templates']);
         },
         error: () => {
           this.loading = false;
@@ -123,13 +178,12 @@ export class TemplateBuilderComponent implements OnInit {
       });
     } else {
       this.templateService.createTemplate({
+        name: payload.name,
         criteria: payload.criteria
       }).subscribe({
-        next: (res) => {
+        next: () => {
           this.loading = false;
-          this.successMessage = 'Template criado com sucesso!';
-          this.loadTemplates();
-          this.selectTemplate(res);
+          this.router.navigate(['/templates']);
         },
         error: () => {
           this.loading = false;

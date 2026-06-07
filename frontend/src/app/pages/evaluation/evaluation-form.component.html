@@ -1,215 +1,213 @@
-<div class="evaluation-container">
-  <!-- Cabecalho -->
-  <header class="evaluation-header">
-    <div class="header-back">
-      <a routerLink="/properties" class="btn-back" id="btn-back-to-properties">
-        ← Voltar para Imoveis
-      </a>
-    </div>
-    <div class="property-info" *ngIf="property">
-      <h1>Avaliar Imovel</h1>
-      <p class="property-address" id="evaluated-property-address">{{ property.address }}</p>
-      <div class="property-meta">
-        <span>R$ {{ property.price | number:'1.0-0' }}</span>
-        <span>•</span>
-        <span>{{ property.sqm }} m²</span>
-        <span>•</span>
-        <span>{{ property.bedrooms }} quartos</span>
-      </div>
-    </div>
-  </header>
-
-  <!-- Conteudo Principal -->
-  <div class="evaluation-content">
-    <div class="left-column">
-      <!-- Seletor de Template -->
-      <section class="glass-card template-selection-section">
-        <h2>Selecione o Protocolo de Avaliacao</h2>
-        <p class="section-desc">Selecione o template que contem os criterios de nota para este imovel</p>
-        
-        <div class="form-group">
-          <select (change)="onTemplateChange($event)" class="template-select" id="select-evaluation-template">
-            <option value="">-- Escolha um template ativo --</option>
-            <option *ngFor="let t of templates" [value]="t.id">
-              Template Versao {{ t.version }} (Criado em {{ t.createdAt | date:'dd/MM/yyyy' }})
-            </option>
-          </select>
-        </div>
-      </section>
-
-      <!-- Formulario de Avaliacao Dinamica -->
-      <section class="glass-card form-section" *ngIf="selectedTemplate && evaluationForm">
-        <form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()" id="evaluation-submit-form">
-          <div *ngIf="errorMessage" class="alert error-alert" id="eval-error-message">
-            {{ errorMessage }}
-          </div>
-          <div *ngIf="successMessage" class="alert success-alert" id="eval-success-message">
-            {{ successMessage }}
-          </div>
-
-          <h2>Criterios de Avaliacao</h2>
-          <div formGroupName="answers" class="criteria-list">
-            <div *ngFor="let criteria of selectedTemplate.criteria" class="criteria-item glass-card-nested">
-              <div class="criteria-header">
-                <div class="criteria-title">
-                  <span class="criteria-label">{{ criteria.label }}</span>
-                  <span *ngIf="criteria.isScorable" class="weight-badge" [id]="'weight-badge-' + criteria.id">
-                    Peso: {{ criteria.weight }}
-                  </span>
-                </div>
-              </div>
-
-              <!-- Input Texto -->
-              <div *ngIf="criteria.type === 'text'" class="input-container">
-                <textarea
-                  [formControlName]="criteria.id"
-                  [id]="'input-criteria-' + criteria.id"
-                  placeholder="Insira as anotacoes de avaliacao..."
-                  rows="3"
-                ></textarea>
-              </div>
-
-              <!-- Input Switch Boolean -->
-              <div *ngIf="criteria.type === 'bool'" class="input-container switch-container">
-                <label class="switch">
-                  <input
-                    type="checkbox"
-                    [formControlName]="criteria.id"
-                    [id]="'input-criteria-' + criteria.id"
-                  />
-                  <span class="slider-switch round"></span>
-                </label>
-                <span class="switch-value">{{ evaluationForm.get('answers.' + criteria.id)?.value ? 'Atende' : 'Nao Atende' }}</span>
-              </div>
-
-              <!-- Input Slider Range -->
-              <div *ngIf="criteria.type === 'range'" class="input-container range-container">
-                <div class="range-labels">
-                  <span>Min: {{ criteria.min || 1 }}</span>
-                  <span class="range-current-value" [id]="'current-val-' + criteria.id">
-                    Nota: {{ evaluationForm.get('answers.' + criteria.id)?.value }}
-                  </span>
-                  <span>Max: {{ criteria.max || 10 }}</span>
-                </div>
-                <input
-                  type="range"
-                  [min]="criteria.min || 1"
-                  [max]="criteria.max || 10"
-                  [formControlName]="criteria.id"
-                  [id]="'input-criteria-' + criteria.id"
-                  class="range-slider"
-                />
-              </div>
-            </div>
-          </div>
-
-          <!-- Fotos / Anexos -->
-          <div class="media-upload-section">
-            <h2>Fotos da Visita</h2>
-            <p class="section-desc">Insira imagens do imovel para enriquecer o relatorio de avaliacao</p>
-
-            <div class="upload-zone">
-              <input
-                type="file"
-                accept="image/*"
-                (change)="onFileSelected($event)"
-                class="file-input"
-                id="file-photo-upload"
-              />
-              <div class="upload-prompt">
-                <span class="upload-icon">↑</span>
-                <span>Selecione uma foto da visita</span>
-              </div>
-            </div>
-
-            <!-- Lista de Uploads -->
-            <div class="upload-list" *ngIf="uploads.length > 0">
-              <div *ngFor="let item of uploads" class="upload-item">
-                <div class="upload-item-info">
-                  <span class="file-name">{{ item.name }}</span>
-                  <span *ngIf="item.loading" class="progress-percent">{{ item.progress }}%</span>
-                  <span *ngIf="item.success && !item.loading" class="success-status">Sucesso</span>
-                </div>
-                <div class="progress-bar-container">
-                  <div class="progress-bar" [style.width.%]="item.progress" [class.success]="item.success"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Observacoes Gerais -->
-          <div class="form-group notes-group">
-            <label for="eval-notes">Observacoes Gerais da Visita</label>
-            <textarea
-              id="eval-notes"
-              formControlName="notes"
-              placeholder="Digite aqui as consideracoes finais do corretor..."
-              rows="4"
-            ></textarea>
-          </div>
-
-          <button type="submit" [disabled]="loading" class="btn-submit-eval" id="btn-save-evaluation">
-            <span *ngIf="!loading">Salvar Avaliacao</span>
-            <span *ngIf="loading" class="spinner"></span>
-          </button>
-        </form>
-      </section>
-    </div>
-
-    <!-- Painel Lateral (Score e Historico) -->
-    <div class="right-column">
-      <!-- Painel de Score em Tempo Real -->
-      <section class="glass-card score-panel" *ngIf="selectedTemplate && evaluationForm">
-        <h3>Score Calculado</h3>
-        <p class="score-desc">Pontuacao baseada no peso e valores preenchidos</p>
-
-        <div class="score-display">
-          <div class="score-circle" [class.low]="currentScore < 50" [class.medium]="currentScore >= 50 && currentScore < 80" [class.high]="currentScore >= 80">
-            <span class="score-number" id="live-score-value">{{ currentScore | number:'1.2-2' }}</span>
-            <span class="score-label">pontos</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Historico de Avaliacoes do Imovel -->
-      <section class="glass-card history-panel">
-        <h3>Historico de Avaliacoes</h3>
-        <p class="history-desc">Historico das visitas e pontuacoes registradas</p>
-
-        <div *ngIf="loadingHistory" class="history-loading">
-          <span class="spinner"></span>
-          <p>Carregando historico...</p>
-        </div>
-
-        <div *ngIf="pastEvaluations.length === 0 && !loadingHistory" class="empty-history" id="empty-history-state">
-          <p>Nenhuma avaliacao registrada para este imovel.</p>
-        </div>
-
-        <div class="history-list" *ngIf="pastEvaluations.length > 0 && !loadingHistory">
-          <div *ngFor="let ev of pastEvaluations" class="history-card">
-            <div class="history-card-header">
-              <span class="history-score" [class.low]="ev.finalScore < 50" [class.medium]="ev.finalScore >= 50 && ev.finalScore < 80" [class.high]="ev.finalScore >= 80">
-                {{ ev.finalScore | number:'1.2-2' }} pts
-              </span>
-              <span class="history-date">{{ ev.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
-            </div>
-
-            <div class="history-card-body">
-              <p class="history-template-info">Protocolo ID: {{ ev.templateId }} (v{{ ev.templateVersion }})</p>
-              <p *ngIf="ev.notes" class="history-notes">"{{ ev.notes }}"</p>
-
-              <!-- Fotos anexadas -->
-              <div class="history-photos" *ngIf="ev.mediaUrls && ev.mediaUrls.length > 0">
-                <div *ngFor="let url of ev.mediaUrls" class="photo-thumbnail">
-                  <a [href]="url" target="_blank">
-                    <img [src]="url" alt="Foto da visita" class="thumbnail-img" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+<section class="evaluation-form-section">
+  
+  <div class="page-header" *ngIf="property">
+    <div class="page-title-area">
+      <button class="btn btn-text-back" (click)="cancelEvaluation()" id="btn-eval-back">
+        <lucide-icon name="chevron-left"></lucide-icon>
+        <span>Voltar</span>
+      </button>
+      <h1>Nova Avaliacao</h1>
+      <p>Preencha os criterios e anexe fotos da visita tecnica</p>
     </div>
   </div>
-</div>
+
+  <div *ngIf="errorMessage" class="alert error-alert" id="eval-error-message">
+    {{ errorMessage }}
+  </div>
+  <div *ngIf="successMessage" class="alert success-alert" id="eval-success-message">
+    {{ successMessage }}
+  </div>
+
+  <div class="evaluation-container-grid" *ngIf="property">
+    
+    <!-- Lado Esquerdo: Formulário Dinâmico -->
+    <div class="evaluation-main-card glass">
+      
+      <div class="eval-property-summary-bar">
+        <div class="summary-item">
+          <lucide-icon name="map-pin"></lucide-icon>
+          <div>
+            <span class="label">Propriedade</span>
+            <span class="value" id="eval-property-address">{{ property.address }}</span>
+          </div>
+        </div>
+        <div class="summary-item">
+          <lucide-icon name="dollar-sign"></lucide-icon>
+          <div>
+            <span class="label">Preco</span>
+            <span class="value" id="eval-property-price">R$ {{ property.price | number:'1.2-2' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seleção de Template -->
+      <div class="form-group" id="eval-template-select-container" style="margin-bottom: 2rem;">
+        <label for="eval-template-select">Selecione o Protocolo / Template de Avaliacao</label>
+        <select 
+          id="eval-template-select" 
+          class="select-styled" 
+          required 
+          (change)="onTemplateChange($event)"
+        >
+          <option value="">-- Escolha um template ativo --</option>
+          <option *ngFor="let t of templates" [value]="t.id">
+            {{ t.name || 'Protocolo de Vistoria' }} (v{{ t.version }})
+          </option>
+        </select>
+      </div>
+
+      <!-- Formulário de critérios gerados dinamicamente -->
+      <form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()" *ngIf="selectedTemplate && evaluationForm" id="evaluation-submit-form">
+        
+        <div class="dynamic-criteria-title">
+          <h3>Vistoria e Criterios de Nota</h3>
+          <p>Responda de acordo com as condicoes identificadas no local</p>
+        </div>
+        
+        <div formGroupName="answers" class="eval-dynamic-fields-container">
+          <div *ngFor="let criteria of selectedTemplate.criteria" class="criteria-item-field glass-card-nested" style="margin-bottom: 1.5rem; padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01);">
+            
+            <div class="criteria-field-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span class="criteria-label" style="font-weight: 600; font-size: 0.95rem;">{{ criteria.label }}</span>
+              <span *ngIf="criteria.isScorable" class="weight-badge" [id]="'weight-badge-' + criteria.id" style="font-size: 0.7rem; font-weight: 700; background: rgba(225, 0, 255, 0.1); border: 1px solid rgba(225, 0, 255, 0.2); padding: 0.15rem 0.5rem; border-radius: 4px; color: #e100ff;">
+                Peso: {{ criteria.weight }}x
+              </span>
+            </div>
+
+            <!-- Input Texto -->
+            <div *ngIf="criteria.type === 'text'" class="input-container">
+              <textarea
+                [formControlName]="criteria.id"
+                [id]="'input-criteria-' + criteria.id"
+                placeholder="Insira as anotacoes de avaliacao..."
+                rows="3"
+                style="padding: 0.85rem 1rem;"
+              ></textarea>
+            </div>
+
+            <!-- Input Switch Boolean -->
+            <div *ngIf="criteria.type === 'bool'" class="input-container switch-container" style="display: flex; align-items: center; gap: 1rem;">
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  [formControlName]="criteria.id"
+                  [id]="'input-criteria-' + criteria.id"
+                />
+                <span class="slider-switch round"></span>
+              </label>
+              <span class="switch-value" style="font-size: 0.85rem; font-weight: 500; color: var(--text-secondary);">
+                {{ evaluationForm.get('answers.' + criteria.id)?.value ? 'Atende' : 'Nao Atende' }}
+              </span>
+            </div>
+
+            <!-- Input Slider Range -->
+            <div *ngIf="criteria.type === 'range'" class="input-container range-container" style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <div class="range-labels" style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted);">
+                <span>Min: {{ criteria.min || 1 }}</span>
+                <span class="range-current-value" [id]="'current-val-' + criteria.id" style="font-weight: 700; color: #e100ff;">
+                  Nota: {{ evaluationForm.get('answers.' + criteria.id)?.value }}
+                </span>
+                <span>Max: {{ criteria.max || 10 }}</span>
+              </div>
+              <input
+                type="range"
+                [min]="criteria.min || 1"
+                [max]="criteria.max || 10"
+                [formControlName]="criteria.id"
+                [id]="'input-criteria-' + criteria.id"
+                class="range-slider"
+              />
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Notas adicionais da vistoria -->
+        <div class="form-group mt-6">
+          <label for="eval-notes">Notas Gerais e Observacoes da Visita</label>
+          <textarea 
+            id="eval-notes" 
+            formControlName="notes" 
+            rows="4" 
+            placeholder="Escreva observacoes tecnicas sobre rachaduras, umidade, potencial de reforma ou observacoes de vizinhanca..."
+            style="padding: 0.85rem 1rem;"
+          ></textarea>
+        </div>
+
+        <!-- Upload de fotos real via S3 pre-signed url -->
+        <div class="photo-upload-section">
+          <h3>Fotos do Imovel (Object Storage S3)</h3>
+          <p class="subtitle">As fotos sao enviadas direto para o Amazon S3 usando urls pre-assinadas temporarias</p>
+          
+          <div class="upload-zone" (click)="photoInput.click()" id="photo-upload-zone">
+            <input 
+              type="file" 
+              #photoInput 
+              (change)="onFileSelected($event)" 
+              multiple 
+              accept="image/*" 
+              class="hide"
+            />
+            <lucide-icon name="camera"></lucide-icon>
+            <span>Clique para tirar foto ou selecionar da galeria</span>
+            <p class="hint">Suporta multiplos uploads diretos no S3 Bucket</p>
+          </div>
+          
+          <!-- Lista de fotos carregadas/processadas -->
+          <div class="upload-list" *ngIf="uploads.length > 0" id="uploaded-photos-preview-grid">
+            <div *ngFor="let item of uploads" class="upload-item glass" style="margin-top: 0.75rem; padding: 0.85rem; border-radius: 8px;">
+              <div class="upload-item-info" style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.4rem;">
+                <span class="file-name" style="font-weight: 500;">{{ item.name }}</span>
+                <span *ngIf="item.loading" class="progress-percent">{{ item.progress }}%</span>
+                <span *ngIf="item.success && !item.loading" class="success-status" style="color: var(--success); font-weight: 700;">Sucesso</span>
+              </div>
+              <div class="progress-bar-container" style="background: rgba(255,255,255,0.05); height: 4px; border-radius: 10px; overflow: hidden;">
+                <div class="progress-bar" [style.width.%]="item.progress" [class.success]="item.success" style="background: #e100ff; height: 100%; transition: width 0.2s ease;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions-footer">
+          <button type="button" class="btn btn-outline" (click)="cancelEvaluation()" id="btn-eval-cancel">Cancelar</button>
+          <button type="submit" [disabled]="loading" class="btn btn-primary" id="btn-save-evaluation">
+            <span *ngIf="!loading">Concluir e Registrar Visita</span>
+            <span *ngIf="loading" class="spinner"></span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Lado Direito: Resumo da Nota em tempo real -->
+    <div class="evaluation-sidebar-card glass" *ngIf="selectedTemplate && evaluationForm" id="eval-sidebar-score-card">
+      <h3>Resultado Preliminar</h3>
+      <p class="subtitle">Pontuacao instantanea baseada nos criterios respondidos e nos pesos configurados</p>
+      
+      <div class="score-visualizer">
+        <div class="score-circle" [class]="scoreBadgeClass">
+          <span class="score-num" id="live-score-value">{{ currentScore | number:'1.1-1' }}</span>
+          <span class="score-max">/ 100</span>
+        </div>
+        <div class="score-badge" [class]="scoreBadgeClass" id="live-score-badge">{{ scoreBadgeText }}</div>
+      </div>
+
+      <div class="score-info-items">
+        <div class="info-item">
+          <span class="label">Criterios Avaliados</span>
+          <span class="value" id="live-score-criteria-count">{{ getScorableCriteriaCount() }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Media Ponderada</span>
+          <span class="value" id="live-score-formula">Soma(Nota x Peso) / Soma(Pesos)</span>
+        </div>
+      </div>
+
+      <div class="score-warning-box">
+        <lucide-icon name="shield-check"></lucide-icon>
+        <span>Notas geradas serverless via Lambda Quarkus Native na confirmacao do envio.</span>
+      </div>
+    </div>
+
+  </div>
+</section>

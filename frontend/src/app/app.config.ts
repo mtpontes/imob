@@ -1,6 +1,44 @@
-import { ApplicationConfig, provideZoneChangeDetection, isDevMode } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection, isDevMode, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { 
+  LucideAngularModule, 
+  Mail, 
+  Lock, 
+  ArrowRight, 
+  Zap, 
+  Building2, 
+  Info, 
+  Briefcase, 
+  LogOut, 
+  Plus, 
+  Search, 
+  Home, 
+  ClipboardList, 
+  ChevronLeft, 
+  MapPin, 
+  DollarSign, 
+  Maximize2, 
+  Bed, 
+  Bath, 
+  Car, 
+  Link, 
+  Tag, 
+  PlusCircle, 
+  ShieldCheck, 
+  Camera, 
+  ExternalLink, 
+  Edit3, 
+  Eye, 
+  EyeOff, 
+  GripVertical, 
+  Trash2, 
+  X, 
+  CheckCircle, 
+  AlertTriangle, 
+  AlertCircle,
+  Clipboard
+} from 'lucide-angular';
 
 import { routes } from './app.routes';
 import { provideServiceWorker } from '@angular/service-worker';
@@ -14,6 +52,45 @@ export const appConfig: ApplicationConfig = {
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000'
-    })
+    }),
+    importProvidersFrom(
+      LucideAngularModule.pick({
+        Mail, 
+        Lock, 
+        ArrowRight, 
+        Zap, 
+        Building2, 
+        Info, 
+        Briefcase, 
+        LogOut, 
+        Plus, 
+        Search, 
+        Home, 
+        ClipboardList, 
+        ChevronLeft, 
+        MapPin, 
+        DollarSign, 
+        Maximize2, 
+        Bed, 
+        Bath, 
+        Car, 
+        Link, 
+        Tag, 
+        PlusCircle, 
+        ShieldCheck, 
+        Camera, 
+        ExternalLink, 
+        Edit3, 
+        Eye, 
+        EyeOff, 
+        GripVertical, 
+        Trash2, 
+        X, 
+        CheckCircle, 
+        AlertTriangle, 
+        AlertCircle,
+        Clipboard
+      })
+    )
   ]
 };

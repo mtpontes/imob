@@ -1,0 +1,179 @@
+<section class="property-details-section">
+  <div class="page-header" *ngIf="property">
+    <div class="page-title-area">
+      <button class="btn btn-text-back" routerLink="/properties">
+        <lucide-icon name="chevron-left"></lucide-icon>
+        <span>Voltar para Imoveis</span>
+      </button>
+      <h1 id="details-prop-address">{{ property.address }}</h1>
+      <p>Historico completo de vistorias tecnicas e evolucao de notas</p>
+    </div>
+    
+    <button class="btn btn-primary" (click)="startNewEvaluation()" id="btn-details-new-eval">
+      <lucide-icon name="clipboard"></lucide-icon>
+      <span>Nova Avaliacao</span>
+    </button>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert error-alert">
+    {{ errorMessage }}
+  </div>
+
+  <div class="details-layout-grid" *ngIf="property">
+    
+    <!-- Esquerda: Ficha do Imóvel -->
+    <div class="details-info-card glass">
+      <h3>Ficha Tecnica</h3>
+      <p class="subtitle">Especificacoes estruturais basicas do imovel</p>
+      
+      <div class="property-specs-list">
+        <div class="spec-item">
+          <span class="spec-label">Preco Declarado</span>
+          <span class="spec-value highlight" id="details-prop-price">
+            R$ {{ property.price | number:'1.2-2' }}
+          </span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">Area Util</span>
+          <span class="spec-value" id="details-prop-sqm">{{ property.sqm }} m²</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">Quartos</span>
+          <span class="spec-value" id="details-prop-bedrooms">{{ property.bedrooms }} dormitorios</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">Banheiros</span>
+          <span class="spec-value" id="details-prop-bathrooms">{{ property.bathrooms }} banheiros</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">Vagas</span>
+          <span class="spec-value" id="details-prop-parking">{{ property.parking }} vagas</span>
+        </div>
+        <div class="spec-item" *ngIf="property.url" id="details-prop-url-container">
+          <span class="spec-label">Link Anuncio</span>
+          <a [href]="property.url" target="_blank" class="spec-value link" id="details-prop-url">
+            Acessar Anuncio <lucide-icon name="external-link"></lucide-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Direita: Histórico de Visitas -->
+    <div class="details-history-card glass">
+      <div class="history-card-header">
+        <h3>Historico de Avaliacoes</h3>
+        <p class="subtitle">Registros de avaliacoes, notas e checklists ordenados por data</p>
+      </div>
+
+      <div *ngIf="evaluations.length === 0" class="empty-state-mini glass" id="evaluations-empty-state">
+        <lucide-icon name="clipboard"></lucide-icon>
+        <h4>Nenhuma avaliacao registrada</h4>
+        <p>Este imovel ainda nao foi avaliado. Registre a primeira visita para gerar notas.</p>
+        <button class="btn btn-outline" (click)="startNewEvaluation()" id="btn-details-empty-new-eval" style="margin-top: 1rem;">
+          <lucide-icon name="plus"></lucide-icon>
+          <span>Avaliar Agora</span>
+        </button>
+      </div>
+
+      <div class="evaluation-history-list" *ngIf="evaluations.length > 0" id="evaluation-history-list">
+        <div *ngFor="let ev of evaluations; let i = index" class="history-item glass" (click)="openEvaluationDetails(ev)">
+          <div class="history-item-header">
+            <div class="score-display-mini">
+              <span class="score-badge" 
+                    [class.low]="ev.finalScore < 50" 
+                    [class.medium]="ev.finalScore >= 50 && ev.finalScore < 80" 
+                    [class.high]="ev.finalScore >= 80"
+                    [id]="'eval-score-' + i">
+                {{ ev.finalScore | number:'1.2-2' }} pts
+              </span>
+            </div>
+            <span class="date">{{ ev.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          <div class="history-item-body">
+            <span class="template-info">Protocolo: v{{ ev.templateVersion }} ({{ ev.templateId.substring(0,8) }})</span>
+            <p class="notes" *ngIf="ev.notes">"{{ ev.notes }}"</p>
+            
+            <div class="media-preview" *ngIf="ev.mediaUrls && ev.mediaUrls.length > 0">
+              <span class="media-label"><lucide-icon name="camera"></lucide-icon> {{ ev.mediaUrls.length }} foto(s) registrada(s)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Modal para visualização detalhada de respostas de uma avaliação -->
+  <div id="evaluation-details-modal" class="modal-wrapper" [class.hide]="!isModalOpen">
+    <div class="modal-backdrop" (click)="closeModal()"></div>
+    <div class="modal-content glass" *ngIf="selectedEvaluation">
+      <div class="modal-header">
+        <div>
+          <h3 id="modal-eval-title">Detalhes da Avaliacao</h3>
+          <span class="modal-subtitle" id="modal-eval-date">Realizada em {{ selectedEvaluation.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        <button class="btn btn-icon" (click)="closeModal()">
+          <lucide-icon name="x"></lucide-icon>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        
+        <div class="modal-score-banner">
+          <div class="modal-score-visual">
+            <span class="label">Nota Final</span>
+            <span class="value" id="modal-eval-score">{{ selectedEvaluation.finalScore | number:'1.2-2' }}</span>
+          </div>
+          <div class="modal-template-used">
+            <span class="label">Template Utilizado</span>
+            <span class="value" id="modal-eval-template">{{ selectedTemplateName }} (v{{ selectedEvaluation.templateVersion }})</span>
+          </div>
+        </div>
+
+        <div class="modal-answers-section">
+          <h4>Respostas do Checklist</h4>
+          <div class="answers-list" id="modal-eval-answers">
+            <div *ngFor="let key of objectKeys(selectedEvaluation.answers)" class="answer-item-row">
+              <span class="question">{{ getCriteriaLabel(selectedEvaluation.templateId, selectedEvaluation.templateVersion, key) }}:</span>
+              
+              <!-- Caso seja booleano -->
+              <span *ngIf="getCriteriaType(selectedEvaluation.templateId, selectedEvaluation.templateVersion, key) === 'bool'" 
+                    class="value-badge" 
+                    [class.success]="selectedEvaluation.answers[key] === true"
+                    [class.error]="selectedEvaluation.answers[key] !== true">
+                {{ selectedEvaluation.answers[key] === true ? 'Atende' : 'Nao Atende' }}
+              </span>
+
+              <!-- Caso seja range -->
+              <span *ngIf="getCriteriaType(selectedEvaluation.templateId, selectedEvaluation.templateVersion, key) === 'range'" class="value-text">
+                Nota: <strong>{{ selectedEvaluation.answers[key] }}</strong>
+              </span>
+
+              <!-- Caso seja texto -->
+              <span *ngIf="getCriteriaType(selectedEvaluation.templateId, selectedEvaluation.templateVersion, key) === 'text'" class="value-text notes">
+                {{ selectedEvaluation.answers[key] }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-notes-section" *ngIf="selectedEvaluation.notes">
+          <h4>Observacoes</h4>
+          <p id="modal-eval-notes">{{ selectedEvaluation.notes }}</p>
+        </div>
+
+        <div class="modal-photos-section" *ngIf="selectedEvaluation.mediaUrls && selectedEvaluation.mediaUrls.length > 0">
+          <h4>Galeria de Fotos</h4>
+          <div class="modal-photos-grid" id="modal-eval-photos">
+            <div *ngFor="let url of selectedEvaluation.mediaUrls" class="photo-card">
+              <a [href]="url" target="_blank">
+                <img [src]="url" alt="Foto da visita" />
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

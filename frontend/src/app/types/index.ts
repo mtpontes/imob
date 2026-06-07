@@ -9,10 +9,12 @@ export interface Criteria {
 }
 
 export interface CreateTemplateRequest {
+  name: string;
   criteria: Criteria[];
 }
 
 export interface UpdateTemplateRequest {
+  name: string;
   newVersion: boolean;
   criteria: Criteria[];
 }
@@ -23,6 +25,7 @@ export interface TemplateResponse {
   isActive: boolean;
   createdAt: string;
   criteria: Criteria[];
+  name: string;
 }
 
 export interface CreatePropertyRequest {

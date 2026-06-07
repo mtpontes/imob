@@ -18,6 +18,7 @@ public class TemplateEntity {
     private boolean isActive;
     private String createdAt;
     private List<CriteriaDTO> criteria;
+    private String name;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -69,6 +70,14 @@ public class TemplateEntity {
         this.criteria = criteria;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Map<String, AttributeValue> toAttributeMap() {
         Map<String, AttributeValue> map = new HashMap<>();
         map.put("PK", AttributeValue.builder().s("WORKSPACE#" + this.workspaceId).build());
@@ -77,6 +86,7 @@ public class TemplateEntity {
         map.put("version", AttributeValue.builder().n(String.valueOf(this.version)).build());
         map.put("isActive", AttributeValue.builder().bool(this.isActive).build());
         map.put("createdAt", AttributeValue.builder().s(this.createdAt).build());
+        map.put("name", AttributeValue.builder().s(this.name != null ? this.name : "").build());
 
         try {
             var json = objectMapper.writeValueAsString(this.criteria);
@@ -99,6 +109,10 @@ public class TemplateEntity {
         entity.setVersion(Integer.parseInt(map.get("version").n()));
         entity.setActive(map.get("isActive").bool());
         entity.setCreatedAt(map.get("createdAt").s());
+
+        if (map.containsKey("name")) {
+            entity.setName(map.get("name").s());
+        }
 
         if (map.containsKey("criteria")) {
             try {

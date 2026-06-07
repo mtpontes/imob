@@ -6,6 +6,7 @@ import java.util.List;
 @RegisterForReflection
 public class CreateTemplateRequest {
     private List<CriteriaDTO> criteria;
+    private String name;
 
     public List<CriteriaDTO> getCriteria() {
         return this.criteria;
@@ -13,5 +14,13 @@ public class CreateTemplateRequest {
 
     public void setCriteria(List<CriteriaDTO> criteria) {
         this.criteria = criteria;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

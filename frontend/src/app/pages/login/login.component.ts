@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -45,6 +46,22 @@ export class LoginComponent {
       error: (err) => {
         this.loading = false;
         this.errorMessage = 'Erro ao realizar login. Verifique suas credenciais.';
+      }
+    });
+  }
+
+  bypassLogin(): void {
+    this.loading = true;
+    this.errorMessage = '';
+
+    this.authService.login('demo@imobapp.com.br', 'Password123!').subscribe({
+      next: () => {
+        this.loading = false;
+        this.router.navigate(['/properties']);
+      },
+      error: () => {
+        this.loading = false;
+        this.errorMessage = 'Erro ao realizar login de bypass.';
       }
     });
   }
