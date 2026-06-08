@@ -1,12 +1,6 @@
 name: Deploy Backend & Infra
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'backend/**'
-      - '.github/workflows/deploy-backend.yml'
   workflow_dispatch:
     inputs:
       environment:
