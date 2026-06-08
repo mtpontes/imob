@@ -60,13 +60,13 @@ describe('EvaluationService', () => {
   it('should generate upload URL', () => {
     const dummyResponse: GenerateUploadUrlResponse = { uploadUrl: 'https://s3/upload', s3Key: 'key' };
 
-    service.generateUploadUrl('file.jpg').subscribe(response => {
+    service.generateUploadUrl('file.jpg', 'image/jpeg').subscribe(response => {
       expect(response).toEqual(dummyResponse);
     });
 
     const req = httpMock.expectOne('/api/evaluations/upload-url');
     expect(req.request.method).toBe('POST');
-    expect(req.request.body).toEqual({ fileName: 'file.jpg' });
+    expect(req.request.body).toEqual({ fileName: 'file.jpg', contentType: 'image/jpeg' });
     req.flush(dummyResponse);
   });
 

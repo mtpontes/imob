@@ -36,7 +36,7 @@ Resources:
         - ALLOW_REFRESH_TOKEN_AUTH
         - ALLOW_USER_SRP_AUTH
 
-  # 2. API Gateway HTTP API integrado com Cognito JWT Authorizer
+  # 2. API Gateway HTTP API (Sem Cognito obrigatorio por enquanto)
   ImobAppHttpApi:
     Type: AWS::Serverless::HttpApi
     Properties:
@@ -55,15 +55,6 @@ Resources:
           - http://localhost:4200
           - https://*.vercel.app
         MaxAge: 3600
-      Auth:
-        DefaultAuthorizer: CognitoAuthorizer
-        Authorizers:
-          CognitoAuthorizer:
-            IdentitySource: $request.header.Authorization
-            JwtConfiguration:
-              Audience:
-                - !Ref ImobAppUserPoolClient
-              Issuer: !Sub https://cognito-idp.${AWS::Region}.amazonaws.com/${ImobAppUserPool}
 
   # 3. Tabela DynamoDB com Single-Table Design
   ImobAppTable:
@@ -124,6 +115,7 @@ Resources:
         Variables:
           IMOB_TABLE_NAME: !Ref ImobAppTable
           IMOB_BUCKET_NAME: !Ref ImobAppBucket
+          IMOB_MOCK_AUTH: true
           DISABLE_SIGNAL_HANDLERS: true
       Events:
         HttpApiProxy:

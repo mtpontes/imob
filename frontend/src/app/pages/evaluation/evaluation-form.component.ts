@@ -249,7 +249,7 @@ export class EvaluationFormComponent implements OnInit {
     };
     this.uploads.push(uploadItem);
 
-    this.evaluationService.generateUploadUrl(file.name).subscribe({
+    this.evaluationService.generateUploadUrl(file.name, file.type || 'application/octet-stream').subscribe({
       next: (urlRes) => {
         uploadItem.progress = 30;
         this.evaluationService.uploadFileToS3(urlRes.uploadUrl, file).subscribe({
@@ -262,14 +262,14 @@ export class EvaluationFormComponent implements OnInit {
           error: () => {
             uploadItem.loading = false;
             uploadItem.success = false;
-            this.errorMessage = 'Erro ao fazer upload da foto para o S3.';
+            this.errorMessage = 'Erro ao fazer upload do arquivo para o S3.';
           }
         });
       },
       error: () => {
         uploadItem.loading = false;
         uploadItem.success = false;
-        this.errorMessage = 'Erro ao gerar URL de upload.';
+        this.errorMessage = 'Erro ao gerar URL de upload do arquivo.';
       }
     });
   }

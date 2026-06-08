@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PropertyService } from '../../services/property.service';
@@ -31,6 +31,10 @@ export class PropertyDetailsComponent implements OnInit {
   // Controle do Modal de Exclusão Customizado
   isConfirmDeleteOpen: boolean = false;
   evaluationToDelete: EvaluationResponse | null = null;
+
+  // Controle do Lightbox de Mídias
+  isLightboxOpen: boolean = false;
+  activeMediaIndex: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -181,5 +185,56 @@ export class PropertyDetailsComponent implements OnInit {
 
   objectKeys(obj: any): string[] {
     return obj ? Object.keys(obj) : [];
+  }
+
+  isVideoButton(url: string): boolean {
+    if (!url) return false;
+    const cleanUrl = url.split('?')[0].toLowerCase();
+    return cleanUrl.endsWith('.mp4') || 
+           cleanUrl.endsWith('.webm') || 
+           cleanUrl.endsWith('.ogg') || 
+           cleanUrl.endsWith('.mov') || 
+           cleanUrl.endsWith('.avi');
+  }
+
+  openLightbox(index: number): void {
+    this.activeMediaIndex = index;
+    this.isLightboxOpen = true;
+  }
+
+  closeLightbox(): void {
+    this.isLightboxOpen = false;
+  }
+
+  nextMedia(event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    if (this.selectedEvaluation && this.selectedEvaluation.mediaUrls) {
+      this.activeMediaIndex = (this.activeMediaIndex + 1) % this.selectedEvaluation.mediaUrls.length;
+    }
+  }
+
+  prevMedia(event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    if (this.selectedEvaluation && this.selectedEvaluation.mediaUrls) {
+      const len = this.selectedEvaluation.mediaUrls.length;
+      this.activeMediaIndex = (this.activeMediaIndex - 1 + len) % len;
+    }
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (this.isLightboxOpen) {
+      if (event.key === 'Escape') {
+        this.closeLightbox();
+      } else if (event.key === 'ArrowRight') {
+        this.nextMedia();
+      } else if (event.key === 'ArrowLeft') {
+        this.prevMedia();
+      }
+    }
   }
 }

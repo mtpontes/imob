@@ -57,4 +57,13 @@ else
     echo -e "${GREEN}Bucket 'imob-app-bucket' criado!${RESET}"
 fi
 
+# Configurar CORS no S3 local para permitir uploads a partir do frontend (localhost:4200)
+echo -e "Configurando CORS para o bucket 'imob-app-bucket'..."
+CORS_CONFIG='{"CORSRules":[{"AllowedHeaders":["*"],"AllowedMethods":["GET","PUT","POST","DELETE","HEAD"],"AllowedOrigins":["*"],"ExposeHeaders":["ETag"]}]}'
+docker exec localstack awslocal s3api put-bucket-cors \
+    --bucket imob-app-bucket \
+    --cors-configuration "$CORS_CONFIG"
+echo -e "${GREEN}CORS configurado com sucesso no LocalStack S3!${RESET}"
+
+
 echo -e "\n${GREEN}Infraestrutura pronta. Backend pode ser iniciado.${RESET}"

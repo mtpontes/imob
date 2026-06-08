@@ -31,8 +31,8 @@ export class EvaluationService {
     return this.http.delete<void>(`${this.apiUrl}/${propertyId}/date/${createdAt}`);
   }
 
-  generateUploadUrl(fileName: string): Observable<GenerateUploadUrlResponse> {
-    return this.http.post<GenerateUploadUrlResponse>(`${this.apiUrl}/upload-url`, { fileName });
+  generateUploadUrl(fileName: string, contentType: string): Observable<GenerateUploadUrlResponse> {
+    return this.http.post<GenerateUploadUrlResponse>(`${this.apiUrl}/upload-url`, { fileName, contentType });
   }
 
   uploadFileToS3(uploadUrl: string, file: File): Observable<any> {

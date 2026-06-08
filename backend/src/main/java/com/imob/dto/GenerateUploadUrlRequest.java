@@ -9,4 +9,5 @@ import lombok.Setter;
 @RegisterForReflection
 public class GenerateUploadUrlRequest {
     private String fileName;
+    private String contentType;
 }

@@ -182,7 +182,7 @@ public class EvaluationResourceTest {
                 "fileName", "fachada.jpg"
         );
 
-        Mockito.when(this.s3Service.generatePutPresignedUrl(Mockito.anyString(), Mockito.any(java.time.Duration.class)))
+        Mockito.when(this.s3Service.generatePutPresignedUrl(Mockito.anyString(), Mockito.anyString(), Mockito.any(java.time.Duration.class)))
                 .thenReturn("https://s3-fake-upload-url");
 
         // Act & Assert

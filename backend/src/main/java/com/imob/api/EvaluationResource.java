@@ -94,8 +94,12 @@ public class EvaluationResource {
         // workspaceId/uploads/uuid_fileName
         String s3Key = workspaceId + "/uploads/" + uuid + "_" + request.getFileName();
         
+        String contentType = request.getContentType();
+        if (contentType == null || contentType.isBlank())
+            contentType = "application/octet-stream";
+
         // Gera pre-signed URL valida por 15 minutos para PUT
-        String uploadUrl = this.s3Service.generatePutPresignedUrl(s3Key, Duration.ofMinutes(15));
+        String uploadUrl = this.s3Service.generatePutPresignedUrl(s3Key, contentType, Duration.ofMinutes(15));
 
         var response = new GenerateUploadUrlResponse();
         response.setUploadUrl(uploadUrl);

@@ -78,6 +78,7 @@ export interface EvaluationResponse {
 
 export interface GenerateUploadUrlRequest {
   fileName: string;
+  contentType: string;
 }
 
 export interface GenerateUploadUrlResponse {

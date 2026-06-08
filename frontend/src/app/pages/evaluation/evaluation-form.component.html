@@ -142,10 +142,10 @@
           ></textarea>
         </div>
 
-        <!-- Upload de fotos real via S3 pre-signed url -->
+        <!-- Upload de midias real via S3 pre-signed url -->
         <div class="photo-upload-section">
-          <h3>Fotos do Imóvel (Object Storage S3)</h3>
-          <p class="subtitle">As fotos são enviadas direto para o Amazon S3 usando urls pré-assinadas temporárias</p>
+          <h3>Fotos e Vídeos do Imóvel (Object Storage S3)</h3>
+          <p class="subtitle">Os arquivos são enviados direto para o Amazon S3 usando urls pré-assinadas temporárias</p>
           
           <div class="upload-zone" (click)="photoInput.click()" id="photo-upload-zone">
             <input 
@@ -153,15 +153,15 @@
               #photoInput 
               (change)="onFileSelected($event)" 
               multiple 
-              accept="image/*" 
+              accept="image/*,video/*" 
               class="hide"
             />
             <lucide-icon name="camera"></lucide-icon>
-            <span>Clique para tirar foto ou selecionar da galeria</span>
+            <span>Clique para tirar foto, gravar vídeo ou selecionar da galeria</span>
             <p class="hint">Suporta múltiplos uploads diretos no S3 Bucket</p>
           </div>
           
-          <!-- Lista de fotos carregadas/processadas -->
+          <!-- Lista de midias carregadas/processadas -->
           <div class="upload-list" *ngIf="uploads.length > 0" id="uploaded-photos-preview-grid">
             <div *ngFor="let item of uploads" class="upload-item glass" style="margin-top: 0.75rem; padding: 0.85rem; border-radius: 8px;">
               <div class="upload-item-info" style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.4rem;">

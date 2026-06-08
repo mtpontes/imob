@@ -1,0 +1,110 @@
+name: Deploy Frontend
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Selecione o ambiente de deploy (dev ou prod)'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - prod
+
+jobs:
+  deploy-vercel:
+    name: Deploy to Vercel
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: 'frontend/package-lock.json'
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION || 'us-east-1' }}
+
+      - name: Fetch API Gateway URL from AWS SAM Stack
+        id: fetch_api_url
+        run: |
+          STACK_NAME="imob-app-infra-${{ github.event.inputs.environment }}"
+          API_URL=$(aws cloudformation describe-stacks \
+            --stack-name "$STACK_NAME" \
+            --query "Stacks[0].Outputs[?OutputKey=='ApiUrl'].OutputValue" \
+            --output text)
+          
+          if [ -z "$API_URL" ] || [ "$API_URL" = "None" ]; then
+            echo "ERROR: Could not fetch API Gateway URL from stack $STACK_NAME"
+            exit 1
+          fi
+          
+          echo "API URL fetched: $API_URL"
+          echo "API_URL=$API_URL" >> $GITHUB_ENV
+
+      - name: Generate vercel.json with dynamic rewrites
+        run: |
+          cat <<EOF > frontend/vercel.json
+          {
+            "cleanUrls": true,
+            "rewrites": [
+              {
+                "source": "/api/(.*)",
+                "destination": "${{ env.API_URL }}/api/\$1"
+              },
+              {
+                "source": "/(.*)",
+                "destination": "/index.html"
+              }
+            ]
+          }
+          EOF
+          
+          echo "Generated vercel.json content:"
+          cat frontend/vercel.json
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel Project Settings
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          if [ "${{ github.event.inputs.environment }}" = "prod" ]; then
+            vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+          else
+            vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+          fi
+
+      - name: Build Project Artifacts
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          if [ "${{ github.event.inputs.environment }}" = "prod" ]; then
+            vercel build --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
+          else
+            vercel build --yes --token=${{ secrets.VERCEL_TOKEN }}
+          fi
+
+      - name: Deploy Project to Vercel
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          if [ "${{ github.event.inputs.environment }}" = "prod" ]; then
+            vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+          else
+            vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+          fi

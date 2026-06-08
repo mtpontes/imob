@@ -93,6 +93,23 @@ if ($headStatus -ne "200") {
     Write-Host "Bucket 'imob-app-bucket' ja existe." -ForegroundColor Green
 }
 
+# Aplicar politica de CORS no bucket local do S3 para permitir uploads a partir do frontend (localhost:4200)
+Write-Host "Configurando CORS para o bucket 'imob-app-bucket'..." -ForegroundColor Gray
+$corsBody = '<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><CORSRule><AllowedOrigin>*</AllowedOrigin><AllowedMethod>GET</AllowedMethod><AllowedMethod>PUT</AllowedMethod><AllowedMethod>POST</AllowedMethod><AllowedMethod>DELETE</AllowedMethod><AllowedMethod>HEAD</AllowedMethod><AllowedHeader>*</AllowedHeader><ExposeHeader>ETag</ExposeHeader></CORSRule></CORSConfiguration>'
+$corsStatus = curl.exe -s -o NUL -w "%{http_code}" `
+    -X PUT "http://localhost:4566/imob-app-bucket?cors" `
+    -H "Content-Type: application/xml" `
+    -H "Authorization: AWS4-HMAC-SHA256 Credential=AKIAIOSFODNN7EXAMPLE/20240101/us-east-1/s3/aws4_request, SignedHeaders=host;x-amz-date, Signature=fakesig" `
+    -H "X-Amz-Date: 20240101T000000Z" `
+    -d $corsBody
+
+if ($corsStatus -eq "200" -or $corsStatus -eq "204") {
+    Write-Host "CORS configurado com sucesso no LocalStack S3!" -ForegroundColor Green
+} else {
+    Write-Warning "Falha ao configurar CORS no bucket local (HTTP $corsStatus)."
+}
+
+
 # 4. Iniciar o Backend Quarkus em modo dev
 Write-Host "`n[4/4] Inicializando o Quarkus Dev Server..." -ForegroundColor Yellow
 mvn -f backend/pom.xml quarkus:dev

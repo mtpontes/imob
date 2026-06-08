@@ -98,7 +98,7 @@
                 <span *ngIf="ev.mediaUrls && ev.mediaUrls.length > 0">•</span>
                 <span *ngIf="ev.mediaUrls && ev.mediaUrls.length > 0">
                   <lucide-icon name="camera" style="width: 12px; height: 12px; margin-right: 2px;"></lucide-icon>
-                  {{ ev.mediaUrls.length }} foto(s)
+                  {{ ev.mediaUrls.length }} mídia(s)
                 </span>
               </div>
               <p class="notes" *ngIf="ev.notes" style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.4rem; font-style: italic;">
@@ -174,12 +174,20 @@
         </div>
 
         <div class="modal-photos-section" *ngIf="selectedEvaluation.mediaUrls && selectedEvaluation.mediaUrls.length > 0">
-          <h4>Galeria de Fotos</h4>
+          <h4>Galeria de Mídias</h4>
           <div class="modal-photos-grid" id="modal-eval-photos">
-            <div *ngFor="let url of selectedEvaluation.mediaUrls" class="photo-card">
-              <a [href]="url" target="_blank">
-                <img [src]="url" alt="Foto da visita" />
-              </a>
+            <div *ngFor="let url of selectedEvaluation.mediaUrls; let i = index" class="modal-photo-item" (click)="openLightbox(i)">
+              <ng-container *ngIf="isVideoButton(url); else isImage">
+                <div class="video-thumbnail-wrapper">
+                  <video [src]="url" preload="metadata" class="thumbnail-media"></video>
+                  <div class="play-overlay">
+                    <lucide-icon name="play-circle"></lucide-icon>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-template #isImage>
+                <img [src]="url" alt="Foto da visita" class="thumbnail-media" />
+              </ng-template>
             </div>
           </div>
         </div>
@@ -218,6 +226,42 @@
           <lucide-icon name="trash-2"></lucide-icon>
           <span>Confirmar Exclusão</span>
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Lightbox para visualização premium de fotos e vídeos -->
+  <div id="lightbox-modal" class="modal-wrapper lightbox-wrapper" [class.hide]="!isLightboxOpen" *ngIf="isLightboxOpen && selectedEvaluation && selectedEvaluation.mediaUrls">
+    <div class="modal-backdrop lightbox-backdrop" (click)="closeLightbox()"></div>
+    
+    <div class="lightbox-container">
+      <button class="btn btn-icon lightbox-close-btn" (click)="closeLightbox()">
+        <lucide-icon name="x"></lucide-icon>
+      </button>
+      
+      <button class="btn btn-icon lightbox-nav-btn prev" 
+              *ngIf="selectedEvaluation.mediaUrls.length > 1" 
+              (click)="prevMedia($event)">
+        <lucide-icon name="chevron-left"></lucide-icon>
+      </button>
+      
+      <div class="lightbox-content-area">
+        <ng-container *ngIf="isVideoButton(selectedEvaluation.mediaUrls[activeMediaIndex]); else lightboxImage">
+          <video [src]="selectedEvaluation.mediaUrls[activeMediaIndex]" controls autoplay class="lightbox-media"></video>
+        </ng-container>
+        <ng-template #lightboxImage>
+          <img [src]="selectedEvaluation.mediaUrls[activeMediaIndex]" alt="Mídia ampliada da avaliação" class="lightbox-media" />
+        </ng-template>
+      </div>
+      
+      <button class="btn btn-icon lightbox-nav-btn next" 
+              *ngIf="selectedEvaluation.mediaUrls.length > 1" 
+              (click)="nextMedia($event)">
+        <lucide-icon name="chevron-right"></lucide-icon>
+      </button>
+      
+      <div class="lightbox-counter" *ngIf="selectedEvaluation.mediaUrls.length > 1">
+        {{ activeMediaIndex + 1 }} / {{ selectedEvaluation.mediaUrls.length }}
       </div>
     </div>
   </div>

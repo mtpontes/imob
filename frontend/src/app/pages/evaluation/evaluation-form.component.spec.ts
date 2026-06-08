@@ -173,7 +173,7 @@ describe('EvaluationFormComponent', () => {
     component.onFileSelected(event);
 
     // Assert
-    expect(evaluationServiceMock.generateUploadUrl).toHaveBeenCalledWith('test.png');
+    expect(evaluationServiceMock.generateUploadUrl).toHaveBeenCalledWith('test.png', 'image/png');
     expect(evaluationServiceMock.uploadFileToS3).toHaveBeenCalledWith('http://s3-upload', file);
     expect(component.uploadedMediaKeys.length).toBe(1);
     expect(component.uploadedMediaKeys[0]).toBe('key/1.jpg');
