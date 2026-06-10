@@ -1,15 +1,16 @@
 <section class="property-details-section">
-  <div class="page-header" *ngIf="property">
+  <div class="page-header">
     <div class="page-title-area">
       <button class="btn btn-text-back" routerLink="/properties">
         <lucide-icon name="chevron-left"></lucide-icon>
         <span>Voltar para Imoveis</span>
       </button>
-      <h1 id="details-prop-address">{{ property.address }}</h1>
+      <h1 id="details-prop-address" *ngIf="property">{{ property.address }}</h1>
+      <div class="skeleton-line skeleton-shimmer heading" *ngIf="!property && loading" style="width: 250px; margin-top: 0.5rem; margin-bottom: 0.5rem;"></div>
       <p>Historico completo de vistorias tecnicas e evolucao de notas</p>
     </div>
     
-    <button class="btn btn-primary" (click)="startNewEvaluation()" id="btn-details-new-eval">
+    <button class="btn btn-primary" (click)="startNewEvaluation()" id="btn-details-new-eval" [disabled]="!property">
       <lucide-icon name="clipboard"></lucide-icon>
       <span>Nova Avaliacao</span>
     </button>
@@ -19,10 +20,23 @@
     {{ errorMessage }}
   </div>
 
-  <div class="details-layout-grid" *ngIf="property">
+  <div class="details-layout-grid" *ngIf="property || loading">
     
-    <!-- Esquerda: Ficha do Imóvel -->
-    <div class="details-info-card glass fade-in">
+    <!-- Esquerda: Ficha do Imóvel (Skeleton) -->
+    <div class="details-info-card glass" *ngIf="loading && !property">
+      <h3>Ficha Tecnica</h3>
+      <p class="subtitle">Especificacoes estruturais basicas do imovel</p>
+      
+      <div class="property-specs-list" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 1.2rem;">
+        <div *ngFor="let i of [1, 2, 3, 4, 5]" style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="skeleton-line skeleton-shimmer short"></div>
+          <div class="skeleton-line skeleton-shimmer" style="width: 45%;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Esquerda: Ficha do Imóvel Real -->
+    <div class="details-info-card glass fade-in" *ngIf="property">
       <h3>Ficha Tecnica</h3>
       <p class="subtitle">Especificacoes estruturais basicas do imovel</p>
       
@@ -65,7 +79,21 @@
         <p class="subtitle">Registros de avaliacoes, notas e checklists ordenados por data</p>
       </div>
 
-      <div *ngIf="evaluations.length === 0" class="empty-state-mini glass" id="evaluations-empty-state">
+      <!-- Loading Skeletons do Histórico -->
+      <div class="evaluation-history-list" *ngIf="loading">
+        <div class="history-item-card glass" style="padding: 1.2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; border: 1px solid var(--glass-border);" *ngFor="let i of [1, 2]">
+          <div style="display: flex; align-items: center; gap: 1rem; flex: 1;">
+            <div class="skeleton-shimmer skeleton-circle"></div>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 0.5rem;">
+              <div class="skeleton-line skeleton-shimmer heading" style="width: 50%;"></div>
+              <div class="skeleton-line skeleton-shimmer short"></div>
+            </div>
+          </div>
+          <div class="skeleton-shimmer" style="width: 1rem; height: 1rem; border-radius: var(--radius-sm);"></div>
+        </div>
+      </div>
+
+      <div *ngIf="evaluations.length === 0 && !loading" class="empty-state-mini glass" id="evaluations-empty-state">
         <lucide-icon name="clipboard"></lucide-icon>
         <h4>Nenhuma avaliacao registrada</h4>
         <p>Este imovel ainda nao foi avaliado. Registre a primeira visita para gerar notas.</p>
@@ -75,7 +103,7 @@
         </button>
       </div>
 
-      <div class="evaluation-history-list" *ngIf="evaluations.length > 0" id="evaluation-history-list">
+      <div class="evaluation-history-list" *ngIf="evaluations.length > 0 && !loading" id="evaluation-history-list">
         <div *ngFor="let ev of evaluations; let i = index" class="history-item-card glass interactive-glow fade-in" (click)="openEvaluationDetails(ev)">
           <div class="history-item-left">
             <div class="history-item-score-badge"

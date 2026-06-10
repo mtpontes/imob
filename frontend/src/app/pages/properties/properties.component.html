@@ -41,8 +41,27 @@
     {{ errorMessage }}
   </div>
 
+  <!-- Loading Skeletons -->
+  <div class="properties-grid" *ngIf="loading">
+    <div class="skeleton-card" *ngFor="let i of [1, 2, 3]">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+        <div class="skeleton-line skeleton-shimmer heading"></div>
+        <div class="skeleton-shimmer" style="width: 3.5rem; height: 2.5rem; border-radius: var(--radius-md);"></div>
+      </div>
+      <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+        <div class="skeleton-line skeleton-shimmer" style="width: 25%; height: 1.8rem; border-radius: 20px;"></div>
+        <div class="skeleton-line skeleton-shimmer" style="width: 25%; height: 1.8rem; border-radius: 20px;"></div>
+        <div class="skeleton-line skeleton-shimmer" style="width: 25%; height: 1.8rem; border-radius: 20px;"></div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+        <div class="skeleton-line skeleton-shimmer" style="width: 40%; height: 1.2rem;"></div>
+        <div class="skeleton-line skeleton-shimmer" style="width: 25%; height: 1rem;"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Lista/Grid de Imóveis -->
-  <div id="properties-grid" class="properties-grid" *ngIf="filteredProperties.length > 0">
+  <div id="properties-grid" class="properties-grid" *ngIf="filteredProperties.length > 0 && !loading">
     <div 
       *ngFor="let p of filteredProperties" 
       class="property-card glass" 
