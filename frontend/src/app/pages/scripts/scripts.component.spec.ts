@@ -6,7 +6,7 @@ import { ScriptsComponent } from './scripts.component';
 import { ScriptService } from '../../services/script.service';
 import { ScriptResponse } from '../../types';
 import { importProvidersFrom } from '@angular/core';
-import { LucideAngularModule, Plus, ClipboardList, Edit3 } from 'lucide-angular';
+import { LucideAngularModule, Plus, ClipboardList, Edit3, AlertTriangle, Trash2 } from 'lucide-angular';
 import { By } from '@angular/platform-browser';
 
 describe('ScriptsComponent', () => {
@@ -50,7 +50,9 @@ describe('ScriptsComponent', () => {
           LucideAngularModule.pick({
             Plus,
             ClipboardList,
-            Edit3
+            Edit3,
+            AlertTriangle,
+            Trash2
           })
         )
       ]

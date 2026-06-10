@@ -33,10 +33,31 @@ public class AuthFilter implements ContainerRequestFilter {
 
     private static final Logger LOG = Logger.getLogger(AuthFilter.class);
 
+    private static final int MAX_CACHE_SIZE = 10000;
+    private final Map<String, CacheEntry> cache = new java.util.concurrent.ConcurrentHashMap<>();
+
     private final UserContext userContext;
     private final DynamoDbClient dynamoDb;
     private final String tableName;
     private final boolean mockAuth;
+
+    private static class CacheEntry {
+        private final String workspaceId;
+        private final long expiresAt;
+
+        public CacheEntry(String workspaceId, long expiresAt) {
+            this.workspaceId = workspaceId;
+            this.expiresAt = expiresAt;
+        }
+
+        public String getWorkspaceId() {
+            return this.workspaceId;
+        }
+
+        public boolean isExpired() {
+            return System.currentTimeMillis() > this.expiresAt;
+        }
+    }
 
     public AuthFilter(UserContext userContext, DynamoDbClient dynamoDb, 
                       @ConfigProperty(name = "imob.table.name") String tableName,
@@ -112,6 +133,22 @@ public class AuthFilter implements ContainerRequestFilter {
     }
 
     private String resolveWorkspaceId(String email) {
+        CacheEntry entry = this.cache.get(email);
+        if (entry != null && !entry.isExpired())
+            return entry.getWorkspaceId();
+
+        String workspaceId = this.resolveWorkspaceIdFromDb(email);
+
+        if (this.cache.size() >= MAX_CACHE_SIZE)
+            this.cache.clear();
+
+        long expiresAt = System.currentTimeMillis() + (5 * 60 * 1000);
+        this.cache.put(email, new CacheEntry(workspaceId, expiresAt));
+
+        return workspaceId;
+    }
+
+    private String resolveWorkspaceIdFromDb(String email) {
         String pk = "USER#" + email;
         String sk = "PROFILE";
 

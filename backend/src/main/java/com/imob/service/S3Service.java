@@ -1,79 +1,27 @@
 package com.imob.service;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
-import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.s3.S3Configuration;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
-import java.net.URI;
 import java.time.Duration;
-import java.util.Optional;
 
 @ApplicationScoped
 @RegisterForReflection
 public class S3Service {
 
-    @ConfigProperty(name = "imob.bucket.name")
-    String bucketName;
+    private final String bucketName;
+    private final S3Presigner s3Presigner;
 
-    @ConfigProperty(name = "quarkus.s3.endpoint-override")
-    Optional<String> endpointOverride;
-
-    @ConfigProperty(name = "quarkus.s3.aws.region")
-    Optional<String> region;
-
-    @ConfigProperty(name = "quarkus.s3.aws.credentials.static-provider.access-key-id")
-    Optional<String> accessKeyId;
-
-    @ConfigProperty(name = "quarkus.s3.aws.credentials.static-provider.secret-access-key")
-    Optional<String> secretAccessKey;
-
-    private S3Presigner s3Presigner;
-
-    @PostConstruct
-    public void init() {
-        S3Presigner.Builder builder = S3Presigner.builder();
-        
-        if (this.region.isPresent() && !this.region.get().isBlank()) {
-            builder.region(Region.of(this.region.get()));
-        } else {
-            builder.region(Region.US_EAST_1);
-        }
-
-        if (this.endpointOverride.isPresent() && !this.endpointOverride.get().isBlank()) {
-            builder.endpointOverride(URI.create(this.endpointOverride.get()));
-            // No ambiente local com LocalStack, o SDK gera URLs virtual-hosted-style
-            // (ex: http://bucket.localhost:4566) que o browser nao consegue resolver.
-            // Path-style (http://localhost:4566/bucket) e a forma correta para desenvolvimento local.
-            builder.serviceConfiguration(
-                    S3Configuration.builder().pathStyleAccessEnabled(true).build()
-            );
-        }
-
-        if (this.accessKeyId.isPresent() && !this.accessKeyId.get().isBlank() &&
-                this.secretAccessKey.isPresent() && !this.secretAccessKey.get().isBlank()) {
-            builder.credentialsProvider(StaticCredentialsProvider.create(
-                    AwsBasicCredentials.create(this.accessKeyId.get(), this.secretAccessKey.get())
-            ));
-        }
-
-        this.s3Presigner = builder.build();
-    }
-
-    @PreDestroy
-    public void destroy() {
-        if (this.s3Presigner != null) 
-            this.s3Presigner.close();
+    public S3Service(@ConfigProperty(name = "imob.bucket.name") String bucketName,
+                     S3Presigner s3Presigner) {
+        this.bucketName = bucketName;
+        this.s3Presigner = s3Presigner;
     }
 
     public String generatePutPresignedUrl(String s3Key, String contentType, Duration expiration) {

@@ -88,8 +88,7 @@ export class PropertyDetailsComponent implements OnInit {
     this.evaluations.forEach(ev => {
       this.scriptService.getScript(ev.scriptId, ev.scriptVersion).subscribe({
         next: (script) => {
-          const score = this.evaluationService.calculateScore(script, ev.answers);
-          this.evaluationScores[`${ev.propertyId}_${ev.createdAt}`] = score;
+          this.evaluationScores[`${ev.propertyId}_${ev.createdAt}`] = this.evaluationService.calculateScore(script, ev.answers);
         },
         error: () => {
           this.evaluationScores[`${ev.propertyId}_${ev.createdAt}`] = 0;

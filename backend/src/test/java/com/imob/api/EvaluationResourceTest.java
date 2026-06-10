@@ -128,7 +128,7 @@ public class EvaluationResourceTest {
     }
 
     @Test
-    public void shouldCreateEvaluationAndCalculateScore() {
+    public void shouldCreateEvaluation() {
         // Arrange
         String scriptId = "script-active";
         int version = 1;

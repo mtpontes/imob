@@ -2952,3 +2952,66 @@ input[type=number] {
   color: white;
   box-shadow: var(--shadow-glow);
 }
+
+/* ==========================================================================
+   MICRO-INTERATIONS & PREMIUM EFFECTS
+   ========================================================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Transicoes e Efeitos de Foco nos Inputs */
+.form-control, input, textarea, select {
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast) !important;
+}
+
+.form-control:focus, input:focus, textarea:focus, select:focus {
+  border-color: var(--glass-border-focus) !important;
+  box-shadow: 0 0 0 4px var(--primary-glow) !important;
+  background-color: var(--glass-hover) !important;
+}
+
+/* Efeito Glow para Cards e Interativos */
+.interactive-glow {
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast) !important;
+}
+
+.interactive-glow:hover {
+  transform: translateY(-2px);
+  border-color: rgba(250, 84, 67, 0.3) !important;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 15px var(--primary-glow) !important;
+}
+
+/* Cores e Variantes baseadas em HSL para Notas Negativas / Alertas */
+.property-score-badge.low, .history-item-score-badge.low {
+  background: hsla(350, 80%, 35%, 0.25) !important;
+  color: hsl(350, 80%, 70%) !important;
+  border: 1px solid hsla(350, 80%, 50%, 0.45) !important;
+  box-shadow: 0 0 12px hsla(350, 80%, 50%, 0.15) !important;
+}
+
+.property-score-badge.medium, .history-item-score-badge.medium {
+  background: hsla(38, 92%, 35%, 0.25) !important;
+  color: hsl(38, 92%, 70%) !important;
+  border: 1px solid hsla(38, 92%, 50%, 0.45) !important;
+  box-shadow: 0 0 12px hsla(38, 92%, 50%, 0.15) !important;
+}
+
+.property-score-badge.high, .history-item-score-badge.high {
+  background: hsla(142, 70%, 35%, 0.25) !important;
+  color: hsl(142, 70%, 70%) !important;
+  border: 1px solid hsla(142, 70%, 50%, 0.45) !important;
+  box-shadow: 0 0 12px hsla(142, 70%, 50%, 0.15) !important;
+}

@@ -86,7 +86,9 @@ export class EvaluationService {
       }
 
       earnedPoints += points;
-      totalWeight += weight;
+      if (weight > 0) {
+        totalWeight += weight;
+      }
     });
 
     if (totalWeight === 0) {

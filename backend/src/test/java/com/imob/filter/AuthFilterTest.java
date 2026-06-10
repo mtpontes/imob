@@ -192,4 +192,42 @@ public class AuthFilterTest {
                 .contentType(ContentType.JSON)
                 .body("error", is("Token de autenticacao ausente ou invalido"));
     }
+
+    @Test
+    public void shouldCacheWorkspaceIdForConsecutiveRequests() {
+        // Arrange
+        String email = "cache-test@imob.com";
+        String workspaceId = "workspace_cached_abc";
+
+        GetItemResponse getItemResponse = GetItemResponse.builder()
+                .item(Map.of(
+                        "PK", AttributeValue.builder().s("USER#" + email).build(),
+                        "SK", AttributeValue.builder().s("PROFILE").build(),
+                        "workspaceId", AttributeValue.builder().s(workspaceId).build()
+                ))
+                .build();
+
+        Mockito.when(this.dynamoDbClient.getItem(Mockito.any(GetItemRequest.class)))
+                .thenReturn(getItemResponse);
+
+        // Act & Assert
+        given()
+                .header("X-User-Email", email)
+                .when()
+                .get("/api/test-auth")
+                .then()
+                .statusCode(200)
+                .body("workspaceId", is(workspaceId));
+
+        given()
+                .header("X-User-Email", email)
+                .when()
+                .get("/api/test-auth")
+                .then()
+                .statusCode(200)
+                .body("workspaceId", is(workspaceId));
+
+        Mockito.verify(this.dynamoDbClient, Mockito.times(1))
+                .getItem(Mockito.any(GetItemRequest.class));
+    }
 }

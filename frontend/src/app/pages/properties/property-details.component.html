@@ -22,7 +22,7 @@
   <div class="details-layout-grid" *ngIf="property">
     
     <!-- Esquerda: Ficha do Imóvel -->
-    <div class="details-info-card glass">
+    <div class="details-info-card glass fade-in">
       <h3>Ficha Tecnica</h3>
       <p class="subtitle">Especificacoes estruturais basicas do imovel</p>
       
@@ -59,7 +59,7 @@
     </div>
 
     <!-- Direita: Histórico de Visitas -->
-    <div class="details-history-card glass">
+    <div class="details-history-card glass fade-in">
       <div class="history-card-header">
         <h3>Historico de Avaliacoes</h3>
         <p class="subtitle">Registros de avaliacoes, notas e checklists ordenados por data</p>
@@ -76,7 +76,7 @@
       </div>
 
       <div class="evaluation-history-list" *ngIf="evaluations.length > 0" id="evaluation-history-list">
-        <div *ngFor="let ev of evaluations; let i = index" class="history-item-card glass" (click)="openEvaluationDetails(ev)">
+        <div *ngFor="let ev of evaluations; let i = index" class="history-item-card glass interactive-glow fade-in" (click)="openEvaluationDetails(ev)">
           <div class="history-item-left">
             <div class="history-item-score-badge"
                  [class.low]="(evaluationScores[ev.propertyId + '_' + ev.createdAt] ?? 0) < 50"

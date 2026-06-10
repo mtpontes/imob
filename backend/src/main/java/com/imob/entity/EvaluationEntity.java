@@ -36,6 +36,8 @@ public class EvaluationEntity {
         map.put("scriptId", AttributeValue.builder().s(this.scriptId).build());
         map.put("scriptVersion", AttributeValue.builder().n(String.valueOf(this.scriptVersion)).build());
 
+
+
         if (this.notes != null) 
             map.put("notes", AttributeValue.builder().s(this.notes).build());
 
@@ -69,6 +71,8 @@ public class EvaluationEntity {
 
         if (map.containsKey("notes")) 
             entity.setNotes(map.get("notes").s());
+
+
 
         if (map.containsKey("mediaKeys")) {
             try {
