@@ -52,8 +52,7 @@ Resources:
           - DELETE
           - OPTIONS
         AllowOrigins:
-          - http://localhost:4200
-          - https://*.vercel.app
+          - '*'
         MaxAge: 3600
 
   # 3. Tabela DynamoDB com Single-Table Design
