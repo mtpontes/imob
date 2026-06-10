@@ -38,8 +38,6 @@ public class AuthFilter implements ContainerRequestFilter {
 
     private final UserContext userContext;
     private final DynamoDbClient dynamoDb;
-    private final String tableName;
-    private final boolean mockAuth;
 
     private static class CacheEntry {
         private final String workspaceId;
@@ -59,13 +57,20 @@ public class AuthFilter implements ContainerRequestFilter {
         }
     }
 
-    public AuthFilter(UserContext userContext, DynamoDbClient dynamoDb, 
-                      @ConfigProperty(name = "imob.table.name") String tableName,
-                      @ConfigProperty(name = "imob.mock.auth", defaultValue = "false") boolean mockAuth) {
+    public AuthFilter(UserContext userContext, DynamoDbClient dynamoDb) {
         this.userContext = userContext;
         this.dynamoDb = dynamoDb;
-        this.tableName = tableName;
-        this.mockAuth = mockAuth;
+    }
+
+    private String getTableName() {
+        return org.eclipse.microprofile.config.ConfigProvider.getConfig()
+                .getValue("imob.table.name", String.class);
+    }
+
+    private boolean isMockAuth() {
+        return org.eclipse.microprofile.config.ConfigProvider.getConfig()
+                .getOptionalValue("imob.mock.auth", Boolean.class)
+                .orElse(false);
     }
 
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -84,7 +89,7 @@ public class AuthFilter implements ContainerRequestFilter {
 
         String email = this.extractEmail(requestContext);
         if (email == null || email.isBlank()) {
-            if (this.mockAuth) 
+            if (this.isMockAuth()) 
                 email = "dev-user@imob.com";
             else {
                 requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
@@ -157,7 +162,7 @@ public class AuthFilter implements ContainerRequestFilter {
         key.put("SK", AttributeValue.builder().s(sk).build());
 
         GetItemRequest getReq = GetItemRequest.builder()
-                .tableName(this.tableName)
+                .tableName(this.getTableName())
                 .key(key)
                 .build();
 
@@ -176,7 +181,7 @@ public class AuthFilter implements ContainerRequestFilter {
         newItem.put("workspaceId", AttributeValue.builder().s(newWorkspaceId).build());
 
         PutItemRequest putReq = PutItemRequest.builder()
-                .tableName(this.tableName)
+                .tableName(this.getTableName())
                 .item(newItem)
                 .build();
 

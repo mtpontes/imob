@@ -14,6 +14,8 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import java.net.URI;
 import java.util.Optional;
 
+import jakarta.inject.Singleton;
+
 @ApplicationScoped
 @RegisterForReflection
 public class S3PresignerProducer {
@@ -33,7 +35,7 @@ public class S3PresignerProducer {
     private S3Presigner s3Presigner;
 
     @Produces
-    @ApplicationScoped
+    @Singleton
     public S3Presigner produceS3Presigner() {
         S3Presigner.Builder builder = S3Presigner.builder();
         
