@@ -1,0 +1,13 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://COLOCAR_SUA_API_GATEWAY_URL_AQUI/api/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
