@@ -28,7 +28,15 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
+      - name: Cache Quarkus Native Build
+        id: cache-backend
+        uses: actions/cache@v4
+        with:
+          path: backend/target/function.zip
+          key: ${{ runner.os }}-quarkus-native-${{ hashFiles('backend/pom.xml', 'backend/src/**') }}
+
       - name: Build Native Image via Docker
+        if: steps.cache-backend.outputs.cache-hit != 'true'
         run: |
           chmod +x backend/mvnw
           cd backend && ./mvnw clean package -Pnative -DskipTests -Dquarkus.native.container-build=true
