@@ -6,17 +6,18 @@ import { PropertyDetailsComponent } from './pages/properties/property-details.co
 import { ScriptsComponent } from './pages/scripts/scripts.component';
 import { ScriptBuilderComponent } from './pages/script-builder/script-builder.component';
 import { EvaluationFormComponent } from './pages/evaluation/evaluation-form.component';
+import { authGuard, guestGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'properties', component: PropertiesComponent },
-  { path: 'properties/create', component: PropertyCreateComponent },
-  { path: 'properties/:propertyId', component: PropertyDetailsComponent },
-  { path: 'roteiros', component: ScriptsComponent },
-  { path: 'roteiros/builder', component: ScriptBuilderComponent },
-  { path: 'roteiros/builder/:id/:version', component: ScriptBuilderComponent },
-  { path: 'evaluate/:propertyId', component: EvaluationFormComponent },
-  { path: 'evaluate/:propertyId/edit/:createdAt', component: EvaluationFormComponent },
+  { path: 'login', component: LoginComponent, canActivate: [guestGuard] },
+  { path: 'properties', component: PropertiesComponent, canActivate: [authGuard] },
+  { path: 'properties/create', component: PropertyCreateComponent, canActivate: [authGuard] },
+  { path: 'properties/:propertyId', component: PropertyDetailsComponent, canActivate: [authGuard] },
+  { path: 'roteiros', component: ScriptsComponent, canActivate: [authGuard] },
+  { path: 'roteiros/builder', component: ScriptBuilderComponent, canActivate: [authGuard] },
+  { path: 'roteiros/builder/:id/:version', component: ScriptBuilderComponent, canActivate: [authGuard] },
+  { path: 'evaluate/:propertyId', component: EvaluationFormComponent, canActivate: [authGuard] },
+  { path: 'evaluate/:propertyId/edit/:createdAt', component: EvaluationFormComponent, canActivate: [authGuard] },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' }
 ];
