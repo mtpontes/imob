@@ -123,6 +123,7 @@ Resources:
             Path: /{proxy+}
             Method: ANY
             ApiId: !Ref ImobAppHttpApi
+            PayloadFormatVersion: '1.0'
 
 Outputs:
   ApiUrl:
