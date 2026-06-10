@@ -27,6 +27,10 @@ export class ScriptBuilderComponent implements OnInit {
   newCritIsScorable: boolean = true;
   newCritWeight: number = 1;
 
+  // Controle de reordenacao por drag and drop
+  draggedIndex: number | null = null;
+  dragOverIndex: number | null = null;
+
   constructor(
     private fb: FormBuilder,
     private scriptService: ScriptService,
@@ -101,6 +105,48 @@ export class ScriptBuilderComponent implements OnInit {
 
   removeCriteria(index: number): void {
     this.criteria.removeAt(index);
+  }
+
+  moveCriteria(fromIndex: number, toIndex: number): void {
+    if (fromIndex < 0 || fromIndex >= this.criteria.length || toIndex < 0 || toIndex >= this.criteria.length) {
+      return;
+    }
+    const control = this.criteria.at(fromIndex);
+    this.criteria.removeAt(fromIndex);
+    this.criteria.insert(toIndex, control);
+  }
+
+  onDragStart(index: number, event: DragEvent): void {
+    this.draggedIndex = index;
+    if (event.dataTransfer) {
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('text/plain', index.toString());
+    }
+  }
+
+  onDragOver(index: number, event: DragEvent): void {
+    event.preventDefault();
+    this.dragOverIndex = index;
+  }
+
+  onDragLeave(index: number): void {
+    if (this.dragOverIndex === index) {
+      this.dragOverIndex = null;
+    }
+  }
+
+  onDrop(index: number, event: DragEvent): void {
+    event.preventDefault();
+    if (this.draggedIndex !== null && this.draggedIndex !== index) {
+      this.moveCriteria(this.draggedIndex, index);
+    }
+    this.draggedIndex = null;
+    this.dragOverIndex = null;
+  }
+
+  onDragEnd(): void {
+    this.draggedIndex = null;
+    this.dragOverIndex = null;
   }
 
   addCriteriaLocal(): void {

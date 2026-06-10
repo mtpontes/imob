@@ -41,6 +41,7 @@ import {
   Calendar,
   ChevronRight,
   ChevronDown,
+  ChevronUp,
   Check
 } from 'lucide-angular';
 
@@ -97,6 +98,7 @@ export const appConfig: ApplicationConfig = {
         Calendar,
         ChevronRight,
         ChevronDown,
+        ChevronUp,
         Check
       })
     )
