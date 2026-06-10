@@ -130,3 +130,48 @@ Para a execução correta das pipelines, configure os seguintes segredos nas def
 *   `VERCEL_TOKEN`: Token de autenticação da sua conta Vercel.
 *   `VERCEL_ORG_ID`: ID da Organização na Vercel associada ao projeto.
 *   `VERCEL_PROJECT_ID`: ID do Projeto na Vercel associada ao frontend.
+
+---
+
+### Permissões IAM Necessárias para o Usuário AWS
+
+O usuário IAM associado às chaves `AWS_ACCESS_KEY_ID` e `AWS_SECRET_ACCESS_KEY` configuradas nos segredos do repositório necessita de permissões para criar, alterar e gerenciar todos os recursos provisionados pelo AWS SAM.
+
+#### Opção 1: Administrador (Recomendado para Dev/Staging)
+Anexe a política gerenciada da AWS **`AdministratorAccess`** ao usuário IAM do pipeline. Esta é a forma mais prática para que o AWS SAM consiga gerenciar o ciclo de vida dos recursos e criar papéis do IAM dinamicamente.
+
+#### Opção 2: Políticas Específicas (Menor Privilégio para Produção)
+Se o ambiente exigir restrições estritas de segurança, configure uma política IAM customizada que conceda permissões para as seguintes áreas e ações:
+*   **AWS CloudFormation (`cloudformation:*`):** Para criar e atualizar as stacks da aplicação (`imob-app-infra-*`).
+*   **AWS IAM:**
+    *   `iam:CreateRole`
+    *   `iam:DeleteRole`
+    *   `iam:GetRole`
+    *   `iam:PassRole` (obrigatório para associar a role de execução à Lambda)
+    *   `iam:PutRolePolicy`
+    *   `iam:DeleteRolePolicy`
+    *   `iam:AttachRolePolicy`
+    *   `iam:DetachRolePolicy`
+*   **AWS Lambda (`lambda:*`):** Para publicar e atualizar a Lambda com Quarkus Native.
+*   **Amazon S3 (`s3:*`):** Para o bucket de deploy do SAM e o bucket de fotos do aplicativo.
+*   **Amazon DynamoDB (`dynamodb:*`):** Para criar e gerenciar a tabela do sistema.
+*   **Amazon Cognito (`cognito-idp:*`):** Para provisionar os pools de usuário e clientes de aplicativo.
+*   **Amazon API Gateway (`apigateway:*`):** Para criar o gateway HTTP, rotas e estágios.
+
+> [!IMPORTANT]
+> **Ajuste para Tagging do API Gateway v2 (HTTP APIs):** Devido a limitações da política gerenciada padrão `AmazonAPIGatewayAdministrator` no tratamento de ARNs codificados para gerenciamento de tags pelo AWS SAM, é necessário anexar uma política inline ao usuário IAM com as seguintes permissões para evitar erros de `AccessDenied` na criação da stack:
+> ```json
+> {
+>     "Version": "2012-10-17",
+>     "Statement": [
+>         {
+>             "Effect": "Allow",
+>             "Action": [
+>                 "apigateway:*"
+>             ],
+>             "Resource": "*"
+>         }
+>     ]
+> }
+> ```
+
