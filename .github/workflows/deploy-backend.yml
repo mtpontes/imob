@@ -13,10 +13,9 @@ on:
           - prod
 
 jobs:
-  build-and-deploy:
-    name: Build Native & Deploy SAM
+  build:
+    name: Build Native Artifact
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment || 'dev' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -40,6 +39,28 @@ jobs:
         run: |
           chmod +x backend/mvnw
           cd backend && ./mvnw clean package -Pnative -DskipTests -Dquarkus.native.container-build=true
+
+      - name: Upload Lambda Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lambda-function
+          path: backend/target/function.zip
+          retention-days: 1
+
+  deploy:
+    name: Deploy AWS SAM
+    needs: build
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'dev' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Lambda Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: lambda-function
+          path: backend/target
 
       - name: Setup AWS SAM CLI
         uses: aws-actions/setup-sam@v2
