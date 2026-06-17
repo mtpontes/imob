@@ -23,17 +23,32 @@
       />
     </div>
     <div class="filter-actions">
-      <select id="property-filter-status" class="select-styled" (change)="onStatusFilterChange($event)">
-        <option value="all">Todos os Imóveis</option>
-        <option value="evaluated">Avaliados</option>
-        <option value="pending">Não Avaliados</option>
-      </select>
-      <select id="property-sort" class="select-styled" (change)="onSortChange($event)">
-        <option value="recent">Mais Recentes</option>
-        <option value="price-asc">Menor Preco</option>
-        <option value="price-desc">Maior Preco</option>
-        <option value="sqm-desc">Maior Area (m²)</option>
-      </select>
+      <!-- Dropdown Customizado de Status -->
+      <div class="custom-select-container" [class.open]="isFilterDropdownOpen">
+        <div class="custom-select-trigger" (click)="toggleFilterDropdown()" id="property-filter-status-trigger">
+          <span>{{ getFilterLabel() }}</span>
+          <lucide-icon name="chevron-down"></lucide-icon>
+        </div>
+        <div class="custom-select-options glass">
+          <div class="custom-select-option" [class.selected]="statusFilter === 'all'" (click)="selectFilter('all')">Todos os Imóveis</div>
+          <div class="custom-select-option" [class.selected]="statusFilter === 'evaluated'" (click)="selectFilter('evaluated')">Avaliados</div>
+          <div class="custom-select-option" [class.selected]="statusFilter === 'pending'" (click)="selectFilter('pending')">Não Avaliados</div>
+        </div>
+      </div>
+
+      <!-- Dropdown Customizado de Ordenacao -->
+      <div class="custom-select-container" [class.open]="isSortDropdownOpen">
+        <div class="custom-select-trigger" (click)="toggleSortDropdown()" id="property-sort-trigger">
+          <span>{{ getSortLabel() }}</span>
+          <lucide-icon name="chevron-down"></lucide-icon>
+        </div>
+        <div class="custom-select-options glass">
+          <div class="custom-select-option" [class.selected]="sortBy === 'recent'" (click)="selectSort('recent')">Mais Recentes</div>
+          <div class="custom-select-option" [class.selected]="sortBy === 'price-asc'" (click)="selectSort('price-asc')">Menor Preço</div>
+          <div class="custom-select-option" [class.selected]="sortBy === 'price-desc'" (click)="selectSort('price-desc')">Maior Preço</div>
+          <div class="custom-select-option" [class.selected]="sortBy === 'sqm-desc'" (click)="selectSort('sqm-desc')">Maior Área (m²)</div>
+        </div>
+      </div>
     </div>
   </div>
 

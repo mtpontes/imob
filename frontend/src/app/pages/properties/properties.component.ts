@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { PropertyService } from '../../services/property.service';
@@ -23,6 +23,9 @@ export class PropertiesComponent implements OnInit {
   searchQuery: string = '';
   sortBy: string = 'recent';
   statusFilter: string = 'all';
+  
+  isSortDropdownOpen = false;
+  isFilterDropdownOpen = false;
   
   loading: boolean = false;
   errorMessage: string = '';
@@ -102,6 +105,56 @@ export class PropertiesComponent implements OnInit {
     const select = event.target as HTMLSelectElement;
     this.statusFilter = select.value;
     this.applyFilterAndSort();
+  }
+
+  toggleSortDropdown(): void {
+    this.isSortDropdownOpen = !this.isSortDropdownOpen;
+    this.isFilterDropdownOpen = false;
+  }
+
+  toggleFilterDropdown(): void {
+    this.isFilterDropdownOpen = !this.isFilterDropdownOpen;
+    this.isSortDropdownOpen = false;
+  }
+
+  selectSort(option: string): void {
+    this.sortBy = option;
+    this.isSortDropdownOpen = false;
+    this.applyFilterAndSort();
+  }
+
+  selectFilter(option: string): void {
+    this.statusFilter = option;
+    this.isFilterDropdownOpen = false;
+    this.applyFilterAndSort();
+  }
+
+  getSortLabel(): string {
+    switch (this.sortBy) {
+      case 'recent': return 'Mais Recentes';
+      case 'price-asc': return 'Menor Preço';
+      case 'price-desc': return 'Maior Preço';
+      case 'sqm-desc': return 'Maior Área (m²)';
+      default: return 'Ordenar por';
+    }
+  }
+
+  getFilterLabel(): string {
+    switch (this.statusFilter) {
+      case 'all': return 'Todos os Imóveis';
+      case 'evaluated': return 'Avaliados';
+      case 'pending': return 'Não Avaliados';
+      default: return 'Filtrar por';
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.custom-select-container')) {
+      this.isSortDropdownOpen = false;
+      this.isFilterDropdownOpen = false;
+    }
   }
 
   applyFilterAndSort(): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -29,6 +29,7 @@ export class EvaluationFormComponent implements OnInit {
   selectedScript?: ScriptResponse;
 
   isEditMode: boolean = false;
+  isScriptDropdownOpen: boolean = false;
   createdAt: string = '';
   evaluationToEdit?: EvaluationResponse;
 
@@ -192,6 +193,27 @@ export class EvaluationFormComponent implements OnInit {
     }
   }
 
+  toggleScriptDropdown(): void {
+    if (this.isEditMode) return;
+    this.isScriptDropdownOpen = !this.isScriptDropdownOpen;
+  }
+
+  selectScriptCustom(scriptId: string): void {
+    this.isScriptDropdownOpen = false;
+    this.selectedScript = this.scripts.find(s => s.id === scriptId);
+    if (this.selectedScript) {
+      this.buildForm(this.selectedScript);
+    } else {
+      this.evaluationForm = undefined;
+      this.currentScore = 0;
+    }
+  }
+
+  getScriptLabel(): string {
+    if (!this.selectedScript) return '-- Escolha um roteiro ativo --';
+    return `${this.selectedScript.name || 'Roteiro de Vistoria'} (v${this.selectedScript.version})`;
+  }
+
   buildForm(script: ScriptResponse): void {
     const answersGroup: { [key: string]: any } = {};
 
@@ -342,5 +364,13 @@ export class EvaluationFormComponent implements OnInit {
 
   cancelEvaluation(): void {
     this.router.navigate(['/properties', this.propertyId]);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.custom-select-container')) {
+      this.isScriptDropdownOpen = false;
+    }
   }
 }

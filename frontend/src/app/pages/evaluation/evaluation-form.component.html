@@ -43,19 +43,23 @@
       <!-- Seleção de Roteiro -->
       <div class="form-group" id="eval-template-select-container" style="margin-bottom: 2rem;">
         <label for="eval-template-select">Selecione o Roteiro de Avaliação</label>
-        <select 
-          id="eval-template-select" 
-          class="select-styled" 
-          required 
-          (change)="onScriptChange($event)"
-          [disabled]="isEditMode"
-          [value]="selectedScript?.id || ''"
-        >
-          <option value="">-- Escolha um roteiro ativo --</option>
-          <option *ngFor="let p of scripts" [value]="p.id">
-            {{ p.name || 'Roteiro de Vistoria' }} (v{{ p.version }})
-          </option>
-        </select>
+        <div class="custom-select-container full-width" [class.open]="isScriptDropdownOpen" [class.disabled]="isEditMode" id="eval-template-select-custom">
+          <div class="custom-select-trigger" (click)="toggleScriptDropdown()" id="eval-template-select-trigger">
+            <span>{{ getScriptLabel() }}</span>
+            <lucide-icon name="chevron-down"></lucide-icon>
+          </div>
+          <div class="custom-select-options glass">
+            <div 
+              *ngFor="let p of scripts" 
+              class="custom-select-option" 
+              [class.selected]="selectedScript?.id === p.id" 
+              (click)="selectScriptCustom(p.id)"
+              [id]="'script-option-' + p.id"
+            >
+              {{ p.name || 'Roteiro de Vistoria' }} (v{{ p.version }})
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Formulário de critérios gerados dinamicamente -->
