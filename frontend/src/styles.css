@@ -938,11 +938,12 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .search-input-wrapper {
   flex: 1;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .search-input-wrapper i,
-.search-input-wrapper lucide-icon,
-.search-input-wrapper svg {
+.search-input-wrapper lucide-icon {
   position: absolute !important;
   left: 1.25rem !important;
   top: 50% !important;
@@ -950,14 +951,20 @@ input[type="range"]::-webkit-slider-thumb:hover {
   color: var(--text-muted);
   width: 18px !important;
   height: 18px !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block !important;
   pointer-events: none;
+  z-index: 1;
+}
+
+.search-input-wrapper lucide-icon svg {
+  width: 18px !important;
+  height: 18px !important;
+  display: block !important;
 }
 
 .search-input-wrapper input {
-  padding-left: 3.75rem !important;
+  width: 100%;
+  padding-left: 3.25rem !important;
 }
 
 .properties-grid {
