@@ -26,6 +26,7 @@ export class ScriptBuilderComponent implements OnInit {
   newCritType: 'text' | 'bool' | 'range' = 'bool';
   newCritIsScorable: boolean = true;
   newCritWeight: number = 1;
+  newCritIsPenalty: boolean = false;
 
   // Controle de reordenacao por drag and drop
   draggedIndex: number | null = null;
@@ -95,7 +96,7 @@ export class ScriptBuilderComponent implements OnInit {
       label: [crit?.label || '', Validators.required],
       type: [crit?.type || 'bool', Validators.required],
       isScorable: [crit?.isScorable ?? true],
-      weight: [crit?.weight ?? 1, [Validators.required, Validators.min(0)]],
+      weight: [crit?.weight ?? 1, [Validators.required, Validators.min(-5), Validators.max(5)]],
       min: [crit?.min ?? 0],
       max: [crit?.max ?? 5]
     });
@@ -154,12 +155,14 @@ export class ScriptBuilderComponent implements OnInit {
       return;
     }
 
+    const weightValue = this.newCritType === 'text' ? 0 : (this.newCritIsPenalty ? -this.newCritWeight : this.newCritWeight);
+
     const newCrit: Criteria = {
       id: 'crit_' + Math.random().toString(36).substr(2, 9),
       label: this.newCritLabel.trim(),
       type: this.newCritType,
       isScorable: this.newCritType === 'text' ? false : this.newCritIsScorable,
-      weight: this.newCritType === 'text' ? 0 : this.newCritWeight,
+      weight: this.newCritType === 'text' ? 0 : weightValue,
       min: this.newCritType === 'range' ? 0 : undefined,
       max: this.newCritType === 'range' ? 5 : undefined
     };
@@ -171,12 +174,14 @@ export class ScriptBuilderComponent implements OnInit {
     this.newCritType = 'bool';
     this.newCritIsScorable = true;
     this.newCritWeight = 1;
+    this.newCritIsPenalty = false;
   }
 
   onTypeChange(): void {
     if (this.newCritType === 'text') {
       this.newCritIsScorable = false;
       this.newCritWeight = 0;
+      this.newCritIsPenalty = false;
     } else {
       this.newCritIsScorable = true;
       this.newCritWeight = 1;
@@ -198,6 +203,7 @@ export class ScriptBuilderComponent implements OnInit {
       name: '',
       newVersion: false
     });
+    this.newCritIsPenalty = false;
   }
 
   onSubmit(): void {

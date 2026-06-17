@@ -74,8 +74,8 @@
                     <span class="crit-badge scorable" *ngIf="crit.get('isScorable')?.value">
                       Pontuável
                     </span>
-                    <span class="crit-badge weight" *ngIf="crit.get('isScorable')?.value">
-                      Peso {{ crit.get('weight')?.value }}x
+                    <span class="crit-badge weight" [class.penalty]="crit.get('weight')?.value < 0" *ngIf="crit.get('isScorable')?.value">
+                      {{ crit.get('weight')?.value < 0 ? 'Penalizador' : 'Peso' }} {{ crit.get('weight')?.value }}x
                     </span>
                   </div>
                 </div>
@@ -185,6 +185,14 @@
             <input type="checkbox" id="crit-is-scorable" [(ngModel)]="newCritIsScorable" name="newCritIsScorable" />
             <span class="checkmark"></span>
             <span class="checkbox-text">Pontuável (Gera nota de avaliação)</span>
+          </label>
+        </div>
+
+        <div class="form-group row-checkbox" id="crit-penalty-wrapper" *ngIf="newCritType !== 'text' && newCritIsScorable">
+          <label class="checkbox-container">
+            <input type="checkbox" id="crit-is-penalty" [(ngModel)]="newCritIsPenalty" name="newCritIsPenalty" />
+            <span class="checkmark"></span>
+            <span class="checkbox-text">Penalizador (Peso Negativo)</span>
           </label>
         </div>
 

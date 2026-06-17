@@ -1,6 +1,4 @@
 {
-  "cleanUrls": true,
-  "ignoreCommand": "exit 0",
   "rewrites": [
     {
       "source": "/(.*)",
