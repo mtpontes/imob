@@ -167,10 +167,14 @@
       <div class="modal-body">
         
         <div class="modal-score-banner">
-          <span class="label">Nota Final</span>
-          <span class="label">Roteiro Utilizado</span>
-          <span class="value score-value" id="modal-eval-score">{{ evaluationScores[selectedEvaluation.propertyId + '_' + selectedEvaluation.createdAt] | number:'1.2-2' }}</span>
-          <span class="value template-value" id="modal-eval-template">{{ selectedScriptName }} (v{{ selectedEvaluation.scriptVersion }})</span>
+          <div class="score-banner-item">
+            <span class="label">Nota Final</span>
+            <span class="value score-value" id="modal-eval-score">{{ evaluationScores[selectedEvaluation.propertyId + '_' + selectedEvaluation.createdAt] | number:'1.2-2' }}</span>
+          </div>
+          <div class="score-banner-item">
+            <span class="label">Roteiro Utilizado</span>
+            <span class="value template-value" id="modal-eval-template">{{ selectedScriptName }} (v{{ selectedEvaluation.scriptVersion }})</span>
+          </div>
         </div>
 
         <div class="modal-answers-section">

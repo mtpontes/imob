@@ -534,15 +534,22 @@ body::after {
   padding: 0;
   font-size: 0.85rem;
   margin-bottom: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .btn-text-back:hover {
   color: var(--primary-light);
 }
 
-.btn-text-back i {
+.btn-text-back i,
+.btn-text-back lucide-icon {
   width: 16px;
   height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-icon {
@@ -664,7 +671,7 @@ textarea {
 }
 
 .input-wrapper input {
-  padding-left: 3.75rem !important;
+  padding-left: 4.25rem !important;
 }
 
 .select-styled {
@@ -2336,16 +2343,19 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .modal-score-banner {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  column-gap: 2rem;
-  row-gap: 0.25rem;
-  padding: 1rem 1.5rem;
+  display: flex;
+  gap: 3rem;
+  padding: 1.25rem 1.5rem;
   background: var(--bg-secondary);
   border-radius: var(--radius-sm);
   border: 1px solid var(--glass-border);
   margin-bottom: 1.5rem;
-  align-items: baseline;
+}
+
+.score-banner-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 .modal-score-banner .label {
@@ -2960,9 +2970,9 @@ input[type=number] {
   }
 
   .modal-score-banner {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-    padding: 0.85rem;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.25rem;
   }
 
   .modal-header h3 {
@@ -3039,6 +3049,28 @@ input[type=number] {
 
   .template-row-actions .btn {
     width: 100% !important;
+  }
+
+  /* Formulário de Imóveis (Cadastro) */
+  .form-container-card {
+    padding: 1.5rem 1rem !important;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+
+  .form-actions-footer {
+    flex-direction: column-reverse !important;
+    gap: 0.75rem !important;
+    margin-top: 2rem !important;
+    padding-top: 1.25rem !important;
+  }
+
+  .form-actions-footer .btn {
+    width: 100% !important;
+    margin: 0 !important;
   }
 }
 
