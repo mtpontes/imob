@@ -1804,6 +1804,18 @@ input[type="range"]::-webkit-slider-thumb:hover {
   color: var(--text-muted);
 }
 
+.upload-zone.drag-over {
+  border-color: var(--primary);
+  background: rgba(250, 84, 67, 0.06);
+  box-shadow: 0 0 0 3px rgba(250, 84, 67, 0.15), 0 0 20px rgba(250, 84, 67, 0.08);
+  transform: scale(1.015);
+}
+
+.upload-zone.drag-over span {
+  color: var(--primary-light);
+}
+
+
 .uploaded-photos-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));

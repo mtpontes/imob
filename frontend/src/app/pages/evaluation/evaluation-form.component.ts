@@ -37,6 +37,7 @@ export class EvaluationFormComponent implements OnInit {
   currentScore: number = 0;
   uploadedMediaKeys: string[] = [];
   uploads: UploadItem[] = [];
+  isDragOver: boolean = false;
 
   loading: boolean = false;
   errorMessage: string = '';
@@ -258,9 +259,41 @@ export class EvaluationFormComponent implements OnInit {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      for (let i = 0; i < input.files.length; i++) {
+      for (let i = 0; i < input.files.length; i++)
         this.uploadFile(input.files[i]);
-      }
+    }
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = true;
+  }
+
+  onDragEnter(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = true;
+  }
+
+  onDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = false;
+  }
+
+  onDrop(event: DragEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = false;
+
+    const files = event.dataTransfer?.files;
+    if (!files || files.length === 0) return;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.type.startsWith('image/') || file.type.startsWith('video/'))
+        this.uploadFile(file);
     }
   }
 
