@@ -2210,7 +2210,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .history-item-meta {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  flex-wrap: wrap;
+  row-gap: 0.25rem;
+  column-gap: 0.5rem;
   font-size: 0.75rem;
   color: var(--text-muted);
   margin-top: 0.15rem;
@@ -2220,6 +2222,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .history-item-meta i {
@@ -3038,6 +3042,10 @@ input[type=number] {
     font-size: 0.9rem !important;
   }
 
+  .history-item-meta .meta-separator {
+    display: none !important;
+  }
+
   .delete-confirm-modal-content {
     padding: 1.5rem !important;
   }
@@ -3532,4 +3540,59 @@ input[type=number] {
 
 .custom-select-container.disabled .custom-select-trigger {
   cursor: not-allowed;
+}
+
+/* ==========================================================================
+   UX ENHANCEMENTS FOR NEGATIVE EVALUATION CRITERIA (PENALIZERS)
+   ========================================================================== */
+
+.criteria-item-field.criteria-penalty {
+  border-left: 4px solid var(--danger) !important;
+  background: hsla(350, 80%, 60%, 0.03) !important;
+}
+
+.criteria-item-field.criteria-penalty:hover {
+  background: hsla(350, 80%, 60%, 0.05) !important;
+  border-left-color: var(--danger) !important;
+}
+
+.penalty-switch input:checked + .slider-switch {
+  background-color: var(--danger) !important;
+  border-color: var(--danger) !important;
+}
+
+.penalty-switch input:focus + .slider-switch {
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.45) !important;
+}
+
+.answer-item .crit-ans.score-val.penalty-range {
+  color: var(--danger) !important;
+}
+
+.switch-value.text-danger {
+  color: var(--danger) !important;
+  font-weight: 700 !important;
+}
+
+.switch-value.text-success {
+  color: var(--success) !important;
+  font-weight: 600 !important;
+}
+
+.weight-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  background: rgba(225, 0, 255, 0.1);
+  border: 1px solid rgba(225, 0, 255, 0.2);
+  color: #e100ff;
+}
+
+.weight-badge.penalty {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: var(--danger);
 }

@@ -117,7 +117,7 @@
                  [class.medium]="(evaluationScores[ev.propertyId + '_' + ev.createdAt] ?? 0) >= 50 && (evaluationScores[ev.propertyId + '_' + ev.createdAt] ?? 0) < 80"
                  [class.high]="(evaluationScores[ev.propertyId + '_' + ev.createdAt] ?? 0) >= 80"
                  [id]="'eval-score-' + i">
-              <span>{{ (evaluationScores[ev.propertyId + '_' + ev.createdAt] ?? 0) | number:'1.0-0' }}</span>
+              <span>{{ (evaluationScores[ev.propertyId + '_' + ev.createdAt] ?? 0) | number:'1.1-1' }}</span>
             </div>
             
             <div class="history-item-info">
@@ -129,7 +129,7 @@
                   <lucide-icon name="calendar" style="width: 12px; height: 12px; margin-right: 2px;"></lucide-icon>
                   {{ ev.createdAt | date:'dd/MM/yyyy HH:mm' }}
                 </span>
-                <span *ngIf="ev.mediaUrls && ev.mediaUrls.length > 0">•</span>
+                <span *ngIf="ev.mediaUrls && ev.mediaUrls.length > 0" class="meta-separator">•</span>
                 <span *ngIf="ev.mediaUrls && ev.mediaUrls.length > 0">
                   <lucide-icon name="camera" style="width: 12px; height: 12px; margin-right: 2px;"></lucide-icon>
                   {{ ev.mediaUrls.length }} mídia(s)
@@ -169,7 +169,7 @@
         <div class="modal-score-banner">
           <div class="score-banner-item">
             <span class="label">Nota Final</span>
-            <span class="value score-value" id="modal-eval-score">{{ evaluationScores[selectedEvaluation.propertyId + '_' + selectedEvaluation.createdAt] | number:'1.2-2' }}</span>
+            <span class="value score-value" id="modal-eval-score">{{ evaluationScores[selectedEvaluation.propertyId + '_' + selectedEvaluation.createdAt] | number:'1.1-1' }}</span>
           </div>
           <div class="score-banner-item">
             <span class="label">Roteiro Utilizado</span>
@@ -181,20 +181,25 @@
           <h4>Respostas do Checklist</h4>
           <div class="answers-list" id="modal-eval-answers">
             <div *ngFor="let key of objectKeys(selectedEvaluation.answers)" class="answer-item">
-              <span class="crit-title">{{ getCriteriaLabel(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) }}</span>
-              
+              <span class="crit-title" style="display: inline-flex; align-items: center; gap: 0.25rem;">
+                <lucide-icon *ngIf="isCriteriaPenalty(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key)" name="alert-triangle" style="width: 14px; height: 14px; color: var(--danger);"></lucide-icon>
+                {{ getCriteriaLabel(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) }}
+              </span>
+               
               <!-- Caso seja booleano -->
               <span *ngIf="getCriteriaType(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) === 'bool'" 
                     class="crit-ans" 
-                    [class.yes]="selectedEvaluation.answers[key] === true"
-                    [class.no]="selectedEvaluation.answers[key] !== true"
+                    [class.yes]="isCriteriaPenalty(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) ? selectedEvaluation.answers[key] !== true : selectedEvaluation.answers[key] === true"
+                    [class.no]="isCriteriaPenalty(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) ? selectedEvaluation.answers[key] === true : selectedEvaluation.answers[key] !== true"
                     style="display: inline-flex; align-items: center; gap: 0.25rem;">
-                <lucide-icon [name]="selectedEvaluation.answers[key] === true ? 'check' : 'x'" style="width: 14px; height: 14px;"></lucide-icon>
-                {{ selectedEvaluation.answers[key] === true ? 'Atende' : 'Não Atende' }}
+                <lucide-icon [name]="selectedEvaluation.answers[key] === true ? (isCriteriaPenalty(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) ? 'alert-triangle' : 'check') : 'x'" style="width: 14px; height: 14px;"></lucide-icon>
+                {{ selectedEvaluation.answers[key] === true ? 'Sim' : 'Não' }}
               </span>
 
               <!-- Caso seja range -->
-              <span *ngIf="getCriteriaType(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) === 'range'" class="crit-ans score-val">
+              <span *ngIf="getCriteriaType(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) === 'range'" 
+                    class="crit-ans score-val"
+                    [class.penalty-range]="isCriteriaPenalty(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key)">
                 {{ selectedEvaluation.answers[key] }} / 5
               </span>
 

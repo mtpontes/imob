@@ -95,13 +95,21 @@ export class PropertyDetailsComponent implements OnInit {
   }
 
   calculateEvaluationsScores(): void {
+    this.evaluationScores = {};
     this.evaluations.forEach(ev => {
       this.scriptService.getScript(ev.scriptId, ev.scriptVersion).subscribe({
         next: (script) => {
-          this.evaluationScores[`${ev.propertyId}_${ev.createdAt}`] = this.evaluationService.calculateScore(script, ev.answers);
+          const score = this.evaluationService.calculateScore(script, ev.answers);
+          this.evaluationScores = {
+            ...this.evaluationScores,
+            [`${ev.propertyId}_${ev.createdAt}`]: score
+          };
         },
         error: () => {
-          this.evaluationScores[`${ev.propertyId}_${ev.createdAt}`] = 0;
+          this.evaluationScores = {
+            ...this.evaluationScores,
+            [`${ev.propertyId}_${ev.createdAt}`]: 0
+          };
         }
       });
     });
@@ -136,6 +144,17 @@ export class PropertyDetailsComponent implements OnInit {
       }
     }
     return 'text';
+  }
+
+  isCriteriaPenalty(scriptId: string, scriptVersion: number, criteriaId: string): boolean {
+    const script = this.scripts.find(s => s.id === scriptId && s.version === scriptVersion);
+    if (script) {
+      const criteria = script.criteria.find(c => c.id === criteriaId);
+      if (criteria) {
+        return criteria.isScorable && criteria.weight < 0;
+      }
+    }
+    return false;
   }
 
   getScriptName(scriptId: string, scriptVersion: number): string {

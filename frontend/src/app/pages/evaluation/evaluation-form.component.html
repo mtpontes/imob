@@ -76,13 +76,20 @@
             [attr.for]="criteria.type === 'bool' ? 'input-criteria-' + criteria.id : null"
             class="criteria-item-field glass-card-nested"
             [class.clickable-bool-card]="criteria.type === 'bool'"
+            [class.criteria-penalty]="criteria.isScorable && criteria.weight < 0"
             style="display: block; margin-bottom: 1.5rem; padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01);"
           >
             
-            <div class="criteria-field-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-              <span class="criteria-label" style="font-weight: 600; font-size: 0.95rem;">{{ criteria.label }}</span>
-              <span *ngIf="criteria.isScorable" class="weight-badge" [id]="'weight-badge-' + criteria.id" style="font-size: 0.7rem; font-weight: 700; background: rgba(225, 0, 255, 0.1); border: 1px solid rgba(225, 0, 255, 0.2); padding: 0.15rem 0.5rem; border-radius: 4px; color: #e100ff;">
+            <div class="criteria-field-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+              <span class="criteria-label" style="font-weight: 600; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 0.4rem; margin-right: 0.75rem;">
+                <lucide-icon *ngIf="criteria.isScorable && criteria.weight < 0" name="alert-triangle" style="width: 16px; height: 16px; color: var(--danger);"></lucide-icon>
+                {{ criteria.label }}
+              </span>
+              <span *ngIf="criteria.isScorable && criteria.weight > 0" class="weight-badge" [id]="'weight-badge-' + criteria.id">
                 Peso: {{ criteria.weight }}x
+              </span>
+              <span *ngIf="criteria.isScorable && criteria.weight < 0" class="weight-badge penalty" [id]="'weight-badge-' + criteria.id">
+                Penalizador: {{ criteria.weight }}x
               </span>
             </div>
 
@@ -99,7 +106,7 @@
 
             <!-- Input Switch Boolean -->
             <div *ngIf="criteria.type === 'bool'" class="input-container switch-container" style="display: flex; align-items: center; gap: 1rem;">
-              <span class="switch">
+              <span class="switch" [class.penalty-switch]="criteria.isScorable && criteria.weight < 0">
                 <input
                   type="checkbox"
                   [formControlName]="criteria.id"
@@ -107,8 +114,11 @@
                 />
                 <span class="slider-switch round"></span>
               </span>
-              <span class="switch-value" style="font-size: 0.85rem; font-weight: 500; color: var(--text-secondary);">
-                {{ evaluationForm.get('answers.' + criteria.id)?.value ? 'Atende' : 'Não Atende' }}
+              <span class="switch-value" 
+                    [class.text-danger]="criteria.isScorable && criteria.weight < 0 && evaluationForm.get('answers.' + criteria.id)?.value"
+                    [class.text-success]="criteria.isScorable && criteria.weight < 0 && !evaluationForm.get('answers.' + criteria.id)?.value"
+                    style="font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); transition: var(--transition-fast);">
+                {{ evaluationForm.get('answers.' + criteria.id)?.value ? 'Sim' : 'Não' }}
               </span>
             </div>
 
@@ -116,7 +126,7 @@
             <div *ngIf="criteria.type === 'range'" class="input-container range-container" style="display: flex; flex-direction: column; gap: 0.5rem;">
               <div class="range-labels" style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted);">
                 <span>Min: {{ criteria.min ?? 0 }}</span>
-                <span class="range-current-value" [id]="'current-val-' + criteria.id" style="font-weight: 700; color: #e100ff;">
+                <span class="range-current-value" [id]="'current-val-' + criteria.id" [style.color]="criteria.weight < 0 ? 'var(--danger)' : '#e100ff'" style="font-weight: 700;">
                   Nota: {{ evaluationForm.get('answers.' + criteria.id)?.value }}
                 </span>
                 <span>Max: {{ criteria.max ?? 5 }}</span>
@@ -129,6 +139,9 @@
                 [id]="'input-criteria-' + criteria.id"
                 class="range-slider"
               />
+              <div *ngIf="criteria.type === 'range' && criteria.isScorable && criteria.weight < 0" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; font-style: italic;">
+                * Valores maiores reduzem a nota final do imóvel.
+              </div>
             </div>
 
           </label>
