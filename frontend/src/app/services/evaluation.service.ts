@@ -92,7 +92,7 @@ export class EvaluationService {
     });
 
     if (totalWeight === 0) {
-      return 0;
+      return earnedPoints < 0 ? earnedPoints : 0;
     }
 
     const score = (earnedPoints / totalWeight) * 100;

@@ -102,4 +102,77 @@ describe('EvaluationService', () => {
     const score = service.calculateScore(dummyScript, answers);
     expect(score).toBe(70);
   });
+
+  it('should calculate score with negative weights correctly', () => {
+    // Arrange
+    const script = {
+      id: 'script-1',
+      version: 1,
+      isActive: true,
+      createdAt: '2026',
+      name: 'Roteiro com Penalizadores',
+      criteria: [
+        { id: 'crit-pos', label: 'Item Positivo', type: 'bool' as const, isScorable: true, weight: 4 },
+        { id: 'crit-neg', label: 'Item Penalizador', type: 'bool' as const, isScorable: true, weight: -2 }
+      ]
+    };
+
+    // Caso 1: Apenas o positivo está ativo
+    const answers1 = { 'crit-pos': true, 'crit-neg': false };
+
+    // Caso 2: Ambos estão ativos (positivo e penalizador)
+    const answers2 = { 'crit-pos': true, 'crit-neg': true };
+
+    // Act
+    const score1 = service.calculateScore(script, answers1);
+    const score2 = service.calculateScore(script, answers2);
+
+    // Assert
+    expect(score1).toBe(100);
+    expect(score2).toBe(50);
+  });
+
+  it('should return negative score when negative weights exceed positive weights', () => {
+    // Arrange
+    const script = {
+      id: 'script-1',
+      version: 1,
+      isActive: true,
+      createdAt: '2026',
+      name: 'Roteiro com Alta Penalidade',
+      criteria: [
+        { id: 'crit-pos', label: 'Item Positivo', type: 'bool' as const, isScorable: true, weight: 2 },
+        { id: 'crit-neg', label: 'Item Penalizador', type: 'bool' as const, isScorable: true, weight: -5 }
+      ]
+    };
+    const answers = { 'crit-pos': true, 'crit-neg': true };
+
+    // Act
+    const score = service.calculateScore(script, answers);
+
+    // Assert
+    expect(score).toBe(-150);
+  });
+
+  it('should return earnedPoints directly when totalWeight is zero and negative points exist', () => {
+    // Arrange
+    const script = {
+      id: 'script-1',
+      version: 1,
+      isActive: true,
+      createdAt: '2026',
+      name: 'Roteiro Apenas Penalizadores',
+      criteria: [
+        { id: 'crit-neg1', label: 'Penalizador 1', type: 'bool' as const, isScorable: true, weight: -3 },
+        { id: 'crit-neg2', label: 'Penalizador 2', type: 'range' as const, isScorable: true, weight: -4, min: 0, max: 5 }
+      ]
+    };
+    const answers = { 'crit-neg1': true, 'crit-neg2': 3 };
+
+    // Act
+    const score = service.calculateScore(script, answers);
+
+    // Assert
+    expect(score).toBe(-5.4);
+  });
 });

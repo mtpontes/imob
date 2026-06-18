@@ -243,11 +243,16 @@ body::after {
   z-index: 100;
   display: flex;
   justify-content: space-around;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 1rem calc(0.75rem + env(safe-area-inset-bottom));
   border-top: 1px solid var(--glass-border);
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  border-radius: 0 !important;
   background: hsla(222, 47%, 7%, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav-item {
@@ -1435,13 +1440,15 @@ input[type="range"]::-webkit-slider-thumb:hover {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.25rem;
+  flex-wrap: wrap;
 }
 
 .crit-badge {
   font-size: 0.65rem;
-  padding: 0.1rem 0.35rem;
+  padding: 0.15rem 0.45rem;
   border-radius: 4px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .crit-badge.type {
@@ -1960,6 +1967,13 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .score-badge.low {
   background: rgba(250, 80, 60, 0.15);
   color: var(--danger);
+}
+
+.score-badge.danger {
+  background: rgba(239, 68, 68, 0.25);
+  color: #ff4d4d;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.15);
 }
 
 .score-badge.neutral {
@@ -2834,7 +2848,39 @@ input[type=number] {
   }
 
   .builder-main-card {
-    padding: 1.25rem;
+    padding: 1rem;
+  }
+
+  .criteria-item-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+  }
+
+  .criteria-item-left {
+    align-items: flex-start;
+  }
+
+  .criteria-item-actions {
+    align-self: flex-end;
+    justify-content: flex-end;
+    width: 100%;
+    border-top: 1px solid var(--glass-border);
+    padding-top: 0.65rem;
+    margin-top: 0.25rem;
+  }
+
+  /* Oculta nav bar no mobile se o teclado virtual estiver aberto (altura da tela pequena) */
+  @media (max-height: 550px) {
+    .app-nav {
+      transform: translateY(100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .app-main {
+      padding-bottom: 2rem !important;
+    }
   }
 
   .builder-sidebar-card {

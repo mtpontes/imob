@@ -144,6 +144,7 @@ export class EvaluationFormComponent implements OnInit {
 
   get scoreBadgeText(): string {
     if (this.currentScore === 0 && !this.isAnyScorableAnswered()) return 'Aguardando';
+    if (this.currentScore < 0) return 'Critico';
     if (this.currentScore < 50) return 'Ruim';
     if (this.currentScore >= 50 && this.currentScore < 80) return 'Regular';
     return 'Excelente';
@@ -151,6 +152,7 @@ export class EvaluationFormComponent implements OnInit {
 
   get scoreBadgeClass(): string {
     if (this.currentScore === 0 && !this.isAnyScorableAnswered()) return 'none';
+    if (this.currentScore < 0) return 'danger';
     if (this.currentScore < 50) return 'low';
     if (this.currentScore >= 50 && this.currentScore < 80) return 'medium';
     return 'high';

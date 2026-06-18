@@ -205,14 +205,14 @@
     "semantic_hash": "be87a33d0625a5e2601288d2beab4ecf"
   },
   "frontend/src/app/pages/evaluation/evaluation-form.component.spec.ts": {
-    "mtime": 1780942086.8929648,
-    "ast_hash": "994473e67701fbce570c1f87f2f0ad79",
-    "semantic_hash": "994473e67701fbce570c1f87f2f0ad79"
+    "mtime": 1781748952.1188133,
+    "ast_hash": "249fa94215e40b840d10fc639c790d07",
+    "semantic_hash": ""
   },
   "frontend/src/app/pages/evaluation/evaluation-form.component.ts": {
-    "mtime": 1781663443.6699488,
-    "ast_hash": "c4b07ce45330892a8ec131da447b678d",
-    "semantic_hash": "c4b07ce45330892a8ec131da447b678d"
+    "mtime": 1781748860.725384,
+    "ast_hash": "3d01c5c2f6823bcbfa28695672d2e4ad",
+    "semantic_hash": ""
   },
   "frontend/src/app/pages/login/login.component.spec.ts": {
     "mtime": 1780811223.0975327,
@@ -225,9 +225,9 @@
     "semantic_hash": "94cdfb484e57acc7dc5fb44e3ee9c69a"
   },
   "frontend/src/app/pages/properties/properties.component.spec.ts": {
-    "mtime": 1780870716.3713226,
-    "ast_hash": "00b46352e50052a804ca36bebe7d2e5c",
-    "semantic_hash": "00b46352e50052a804ca36bebe7d2e5c"
+    "mtime": 1781748980.3230379,
+    "ast_hash": "583fa4cad99a9c0dd710cea285f5d03a",
+    "semantic_hash": ""
   },
   "frontend/src/app/pages/properties/properties.component.ts": {
     "mtime": 1781663400.242106,
@@ -280,14 +280,14 @@
     "semantic_hash": "ff18f0dfec287d26e389526d2e832671"
   },
   "frontend/src/app/services/evaluation.service.spec.ts": {
-    "mtime": 1780942059.733979,
-    "ast_hash": "997b54bf072ab5251a8ac25d21bbd9e8",
-    "semantic_hash": "997b54bf072ab5251a8ac25d21bbd9e8"
+    "mtime": 1781748852.2980647,
+    "ast_hash": "2e37ad64bcf0dc4f827b8c8106abf9ee",
+    "semantic_hash": ""
   },
   "frontend/src/app/services/evaluation.service.ts": {
-    "mtime": 1781058047.5934017,
-    "ast_hash": "860706200be99807fcfe1f1f499e9b8e",
-    "semantic_hash": "860706200be99807fcfe1f1f499e9b8e"
+    "mtime": 1781748839.0269387,
+    "ast_hash": "529ba43455135ca8512549c1dc1ea251",
+    "semantic_hash": ""
   },
   "frontend/src/app/services/property.service.spec.ts": {
     "mtime": 1780599641.4644063,

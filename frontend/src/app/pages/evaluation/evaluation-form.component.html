@@ -197,7 +197,10 @@
       <p class="subtitle">Pontuação preliminar baseada nos critérios respondidos e nos pesos configurados</p>
       
       <div class="score-visualizer">
-        <div class="score-circle" [class]="scoreBadgeClass">
+        <div class="score-circle" 
+             [class.glow-green]="scoreBadgeClass === 'high'"
+             [class.glow-yellow]="scoreBadgeClass === 'medium'"
+             [class.glow-red]="scoreBadgeClass === 'low' || scoreBadgeClass === 'danger'">
           <span class="score-num" id="live-score-value">{{ currentScore | number:'1.1-1' }}</span>
           <span class="score-max">/ 100</span>
         </div>
