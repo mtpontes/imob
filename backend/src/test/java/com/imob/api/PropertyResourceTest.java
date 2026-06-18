@@ -1,7 +1,9 @@
 package com.imob.api;
 
 import com.imob.entity.PropertyEntity;
+import com.imob.entity.EvaluationEntity;
 import com.imob.repository.DynamoDbRepository;
+import com.imob.service.S3Service;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
@@ -27,6 +29,9 @@ public class PropertyResourceTest {
 
     @InjectMock
     DynamoDbClient dynamoDbClient;
+
+    @InjectMock
+    S3Service s3Service;
 
     @BeforeEach
     public void setup() {
@@ -108,5 +113,75 @@ public class PropertyResourceTest {
 
         Mockito.verify(this.repository, Mockito.times(1))
                 .getProperties("workspace_test");
+    }
+
+    @Test
+    public void shouldDeletePropertyAndCascadeDeleteEvaluationsAndS3Media() {
+        // Arrange
+        String propertyId = "prop-123";
+
+        PropertyEntity property = new PropertyEntity();
+        property.setWorkspaceId("workspace_test");
+        property.setId(propertyId);
+        property.setAddress("Rua Principal, 100");
+
+        Mockito.when(this.repository.getProperty("workspace_test", propertyId))
+                .thenReturn(property);
+
+        EvaluationEntity eval1 = new EvaluationEntity();
+        eval1.setWorkspaceId("workspace_test");
+        eval1.setPropertyId(propertyId);
+        eval1.setCreatedAt("2026-06-18T10:00:00Z");
+        eval1.setMediaKeys(List.of("workspace_test/prop-123/foto1.jpg"));
+
+        EvaluationEntity eval2 = new EvaluationEntity();
+        eval2.setWorkspaceId("workspace_test");
+        eval2.setPropertyId(propertyId);
+        eval2.setCreatedAt("2026-06-18T11:00:00Z");
+        eval2.setMediaKeys(List.of());
+
+        Mockito.when(this.repository.getEvaluationsByProperty("workspace_test", propertyId))
+                .thenReturn(List.of(eval1, eval2));
+
+        // Act & Assert
+        given()
+                .header("X-User-Email", "test@imob.com")
+                .when()
+                .delete("/api/properties/" + propertyId)
+                .then()
+                .statusCode(204);
+
+        Mockito.verify(this.s3Service, Mockito.times(1))
+                .deleteObject("workspace_test/prop-123/foto1.jpg");
+
+        Mockito.verify(this.repository, Mockito.times(1))
+                .deleteEvaluation("workspace_test", propertyId, "2026-06-18T10:00:00Z");
+        Mockito.verify(this.repository, Mockito.times(1))
+                .deleteEvaluation("workspace_test", propertyId, "2026-06-18T11:00:00Z");
+
+        Mockito.verify(this.repository, Mockito.times(1))
+                .deleteProperty("workspace_test", propertyId);
+    }
+
+    @Test
+    public void shouldReturnNotFoundWhenDeletingNonexistentProperty() {
+        // Arrange
+        String propertyId = "prop-nonexistent";
+
+        Mockito.when(this.repository.getProperty("workspace_test", propertyId))
+                .thenReturn(null);
+
+        // Act & Assert
+        given()
+                .header("X-User-Email", "test@imob.com")
+                .when()
+                .delete("/api/properties/" + propertyId)
+                .then()
+                .statusCode(404)
+                .contentType(ContentType.JSON)
+                .body("error", is("Imovel nao encontrado"));
+
+        Mockito.verify(this.repository, Mockito.never())
+                .deleteProperty(Mockito.anyString(), Mockito.anyString());
     }
 }

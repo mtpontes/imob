@@ -4,12 +4,16 @@ import com.imob.context.UserContext;
 import com.imob.dto.CreatePropertyRequest;
 import com.imob.dto.PropertyResponse;
 import com.imob.entity.PropertyEntity;
+import com.imob.entity.EvaluationEntity;
 import com.imob.repository.DynamoDbRepository;
+import com.imob.service.S3Service;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -29,6 +33,7 @@ public class PropertyResource {
 
     private final UserContext userContext;
     private final DynamoDbRepository repository;
+    private final S3Service s3Service;
 
     @GET
     public List<PropertyResponse> getProperties() {
@@ -64,6 +69,29 @@ public class PropertyResource {
         return Response.status(Response.Status.CREATED)
                 .entity(this.mapToResponse(entity))
                 .build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response deleteProperty(@PathParam("id") String propertyId) {
+        String workspaceId = this.userContext.getWorkspaceId();
+        PropertyEntity property = this.repository.getProperty(workspaceId, propertyId);
+        if (property == null)
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"error\":\"Imovel nao encontrado\"}")
+                    .build();
+
+        List<EvaluationEntity> evaluations = this.repository.getEvaluationsByProperty(workspaceId, propertyId);
+        for (EvaluationEntity eval : evaluations) {
+            if (eval.getMediaKeys() != null)
+                for (String key : eval.getMediaKeys())
+                    this.s3Service.deleteObject(key);
+            this.repository.deleteEvaluation(workspaceId, propertyId, eval.getCreatedAt());
+        }
+
+        this.repository.deleteProperty(workspaceId, propertyId);
+
+        return Response.noContent().build();
     }
 
     private PropertyResponse mapToResponse(PropertyEntity entity) {

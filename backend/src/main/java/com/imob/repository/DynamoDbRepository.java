@@ -296,4 +296,16 @@ public class DynamoDbRepository {
                 .build();
         this.dynamoDb.deleteItem(delReq);
     }
+
+    public void deleteProperty(String workspaceId, String propertyId) {
+        Map<String, AttributeValue> key = new HashMap<>();
+        key.put("PK", AttributeValue.builder().s("WORKSPACE#" + workspaceId).build());
+        key.put("SK", AttributeValue.builder().s("PROPERTY#" + propertyId).build());
+
+        DeleteItemRequest delReq = DeleteItemRequest.builder()
+                .tableName(this.tableName)
+                .key(key)
+                .build();
+        this.dynamoDb.deleteItem(delReq);
+    }
 }
