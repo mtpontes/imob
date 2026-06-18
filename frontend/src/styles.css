@@ -173,6 +173,21 @@ body::after {
   filter: drop-shadow(0 0 8px var(--primary));
 }
 
+.brand-logo-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 6px var(--primary-glow));
+}
+
+.login-logo-img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 0 12px var(--primary-glow));
+}
+
 .workspace-badge {
   display: flex;
   align-items: center;
