@@ -31,6 +31,7 @@ export class PropertyDetailsComponent implements OnInit {
   // Controle do Modal de Exclusão Customizado
   isConfirmDeleteOpen: boolean = false;
   evaluationToDelete: EvaluationResponse | null = null;
+  isConfirmDeletePropOpen: boolean = false;
 
   // Controle do Lightbox de Mídias
   isLightboxOpen: boolean = false;
@@ -185,6 +186,28 @@ export class PropertyDetailsComponent implements OnInit {
   cancelDelete(): void {
     this.isConfirmDeleteOpen = false;
     this.evaluationToDelete = null;
+  }
+
+  deleteProperty(): void {
+    this.isConfirmDeletePropOpen = true;
+  }
+
+  confirmDeleteProperty(): void {
+    if (!this.propertyId) return;
+    this.propertyService.deleteProperty(this.propertyId).subscribe({
+      next: () => {
+        this.isConfirmDeletePropOpen = false;
+        this.router.navigate(['/properties']);
+      },
+      error: () => {
+        this.errorMessage = 'Erro ao excluir o imóvel.';
+        this.isConfirmDeletePropOpen = false;
+      }
+    });
+  }
+
+  cancelDeleteProperty(): void {
+    this.isConfirmDeletePropOpen = false;
   }
 
   startNewEvaluation(): void {

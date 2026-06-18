@@ -10,10 +10,16 @@
       <p>Historico completo de vistorias tecnicas e evolucao de notas</p>
     </div>
     
-    <button class="btn btn-primary" (click)="startNewEvaluation()" id="btn-details-new-eval" [disabled]="!property">
-      <lucide-icon name="clipboard"></lucide-icon>
-      <span>Nova Avaliacao</span>
-    </button>
+    <div class="page-actions" style="display: flex; gap: 0.75rem; align-items: center;" *ngIf="property">
+      <button class="btn btn-danger-outline" (click)="deleteProperty()" id="btn-details-delete-prop" style="background: rgba(239, 68, 68, 0.05); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2);">
+        <lucide-icon name="trash-2"></lucide-icon>
+        <span>Excluir Imovel</span>
+      </button>
+      <button class="btn btn-primary" (click)="startNewEvaluation()" id="btn-details-new-eval">
+        <lucide-icon name="clipboard"></lucide-icon>
+        <span>Nova Avaliacao</span>
+      </button>
+    </div>
   </div>
 
   <div *ngIf="errorMessage" class="alert error-alert">
@@ -251,6 +257,28 @@
       <div class="delete-confirm-footer">
         <button class="btn btn-outline" (click)="cancelDelete()" id="btn-cancel-delete">Cancelar</button>
         <button class="btn btn-danger-filled" (click)="confirmDelete()" id="btn-confirm-delete-exec">
+          <lucide-icon name="trash-2"></lucide-icon>
+          <span>Confirmar Exclusão</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal customizado de confirmação de exclusão do imóvel -->
+  <div id="confirm-delete-prop-modal" class="modal-wrapper" [class.hide]="!isConfirmDeletePropOpen">
+    <div class="modal-backdrop" (click)="cancelDeleteProperty()"></div>
+    <div class="modal-content delete-confirm-modal-content glass">
+      <div class="delete-confirm-body">
+        <div class="alert-icon-wrapper">
+          <lucide-icon name="alert-triangle"></lucide-icon>
+        </div>
+        <h3>Excluir Imóvel?</h3>
+        <p>Esta ação não pode ser desfeita. O imóvel, todas as suas avaliações técnicas e mídias associadas no S3 serão excluídos permanentemente.</p>
+      </div>
+
+      <div class="delete-confirm-footer">
+        <button class="btn btn-outline" (click)="cancelDeleteProperty()" id="btn-cancel-delete-prop">Cancelar</button>
+        <button class="btn btn-danger-filled" (click)="confirmDeleteProperty()" id="btn-confirm-delete-prop-exec">
           <lucide-icon name="trash-2"></lucide-icon>
           <span>Confirmar Exclusão</span>
         </button>

@@ -18,4 +18,8 @@ export class PropertyService {
   createProperty(request: CreatePropertyRequest): Observable<PropertyResponse> {
     return this.http.post<PropertyResponse>(this.apiUrl, request);
   }
+
+  deleteProperty(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }
