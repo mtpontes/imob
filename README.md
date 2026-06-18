@@ -12,7 +12,6 @@ O projeto está estruturado no formato de monorepo:
 
 *   **[backend/](file:///e:/projetos/vibecode/app-de-avaliar-imoveis/backend):** Código-fonte em Java 25 utilizando o framework Quarkus compilado para Imagem Nativa (GraalVM), empacotado para execução em ambiente AWS Lambda (Fat Lambda). Também contém o arquivo de infraestrutura do AWS SAM (`template.yaml`).
 *   **[frontend/](file:///e:/projetos/vibecode/app-de-avaliar-imoveis/frontend):** Aplicação Single Page Application (SPA) desenvolvida em Angular configurada como Progressive Web App (PWA) e hospedada na Vercel.
-*   **[push-bolt/](file:///e:/projetos/vibecode/app-de-avaliar-imoveis/push-bolt):** Projeto de referência utilizado como base para o desenvolvimento das pipelines de CI/CD.
 
 ---
 

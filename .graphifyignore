@@ -1,0 +1,58 @@
+# Pastas e Diretórios (Ignora recursivamente em qualquer nível)
+node_modules
+dist
+.angular
+target
+.gradle
+build
+bin
+out
+.git
+.github
+.agents
+.agents copy
+containers
+docs
+.vscode
+.idea
+.settings
+graphify-out
+
+# Extensões Globais de Documentos e Mídias (Ignora recursivamente em qualquer nível)
+*.md
+*.txt
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.ico
+*.webmanifest
+*.db
+*.pem
+*.crt
+*.key
+*.log
+*.zip
+*.tar.gz
+
+# Arquivos de Suporte / Metadados / Layout (Para permitir modo code-only sem LLM)
+*.html
+*.css
+*.json
+*.xml
+*.yaml
+*.yml
+*.properties
+*.conf
+*.config
+.editorconfig
+.gitignore
+.graphifyignore
+
+# Outros arquivos específicos
+Makefile
+docker-compose.yml
+*.ps1
+*.sh
