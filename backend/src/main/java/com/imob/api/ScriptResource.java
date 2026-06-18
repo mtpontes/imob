@@ -5,7 +5,9 @@ import com.imob.dto.CreateScriptRequest;
 import com.imob.dto.ScriptResponse;
 import com.imob.dto.UpdateScriptRequest;
 import com.imob.entity.ScriptEntity;
+import com.imob.entity.EvaluationEntity;
 import com.imob.repository.DynamoDbRepository;
+import com.imob.service.S3Service;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.ws.rs.Consumes;
@@ -34,6 +36,7 @@ public class ScriptResource {
 
     private final UserContext userContext;
     private final DynamoDbRepository repository;
+    private final S3Service s3Service;
 
     @GET
     public List<ScriptResponse> getActiveScripts() {
@@ -144,6 +147,15 @@ public class ScriptResource {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("{\"error\":\"Roteiro nao encontrado\"}")
                     .build();
+
+        List<EvaluationEntity> evaluations = this.repository.getEvaluations(workspaceId);
+        for (EvaluationEntity eval : evaluations)
+            if (scriptId.equals(eval.getScriptId())) {
+                if (eval.getMediaKeys() != null)
+                    for (String key : eval.getMediaKeys())
+                        this.s3Service.deleteObject(key);
+                this.repository.deleteEvaluation(workspaceId, eval.getPropertyId(), eval.getCreatedAt());
+            }
 
         this.repository.deleteAllVersionsOfScript(workspaceId, scriptId);
 

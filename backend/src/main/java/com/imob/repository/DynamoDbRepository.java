@@ -255,6 +255,36 @@ public class DynamoDbRepository {
         return null;
     }
 
+    public List<EvaluationEntity> getEvaluations(String workspaceId) {
+        String pk = "WORKSPACE#" + workspaceId;
+        String skPrefix = "EVALUATION#";
+
+        Map<String, String> attributeNames = new HashMap<>();
+        attributeNames.put("#pk", "PK");
+        attributeNames.put("#sk", "SK");
+
+        Map<String, AttributeValue> attributeValues = new HashMap<>();
+        attributeValues.put(":pk", AttributeValue.builder().s(pk).build());
+        attributeValues.put(":skPrefix", AttributeValue.builder().s(skPrefix).build());
+
+        QueryRequest queryReq = QueryRequest.builder()
+                .tableName(this.tableName)
+                .keyConditionExpression("#pk = :pk AND begins_with(#sk, :skPrefix)")
+                .expressionAttributeNames(attributeNames)
+                .expressionAttributeValues(attributeValues)
+                .build();
+
+        QueryResponse res = this.dynamoDb.query(queryReq);
+        List<EvaluationEntity> list = new ArrayList<>();
+        if (res.hasItems())
+            for (Map<String, AttributeValue> item : res.items()) {
+                EvaluationEntity evaluation = EvaluationEntity.fromAttributeMap(item);
+                if (evaluation != null)
+                    list.add(evaluation);
+            }
+        return list;
+    }
+
     public void deleteEvaluation(String workspaceId, String propertyId, String createdAt) {
         Map<String, AttributeValue> key = new HashMap<>();
         key.put("PK", AttributeValue.builder().s("WORKSPACE#" + workspaceId).build());

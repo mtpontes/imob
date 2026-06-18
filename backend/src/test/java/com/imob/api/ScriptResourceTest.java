@@ -2,7 +2,9 @@ package com.imob.api;
 
 import com.imob.dto.CriteriaDTO;
 import com.imob.entity.ScriptEntity;
+import com.imob.entity.EvaluationEntity;
 import com.imob.repository.DynamoDbRepository;
+import com.imob.service.S3Service;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
@@ -28,6 +30,9 @@ public class ScriptResourceTest {
 
     @InjectMock
     DynamoDbClient dynamoDbClient;
+
+    @InjectMock
+    S3Service s3Service;
 
     @BeforeEach
     public void setup() {
@@ -199,5 +204,91 @@ public class ScriptResourceTest {
 
         Mockito.verify(this.repository, Mockito.times(2))
                 .saveScript(Mockito.any(ScriptEntity.class));
+    }
+
+    @Test
+    public void shouldDeleteScriptAndCascadeDeleteEvaluationsAndS3Media() {
+        // Arrange
+        String scriptId = "script-to-delete";
+
+        ScriptEntity script = new ScriptEntity();
+        script.setWorkspaceId("workspace_test");
+        script.setId(scriptId);
+        script.setVersion(1);
+        script.setActive(true);
+
+        Mockito.when(this.repository.getAllVersionsOfScript("workspace_test", scriptId))
+                .thenReturn(List.of(script));
+
+        EvaluationEntity eval1 = new EvaluationEntity();
+        eval1.setWorkspaceId("workspace_test");
+        eval1.setPropertyId("prop-1");
+        eval1.setCreatedAt("2026-06-18T10:00:00Z");
+        eval1.setScriptId(scriptId);
+        eval1.setMediaKeys(List.of("workspace_test/uploads/foto1.jpg", "workspace_test/uploads/foto2.jpg"));
+
+        EvaluationEntity eval2 = new EvaluationEntity();
+        eval2.setWorkspaceId("workspace_test");
+        eval2.setPropertyId("prop-2");
+        eval2.setCreatedAt("2026-06-18T11:00:00Z");
+        eval2.setScriptId(scriptId);
+        eval2.setMediaKeys(List.of());
+
+        EvaluationEntity evalOther = new EvaluationEntity();
+        evalOther.setWorkspaceId("workspace_test");
+        evalOther.setPropertyId("prop-3");
+        evalOther.setCreatedAt("2026-06-18T12:00:00Z");
+        evalOther.setScriptId("other-script");
+        evalOther.setMediaKeys(List.of("workspace_test/uploads/foto3.jpg"));
+
+        Mockito.when(this.repository.getEvaluations("workspace_test"))
+                .thenReturn(List.of(eval1, eval2, evalOther));
+
+        // Act & Assert
+        given()
+                .header("X-User-Email", "test@imob.com")
+                .when()
+                .delete("/api/scripts/" + scriptId)
+                .then()
+                .statusCode(204);
+
+        Mockito.verify(this.s3Service, Mockito.times(1))
+                .deleteObject("workspace_test/uploads/foto1.jpg");
+        Mockito.verify(this.s3Service, Mockito.times(1))
+                .deleteObject("workspace_test/uploads/foto2.jpg");
+        Mockito.verify(this.s3Service, Mockito.never())
+                .deleteObject("workspace_test/uploads/foto3.jpg");
+
+        Mockito.verify(this.repository, Mockito.times(1))
+                .deleteEvaluation("workspace_test", "prop-1", "2026-06-18T10:00:00Z");
+        Mockito.verify(this.repository, Mockito.times(1))
+                .deleteEvaluation("workspace_test", "prop-2", "2026-06-18T11:00:00Z");
+        Mockito.verify(this.repository, Mockito.never())
+                .deleteEvaluation("workspace_test", "prop-3", "2026-06-18T12:00:00Z");
+
+        Mockito.verify(this.repository, Mockito.times(1))
+                .deleteAllVersionsOfScript("workspace_test", scriptId);
+    }
+
+    @Test
+    public void shouldReturnNotFoundWhenDeletingNonexistentScript() {
+        // Arrange
+        String scriptId = "nonexistent-script";
+
+        Mockito.when(this.repository.getAllVersionsOfScript("workspace_test", scriptId))
+                .thenReturn(List.of());
+
+        // Act & Assert
+        given()
+                .header("X-User-Email", "test@imob.com")
+                .when()
+                .delete("/api/scripts/" + scriptId)
+                .then()
+                .statusCode(404)
+                .contentType(ContentType.JSON)
+                .body("error", is("Roteiro nao encontrado"));
+
+        Mockito.verify(this.repository, Mockito.never())
+                .deleteAllVersionsOfScript(Mockito.anyString(), Mockito.anyString());
     }
 }
