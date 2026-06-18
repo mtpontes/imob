@@ -2395,6 +2395,15 @@ input[type="range"]::-webkit-slider-thumb:hover {
   padding-left: 0.5rem;
 }
 
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  justify-content: flex-end;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 1.25rem;
+}
+
 .answers-list {
   display: flex;
   flex-direction: column;
@@ -2963,10 +2972,18 @@ input[type=number] {
     font-size: 0.85rem;
   }
 
-  /* Modal de Histórico de Vistorias */
+  /* Modal de Histórico de Vistorias e Config Geral */
+  .modal-wrapper {
+    align-items: flex-start !important;
+    overflow-y: auto !important;
+    padding: 1rem 0.75rem !important;
+  }
+
   .modal-content {
-    padding: 1.25rem;
-    max-height: 90vh;
+    padding: 1.5rem 1.25rem !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+    margin-bottom: 2rem !important;
   }
 
   .modal-score-banner {
@@ -2977,6 +2994,18 @@ input[type=number] {
 
   .modal-header h3 {
     font-size: 1.15rem;
+  }
+
+  .modal-actions {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+  }
+
+  .modal-actions .btn {
+    width: 100% !important;
+    margin: 0 !important;
+    justify-content: center !important;
   }
 
   /* Tela de Detalhes do Imóvel */
