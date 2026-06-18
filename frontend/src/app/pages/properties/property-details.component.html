@@ -267,6 +267,7 @@
         <lucide-icon name="x"></lucide-icon>
       </button>
       
+      <!-- Botões de navegação: visíveis lateralmente no desktop, ocultos no mobile -->
       <button class="btn btn-icon lightbox-nav-btn prev" 
               *ngIf="selectedEvaluation.mediaUrls.length > 1" 
               (click)="prevMedia($event)">
@@ -274,11 +275,26 @@
       </button>
       
       <div class="lightbox-content-area">
+        <button class="btn btn-icon lightbox-zoom-action-btn" (click)="toggleFullscreen($event)" [title]="isFullscreen ? 'Sair da Tela Cheia' : 'Tela Cheia'">
+          <lucide-icon [name]="isFullscreen ? 'minimize-2' : 'maximize-2'"></lucide-icon>
+        </button>
+        
         <ng-container *ngIf="isVideoButton(selectedEvaluation.mediaUrls[activeMediaIndex]); else lightboxImage">
           <video [src]="selectedEvaluation.mediaUrls[activeMediaIndex]" controls autoplay class="lightbox-media"></video>
         </ng-container>
         <ng-template #lightboxImage>
-          <img [src]="selectedEvaluation.mediaUrls[activeMediaIndex]" alt="Mídia ampliada da avaliação" class="lightbox-media" />
+          <img [src]="selectedEvaluation.mediaUrls[activeMediaIndex]" 
+               alt="Mídia ampliada da avaliação" 
+               class="lightbox-media zoomable"
+               [style.transform]="'translate(' + panX + 'px, ' + panY + 'px) scale(' + zoomLevel + ')'"
+               (wheel)="onWheelZoom($event)"
+               (mousedown)="startDrag($event)"
+               (mousemove)="onDrag($event)"
+               (mouseup)="endDrag()"
+               (mouseleave)="endDrag()"
+               (touchstart)="onTouchStart($event)"
+               (touchmove)="onTouchMove($event)"
+               (touchend)="onTouchEnd()" />
         </ng-template>
       </div>
       
@@ -288,9 +304,39 @@
         <lucide-icon name="chevron-right"></lucide-icon>
       </button>
       
-      <div class="lightbox-counter" *ngIf="selectedEvaluation.mediaUrls.length > 1">
-        {{ activeMediaIndex + 1 }} / {{ selectedEvaluation.mediaUrls.length }}
+      <!-- Footer: counter + strip de miniaturas -->
+      <div class="lightbox-footer" *ngIf="selectedEvaluation.mediaUrls.length > 1">
+        <div class="lightbox-counter">
+          {{ activeMediaIndex + 1 }} / {{ selectedEvaluation.mediaUrls.length }}
+        </div>
+        <div class="lightbox-thumbnails">
+          <div
+            *ngFor="let url of selectedEvaluation.mediaUrls; let i = index"
+            class="lightbox-thumb"
+            [class.active]="i === activeMediaIndex"
+            (click)="activeMediaIndex = i; $event.stopPropagation()"
+          >
+            <ng-container *ngIf="isVideoButton(url); else thumbImg">
+              <div class="lightbox-thumb-video-icon">
+                <lucide-icon name="play" style="width: 10px; height: 10px;"></lucide-icon>
+              </div>
+            </ng-container>
+            <ng-template #thumbImg>
+              <img [src]="url" alt="Miniatura" />
+            </ng-template>
+          </div>
+        </div>
+        <!-- Botões de navegação duplicados apenas para mobile (via CSS) -->
+        <div class="lightbox-mobile-nav">
+          <button class="btn btn-icon lightbox-nav-btn-mobile" (click)="prevMedia($event)">
+            <lucide-icon name="chevron-left"></lucide-icon>
+          </button>
+          <button class="btn btn-icon lightbox-nav-btn-mobile" (click)="nextMedia($event)">
+            <lucide-icon name="chevron-right"></lucide-icon>
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </section>
+

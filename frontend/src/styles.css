@@ -1815,6 +1815,29 @@ input[type="range"]::-webkit-slider-thumb:hover {
   color: var(--primary-light);
 }
 
+.btn-remove-upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.btn-remove-upload:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+}
+
+
 
 .uploaded-photos-grid {
   display: grid;
@@ -2855,7 +2878,7 @@ input[type=number] {
 
   /* Builder de Protocolos (Roteiros) */
   .template-builder-grid {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: minmax(0, 1fr) !important;
     gap: 1.5rem !important;
   }
 
@@ -2903,7 +2926,7 @@ input[type=number] {
 
   /* Formulário de Avaliação e Sidebar */
   .evaluation-container-grid {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: minmax(0, 1fr) !important;
     gap: 1.5rem !important;
   }
 
@@ -2948,7 +2971,7 @@ input[type=number] {
 
   /* Tela de Detalhes do Imóvel */
   .details-layout-grid {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: minmax(0, 1fr) !important;
     gap: 1.5rem !important;
   }
 

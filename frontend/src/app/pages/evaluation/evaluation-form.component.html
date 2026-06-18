@@ -177,17 +177,30 @@
           
           <!-- Lista de midias carregadas/processadas -->
           <div class="upload-list" *ngIf="uploads.length > 0" id="uploaded-photos-preview-grid">
-            <div *ngFor="let item of uploads" class="upload-item glass" style="margin-top: 0.75rem; padding: 0.85rem; border-radius: 8px;">
-              <div class="upload-item-info" style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.4rem;">
-                <span class="file-name" style="font-weight: 500;">{{ item.name }}</span>
-                <span *ngIf="item.loading" class="progress-percent">{{ item.progress }}%</span>
-                <span *ngIf="item.success && !item.loading" class="success-status" style="color: var(--success); font-weight: 700;">Sucesso</span>
+            <div *ngFor="let item of uploads; let i = index" class="upload-item glass" style="margin-top: 0.75rem; padding: 0.85rem; border-radius: 8px;">
+              <div class="upload-item-info" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; margin-bottom: 0.4rem;">
+                <span class="file-name" style="font-weight: 500; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ item.name }}</span>
+                <div style="display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; margin-left: 0.5rem;">
+                  <span *ngIf="item.loading" class="progress-percent">{{ item.progress }}%</span>
+                  <span *ngIf="item.success && !item.loading" class="success-status" style="color: var(--success); font-weight: 700;">OK</span>
+                  <button
+                    *ngIf="!item.loading"
+                    type="button"
+                    class="btn-remove-upload"
+                    (click)="removeUpload(i)"
+                    title="Remover mídia"
+                    [id]="'btn-remove-upload-' + i"
+                  >
+                    <lucide-icon name="x" style="width: 12px; height: 12px;"></lucide-icon>
+                  </button>
+                </div>
               </div>
               <div class="progress-bar-container" style="background: rgba(255,255,255,0.05); height: 4px; border-radius: 10px; overflow: hidden;">
                 <div class="progress-bar" [style.width.%]="item.progress" [class.success]="item.success" style="background: #e100ff; height: 100%; transition: width 0.2s ease;"></div>
               </div>
             </div>
           </div>
+
         </div>
 
         <div class="form-actions-footer">

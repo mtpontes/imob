@@ -35,6 +35,15 @@ export class PropertyDetailsComponent implements OnInit {
   // Controle do Lightbox de Mídias
   isLightboxOpen: boolean = false;
   activeMediaIndex: number = 0;
+  zoomLevel: number = 1;
+  panX: number = 0;
+  panY: number = 0;
+  isDraggingMedia: boolean = false;
+  startX: number = 0;
+  startY: number = 0;
+  isFullscreen: boolean = false;
+  initialTouchDistance: number = 0;
+  initialZoom: number = 1;
 
   constructor(
     private route: ActivatedRoute,
@@ -197,18 +206,25 @@ export class PropertyDetailsComponent implements OnInit {
   }
 
   openLightbox(index: number): void {
+    this.resetZoom();
     this.activeMediaIndex = index;
     this.isLightboxOpen = true;
   }
 
   closeLightbox(): void {
+    if (this.isFullscreen) {
+      document.exitFullscreen().catch(() => {});
+      this.isFullscreen = false;
+    }
     this.isLightboxOpen = false;
+    this.resetZoom();
   }
 
   nextMedia(event?: Event): void {
     if (event) {
       event.stopPropagation();
     }
+    this.resetZoom();
     if (this.selectedEvaluation && this.selectedEvaluation.mediaUrls) {
       this.activeMediaIndex = (this.activeMediaIndex + 1) % this.selectedEvaluation.mediaUrls.length;
     }
@@ -218,10 +234,119 @@ export class PropertyDetailsComponent implements OnInit {
     if (event) {
       event.stopPropagation();
     }
+    this.resetZoom();
     if (this.selectedEvaluation && this.selectedEvaluation.mediaUrls) {
       const len = this.selectedEvaluation.mediaUrls.length;
       this.activeMediaIndex = (this.activeMediaIndex - 1 + len) % len;
     }
+  }
+
+  resetZoom(): void {
+    this.zoomLevel = 1;
+    this.panX = 0;
+    this.panY = 0;
+    this.isDraggingMedia = false;
+  }
+
+  toggleFullscreen(event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    const element = document.getElementById('lightbox-modal');
+    if (!element) return;
+
+    if (!document.fullscreenElement) {
+      element.requestFullscreen().then(() => {
+        this.isFullscreen = true;
+      }).catch(err => {
+        console.error(`Erro ao ativar tela cheia: ${err.message}`);
+      });
+    } else {
+      document.exitFullscreen();
+      this.isFullscreen = false;
+    }
+  }
+
+  @HostListener('document:fullscreenchange', [])
+  onFullscreenChange() {
+    this.isFullscreen = !!document.fullscreenElement;
+  }
+
+  // Zoom via Scroll do Mouse
+  onWheelZoom(event: WheelEvent): void {
+    event.preventDefault();
+    const zoomSpeed = 0.1;
+    const delta = event.deltaY < 0 ? 1 : -1;
+    this.zoomLevel = Math.min(Math.max(this.zoomLevel + delta * zoomSpeed, 1), 4);
+    
+    // Se voltar para zoom 1, reseta posições do pan
+    if (this.zoomLevel === 1) {
+      this.panX = 0;
+      this.panY = 0;
+    }
+  }
+
+  // Arrastar Imagem (Desktop)
+  startDrag(event: MouseEvent): void {
+    if (this.zoomLevel <= 1) return;
+    event.preventDefault();
+    this.isDraggingMedia = true;
+    this.startX = event.clientX - this.panX;
+    this.startY = event.clientY - this.panY;
+  }
+
+  onDrag(event: MouseEvent): void {
+    if (!this.isDraggingMedia) return;
+    event.preventDefault();
+    this.panX = event.clientX - this.startX;
+    this.panY = event.clientY - this.startY;
+  }
+
+  endDrag(): void {
+    this.isDraggingMedia = false;
+  }
+
+  // Zoom e Pan por Toque (Mobile)
+  onTouchStart(event: TouchEvent): void {
+    if (event.touches.length === 1) {
+      if (this.zoomLevel > 1) {
+        this.isDraggingMedia = true;
+        this.startX = event.touches[0].clientX - this.panX;
+        this.startY = event.touches[0].clientY - this.panY;
+      }
+    } else if (event.touches.length === 2) {
+      this.isDraggingMedia = false;
+      this.initialTouchDistance = this.getTouchDistance(event.touches);
+      this.initialZoom = this.zoomLevel;
+    }
+  }
+
+  onTouchMove(event: TouchEvent): void {
+    if (event.touches.length === 1 && this.isDraggingMedia) {
+      this.panX = event.touches[0].clientX - this.startX;
+      this.panY = event.touches[0].clientY - this.startY;
+    } else if (event.touches.length === 2) {
+      const distance = this.getTouchDistance(event.touches);
+      if (this.initialTouchDistance > 0) {
+        const factor = distance / this.initialTouchDistance;
+        this.zoomLevel = Math.min(Math.max(this.initialZoom * factor, 1), 4);
+        if (this.zoomLevel === 1) {
+          this.panX = 0;
+          this.panY = 0;
+        }
+      }
+    }
+  }
+
+  onTouchEnd(): void {
+    this.isDraggingMedia = false;
+    this.initialTouchDistance = 0;
+  }
+
+  private getTouchDistance(touches: TouchList): number {
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
   }
 
   @HostListener('document:keydown', ['$event'])

@@ -237,8 +237,11 @@ export class EvaluationFormComponent implements OnInit {
     });
 
     this.currentScore = 0;
-    this.uploadedMediaKeys = [];
-    this.uploads = [];
+    // Preserva uploads existentes em modo edição; reseta apenas em criação
+    if (!this.isEditMode) {
+      this.uploadedMediaKeys = [];
+      this.uploads = [];
+    }
 
     // Inscreve no valueChanges para calcular score local em tempo real
     this.evaluationForm.valueChanges.subscribe(() => {
@@ -295,6 +298,17 @@ export class EvaluationFormComponent implements OnInit {
       if (file.type.startsWith('image/') || file.type.startsWith('video/'))
         this.uploadFile(file);
     }
+  }
+
+  removeUpload(index: number): void {
+    const item = this.uploads[index];
+    if (item.loading) return; // Não remove durante upload em andamento
+    if (item.success) {
+      // Conta quantos itens com sucesso existem antes deste índice para achar a chave correta
+      const keyIndex = this.uploads.slice(0, index).filter(u => u.success).length;
+      this.uploadedMediaKeys.splice(keyIndex, 1);
+    }
+    this.uploads.splice(index, 1);
   }
 
   uploadFile(file: File): void {

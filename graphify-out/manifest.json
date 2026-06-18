@@ -210,8 +210,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/pages/evaluation/evaluation-form.component.ts": {
-    "mtime": 1781748860.725384,
-    "ast_hash": "3d01c5c2f6823bcbfa28695672d2e4ad",
+    "mtime": 1781751275.381642,
+    "ast_hash": "cb65ee00e31b9ea7c11c2168a6e71c66",
     "semantic_hash": ""
   },
   "frontend/src/app/pages/login/login.component.spec.ts": {
@@ -250,9 +250,9 @@
     "semantic_hash": "71ec21231f78bcb6377aea5061bb53aa"
   },
   "frontend/src/app/pages/properties/property-details.component.ts": {
-    "mtime": 1781059075.3134272,
-    "ast_hash": "3e005358c22c85aeded376c3344589f0",
-    "semantic_hash": "3e005358c22c85aeded376c3344589f0"
+    "mtime": 1781752049.4881265,
+    "ast_hash": "c3260928403bf9165043c7dd0e4bf02a",
+    "semantic_hash": ""
   },
   "frontend/src/app/pages/script-builder/script-builder.component.spec.ts": {
     "mtime": 1781062225.360145,
