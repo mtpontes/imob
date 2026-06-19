@@ -2568,6 +2568,10 @@ body.no-scroll {
   object-fit: cover;
 }
 
+.modal-drag-indicator {
+  display: none;
+}
+
 /* ==========================================================================
    RESPONSIVENESS (MOBILE-FIRST)
    ========================================================================== */
@@ -3071,18 +3075,32 @@ input[type=number] {
     font-size: 0.85rem;
   }
 
-  /* Modal de Histórico de Vistorias e Config Geral */
+  /* Modal de Histórico de Vistorias e Config Geral (Bottom Sheet no Mobile) */
   .modal-wrapper {
-    align-items: flex-start !important;
-    overflow-y: auto !important;
-    padding: 1rem 0.75rem !important;
+    align-items: flex-end !important;
+    overflow: hidden !important;
+    padding: 0 !important;
   }
 
   .modal-content {
-    padding: 1.5rem 1.25rem !important;
-    max-height: none !important;
-    overflow-y: visible !important;
-    margin-bottom: 2rem !important;
+    padding: 1.25rem 1.25rem 2rem !important;
+    max-height: 75vh !important;
+    overflow-y: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 0 !important;
+    border-radius: var(--radius-md) var(--radius-md) 0 0 !important;
+    overscroll-behavior: contain !important;
+  }
+
+  .modal-drag-indicator {
+    display: block !important;
+    width: 36px !important;
+    height: 4px !important;
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    border-radius: 2px !important;
+    margin: 0 auto 1.25rem !important;
+    flex-shrink: 0 !important;
   }
 
   .modal-score-banner {

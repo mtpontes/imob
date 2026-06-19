@@ -78,6 +78,7 @@
   <div id="confirm-delete-script-modal" class="modal-wrapper" *ngIf="isConfirmDeleteOpen" @modalTrigger>
     <div class="modal-backdrop" (click)="cancelDelete()"></div>
     <div class="modal-content delete-confirm-modal-content glass">
+      <div class="modal-drag-indicator"></div>
       <div class="delete-confirm-body">
         <div class="alert-icon-wrapper">
           <lucide-icon name="alert-triangle"></lucide-icon>

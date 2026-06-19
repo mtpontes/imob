@@ -155,6 +155,7 @@
   <div id="evaluation-details-modal" class="modal-wrapper" *ngIf="isModalOpen" @modalTrigger>
     <div class="modal-backdrop" (click)="closeModal()"></div>
     <div class="modal-content glass" *ngIf="selectedEvaluation">
+      <div class="modal-drag-indicator"></div>
       <div class="modal-header">
         <div>
           <h3 id="modal-eval-title">Detalhes da Avaliação</h3>
@@ -256,6 +257,7 @@
   <div id="confirm-delete-modal" class="modal-wrapper" *ngIf="isConfirmDeleteOpen" @modalTrigger>
     <div class="modal-backdrop" (click)="cancelDelete()"></div>
     <div class="modal-content delete-confirm-modal-content glass">
+      <div class="modal-drag-indicator"></div>
       <div class="delete-confirm-body">
         <div class="alert-icon-wrapper">
           <lucide-icon name="alert-triangle"></lucide-icon>
@@ -278,6 +280,7 @@
   <div id="confirm-delete-prop-modal" class="modal-wrapper" *ngIf="isConfirmDeletePropOpen" @modalTrigger>
     <div class="modal-backdrop" (click)="cancelDeleteProperty()"></div>
     <div class="modal-content delete-confirm-modal-content glass">
+      <div class="modal-drag-indicator"></div>
       <div class="delete-confirm-body">
         <div class="alert-icon-wrapper">
           <lucide-icon name="alert-triangle"></lucide-icon>
