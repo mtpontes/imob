@@ -1,13 +1,9 @@
 <section class="property-details-section">
   <div class="page-header">
     <div class="page-title-area">
-      <button class="btn btn-text-back" routerLink="/properties">
-        <lucide-icon name="chevron-left"></lucide-icon>
-        <span>Voltar para Imoveis</span>
-      </button>
       <h1 id="details-prop-address" *ngIf="property">{{ property.address }}</h1>
       <div class="skeleton-line skeleton-shimmer heading" *ngIf="!property && loading" style="width: 250px; margin-top: 0.5rem; margin-bottom: 0.5rem;"></div>
-      <p>Historico completo de vistorias tecnicas e evolucao de notas</p>
+      <p>Histórico completo de vistorias técnicas e evolução de notas</p>
     </div>
     
     <div class="page-actions" style="display: flex; gap: 0.75rem; align-items: center;" *ngIf="property">

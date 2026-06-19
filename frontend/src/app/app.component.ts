@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterModule, ChildrenOutletContexts } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { RouterOutlet, RouterModule, ChildrenOutletContexts, Router, NavigationEnd } from '@angular/router';
+import { CommonModule, Location } from '@angular/common';
 import { AuthService } from './services/auth.service';
 import { LucideAngularModule } from 'lucide-angular';
 import { routeAnimations } from './animations/animations';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -16,11 +17,40 @@ import { routeAnimations } from './animations/animations';
 export class AppComponent {
   title = 'frontend';
   isProfileMenuOpen = false;
+  showBackButton = false;
 
   constructor(
     private authService: AuthService,
-    private contexts: ChildrenOutletContexts
-  ) {}
+    private contexts: ChildrenOutletContexts,
+    private router: Router,
+    private location: Location
+  ) {
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      const url = this.router.url;
+      this.showBackButton = (
+        url.startsWith('/properties/') || 
+        url.startsWith('/roteiros/builder') || 
+        url.startsWith('/evaluate/')
+      );
+    });
+  }
+
+  goBack(): void {
+    const url = this.router.url;
+    if (url.startsWith('/properties/create') || url.match(/^\/properties\/[^\/]+$/)) {
+      this.router.navigate(['/properties']);
+    } else if (url.startsWith('/roteiros/builder')) {
+      this.router.navigate(['/roteiros']);
+    } else if (url.startsWith('/evaluate/')) {
+      const parts = url.split('/');
+      const propertyId = parts[2];
+      this.router.navigate(['/properties', propertyId]);
+    } else {
+      this.location.back();
+    }
+  }
 
   getRouteAnimationData() {
     return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];

@@ -3,10 +3,13 @@
   <!-- Header Geral (Oculto em Login) -->
   <header class="app-header glass" *ngIf="isLoggedIn()">
     <div class="header-brand">
-      <div class="brand-logo" routerLink="/properties">
+      <div class="brand-logo" *ngIf="!showBackButton" routerLink="/properties">
         <img src="icons/icon-96x96.png?v=1" class="brand-logo-img" alt="ImobApp Logo" />
         <span>ImobApp</span>
       </div>
+      <button class="header-back-btn" *ngIf="showBackButton" (click)="goBack()" title="Voltar">
+        <lucide-icon name="chevron-left"></lucide-icon>
+      </button>
       <div class="workspace-badge desktop-only" id="current-workspace-badge">
         <lucide-icon name="briefcase"></lucide-icon>
         <span id="workspace-name-display">Workspace: {{ workspaceName }}</span>
