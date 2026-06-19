@@ -372,3 +372,12 @@
 .lightbox-zoom-action-btn:active {
   transform: scale(0.96) !important;
 }
+
+@media (max-width: 767px) {
+  .lightbox-wrapper {
+    align-items: center !important;
+    padding: 1.5rem !important;
+    overflow: visible !important;
+  }
+}
+
