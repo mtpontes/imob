@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators, FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ScriptService } from '../../services/script.service';
 import { ScriptResponse, Criteria } from '../../types';
 import { LucideAngularModule } from 'lucide-angular';
@@ -10,7 +11,7 @@ import { slideInOut, listStaggerTrigger } from '../../animations/animations';
 @Component({
   selector: 'app-script-builder',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule, LucideAngularModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule, LucideAngularModule, DragDropModule],
   templateUrl: './script-builder.component.html',
   styleUrls: ['./script-builder.component.css'],
   animations: [slideInOut, listStaggerTrigger]
@@ -30,11 +31,7 @@ export class ScriptBuilderComponent implements OnInit {
   newCritWeight: number = 1;
   newCritIsPenalty: boolean = false;
 
-  // Controle de reordenacao por drag and drop
-  draggedIndex: number | null = null;
-  dragOverIndex: number | null = null;
-
-  // Controle de animacao de reordenacao
+  // Controle de animacao de reordenacao (botoes cima/baixo)
   animatingIndex: number | null = null;
   animatingTargetIndex: number | null = null;
   isSnapping: boolean = false;
@@ -78,9 +75,8 @@ export class ScriptBuilderComponent implements OnInit {
           });
           
           this.criteria.clear();
-          if (found.criteria) {
+          if (found.criteria)
             found.criteria.forEach(c => this.addCriteria(c));
-          }
         } else {
           this.errorMessage = 'Roteiro nao encontrado ou inativo.';
         }
@@ -116,34 +112,26 @@ export class ScriptBuilderComponent implements OnInit {
   }
 
   moveCriteria(fromIndex: number, toIndex: number): void {
-    if (fromIndex < 0 || fromIndex >= this.criteria.length || toIndex < 0 || toIndex >= this.criteria.length) {
+    if (fromIndex < 0 || fromIndex >= this.criteria.length || toIndex < 0 || toIndex >= this.criteria.length)
       return;
-    }
     const control = this.criteria.at(fromIndex);
     this.criteria.removeAt(fromIndex);
     this.criteria.insert(toIndex, control);
   }
 
   moveCriteriaWithAnimation(fromIndex: number, toIndex: number): void {
-    if (fromIndex < 0 || fromIndex >= this.criteria.length || toIndex < 0 || toIndex >= this.criteria.length) {
+    if (fromIndex < 0 || fromIndex >= this.criteria.length || toIndex < 0 || toIndex >= this.criteria.length)
       return;
-    }
 
     this.animatingIndex = fromIndex;
     this.animatingTargetIndex = toIndex;
 
     setTimeout(() => {
-      // 1. Desativa a transition CSS para evitar o snap-back visual
       this.isSnapping = true;
-
-      // 2. Realiza o swap de dados no FormArray
       this.moveCriteria(fromIndex, toIndex);
-
-      // 3. Limpa os estados de animacao (com transition ainda suprimida)
       this.animatingIndex = null;
       this.animatingTargetIndex = null;
 
-      // 4. Reabilita a transition apos um frame (o DOM ja esta na posicao correta)
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           this.isSnapping = false;
@@ -152,47 +140,20 @@ export class ScriptBuilderComponent implements OnInit {
     }, 240);
   }
 
+  onCdkDrop(event: CdkDragDrop<string[]>): void {
+    if (event.previousIndex === event.currentIndex)
+      return;
+    // Reordena o FormArray espelhando o moveItemInArray do CDK
+    this.moveCriteria(event.previousIndex, event.currentIndex);
+  }
+
   trackByCriteria(index: number): number {
     return index;
   }
 
-  onDragStart(index: number, event: DragEvent): void {
-    this.draggedIndex = index;
-    if (event.dataTransfer) {
-      event.dataTransfer.effectAllowed = 'move';
-      event.dataTransfer.setData('text/plain', index.toString());
-    }
-  }
-
-  onDragOver(index: number, event: DragEvent): void {
-    event.preventDefault();
-    this.dragOverIndex = index;
-  }
-
-  onDragLeave(index: number): void {
-    if (this.dragOverIndex === index) {
-      this.dragOverIndex = null;
-    }
-  }
-
-  onDrop(index: number, event: DragEvent): void {
-    event.preventDefault();
-    if (this.draggedIndex !== null && this.draggedIndex !== index) {
-      this.moveCriteria(this.draggedIndex, index);
-    }
-    this.draggedIndex = null;
-    this.dragOverIndex = null;
-  }
-
-  onDragEnd(): void {
-    this.draggedIndex = null;
-    this.dragOverIndex = null;
-  }
-
   addCriteriaLocal(): void {
-    if (!this.newCritLabel.trim()) {
+    if (!this.newCritLabel.trim())
       return;
-    }
 
     const weightValue = this.newCritType === 'text' ? 0 : (this.newCritIsPenalty ? -this.newCritWeight : this.newCritWeight);
 
@@ -208,7 +169,6 @@ export class ScriptBuilderComponent implements OnInit {
 
     this.addCriteria(newCrit);
 
-    // Limpa painel
     this.newCritLabel = '';
     this.newCritType = 'bool';
     this.newCritIsScorable = true;
