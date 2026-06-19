@@ -2997,7 +2997,7 @@
       "label": "appConfig",
       "file_type": "code",
       "source_file": "frontend/src/app/app.config.ts",
-      "source_location": "L53",
+      "source_location": "L57",
       "_origin": "ast",
       "id": "app_app_config_appconfig",
       "community": 2,
@@ -4167,7 +4167,7 @@
       "label": "createComponent()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.spec.ts",
-      "source_location": "L83",
+      "source_location": "L84",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_spec_createcomponent",
       "community": 0,
@@ -15218,5 +15218,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "9908b5becf9dd2973721ae3f913383e444d5cb1e"
+  "built_at_commit": "fd0e79681cab44f765faea573ad8d747d6f61866"
 }

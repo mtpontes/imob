@@ -43,7 +43,11 @@ import {
   ChevronRight,
   ChevronDown,
   ChevronUp,
-  Check
+  Check,
+  ArrowUp,
+  ArrowDown,
+  TrendingUp,
+  TrendingDown
 } from 'lucide-angular';
 
 import { routes } from './app.routes';
@@ -101,7 +105,11 @@ export const appConfig: ApplicationConfig = {
         ChevronRight,
         ChevronDown,
         ChevronUp,
-        Check
+        Check,
+        ArrowUp,
+        ArrowDown,
+        TrendingUp,
+        TrendingDown
       })
     )
   ]

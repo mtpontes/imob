@@ -2522,11 +2522,13 @@ body.no-scroll {
   font-weight: 700;
 }
 
-.answer-item .crit-ans.yes {
+.answer-item .crit-ans.yes,
+.answer-item .crit-ans .yes {
   color: var(--success);
 }
 
-.answer-item .crit-ans.no {
+.answer-item .crit-ans.no,
+.answer-item .crit-ans .no {
   color: var(--danger);
 }
 

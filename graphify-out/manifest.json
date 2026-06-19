@@ -185,8 +185,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/app.config.ts": {
-    "mtime": 1781833838.0999238,
-    "ast_hash": "8c8a2cfae31aa6eb4b602eda393be90a",
+    "mtime": 1781906995.202248,
+    "ast_hash": "97becbd7d040f7654420df2221d5770b",
     "semantic_hash": ""
   },
   "frontend/src/app/app.routes.ts": {
@@ -245,8 +245,8 @@
     "semantic_hash": "f27dda211042eadf80b2b0ca67df81ce"
   },
   "frontend/src/app/pages/properties/property-details.component.spec.ts": {
-    "mtime": 1781833953.182863,
-    "ast_hash": "0efc613102690cf1a98cc99d63a47344",
+    "mtime": 1781907005.3592649,
+    "ast_hash": "6d9a9af34cf39530083e5d53cbe5925b",
     "semantic_hash": ""
   },
   "frontend/src/app/pages/properties/property-details.component.ts": {
@@ -255,8 +255,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/pages/script-builder/script-builder.component.spec.ts": {
-    "mtime": 1781833982.9927433,
-    "ast_hash": "ff0f4c8a8807931816a9ab718146954f",
+    "mtime": 1781907118.8398087,
+    "ast_hash": "f4e6117d71032c631266fe1bdfbf50f3",
     "semantic_hash": ""
   },
   "frontend/src/app/pages/script-builder/script-builder.component.ts": {

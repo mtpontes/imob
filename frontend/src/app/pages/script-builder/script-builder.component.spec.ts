@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { ScriptBuilderComponent } from './script-builder.component';
 import { ScriptService } from '../../services/script.service';
 import { ScriptResponse, Criteria } from '../../types';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { importProvidersFrom } from '@angular/core';
 import { 
   LucideAngularModule, 
@@ -161,68 +162,41 @@ describe('ScriptBuilderComponent', () => {
     expect(component.criteria.at(2).get('label')?.value).toBe('Criterio 3');
   });
 
-  it('should update draggedIndex on drag start', () => {
-    // Arrange
-    createComponent();
-    const event = new DragEvent('dragstart');
-    Object.defineProperty(event, 'dataTransfer', {
-      value: {
-        effectAllowed: '',
-        setData: jasmine.createSpy('setData')
-      }
-    });
-
-    // Act
-    component.onDragStart(2, event);
-
-    // Assert
-    expect(component.draggedIndex).toBe(2);
-    expect(event.dataTransfer?.setData).toHaveBeenCalledWith('text/plain', '2');
-  });
-
-  it('should update dragOverIndex on drag over and prevent default event behavior', () => {
-    // Arrange
-    createComponent();
-    const event = new DragEvent('dragover');
-    spyOn(event, 'preventDefault');
-
-    // Act
-    component.onDragOver(1, event);
-
-    // Assert
-    expect(component.dragOverIndex).toBe(1);
-    expect(event.preventDefault).toHaveBeenCalled();
-  });
-
-  it('should clear dragOverIndex on drag leave', () => {
-    // Arrange
-    createComponent();
-    component.dragOverIndex = 1;
-
-    // Act
-    component.onDragLeave(1);
-
-    // Assert
-    expect(component.dragOverIndex).toBeNull();
-  });
-
-  it('should swap criteria on drop and clear indices', () => {
+  it('should call moveCriteria when onCdkDrop is triggered with different indices', () => {
     // Arrange
     routeParams = of({ id: 'script-123', version: '1' });
     TestBed.overrideProvider(ActivatedRoute, { useValue: { params: routeParams } });
     createComponent();
-    component.draggedIndex = 0;
-    const event = new DragEvent('drop');
-    spyOn(event, 'preventDefault');
+    spyOn(component, 'moveCriteria');
+
+    const event = {
+      previousIndex: 0,
+      currentIndex: 2
+    } as CdkDragDrop<string[]>;
 
     // Act
-    component.onDrop(2, event);
+    component.onCdkDrop(event);
 
     // Assert
-    expect(event.preventDefault).toHaveBeenCalled();
-    expect(component.criteria.at(0).get('label')?.value).toBe('Criterio 2');
-    expect(component.criteria.at(2).get('label')?.value).toBe('Criterio 1');
-    expect(component.draggedIndex).toBeNull();
-    expect(component.dragOverIndex).toBeNull();
+    expect(component.moveCriteria).toHaveBeenCalledWith(0, 2);
+  });
+
+  it('should not call moveCriteria when onCdkDrop is triggered with identical indices', () => {
+    // Arrange
+    routeParams = of({ id: 'script-123', version: '1' });
+    TestBed.overrideProvider(ActivatedRoute, { useValue: { params: routeParams } });
+    createComponent();
+    spyOn(component, 'moveCriteria');
+
+    const event = {
+      previousIndex: 1,
+      currentIndex: 1
+    } as CdkDragDrop<string[]>;
+
+    // Act
+    component.onCdkDrop(event);
+
+    // Assert
+    expect(component.moveCriteria).not.toHaveBeenCalled();
   });
 });

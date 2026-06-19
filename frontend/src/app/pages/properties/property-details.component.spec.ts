@@ -15,7 +15,7 @@ import {
   Home, ClipboardList, ChevronLeft, MapPin, DollarSign, Maximize2, Bed, Bath, 
   Car, Link, Tag, PlusCircle, ShieldCheck, Camera, ExternalLink, Edit3, Eye, 
   EyeOff, GripVertical, Trash2, X, CheckCircle, AlertTriangle, AlertCircle, Clipboard,
-  Calendar, PlayCircle, ChevronRight, Check
+  Calendar, PlayCircle, ChevronRight, Check, ArrowUp, ArrowDown, TrendingUp, TrendingDown
 } from 'lucide-angular';
 
 describe('PropertyDetailsComponent', () => {
@@ -96,7 +96,7 @@ describe('PropertyDetailsComponent', () => {
             Home, ClipboardList, ChevronLeft, MapPin, DollarSign, Maximize2, Bed, Bath, 
             Car, Link, Tag, PlusCircle, ShieldCheck, Camera, ExternalLink, Edit3, Eye, 
             EyeOff, GripVertical, Trash2, X, CheckCircle, AlertTriangle, AlertCircle, Clipboard,
-            Calendar, PlayCircle, ChevronRight, Check
+            Calendar, PlayCircle, ChevronRight, Check, ArrowUp, ArrowDown, TrendingUp, TrendingDown
           })
         )
       ]

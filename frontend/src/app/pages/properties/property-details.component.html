@@ -184,17 +184,19 @@
           <div class="answers-list" id="modal-eval-answers">
             <div *ngFor="let key of objectKeys(selectedEvaluation.answers)" class="answer-item">
               <span class="crit-title" style="display: inline-flex; align-items: center; gap: 0.25rem;">
-                <lucide-icon *ngIf="isCriteriaPenalty(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key)" name="alert-triangle" style="width: 14px; height: 14px; color: var(--danger);"></lucide-icon>
                 {{ getCriteriaLabel(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) }}
               </span>
                
               <!-- Caso seja booleano -->
               <span *ngIf="getCriteriaType(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) === 'bool'" 
                     class="crit-ans" 
+                    style="display: inline-flex; align-items: center; gap: 0.25rem;">
+                <lucide-icon 
                     [class.yes]="isCriteriaPenalty(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) ? selectedEvaluation.answers[key] !== true : selectedEvaluation.answers[key] === true"
                     [class.no]="isCriteriaPenalty(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) ? selectedEvaluation.answers[key] === true : selectedEvaluation.answers[key] !== true"
-                    style="display: inline-flex; align-items: center; gap: 0.25rem;">
-                <lucide-icon [name]="selectedEvaluation.answers[key] === true ? (isCriteriaPenalty(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) ? 'alert-triangle' : 'check') : 'x'" style="width: 14px; height: 14px;"></lucide-icon>
+                    [name]="(isCriteriaPenalty(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) ? selectedEvaluation.answers[key] !== true : selectedEvaluation.answers[key] === true) ? 'arrow-up' : 'arrow-down'" 
+                    style="width: 14px; height: 14px;">
+                </lucide-icon>
                 {{ selectedEvaluation.answers[key] === true ? 'Sim' : 'Não' }}
               </span>
 
