@@ -285,40 +285,10 @@
 .lightbox-thumb-video-icon {
   color: var(--text-muted);
 }
-
-/* Botões de navegação mobile (dentro do footer) — ocultos no desktop */
-.lightbox-mobile-nav {
-  display: none;
-  gap: 1rem;
-}
-
-.lightbox-nav-btn-mobile {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: background var(--transition-fast), color var(--transition-fast);
-}
-
-.lightbox-nav-btn-mobile:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--text-primary);
-}
-
 @media (max-width: 640px) {
   /* Oculta os botões laterais que sobrepõem a imagem */
   .lightbox-nav-btn {
     display: none;
-  }
-
-  /* Mostra os botões de navegação no footer */
-  .lightbox-mobile-nav {
-    display: flex;
   }
 
   .lightbox-close-btn {
@@ -378,6 +348,10 @@
     align-items: center !important;
     padding: 1.5rem !important;
     overflow: visible !important;
+  }
+
+  .lightbox-close-btn {
+    display: none !important;
   }
 }
 

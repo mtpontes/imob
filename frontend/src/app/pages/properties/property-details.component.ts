@@ -47,6 +47,11 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
   isFullscreen: boolean = false;
   initialTouchDistance: number = 0;
   initialZoom: number = 1;
+  touchStartX: number = 0;
+  touchEndX: number = 0;
+  touchStartY: number = 0;
+  touchEndY: number = 0;
+  lastWheelTime: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -316,17 +321,30 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
     this.isFullscreen = !!document.fullscreenElement;
   }
 
-  // Zoom via Scroll do Mouse
+  // Zoom via Scroll do Mouse (e mudanca de midia)
   onWheelZoom(event: WheelEvent): void {
     event.preventDefault();
-    const zoomSpeed = 0.1;
-    const delta = event.deltaY < 0 ? 1 : -1;
-    this.zoomLevel = Math.min(Math.max(this.zoomLevel + delta * zoomSpeed, 1), 4);
-    
-    // Se voltar para zoom 1, reseta posições do pan
-    if (this.zoomLevel === 1) {
-      this.panX = 0;
-      this.panY = 0;
+    if (this.zoomLevel > 1) {
+      const zoomSpeed = 0.1;
+      const delta = event.deltaY < 0 ? 1 : -1;
+      this.zoomLevel = Math.min(Math.max(this.zoomLevel + delta * zoomSpeed, 1), 4);
+      
+      // Se voltar para zoom 1, reseta posições do pan
+      if (this.zoomLevel === 1) {
+        this.panX = 0;
+        this.panY = 0;
+      }
+    } else {
+      const now = Date.now();
+      // Debounce de 400ms para mudancas de midia via scroll para nao passar multiplas de uma vez
+      if (now - this.lastWheelTime > 400) {
+        this.lastWheelTime = now;
+        if (event.deltaY > 0) {
+          this.nextMedia();
+        } else if (event.deltaY < 0) {
+          this.prevMedia();
+        }
+      }
     }
   }
 
@@ -350,9 +368,13 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
     this.isDraggingMedia = false;
   }
 
-  // Zoom e Pan por Toque (Mobile)
+  // Zoom, Pan e Gesto de Deslizar/Swipe por Toque (Mobile)
   onTouchStart(event: TouchEvent): void {
     if (event.touches.length === 1) {
+      this.touchStartX = event.touches[0].clientX;
+      this.touchStartY = event.touches[0].clientY;
+      this.touchEndX = event.touches[0].clientX;
+      this.touchEndY = event.touches[0].clientY;
       if (this.zoomLevel > 1) {
         this.isDraggingMedia = true;
         this.startX = event.touches[0].clientX - this.panX;
@@ -366,9 +388,14 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   onTouchMove(event: TouchEvent): void {
-    if (event.touches.length === 1 && this.isDraggingMedia) {
-      this.panX = event.touches[0].clientX - this.startX;
-      this.panY = event.touches[0].clientY - this.startY;
+    if (event.touches.length === 1) {
+      if (this.zoomLevel > 1 && this.isDraggingMedia) {
+        this.panX = event.touches[0].clientX - this.startX;
+        this.panY = event.touches[0].clientY - this.startY;
+      } else if (this.zoomLevel === 1) {
+        this.touchEndX = event.touches[0].clientX;
+        this.touchEndY = event.touches[0].clientY;
+      }
     } else if (event.touches.length === 2) {
       const distance = this.getTouchDistance(event.touches);
       if (this.initialTouchDistance > 0) {
@@ -385,6 +412,27 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
   onTouchEnd(): void {
     this.isDraggingMedia = false;
     this.initialTouchDistance = 0;
+
+    if (this.zoomLevel === 1 && this.touchStartX !== 0) {
+      const deltaX = this.touchEndX - this.touchStartX;
+      const deltaY = this.touchEndY - this.touchStartY;
+      
+      // Verifica se o swipe foi predominantemente horizontal
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        const swipeThreshold = 50; // pixels minimos para reconhecer swipe
+        if (deltaX < -swipeThreshold) {
+          this.nextMedia();
+        } else if (deltaX > swipeThreshold) {
+          this.prevMedia();
+        }
+      }
+    }
+    
+    // Reseta coordenadas do toque
+    this.touchStartX = 0;
+    this.touchEndX = 0;
+    this.touchStartY = 0;
+    this.touchEndY = 0;
   }
 
   private getTouchDistance(touches: TouchList): number {
