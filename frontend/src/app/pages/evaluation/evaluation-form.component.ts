@@ -7,6 +7,7 @@ import { ScriptService } from '../../services/script.service';
 import { EvaluationService } from '../../services/evaluation.service';
 import { PropertyResponse, ScriptResponse, Criteria, UpdateEvaluationRequest, EvaluationResponse } from '../../types';
 import { LucideAngularModule } from 'lucide-angular';
+import { dropdownTrigger, listStaggerTrigger, slideInOut } from '../../animations/animations';
 
 interface UploadItem {
   name: string;
@@ -20,7 +21,8 @@ interface UploadItem {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule, LucideAngularModule],
   templateUrl: './evaluation-form.component.html',
-  styleUrls: ['./evaluation-form.component.css']
+  styleUrls: ['./evaluation-form.component.css'],
+  animations: [dropdownTrigger, listStaggerTrigger, slideInOut]
 })
 export class EvaluationFormComponent implements OnInit {
   propertyId: string = '';

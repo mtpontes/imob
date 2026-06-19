@@ -44,7 +44,7 @@
             <span class="criteria-count" id="builder-criteria-count">{{ criteria.length }} adicionado(s)</span>
           </div>
 
-          <div class="builder-criteria-list" formArrayName="criteria">
+          <div class="builder-criteria-list" formArrayName="criteria" [@listStaggerTrigger]="criteria.length">
             <div class="criteria-empty-list-placeholder" *ngIf="criteria.length === 0">
               Nenhum critério adicionado. Use o painel lateral para adicionar critérios ao seu roteiro.
             </div>
@@ -100,7 +100,7 @@
         </div>
 
         <!-- Opção de Edição: Nova Versão ou Sobrescrita -->
-        <div class="version-control-box glass" *ngIf="isEditMode && selectedScript">
+        <div class="version-control-box glass" *ngIf="isEditMode && selectedScript" @slideInOut>
           <h4>Salvamento e Controle de Versão</h4>
           <p>Este roteiro já possui dados persistidos. Escolha o comportamento de salvamento:</p>
 
@@ -180,7 +180,7 @@
           </div>
         </div>
 
-        <div class="form-group row-checkbox" id="crit-scorable-wrapper" *ngIf="newCritType !== 'text'">
+        <div class="form-group row-checkbox" id="crit-scorable-wrapper" *ngIf="newCritType !== 'text'" @slideInOut>
           <label class="checkbox-container">
             <input type="checkbox" id="crit-is-scorable" [(ngModel)]="newCritIsScorable" name="newCritIsScorable" />
             <span class="checkmark"></span>
@@ -188,7 +188,7 @@
           </label>
         </div>
 
-        <div class="form-group row-checkbox" id="crit-penalty-wrapper" *ngIf="newCritType !== 'text' && newCritIsScorable">
+        <div class="form-group row-checkbox" id="crit-penalty-wrapper" *ngIf="newCritType !== 'text' && newCritIsScorable" @slideInOut>
           <label class="checkbox-container">
             <input type="checkbox" id="crit-is-penalty" [(ngModel)]="newCritIsPenalty" name="newCritIsPenalty" />
             <span class="checkmark"></span>
@@ -196,7 +196,7 @@
           </label>
         </div>
 
-        <div class="form-group" id="crit-weight-wrapper" *ngIf="newCritType !== 'text' && newCritIsScorable">
+        <div class="form-group" id="crit-weight-wrapper" *ngIf="newCritType !== 'text' && newCritIsScorable" @slideInOut>
           <label for="crit-weight">Peso do Critério (Multiplicador)</label>
           <div class="range-input-container">
             <input type="range" id="crit-weight" min="1" max="5" [(ngModel)]="newCritWeight" name="newCritWeight" />

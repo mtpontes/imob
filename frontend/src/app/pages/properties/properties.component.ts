@@ -6,13 +6,15 @@ import { EvaluationService } from '../../services/evaluation.service';
 import { PropertyResponse } from '../../types';
 import { ScriptService } from '../../services/script.service';
 import { LucideAngularModule } from 'lucide-angular';
+import { dropdownTrigger, listStaggerTrigger } from '../../animations/animations';
 
 @Component({
   selector: 'app-properties',
   standalone: true,
   imports: [CommonModule, RouterModule, LucideAngularModule],
   templateUrl: './properties.component.html',
-  styleUrls: ['./properties.component.css']
+  styleUrls: ['./properties.component.css'],
+  animations: [dropdownTrigger, listStaggerTrigger]
 })
 export class PropertiesComponent implements OnInit {
   properties: PropertyResponse[] = [];

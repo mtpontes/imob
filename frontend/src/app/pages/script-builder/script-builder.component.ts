@@ -5,13 +5,15 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ScriptService } from '../../services/script.service';
 import { ScriptResponse, Criteria } from '../../types';
 import { LucideAngularModule } from 'lucide-angular';
+import { slideInOut, listStaggerTrigger } from '../../animations/animations';
 
 @Component({
   selector: 'app-script-builder',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule, LucideAngularModule],
   templateUrl: './script-builder.component.html',
-  styleUrls: ['./script-builder.component.css']
+  styleUrls: ['./script-builder.component.css'],
+  animations: [slideInOut, listStaggerTrigger]
 })
 export class ScriptBuilderComponent implements OnInit {
   scriptForm: FormGroup;

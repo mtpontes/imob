@@ -46,7 +46,7 @@
     </div>
   </div>
 
-  <div class="templates-list-container" *ngIf="scripts.length > 0 && !loading">
+  <div class="templates-list-container" *ngIf="scripts.length > 0 && !loading" [@listStaggerTrigger]="scripts.length">
     <div *ngFor="let s of scripts" class="template-row glass" (click)="editScript(s.id, s.version)">
       <div class="template-row-info">
         <h3>
@@ -75,7 +75,7 @@
   </div>
 
   <!-- Modal customizado de confirmação de exclusão -->
-  <div id="confirm-delete-script-modal" class="modal-wrapper" [class.hide]="!isConfirmDeleteOpen">
+  <div id="confirm-delete-script-modal" class="modal-wrapper" *ngIf="isConfirmDeleteOpen" @modalTrigger>
     <div class="modal-backdrop" (click)="cancelDelete()"></div>
     <div class="modal-content delete-confirm-modal-content glass">
       <div class="delete-confirm-body">

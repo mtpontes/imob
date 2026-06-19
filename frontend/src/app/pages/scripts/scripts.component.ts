@@ -4,13 +4,15 @@ import { Router, RouterModule } from '@angular/router';
 import { ScriptService } from '../../services/script.service';
 import { ScriptResponse } from '../../types';
 import { LucideAngularModule } from 'lucide-angular';
+import { modalTrigger, listStaggerTrigger } from '../../animations/animations';
 
 @Component({
   selector: 'app-scripts',
   standalone: true,
   imports: [CommonModule, RouterModule, LucideAngularModule],
   templateUrl: './scripts.component.html',
-  styleUrls: ['./scripts.component.css']
+  styleUrls: ['./scripts.component.css'],
+  animations: [modalTrigger, listStaggerTrigger]
 })
 export class ScriptsComponent implements OnInit {
   scripts: ScriptResponse[] = [];

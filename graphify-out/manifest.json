@@ -185,9 +185,9 @@
     "semantic_hash": "0091d815067d77d09f0530a4c7fb1619"
   },
   "frontend/src/app/app.config.ts": {
-    "mtime": 1781062143.4617765,
-    "ast_hash": "de58c97d53dc0f9a3d3b5a583db0316d",
-    "semantic_hash": "de58c97d53dc0f9a3d3b5a583db0316d"
+    "mtime": 1781833838.0999238,
+    "ast_hash": "8c8a2cfae31aa6eb4b602eda393be90a",
+    "semantic_hash": ""
   },
   "frontend/src/app/app.routes.ts": {
     "mtime": 1781054125.1613617,
@@ -205,13 +205,13 @@
     "semantic_hash": "be87a33d0625a5e2601288d2beab4ecf"
   },
   "frontend/src/app/pages/evaluation/evaluation-form.component.spec.ts": {
-    "mtime": 1781748952.1188133,
-    "ast_hash": "249fa94215e40b840d10fc639c790d07",
+    "mtime": 1781833961.2825475,
+    "ast_hash": "7427d5d7bdc0c747621204c19d53e5ef",
     "semantic_hash": ""
   },
   "frontend/src/app/pages/evaluation/evaluation-form.component.ts": {
-    "mtime": 1781751275.381642,
-    "ast_hash": "cb65ee00e31b9ea7c11c2168a6e71c66",
+    "mtime": 1781833892.4856114,
+    "ast_hash": "8d3e510a8a2f47640652b6bb753b2116",
     "semantic_hash": ""
   },
   "frontend/src/app/pages/login/login.component.spec.ts": {
@@ -225,14 +225,14 @@
     "semantic_hash": "94cdfb484e57acc7dc5fb44e3ee9c69a"
   },
   "frontend/src/app/pages/properties/properties.component.spec.ts": {
-    "mtime": 1781748980.3230379,
-    "ast_hash": "583fa4cad99a9c0dd710cea285f5d03a",
+    "mtime": 1781833944.846092,
+    "ast_hash": "597137f7e0f1d358db713245848f2e86",
     "semantic_hash": ""
   },
   "frontend/src/app/pages/properties/properties.component.ts": {
-    "mtime": 1781663400.242106,
-    "ast_hash": "cad095ac320548c23e72a8d5337bd91d",
-    "semantic_hash": "cad095ac320548c23e72a8d5337bd91d"
+    "mtime": 1781833858.9274242,
+    "ast_hash": "73312e3af3f561eab23b8f03744492cb",
+    "semantic_hash": ""
   },
   "frontend/src/app/pages/properties/property-create.component.spec.ts": {
     "mtime": 1780811263.637604,
@@ -245,34 +245,34 @@
     "semantic_hash": "f27dda211042eadf80b2b0ca67df81ce"
   },
   "frontend/src/app/pages/properties/property-details.component.spec.ts": {
-    "mtime": 1781059086.4238784,
-    "ast_hash": "71ec21231f78bcb6377aea5061bb53aa",
-    "semantic_hash": "71ec21231f78bcb6377aea5061bb53aa"
+    "mtime": 1781833953.182863,
+    "ast_hash": "0efc613102690cf1a98cc99d63a47344",
+    "semantic_hash": ""
   },
   "frontend/src/app/pages/properties/property-details.component.ts": {
-    "mtime": 1781784346.6987834,
-    "ast_hash": "f234946942b73f2e4ecd11032a2ff5e9",
+    "mtime": 1781833875.4076421,
+    "ast_hash": "d563c81eaedd4982ecb8269b71db7746",
     "semantic_hash": ""
   },
   "frontend/src/app/pages/script-builder/script-builder.component.spec.ts": {
-    "mtime": 1781062225.360145,
-    "ast_hash": "576c8c69ceb959d74ceaa2bfdc6f0a3e",
-    "semantic_hash": "576c8c69ceb959d74ceaa2bfdc6f0a3e"
+    "mtime": 1781833982.9927433,
+    "ast_hash": "ff0f4c8a8807931816a9ab718146954f",
+    "semantic_hash": ""
   },
   "frontend/src/app/pages/script-builder/script-builder.component.ts": {
-    "mtime": 1781143173.8388982,
-    "ast_hash": "88a0cb7e9cb4a0bc90d35075899ffcc0",
-    "semantic_hash": "88a0cb7e9cb4a0bc90d35075899ffcc0"
+    "mtime": 1781833925.588537,
+    "ast_hash": "aedaf339b75be93a91162086c7d61846",
+    "semantic_hash": ""
   },
   "frontend/src/app/pages/scripts/scripts.component.spec.ts": {
-    "mtime": 1781058183.2028143,
-    "ast_hash": "20048b0cd8e3003c372eb6b3921ae20d",
-    "semantic_hash": "20048b0cd8e3003c372eb6b3921ae20d"
+    "mtime": 1781833969.3625557,
+    "ast_hash": "c2c525dccb757194ac6bc630aeb267ac",
+    "semantic_hash": ""
   },
   "frontend/src/app/pages/scripts/scripts.component.ts": {
-    "mtime": 1780876022.4531033,
-    "ast_hash": "d95d1f07c9b61364763bd124c198b125",
-    "semantic_hash": "d95d1f07c9b61364763bd124c198b125"
+    "mtime": 1781833909.686443,
+    "ast_hash": "ff779e3c6ed2d8ecfb45afa692fd4fff",
+    "semantic_hash": ""
   },
   "frontend/src/app/services/auth.service.ts": {
     "mtime": 1780599661.0877497,
@@ -318,5 +318,10 @@
     "mtime": 1780599441.5988674,
     "ast_hash": "b5c1d106e573fea21ef1ad9e4360e77a",
     "semantic_hash": "b5c1d106e573fea21ef1ad9e4360e77a"
+  },
+  "frontend/src/app/animations/animations.ts": {
+    "mtime": 1781833849.1743677,
+    "ast_hash": "0338efab8c311bde6401256694d0769f",
+    "semantic_hash": ""
   }
 }

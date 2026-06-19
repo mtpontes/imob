@@ -6,13 +6,15 @@ import { EvaluationService } from '../../services/evaluation.service';
 import { ScriptService } from '../../services/script.service';
 import { PropertyResponse, EvaluationResponse, ScriptResponse } from '../../types';
 import { LucideAngularModule } from 'lucide-angular';
+import { modalTrigger, listStaggerTrigger } from '../../animations/animations';
 
 @Component({
   selector: 'app-property-details',
   standalone: true,
   imports: [CommonModule, RouterModule, LucideAngularModule],
   templateUrl: './property-details.component.html',
-  styleUrls: ['./property-details.component.css']
+  styleUrls: ['./property-details.component.css'],
+  animations: [modalTrigger, listStaggerTrigger]
 })
 export class PropertyDetailsComponent implements OnInit {
   propertyId: string = '';

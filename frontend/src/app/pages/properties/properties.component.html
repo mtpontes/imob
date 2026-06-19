@@ -29,7 +29,7 @@
           <span>{{ getFilterLabel() }}</span>
           <lucide-icon name="chevron-down"></lucide-icon>
         </div>
-        <div class="custom-select-options glass">
+        <div class="custom-select-options glass" *ngIf="isFilterDropdownOpen" @dropdownTrigger>
           <div class="custom-select-option" [class.selected]="statusFilter === 'all'" (click)="selectFilter('all')">Todos os Imóveis</div>
           <div class="custom-select-option" [class.selected]="statusFilter === 'evaluated'" (click)="selectFilter('evaluated')">Avaliados</div>
           <div class="custom-select-option" [class.selected]="statusFilter === 'pending'" (click)="selectFilter('pending')">Não Avaliados</div>
@@ -42,7 +42,7 @@
           <span>{{ getSortLabel() }}</span>
           <lucide-icon name="chevron-down"></lucide-icon>
         </div>
-        <div class="custom-select-options glass">
+        <div class="custom-select-options glass" *ngIf="isSortDropdownOpen" @dropdownTrigger>
           <div class="custom-select-option" [class.selected]="sortBy === 'recent'" (click)="selectSort('recent')">Mais Recentes</div>
           <div class="custom-select-option" [class.selected]="sortBy === 'price-asc'" (click)="selectSort('price-asc')">Menor Preço</div>
           <div class="custom-select-option" [class.selected]="sortBy === 'price-desc'" (click)="selectSort('price-desc')">Maior Preço</div>
@@ -76,7 +76,7 @@
   </div>
 
   <!-- Lista/Grid de Imóveis -->
-  <div id="properties-grid" class="properties-grid" *ngIf="filteredProperties.length > 0 && !loading">
+  <div id="properties-grid" class="properties-grid" *ngIf="filteredProperties.length > 0 && !loading" [@listStaggerTrigger]="filteredProperties.length">
     <div 
       *ngFor="let p of filteredProperties" 
       class="property-card glass" 

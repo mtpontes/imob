@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
 import { PropertyDetailsComponent } from './property-details.component';
 import { PropertyService } from '../../services/property.service';
@@ -84,6 +85,7 @@ describe('PropertyDetailsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RouterTestingModule, PropertyDetailsComponent],
       providers: [
+        provideNoopAnimations(),
         { provide: PropertyService, useValue: propertyServiceMock },
         { provide: EvaluationService, useValue: evaluationServiceMock },
         { provide: ScriptService, useValue: scriptServiceMock },

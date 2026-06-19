@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 import { ScriptsComponent } from './scripts.component';
 import { ScriptService } from '../../services/script.service';
@@ -45,6 +46,7 @@ describe('ScriptsComponent', () => {
         ScriptsComponent
       ],
       providers: [
+        provideNoopAnimations(),
         { provide: ScriptService, useValue: scriptServiceMock },
         importProvidersFrom(
           LucideAngularModule.pick({

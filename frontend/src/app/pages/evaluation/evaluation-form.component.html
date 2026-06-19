@@ -48,7 +48,7 @@
             <span>{{ getScriptLabel() }}</span>
             <lucide-icon name="chevron-down"></lucide-icon>
           </div>
-          <div class="custom-select-options glass">
+          <div class="custom-select-options glass" *ngIf="isScriptDropdownOpen" @dropdownTrigger>
             <div 
               *ngFor="let p of scripts" 
               class="custom-select-option" 
@@ -70,7 +70,7 @@
           <p>Responda de acordo com as condições identificadas no local</p>
         </div>
         
-        <div formGroupName="answers" class="eval-dynamic-fields-container">
+        <div formGroupName="answers" class="eval-dynamic-fields-container" [@listStaggerTrigger]="selectedScript.criteria.length">
           <label 
             *ngFor="let criteria of selectedScript.criteria" 
             [attr.for]="criteria.type === 'bool' ? 'input-criteria-' + criteria.id : null"
@@ -190,7 +190,7 @@
           
           <!-- Lista de midias carregadas/processadas -->
           <div class="upload-list" *ngIf="uploads.length > 0" id="uploaded-photos-preview-grid">
-            <div *ngFor="let item of uploads; let i = index" class="upload-item glass" style="margin-top: 0.75rem; padding: 0.85rem; border-radius: 8px;">
+            <div *ngFor="let item of uploads; let i = index" class="upload-item glass" style="margin-top: 0.75rem; padding: 0.85rem; border-radius: 8px;" @slideInOut>
               <div class="upload-item-info" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; margin-bottom: 0.4rem;">
                 <span class="file-name" style="font-weight: 500; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ item.name }}</span>
                 <div style="display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; margin-left: 0.5rem;">
@@ -228,7 +228,7 @@
     </div>
 
     <!-- Lado Direito: Resumo da Nota em tempo real -->
-    <div class="evaluation-sidebar-card glass" *ngIf="selectedScript && evaluationForm" id="eval-sidebar-score-card">
+    <div class="evaluation-sidebar-card glass" *ngIf="selectedScript && evaluationForm" id="eval-sidebar-score-card" @slideInOut>
       <h3>Resultado Preliminar</h3>
       <p class="subtitle">Pontuação preliminar baseada nos critérios respondidos e nos pesos configurados</p>
       

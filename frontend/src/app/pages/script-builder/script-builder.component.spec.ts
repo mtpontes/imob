@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReactiveFormsModule, FormArray } from '@angular/forms';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 import { ScriptBuilderComponent } from './script-builder.component';
 import { ScriptService } from '../../services/script.service';
@@ -56,6 +57,7 @@ describe('ScriptBuilderComponent', () => {
         ScriptBuilderComponent
       ],
       providers: [
+        provideNoopAnimations(),
         { provide: ScriptService, useValue: scriptServiceMock },
         {
           provide: ActivatedRoute,

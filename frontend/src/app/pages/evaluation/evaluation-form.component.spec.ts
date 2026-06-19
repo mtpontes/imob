@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { of, throwError } from 'rxjs';
 import { EvaluationFormComponent } from './evaluation-form.component';
 import { PropertyService } from '../../services/property.service';
@@ -86,6 +87,7 @@ describe('EvaluationFormComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ReactiveFormsModule, RouterTestingModule, EvaluationFormComponent],
       providers: [
+        provideNoopAnimations(),
         { provide: PropertyService, useValue: propertyServiceMock },
         { provide: ScriptService, useValue: scriptServiceMock },
         { provide: EvaluationService, useValue: evaluationServiceMock },

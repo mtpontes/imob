@@ -109,7 +109,7 @@
         </button>
       </div>
 
-      <div class="evaluation-history-list" *ngIf="evaluations.length > 0 && !loading" id="evaluation-history-list">
+      <div class="evaluation-history-list" *ngIf="evaluations.length > 0 && !loading" id="evaluation-history-list" [@listStaggerTrigger]="evaluations.length">
         <div *ngFor="let ev of evaluations; let i = index" class="history-item-card glass interactive-glow fade-in" (click)="openEvaluationDetails(ev)">
           <div class="history-item-left">
             <div class="history-item-score-badge"
@@ -151,7 +151,7 @@
   </div>
 
   <!-- Modal para visualização detalhada de respostas de uma avaliação -->
-  <div id="evaluation-details-modal" class="modal-wrapper" [class.hide]="!isModalOpen">
+  <div id="evaluation-details-modal" class="modal-wrapper" *ngIf="isModalOpen" @modalTrigger>
     <div class="modal-backdrop" (click)="closeModal()"></div>
     <div class="modal-content glass" *ngIf="selectedEvaluation">
       <div class="modal-header">
@@ -252,7 +252,7 @@
   </div>
 
   <!-- Modal customizado de confirmação de exclusão -->
-  <div id="confirm-delete-modal" class="modal-wrapper" [class.hide]="!isConfirmDeleteOpen">
+  <div id="confirm-delete-modal" class="modal-wrapper" *ngIf="isConfirmDeleteOpen" @modalTrigger>
     <div class="modal-backdrop" (click)="cancelDelete()"></div>
     <div class="modal-content delete-confirm-modal-content glass">
       <div class="delete-confirm-body">
@@ -274,7 +274,7 @@
   </div>
 
   <!-- Modal customizado de confirmação de exclusão do imóvel -->
-  <div id="confirm-delete-prop-modal" class="modal-wrapper" [class.hide]="!isConfirmDeletePropOpen">
+  <div id="confirm-delete-prop-modal" class="modal-wrapper" *ngIf="isConfirmDeletePropOpen" @modalTrigger>
     <div class="modal-backdrop" (click)="cancelDeleteProperty()"></div>
     <div class="modal-content delete-confirm-modal-content glass">
       <div class="delete-confirm-body">
@@ -296,7 +296,7 @@
   </div>
 
   <!-- Modal Lightbox para visualização premium de fotos e vídeos -->
-  <div id="lightbox-modal" class="modal-wrapper lightbox-wrapper" [class.hide]="!isLightboxOpen" *ngIf="isLightboxOpen && selectedEvaluation && selectedEvaluation.mediaUrls">
+  <div id="lightbox-modal" class="modal-wrapper lightbox-wrapper" *ngIf="isLightboxOpen && selectedEvaluation && selectedEvaluation.mediaUrls" @modalTrigger>
     <div class="modal-backdrop lightbox-backdrop" (click)="closeLightbox()"></div>
     
     <div class="lightbox-container">
