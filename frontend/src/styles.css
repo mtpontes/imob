@@ -2358,7 +2358,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
 html.no-scroll,
 body.no-scroll {
   overflow: hidden !important;
-  height: 100vh !important;
 }
 
 .modal-wrapper {
