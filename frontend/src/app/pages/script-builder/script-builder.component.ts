@@ -34,6 +34,11 @@ export class ScriptBuilderComponent implements OnInit {
   draggedIndex: number | null = null;
   dragOverIndex: number | null = null;
 
+  // Controle de animacao de reordenacao
+  animatingIndex: number | null = null;
+  animatingTargetIndex: number | null = null;
+  isSnapping: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private scriptService: ScriptService,
@@ -117,6 +122,38 @@ export class ScriptBuilderComponent implements OnInit {
     const control = this.criteria.at(fromIndex);
     this.criteria.removeAt(fromIndex);
     this.criteria.insert(toIndex, control);
+  }
+
+  moveCriteriaWithAnimation(fromIndex: number, toIndex: number): void {
+    if (fromIndex < 0 || fromIndex >= this.criteria.length || toIndex < 0 || toIndex >= this.criteria.length) {
+      return;
+    }
+
+    this.animatingIndex = fromIndex;
+    this.animatingTargetIndex = toIndex;
+
+    setTimeout(() => {
+      // 1. Desativa a transition CSS para evitar o snap-back visual
+      this.isSnapping = true;
+
+      // 2. Realiza o swap de dados no FormArray
+      this.moveCriteria(fromIndex, toIndex);
+
+      // 3. Limpa os estados de animacao (com transition ainda suprimida)
+      this.animatingIndex = null;
+      this.animatingTargetIndex = null;
+
+      // 4. Reabilita a transition apos um frame (o DOM ja esta na posicao correta)
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          this.isSnapping = false;
+        });
+      });
+    }, 240);
+  }
+
+  trackByCriteria(index: number): number {
+    return index;
   }
 
   onDragStart(index: number, event: DragEvent): void {

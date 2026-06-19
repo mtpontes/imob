@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { AuthService } from './services/auth.service';
 import { RouterTestingModule } from '@angular/router/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { importProvidersFrom } from '@angular/core';
 import { 
   LucideAngularModule, 
@@ -24,6 +25,7 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent, RouterTestingModule],
       providers: [
+        provideNoopAnimations(),
         { provide: AuthService, useValue: authServiceMock },
         importProvidersFrom(
           LucideAngularModule.pick({

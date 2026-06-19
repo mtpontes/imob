@@ -1,21 +1,30 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterModule } from '@angular/router';
+import { RouterOutlet, RouterModule, ChildrenOutletContexts } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from './services/auth.service';
 import { LucideAngularModule } from 'lucide-angular';
+import { routeAnimations } from './animations/animations';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, RouterModule, LucideAngularModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
+  animations: [routeAnimations]
 })
 export class AppComponent {
   title = 'frontend';
   isProfileMenuOpen = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private contexts: ChildrenOutletContexts
+  ) {}
+
+  getRouteAnimationData() {
+    return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
+  }
 
   toggleProfileMenu(event: Event): void {
     event.stopPropagation();

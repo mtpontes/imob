@@ -1,5 +1,5 @@
 <section class="evaluation-form-section">
-  
+
   <div class="page-header" *ngIf="property">
     <div class="page-title-area">
       <button class="btn btn-text-back" (click)="cancelEvaluation()" id="btn-eval-back">
@@ -19,10 +19,10 @@
   </div>
 
   <div class="evaluation-container-grid" *ngIf="property">
-    
+
     <!-- Lado Esquerdo: Formulário Dinâmico -->
     <div class="evaluation-main-card glass">
-      
+
       <div class="eval-property-summary-bar">
         <div class="summary-item">
           <lucide-icon name="map-pin"></lucide-icon>
@@ -43,19 +43,15 @@
       <!-- Seleção de Roteiro -->
       <div class="form-group" id="eval-template-select-container" style="margin-bottom: 2rem;">
         <label for="eval-template-select">Selecione o Roteiro de Avaliação</label>
-        <div class="custom-select-container full-width" [class.open]="isScriptDropdownOpen" [class.disabled]="isEditMode" id="eval-template-select-custom">
+        <div class="custom-select-container full-width" [class.open]="isScriptDropdownOpen"
+          [class.disabled]="isEditMode" id="eval-template-select-custom">
           <div class="custom-select-trigger" (click)="toggleScriptDropdown()" id="eval-template-select-trigger">
             <span>{{ getScriptLabel() }}</span>
             <lucide-icon name="chevron-down"></lucide-icon>
           </div>
           <div class="custom-select-options glass" *ngIf="isScriptDropdownOpen" @dropdownTrigger>
-            <div 
-              *ngFor="let p of scripts" 
-              class="custom-select-option" 
-              [class.selected]="selectedScript?.id === p.id" 
-              (click)="selectScriptCustom(p.id)"
-              [id]="'script-option-' + p.id"
-            >
+            <div *ngFor="let p of scripts" class="custom-select-option" [class.selected]="selectedScript?.id === p.id"
+              (click)="selectScriptCustom(p.id)" [id]="'script-option-' + p.id">
               {{ p.name || 'Roteiro de Vistoria' }} (v{{ p.version }})
             </div>
           </div>
@@ -63,83 +59,77 @@
       </div>
 
       <!-- Formulário de critérios gerados dinamicamente -->
-      <form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()" *ngIf="selectedScript && evaluationForm" id="evaluation-submit-form">
-        
+      <form [formGroup]="evaluationForm" (ngSubmit)="onSubmit()" *ngIf="selectedScript && evaluationForm"
+        id="evaluation-submit-form">
+
         <div class="dynamic-criteria-title">
           <h3>Vistoria e Critérios de Nota</h3>
           <p>Responda de acordo com as condições identificadas no local</p>
         </div>
-        
-        <div formGroupName="answers" class="eval-dynamic-fields-container" [@listStaggerTrigger]="selectedScript.criteria.length">
-          <label 
-            *ngFor="let criteria of selectedScript.criteria" 
+
+        <div formGroupName="answers" class="eval-dynamic-fields-container"
+          [@listStaggerTrigger]="selectedScript.criteria.length">
+          <label *ngFor="let criteria of selectedScript.criteria"
             [attr.for]="criteria.type === 'bool' ? 'input-criteria-' + criteria.id : null"
-            class="criteria-item-field glass-card-nested"
-            [class.clickable-bool-card]="criteria.type === 'bool'"
+            class="criteria-item-field glass-card-nested" [class.clickable-bool-card]="criteria.type === 'bool'"
             [class.criteria-penalty]="criteria.isScorable && criteria.weight < 0"
-            style="display: block; margin-bottom: 1.5rem; padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01);"
-          >
-            
-            <div class="criteria-field-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
-              <span class="criteria-label" style="font-weight: 600; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 0.4rem; margin-right: 0.75rem;">
-                <lucide-icon *ngIf="criteria.isScorable && criteria.weight < 0" name="alert-triangle" style="width: 16px; height: 16px; color: var(--danger);"></lucide-icon>
+            style="display: block; margin-bottom: 1.5rem; padding: 1.25rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01);">
+
+            <div class="criteria-field-header"
+              style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+              <span class="criteria-label"
+                style="font-weight: 600; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 0.4rem; margin-right: 0.75rem;">
+                <lucide-icon *ngIf="criteria.isScorable && criteria.weight < 0" name="alert-triangle"
+                  style="width: 16px; height: 16px; color: var(--danger);"></lucide-icon>
                 {{ criteria.label }}
               </span>
-              <span *ngIf="criteria.isScorable && criteria.weight > 0" class="weight-badge" [id]="'weight-badge-' + criteria.id">
+              <span *ngIf="criteria.isScorable && criteria.weight > 0" class="weight-badge"
+                [id]="'weight-badge-' + criteria.id">
                 Peso: {{ criteria.weight }}x
               </span>
-              <span *ngIf="criteria.isScorable && criteria.weight < 0" class="weight-badge penalty" [id]="'weight-badge-' + criteria.id">
+              <span *ngIf="criteria.isScorable && criteria.weight < 0" class="weight-badge penalty"
+                [id]="'weight-badge-' + criteria.id">
                 Penalizador: {{ criteria.weight }}x
               </span>
             </div>
 
             <!-- Input Texto -->
             <div *ngIf="criteria.type === 'text'" class="input-container">
-              <textarea
-                [formControlName]="criteria.id"
-                [id]="'input-criteria-' + criteria.id"
-                placeholder="Insira as anotações de avaliação..."
-                rows="3"
-                style="padding: 0.85rem 1rem;"
-              ></textarea>
+              <textarea [formControlName]="criteria.id" [id]="'input-criteria-' + criteria.id"
+                placeholder="Insira as anotações de avaliação..." rows="3" style="padding: 0.85rem 1rem;"></textarea>
             </div>
 
             <!-- Input Switch Boolean -->
-            <div *ngIf="criteria.type === 'bool'" class="input-container switch-container" style="display: flex; align-items: center; gap: 1rem;">
+            <div *ngIf="criteria.type === 'bool'" class="input-container switch-container"
+              style="display: flex; align-items: center; gap: 1rem;">
               <span class="switch" [class.penalty-switch]="criteria.isScorable && criteria.weight < 0">
-                <input
-                  type="checkbox"
-                  [formControlName]="criteria.id"
-                  [id]="'input-criteria-' + criteria.id"
-                />
+                <input type="checkbox" [formControlName]="criteria.id" [id]="'input-criteria-' + criteria.id" />
                 <span class="slider-switch round"></span>
               </span>
-              <span class="switch-value" 
-                    [class.text-danger]="criteria.isScorable && criteria.weight < 0 && evaluationForm.get('answers.' + criteria.id)?.value"
-                    [class.text-success]="criteria.isScorable && criteria.weight < 0 && !evaluationForm.get('answers.' + criteria.id)?.value"
-                    style="font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); transition: var(--transition-fast);">
+              <span class="switch-value"
+                [class.text-danger]="criteria.isScorable && criteria.weight < 0 && evaluationForm.get('answers.' + criteria.id)?.value"
+                [class.text-success]="criteria.isScorable && criteria.weight < 0 && !evaluationForm.get('answers.' + criteria.id)?.value"
+                style="font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); transition: var(--transition-fast);">
                 {{ evaluationForm.get('answers.' + criteria.id)?.value ? 'Sim' : 'Não' }}
               </span>
             </div>
 
             <!-- Input Slider Range -->
-            <div *ngIf="criteria.type === 'range'" class="input-container range-container" style="display: flex; flex-direction: column; gap: 0.5rem;">
-              <div class="range-labels" style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted);">
+            <div *ngIf="criteria.type === 'range'" class="input-container range-container"
+              style="display: flex; flex-direction: column; gap: 0.5rem;">
+              <div class="range-labels"
+                style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted);">
                 <span>Min: {{ criteria.min ?? 0 }}</span>
-                <span class="range-current-value" [id]="'current-val-' + criteria.id" [style.color]="criteria.weight < 0 ? 'var(--danger)' : '#e100ff'" style="font-weight: 700;">
+                <span class="range-current-value" [id]="'current-val-' + criteria.id"
+                  [style.color]="criteria.weight < 0 ? 'var(--danger)' : '#e100ff'" style="font-weight: 700;">
                   Nota: {{ evaluationForm.get('answers.' + criteria.id)?.value }}
                 </span>
                 <span>Max: {{ criteria.max ?? 5 }}</span>
               </div>
-              <input
-                type="range"
-                [min]="criteria.min ?? 0"
-                [max]="criteria.max ?? 5"
-                [formControlName]="criteria.id"
-                [id]="'input-criteria-' + criteria.id"
-                class="range-slider"
-              />
-              <div *ngIf="criteria.type === 'range' && criteria.isScorable && criteria.weight < 0" style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; font-style: italic;">
+              <input type="range" [min]="criteria.min ?? 0" [max]="criteria.max ?? 5" [formControlName]="criteria.id"
+                [id]="'input-criteria-' + criteria.id" class="range-slider" />
+              <div *ngIf="criteria.type === 'range' && criteria.isScorable && criteria.weight < 0"
+                style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; font-style: italic;">
                 * Valores maiores reduzem a nota final do imóvel.
               </div>
             </div>
@@ -150,66 +140,48 @@
         <!-- Notas adicionais da vistoria -->
         <div class="form-group mt-6">
           <label for="eval-notes">Notas Gerais e Observações da Visita</label>
-          <textarea 
-            id="eval-notes" 
-            formControlName="notes" 
-            rows="4" 
+          <textarea id="eval-notes" formControlName="notes" rows="4"
             placeholder="Escreva observações técnicas sobre rachaduras, umidade, potencial de reforma ou observações de vizinhança..."
-            style="padding: 0.85rem 1rem;"
-          ></textarea>
+            style="padding: 0.85rem 1rem;"></textarea>
         </div>
 
         <!-- Upload de midias real via S3 pre-signed url -->
         <div class="photo-upload-section">
-          <h3>Fotos e Vídeos do Imóvel (Object Storage S3)</h3>
-          <p class="subtitle">Os arquivos são enviados direto para o Amazon S3 usando urls pré-assinadas temporárias</p>
-          
-          <div
-            class="upload-zone"
-            [class.drag-over]="isDragOver"
-            (click)="photoInput.click()"
-            (dragover)="onDragOver($event)"
-            (dragenter)="onDragEnter($event)"
-            (dragleave)="onDragLeave($event)"
-            (drop)="onDrop($event)"
-            id="photo-upload-zone"
-          >
-            <input
-              type="file"
-              #photoInput
-              (change)="onFileSelected($event)"
-              multiple
-              accept="image/*,video/*"
-              class="hide"
-            />
+          <h3>Fotos e Vídeos do Imóvel</h3>
+          <div class="upload-zone" [class.drag-over]="isDragOver" (click)="photoInput.click()"
+            (dragover)="onDragOver($event)" (dragenter)="onDragEnter($event)" (dragleave)="onDragLeave($event)"
+            (drop)="onDrop($event)" id="photo-upload-zone">
+            <input type="file" #photoInput (change)="onFileSelected($event)" multiple accept="image/*,video/*"
+              class="hide" />
             <lucide-icon name="camera"></lucide-icon>
             <span>Clique ou arraste fotos e vídeos aqui</span>
             <p class="hint">Suporta múltiplos uploads diretos no S3 Bucket</p>
           </div>
 
-          
+
           <!-- Lista de midias carregadas/processadas -->
           <div class="upload-list" *ngIf="uploads.length > 0" id="uploaded-photos-preview-grid">
-            <div *ngFor="let item of uploads; let i = index" class="upload-item glass" style="margin-top: 0.75rem; padding: 0.85rem; border-radius: 8px;" @slideInOut>
-              <div class="upload-item-info" style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; margin-bottom: 0.4rem;">
-                <span class="file-name" style="font-weight: 500; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ item.name }}</span>
+            <div *ngFor="let item of uploads; let i = index" class="upload-item glass"
+              style="margin-top: 0.75rem; padding: 0.85rem; border-radius: 8px;" @slideInOut>
+              <div class="upload-item-info"
+                style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; margin-bottom: 0.4rem;">
+                <span class="file-name"
+                  style="font-weight: 500; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{
+                  item.name }}</span>
                 <div style="display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; margin-left: 0.5rem;">
                   <span *ngIf="item.loading" class="progress-percent">{{ item.progress }}%</span>
-                  <span *ngIf="item.success && !item.loading" class="success-status" style="color: var(--success); font-weight: 700;">OK</span>
-                  <button
-                    *ngIf="!item.loading"
-                    type="button"
-                    class="btn-remove-upload"
-                    (click)="removeUpload(i)"
-                    title="Remover mídia"
-                    [id]="'btn-remove-upload-' + i"
-                  >
+                  <span *ngIf="item.success && !item.loading" class="success-status"
+                    style="color: var(--success); font-weight: 700;">OK</span>
+                  <button *ngIf="!item.loading" type="button" class="btn-remove-upload" (click)="removeUpload(i)"
+                    title="Remover mídia" [id]="'btn-remove-upload-' + i">
                     <lucide-icon name="x" style="width: 12px; height: 12px;"></lucide-icon>
                   </button>
                 </div>
               </div>
-              <div class="progress-bar-container" style="background: rgba(255,255,255,0.05); height: 4px; border-radius: 10px; overflow: hidden;">
-                <div class="progress-bar" [style.width.%]="item.progress" [class.success]="item.success" style="background: #e100ff; height: 100%; transition: width 0.2s ease;"></div>
+              <div class="progress-bar-container"
+                style="background: rgba(255,255,255,0.05); height: 4px; border-radius: 10px; overflow: hidden;">
+                <div class="progress-bar" [style.width.%]="item.progress" [class.success]="item.success"
+                  style="background: #e100ff; height: 100%; transition: width 0.2s ease;"></div>
               </div>
             </div>
           </div>
@@ -217,7 +189,8 @@
         </div>
 
         <div class="form-actions-footer">
-          <button type="button" class="btn btn-outline" (click)="cancelEvaluation()" id="btn-eval-cancel">Cancelar</button>
+          <button type="button" class="btn btn-outline" (click)="cancelEvaluation()"
+            id="btn-eval-cancel">Cancelar</button>
           <button type="submit" [disabled]="loading" class="btn btn-primary" id="btn-save-evaluation">
             <span *ngIf="!loading">{{ isEditMode ? 'Salvar Alterações' : 'Concluir e Registrar Visita' }}</span>
             <span *ngIf="loading" class="spinner"></span>
@@ -228,15 +201,15 @@
     </div>
 
     <!-- Lado Direito: Resumo da Nota em tempo real -->
-    <div class="evaluation-sidebar-card glass" *ngIf="selectedScript && evaluationForm" id="eval-sidebar-score-card" @slideInOut>
+    <div class="evaluation-sidebar-card glass" *ngIf="selectedScript && evaluationForm" id="eval-sidebar-score-card"
+      @slideInOut>
       <h3>Resultado Preliminar</h3>
       <p class="subtitle">Pontuação preliminar baseada nos critérios respondidos e nos pesos configurados</p>
-      
+
       <div class="score-visualizer">
-        <div class="score-circle" 
-             [class.glow-green]="scoreBadgeClass === 'high'"
-             [class.glow-yellow]="scoreBadgeClass === 'medium'"
-             [class.glow-red]="scoreBadgeClass === 'low' || scoreBadgeClass === 'danger'">
+        <div class="score-circle" [class.glow-green]="scoreBadgeClass === 'high'"
+          [class.glow-yellow]="scoreBadgeClass === 'medium'"
+          [class.glow-red]="scoreBadgeClass === 'low' || scoreBadgeClass === 'danger'">
           <span class="score-num" id="live-score-value">{{ currentScore | number:'1.1-1' }}</span>
           <span class="score-max">/ 100</span>
         </div>

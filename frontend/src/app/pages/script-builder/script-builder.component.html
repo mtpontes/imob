@@ -49,17 +49,15 @@
               Nenhum critério adicionado. Use o painel lateral para adicionar critérios ao seu roteiro.
             </div>
 
-            <div *ngFor="let crit of criteria.controls; let i = index" 
-                 [formGroupName]="i" 
-                 class="criteria-item-row"
-                 draggable="true"
-                 (dragstart)="onDragStart(i, $event)"
-                 (dragover)="onDragOver(i, $event)"
-                 (dragleave)="onDragLeave(i)"
-                 (drop)="onDrop(i, $event)"
-                 (dragend)="onDragEnd()"
-                 [class.dragging]="draggedIndex === i"
-                 [class.drag-over]="dragOverIndex === i">
+            <div *ngFor="let crit of criteria.controls; let i = index; trackBy: trackByCriteria" [formGroupName]="i" class="criteria-item-row"
+              draggable="true" (dragstart)="onDragStart(i, $event)" (dragover)="onDragOver(i, $event)"
+              (dragleave)="onDragLeave(i)" (drop)="onDrop(i, $event)" (dragend)="onDragEnd()"
+              [class.dragging]="draggedIndex === i" [class.drag-over]="dragOverIndex === i"
+              [class.no-transition]="isSnapping"
+              [class.move-up-active]="animatingIndex === i && animatingTargetIndex !== null && animatingTargetIndex < i"
+              [class.move-down-active]="animatingIndex === i && animatingTargetIndex !== null && animatingTargetIndex > i"
+              [class.swapped-down-active]="animatingTargetIndex === i && animatingIndex !== null && animatingIndex > i"
+              [class.swapped-up-active]="animatingTargetIndex === i && animatingIndex !== null && animatingIndex < i">
               <div class="criteria-item-left">
                 <div class="criteria-drag-handle">
                   <lucide-icon name="grip-vertical"></lucide-icon>
@@ -74,24 +72,29 @@
                     <span class="crit-badge scorable" *ngIf="crit.get('isScorable')?.value">
                       Pontuável
                     </span>
-                    <span class="crit-badge weight" [class.penalty]="crit.get('weight')?.value < 0" *ngIf="crit.get('isScorable')?.value">
+                    <span class="crit-badge weight" [class.penalty]="crit.get('weight')?.value < 0"
+                      *ngIf="crit.get('isScorable')?.value">
                       {{ crit.get('weight')?.value < 0 ? 'Penalizador' : 'Peso' }} {{ crit.get('weight')?.value }}x
-                    </span>
+                        </span>
                   </div>
                 </div>
               </div>
 
               <div class="criteria-item-actions">
-                <button type="button" class="btn btn-icon" [disabled]="i === 0" (click)="moveCriteria(i, i - 1); $event.stopPropagation()"
-                  title="Mover para cima" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-icon" [disabled]="i === 0 || animatingIndex !== null"
+                  (click)="moveCriteriaWithAnimation(i, i - 1); $event.stopPropagation()" title="Mover para cima"
+                  style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
                   <lucide-icon name="chevron-up" style="width: 14px; height: 14px;"></lucide-icon>
                 </button>
-                <button type="button" class="btn btn-icon" [disabled]="i === criteria.length - 1" (click)="moveCriteria(i, i + 1); $event.stopPropagation()"
-                  title="Mover para baixo" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-icon"
+                  [disabled]="i === criteria.length - 1 || animatingIndex !== null"
+                  (click)="moveCriteriaWithAnimation(i, i + 1); $event.stopPropagation()" title="Mover para baixo"
+                  style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
                   <lucide-icon name="chevron-down" style="width: 14px; height: 14px;"></lucide-icon>
                 </button>
-                <button type="button" class="btn btn-icon btn-logout" (click)="removeCriteria(i); $event.stopPropagation()"
-                  title="Excluir" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
+                <button type="button" class="btn btn-icon btn-logout"
+                  (click)="removeCriteria(i); $event.stopPropagation()" title="Excluir"
+                  style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;">
                   <lucide-icon name="trash-2" style="width: 14px; height: 14px;"></lucide-icon>
                 </button>
               </div>
@@ -153,28 +156,16 @@
         <div class="form-group">
           <label>Tipo de Resposta</label>
           <div class="segmented-control-group glass-card-nested">
-            <button 
-              type="button" 
-              class="segment-item" 
-              [class.active]="newCritType === 'bool'"
-              (click)="selectCritType('bool')"
-            >
+            <button type="button" class="segment-item" [class.active]="newCritType === 'bool'"
+              (click)="selectCritType('bool')">
               Sim / Não
             </button>
-            <button 
-              type="button" 
-              class="segment-item" 
-              [class.active]="newCritType === 'range'"
-              (click)="selectCritType('range')"
-            >
+            <button type="button" class="segment-item" [class.active]="newCritType === 'range'"
+              (click)="selectCritType('range')">
               Escala 0-5
             </button>
-            <button 
-              type="button" 
-              class="segment-item" 
-              [class.active]="newCritType === 'text'"
-              (click)="selectCritType('text')"
-            >
+            <button type="button" class="segment-item" [class.active]="newCritType === 'text'"
+              (click)="selectCritType('text')">
               Texto
             </button>
           </div>
@@ -188,7 +179,8 @@
           </label>
         </div>
 
-        <div class="form-group row-checkbox" id="crit-penalty-wrapper" *ngIf="newCritType !== 'text' && newCritIsScorable" @slideInOut>
+        <div class="form-group row-checkbox" id="crit-penalty-wrapper"
+          *ngIf="newCritType !== 'text' && newCritIsScorable" @slideInOut>
           <label class="checkbox-container">
             <input type="checkbox" id="crit-is-penalty" [(ngModel)]="newCritIsPenalty" name="newCritIsPenalty" />
             <span class="checkmark"></span>
@@ -196,7 +188,8 @@
           </label>
         </div>
 
-        <div class="form-group" id="crit-weight-wrapper" *ngIf="newCritType !== 'text' && newCritIsScorable" @slideInOut>
+        <div class="form-group" id="crit-weight-wrapper" *ngIf="newCritType !== 'text' && newCritIsScorable"
+          @slideInOut>
           <label for="crit-weight">Peso do Critério (Multiplicador)</label>
           <div class="range-input-container">
             <input type="range" id="crit-weight" min="1" max="5" [(ngModel)]="newCritWeight" name="newCritWeight" />

@@ -1220,7 +1220,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "entity_scriptentity",
-      "community": 4,
+      "community": 3,
       "norm_label": "scriptentity.java"
     },
     {
@@ -1230,7 +1230,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "entity_scriptentity_scriptentity",
-      "community": 4,
+      "community": 3,
       "norm_label": "scriptentity"
     },
     {
@@ -1240,7 +1240,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "entity_scriptentity_scriptentity_toattributemap",
-      "community": 4,
+      "community": 3,
       "norm_label": ".toattributemap()"
     },
     {
@@ -1250,7 +1250,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_entity_scriptentity_java_map",
-      "community": 4,
+      "community": 3,
       "norm_label": "map"
     },
     {
@@ -1260,7 +1260,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_entity_scriptentity_java_string",
-      "community": 4,
+      "community": 3,
       "norm_label": "string"
     },
     {
@@ -1270,7 +1270,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_entity_scriptentity_java_attributevalue",
-      "community": 4,
+      "community": 3,
       "norm_label": "attributevalue"
     },
     {
@@ -1280,7 +1280,7 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "entity_scriptentity_scriptentity_fromattributemap",
-      "community": 4,
+      "community": 3,
       "norm_label": ".fromattributemap()"
     },
     {
@@ -1360,7 +1360,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "exception_evaluationerrorcode",
-      "community": 6,
+      "community": 1,
       "norm_label": "evaluationerrorcode.java"
     },
     {
@@ -1370,7 +1370,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "exception_evaluationerrorcode_evaluationerrorcode",
-      "community": 6,
+      "community": 1,
       "norm_label": "evaluationerrorcode()"
     },
     {
@@ -1380,7 +1380,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_exception_evaluationerrorcode_java_string",
-      "community": 6,
+      "community": 1,
       "norm_label": "string"
     },
     {
@@ -1390,7 +1390,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "status",
-      "community": 6,
+      "community": 1,
       "norm_label": "status"
     },
     {
@@ -1400,7 +1400,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "exception_evaluationerrorcode_getmessage",
-      "community": 6,
+      "community": 1,
       "norm_label": "getmessage()"
     },
     {
@@ -1410,7 +1410,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "exception_evaluationerrorcode_getstatus",
-      "community": 6,
+      "community": 1,
       "norm_label": "getstatus()"
     },
     {
@@ -1420,7 +1420,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "exception_evaluationexception",
-      "community": 6,
+      "community": 1,
       "norm_label": "evaluationexception.java"
     },
     {
@@ -1430,7 +1430,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "exception_evaluationexception_evaluationexception",
-      "community": 6,
+      "community": 1,
       "norm_label": "evaluationexception"
     },
     {
@@ -1440,7 +1440,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "runtimeexception",
-      "community": 6,
+      "community": 1,
       "norm_label": "runtimeexception"
     },
     {
@@ -1450,7 +1450,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "exception_evaluationexception_evaluationexception_evaluationexception",
-      "community": 6,
+      "community": 1,
       "norm_label": ".evaluationexception()"
     },
     {
@@ -1460,7 +1460,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "evaluationerrorcode",
-      "community": 6,
+      "community": 1,
       "norm_label": "evaluationerrorcode"
     },
     {
@@ -1470,7 +1470,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "exception_evaluationexception_evaluationexception_geterrorcode",
-      "community": 6,
+      "community": 1,
       "norm_label": ".geterrorcode()"
     },
     {
@@ -1480,7 +1480,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "exception_globalexceptionmapper",
-      "community": 6,
+      "community": 1,
       "norm_label": "globalexceptionmapper.java"
     },
     {
@@ -1490,7 +1490,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "exception_globalexceptionmapper_globalexceptionmapper",
-      "community": 6,
+      "community": 1,
       "norm_label": "globalexceptionmapper"
     },
     {
@@ -1500,7 +1500,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "exception_globalexceptionmapper_globalexceptionmapper_toresponse",
-      "community": 6,
+      "community": 1,
       "norm_label": ".toresponse()"
     },
     {
@@ -1510,7 +1510,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "exception",
-      "community": 6,
+      "community": 1,
       "norm_label": "exception"
     },
     {
@@ -1520,7 +1520,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_exception_globalexceptionmapper_java_response",
-      "community": 6,
+      "community": 1,
       "norm_label": "response"
     },
     {
@@ -1530,7 +1530,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_exception_globalexceptionmapper_java_override",
-      "community": 6,
+      "community": 1,
       "norm_label": "override"
     },
     {
@@ -2100,7 +2100,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "criteriadto",
-      "community": 4,
+      "community": 3,
       "norm_label": "criteriadto"
     },
     {
@@ -2200,7 +2200,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "service_s3service_s3service_deleteobject",
-      "community": 4,
+      "community": 14,
       "norm_label": ".deleteobject()"
     },
     {
@@ -2350,7 +2350,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "api_propertyresourcetest",
-      "community": 3,
+      "community": 20,
       "norm_label": "propertyresourcetest.java"
     },
     {
@@ -2360,7 +2360,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "api_propertyresourcetest_propertyresourcetest",
-      "community": 3,
+      "community": 20,
       "norm_label": "propertyresourcetest"
     },
     {
@@ -2370,7 +2370,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "api_propertyresourcetest_propertyresourcetest_setup",
-      "community": 3,
+      "community": 20,
       "norm_label": ".setup()"
     },
     {
@@ -2380,7 +2380,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "backend_src_test_java_com_imob_api_propertyresourcetest_java_beforeeach",
-      "community": 3,
+      "community": 20,
       "norm_label": "beforeeach"
     },
     {
@@ -2390,7 +2390,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "api_propertyresourcetest_propertyresourcetest_shouldcreateproperty",
-      "community": 3,
+      "community": 20,
       "norm_label": ".shouldcreateproperty()"
     },
     {
@@ -2400,7 +2400,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "backend_src_test_java_com_imob_api_propertyresourcetest_java_test",
-      "community": 3,
+      "community": 20,
       "norm_label": "test"
     },
     {
@@ -2410,7 +2410,7 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "api_propertyresourcetest_propertyresourcetest_shouldlistpropertiessortedbydate",
-      "community": 3,
+      "community": 20,
       "norm_label": ".shouldlistpropertiessortedbydate()"
     },
     {
@@ -2420,7 +2420,7 @@
       "source_location": "L118",
       "_origin": "ast",
       "id": "api_propertyresourcetest_propertyresourcetest_shoulddeletepropertyandcascadedeleteevaluationsands3media",
-      "community": 3,
+      "community": 20,
       "norm_label": ".shoulddeletepropertyandcascadedeleteevaluationsands3media()"
     },
     {
@@ -2430,7 +2430,7 @@
       "source_location": "L166",
       "_origin": "ast",
       "id": "api_propertyresourcetest_propertyresourcetest_shouldreturnnotfoundwhendeletingnonexistentproperty",
-      "community": 3,
+      "community": 20,
       "norm_label": ".shouldreturnnotfoundwhendeletingnonexistentproperty()"
     },
     {
@@ -2844,6 +2844,16 @@
       "norm_label": "slideinout"
     },
     {
+      "label": "routeAnimations",
+      "file_type": "code",
+      "source_file": "frontend/src/app/animations/animations.ts",
+      "source_location": "L71",
+      "_origin": "ast",
+      "id": "animations_animations_routeanimations",
+      "community": 2,
+      "norm_label": "routeanimations"
+    },
+    {
       "label": "app.component.spec.ts",
       "file_type": "code",
       "source_file": "frontend/src/app/app.component.spec.ts",
@@ -2867,7 +2877,7 @@
       "label": "AppComponent",
       "file_type": "code",
       "source_file": "frontend/src/app/app.component.ts",
-      "source_location": "L14",
+      "source_location": "L16",
       "_origin": "ast",
       "id": "app_app_component_appcomponent",
       "community": 2,
@@ -2877,17 +2887,27 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "frontend/src/app/app.component.ts",
-      "source_location": "L18",
+      "source_location": "L20",
       "_origin": "ast",
       "id": "app_app_component_appcomponent_constructor",
       "community": 2,
       "norm_label": ".constructor()"
     },
     {
+      "label": ".getRouteAnimationData()",
+      "file_type": "code",
+      "source_file": "frontend/src/app/app.component.ts",
+      "source_location": "L25",
+      "_origin": "ast",
+      "id": "app_app_component_appcomponent_getrouteanimationdata",
+      "community": 2,
+      "norm_label": ".getrouteanimationdata()"
+    },
+    {
       "label": ".toggleProfileMenu()",
       "file_type": "code",
       "source_file": "frontend/src/app/app.component.ts",
-      "source_location": "L20",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "app_app_component_appcomponent_toggleprofilemenu",
       "community": 2,
@@ -2897,7 +2917,7 @@
       "label": ".closeProfileMenu()",
       "file_type": "code",
       "source_file": "frontend/src/app/app.component.ts",
-      "source_location": "L25",
+      "source_location": "L34",
       "_origin": "ast",
       "id": "app_app_component_appcomponent_closeprofilemenu",
       "community": 2,
@@ -2907,7 +2927,7 @@
       "label": ".isLoggedIn()",
       "file_type": "code",
       "source_file": "frontend/src/app/app.component.ts",
-      "source_location": "L29",
+      "source_location": "L38",
       "_origin": "ast",
       "id": "app_app_component_appcomponent_isloggedin",
       "community": 2,
@@ -2917,7 +2937,7 @@
       "label": ".userEmail()",
       "file_type": "code",
       "source_file": "frontend/src/app/app.component.ts",
-      "source_location": "L33",
+      "source_location": "L42",
       "_origin": "ast",
       "id": "app_app_component_appcomponent_useremail",
       "community": 2,
@@ -2927,7 +2947,7 @@
       "label": ".workspaceName()",
       "file_type": "code",
       "source_file": "frontend/src/app/app.component.ts",
-      "source_location": "L37",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "app_app_component_appcomponent_workspacename",
       "community": 2,
@@ -2937,7 +2957,7 @@
       "label": ".userInitials()",
       "file_type": "code",
       "source_file": "frontend/src/app/app.component.ts",
-      "source_location": "L48",
+      "source_location": "L57",
       "_origin": "ast",
       "id": "app_app_component_appcomponent_userinitials",
       "community": 2,
@@ -2947,7 +2967,7 @@
       "label": ".logout()",
       "file_type": "code",
       "source_file": "frontend/src/app/app.component.ts",
-      "source_location": "L53",
+      "source_location": "L62",
       "_origin": "ast",
       "id": "app_app_component_appcomponent_logout",
       "community": 2,
@@ -3440,7 +3460,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "properties_properties_component_propertiescomponent_constructor",
-      "community": 11,
+      "community": 0,
       "norm_label": ".constructor()"
     },
     {
@@ -4147,7 +4167,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L37",
+      "source_location": "L41",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_constructor",
       "community": 10,
@@ -4157,7 +4177,7 @@
       "label": ".ngOnInit()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L50",
+      "source_location": "L54",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_ngoninit",
       "community": 10,
@@ -4167,7 +4187,7 @@
       "label": ".loadScriptForEdit()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L63",
+      "source_location": "L67",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_loadscriptforedit",
       "community": 10,
@@ -4177,7 +4197,7 @@
       "label": ".criteria()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L91",
+      "source_location": "L95",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_criteria",
       "community": 10,
@@ -4187,7 +4207,7 @@
       "label": ".addCriteria()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L95",
+      "source_location": "L99",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_addcriteria",
       "community": 10,
@@ -4197,7 +4217,7 @@
       "label": ".removeCriteria()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L109",
+      "source_location": "L113",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_removecriteria",
       "community": 10,
@@ -4207,17 +4227,27 @@
       "label": ".moveCriteria()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L113",
+      "source_location": "L117",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_movecriteria",
       "community": 10,
       "norm_label": ".movecriteria()"
     },
     {
+      "label": ".moveCriteriaWithAnimation()",
+      "file_type": "code",
+      "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
+      "source_location": "L126",
+      "_origin": "ast",
+      "id": "script_builder_script_builder_component_scriptbuildercomponent_movecriteriawithanimation",
+      "community": 10,
+      "norm_label": ".movecriteriawithanimation()"
+    },
+    {
       "label": ".onDragStart()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L122",
+      "source_location": "L142",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_ondragstart",
       "community": 10,
@@ -4227,7 +4257,7 @@
       "label": ".onDragOver()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L130",
+      "source_location": "L150",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_ondragover",
       "community": 10,
@@ -4237,7 +4267,7 @@
       "label": ".onDragLeave()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L135",
+      "source_location": "L155",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_ondragleave",
       "community": 10,
@@ -4247,7 +4277,7 @@
       "label": ".onDrop()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L141",
+      "source_location": "L161",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_ondrop",
       "community": 10,
@@ -4257,7 +4287,7 @@
       "label": ".onDragEnd()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L150",
+      "source_location": "L170",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_ondragend",
       "community": 10,
@@ -4267,7 +4297,7 @@
       "label": ".addCriteriaLocal()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L155",
+      "source_location": "L175",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_addcriterialocal",
       "community": 10,
@@ -4277,7 +4307,7 @@
       "label": ".onTypeChange()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L182",
+      "source_location": "L202",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_ontypechange",
       "community": 10,
@@ -4287,7 +4317,7 @@
       "label": ".selectCritType()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L193",
+      "source_location": "L213",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_selectcrittype",
       "community": 10,
@@ -4297,7 +4327,7 @@
       "label": ".resetForm()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L198",
+      "source_location": "L218",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_resetform",
       "community": 10,
@@ -4307,7 +4337,7 @@
       "label": ".onSubmit()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L211",
+      "source_location": "L231",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_onsubmit",
       "community": 10,
@@ -10508,9 +10538,9 @@
       "source_file": "frontend/src/app/animations/animations.ts",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "animations_animations",
-      "target": "animations_animations_dropdowntrigger",
-      "confidence_score": 1.0
+      "target": "animations_animations_dropdowntrigger"
     },
     {
       "relation": "contains",
@@ -10518,9 +10548,9 @@
       "source_file": "frontend/src/app/animations/animations.ts",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "animations_animations",
-      "target": "animations_animations_fade",
-      "confidence_score": 1.0
+      "target": "animations_animations_fade"
     },
     {
       "relation": "contains",
@@ -10528,9 +10558,9 @@
       "source_file": "frontend/src/app/animations/animations.ts",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "animations_animations",
-      "target": "animations_animations_liststaggertrigger",
-      "confidence_score": 1.0
+      "target": "animations_animations_liststaggertrigger"
     },
     {
       "relation": "contains",
@@ -10538,9 +10568,19 @@
       "source_file": "frontend/src/app/animations/animations.ts",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "animations_animations",
-      "target": "animations_animations_modaltrigger",
-      "confidence_score": 1.0
+      "target": "animations_animations_modaltrigger"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/src/app/animations/animations.ts",
+      "source_location": "L67",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "animations_animations",
+      "target": "animations_animations_routeanimations"
     },
     {
       "relation": "contains",
@@ -10548,9 +10588,20 @@
       "source_file": "frontend/src/app/animations/animations.ts",
       "source_location": "L56",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "animations_animations",
-      "target": "animations_animations_slideinout",
-      "confidence_score": 1.0
+      "target": "animations_animations_slideinout"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/src/app/app.component.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_app_component",
+      "target": "animations_animations"
     },
     {
       "relation": "imports_from",
@@ -10559,9 +10610,9 @@
       "source_file": "frontend/src/app/pages/evaluation/evaluation-form.component.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "evaluation_evaluation_form_component",
-      "target": "animations_animations",
-      "confidence_score": 1.0
+      "target": "animations_animations"
     },
     {
       "relation": "imports_from",
@@ -10570,9 +10621,9 @@
       "source_file": "frontend/src/app/pages/properties/properties.component.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "properties_properties_component",
-      "target": "animations_animations",
-      "confidence_score": 1.0
+      "target": "animations_animations"
     },
     {
       "relation": "imports_from",
@@ -10581,9 +10632,9 @@
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "properties_property_details_component",
-      "target": "animations_animations",
-      "confidence_score": 1.0
+      "target": "animations_animations"
     },
     {
       "relation": "imports_from",
@@ -10592,9 +10643,9 @@
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "script_builder_script_builder_component",
-      "target": "animations_animations",
-      "confidence_score": 1.0
+      "target": "animations_animations"
     },
     {
       "relation": "imports_from",
@@ -10603,9 +10654,9 @@
       "source_file": "frontend/src/app/pages/scripts/scripts.component.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scripts_scripts_component",
-      "target": "animations_animations",
-      "confidence_score": 1.0
+      "target": "animations_animations"
     },
     {
       "relation": "imports",
@@ -10614,9 +10665,9 @@
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "properties_property_details_component",
-      "target": "animations_animations_modaltrigger",
-      "confidence_score": 1.0
+      "target": "animations_animations_modaltrigger"
     },
     {
       "relation": "imports",
@@ -10625,9 +10676,9 @@
       "source_file": "frontend/src/app/pages/scripts/scripts.component.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scripts_scripts_component",
-      "target": "animations_animations_modaltrigger",
-      "confidence_score": 1.0
+      "target": "animations_animations_modaltrigger"
     },
     {
       "relation": "imports",
@@ -10636,9 +10687,9 @@
       "source_file": "frontend/src/app/pages/evaluation/evaluation-form.component.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "evaluation_evaluation_form_component",
-      "target": "animations_animations_dropdowntrigger",
-      "confidence_score": 1.0
+      "target": "animations_animations_dropdowntrigger"
     },
     {
       "relation": "imports",
@@ -10647,9 +10698,9 @@
       "source_file": "frontend/src/app/pages/properties/properties.component.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "properties_properties_component",
-      "target": "animations_animations_dropdowntrigger",
-      "confidence_score": 1.0
+      "target": "animations_animations_dropdowntrigger"
     },
     {
       "relation": "imports",
@@ -10658,9 +10709,9 @@
       "source_file": "frontend/src/app/pages/evaluation/evaluation-form.component.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "evaluation_evaluation_form_component",
-      "target": "animations_animations_liststaggertrigger",
-      "confidence_score": 1.0
+      "target": "animations_animations_liststaggertrigger"
     },
     {
       "relation": "imports",
@@ -10669,9 +10720,9 @@
       "source_file": "frontend/src/app/pages/properties/properties.component.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "properties_properties_component",
-      "target": "animations_animations_liststaggertrigger",
-      "confidence_score": 1.0
+      "target": "animations_animations_liststaggertrigger"
     },
     {
       "relation": "imports",
@@ -10680,9 +10731,9 @@
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "properties_property_details_component",
-      "target": "animations_animations_liststaggertrigger",
-      "confidence_score": 1.0
+      "target": "animations_animations_liststaggertrigger"
     },
     {
       "relation": "imports",
@@ -10691,9 +10742,9 @@
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "script_builder_script_builder_component",
-      "target": "animations_animations_liststaggertrigger",
-      "confidence_score": 1.0
+      "target": "animations_animations_liststaggertrigger"
     },
     {
       "relation": "imports",
@@ -10702,9 +10753,9 @@
       "source_file": "frontend/src/app/pages/scripts/scripts.component.ts",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scripts_scripts_component",
-      "target": "animations_animations_liststaggertrigger",
-      "confidence_score": 1.0
+      "target": "animations_animations_liststaggertrigger"
     },
     {
       "relation": "imports",
@@ -10713,9 +10764,9 @@
       "source_file": "frontend/src/app/pages/evaluation/evaluation-form.component.ts",
       "source_location": "L10",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "evaluation_evaluation_form_component",
-      "target": "animations_animations_slideinout",
-      "confidence_score": 1.0
+      "target": "animations_animations_slideinout"
     },
     {
       "relation": "imports",
@@ -10724,9 +10775,20 @@
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
       "source_location": "L8",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "script_builder_script_builder_component",
-      "target": "animations_animations_slideinout",
-      "confidence_score": 1.0
+      "target": "animations_animations_slideinout"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/src/app/app.component.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_app_component",
+      "target": "animations_animations_routeanimations"
     },
     {
       "relation": "imports_from",
@@ -10834,6 +10896,16 @@
       "confidence_score": 1.0,
       "source": "app_app_component_appcomponent",
       "target": "app_app_component_appcomponent_constructor"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/src/app/app.component.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_app_component_appcomponent",
+      "target": "app_app_component_appcomponent_getrouteanimationdata"
     },
     {
       "relation": "method",
@@ -13760,6 +13832,16 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
+      "source_location": "L126",
+      "weight": 1.0,
+      "source": "script_builder_script_builder_component_scriptbuildercomponent",
+      "target": "script_builder_script_builder_component_scriptbuildercomponent_movecriteriawithanimation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
       "source_location": "L48",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -15096,5 +15178,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "6effb496f97dc692af077d44e7bde735cd0b7cf4"
+  "built_at_commit": "682dce861dfec3c001134287e09ba34612990e96"
 }

@@ -63,3 +63,51 @@ export const slideInOut = trigger('slideInOut', [
     animate('150ms cubic-bezier(0.16, 1, 0.3, 1)', style({ opacity: 0, height: 0, marginBottom: 0, marginTop: 0, paddingTop: 0, paddingBottom: 0 }))
   ])
 ]);
+
+const ENTER_PAGES = 'app-login:enter, app-properties:enter, app-property-create:enter, app-property-details:enter, app-scripts:enter, app-script-builder:enter, app-evaluation-form:enter';
+const LEAVE_PAGES = 'app-login:leave, app-properties:leave, app-property-create:leave, app-property-details:leave, app-scripts:leave, app-script-builder:leave, app-evaluation-form:leave';
+const ALL_PAGES = 'app-login:enter, app-properties:enter, app-property-create:enter, app-property-details:enter, app-scripts:enter, app-script-builder:enter, app-evaluation-form:enter, app-login:leave, app-properties:leave, app-property-create:leave, app-property-details:leave, app-scripts:leave, app-script-builder:leave, app-evaluation-form:leave';
+
+export const routeAnimations = trigger('routeAnimations', [
+  transition('DetailsPage => EvaluatePage, PropertiesPage => PropertyCreatePage, ScriptsPage => ScriptBuilderPage, PropertiesPage => DetailsPage', [
+    style({ position: 'relative' }),
+    query(ALL_PAGES, [
+      style({
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%'
+      })
+    ], { optional: true }),
+    query(ENTER_PAGES, [
+      style({ left: '100%', opacity: 0 })
+    ], { optional: true }),
+    query(LEAVE_PAGES, [
+      animate('180ms ease-out', style({ left: '-100%', opacity: 0 }))
+    ], { optional: true }),
+    query(ENTER_PAGES, [
+      animate('280ms cubic-bezier(0.16, 1, 0.3, 1)', style({ left: '0%', opacity: 1 }))
+    ], { optional: true })
+  ]),
+  transition('EvaluatePage => DetailsPage, PropertyCreatePage => PropertiesPage, ScriptBuilderPage => ScriptsPage, DetailsPage => PropertiesPage', [
+    style({ position: 'relative' }),
+    query(ALL_PAGES, [
+      style({
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%'
+      })
+    ], { optional: true }),
+    query(ENTER_PAGES, [
+      style({ left: '-100%', opacity: 0 })
+    ], { optional: true }),
+    query(LEAVE_PAGES, [
+      animate('180ms ease-out', style({ left: '100%', opacity: 0 }))
+    ], { optional: true }),
+    query(ENTER_PAGES, [
+      animate('280ms cubic-bezier(0.16, 1, 0.3, 1)', style({ left: '0%', opacity: 1 }))
+    ], { optional: true })
+  ])
+]);
+
