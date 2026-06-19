@@ -180,8 +180,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/app.component.ts": {
-    "mtime": 1781834472.3588805,
-    "ast_hash": "282a2ed7d6d2fe6a001b3722190a141f",
+    "mtime": 1781841014.746486,
+    "ast_hash": "b67073574ce2b36a677b02de83b7fa80",
     "semantic_hash": ""
   },
   "frontend/src/app/app.config.ts": {
@@ -250,8 +250,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/pages/properties/property-details.component.ts": {
-    "mtime": 1781833875.4076421,
-    "ast_hash": "d563c81eaedd4982ecb8269b71db7746",
+    "mtime": 1781902059.0048723,
+    "ast_hash": "0b4de8434183fa5cac81636da2d56e10",
     "semantic_hash": ""
   },
   "frontend/src/app/pages/script-builder/script-builder.component.spec.ts": {
@@ -260,8 +260,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/pages/script-builder/script-builder.component.ts": {
-    "mtime": 1781836253.597924,
-    "ast_hash": "2035be23048988c540485560d752f29d",
+    "mtime": 1781837429.756989,
+    "ast_hash": "f750ddc0f6de2c08e7ac70b54dd79d2a",
     "semantic_hash": ""
   },
   "frontend/src/app/pages/scripts/scripts.component.spec.ts": {
@@ -270,8 +270,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/pages/scripts/scripts.component.ts": {
-    "mtime": 1781833909.686443,
-    "ast_hash": "ff779e3c6ed2d8ecfb45afa692fd4fff",
+    "mtime": 1781902068.1156235,
+    "ast_hash": "0eef4d539a33ed0485bbf122e79f77a0",
     "semantic_hash": ""
   },
   "frontend/src/app/services/auth.service.ts": {
@@ -320,8 +320,8 @@
     "semantic_hash": "b5c1d106e573fea21ef1ad9e4360e77a"
   },
   "frontend/src/app/animations/animations.ts": {
-    "mtime": 1781835924.5776489,
-    "ast_hash": "2306bb71bf7efcb8c85feffddc67c193",
+    "mtime": 1781901729.8774107,
+    "ast_hash": "1e8e210c320413759d9856abd556447c",
     "semantic_hash": ""
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, DoCheck, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PropertyService } from '../../services/property.service';
@@ -16,7 +16,7 @@ import { modalTrigger, listStaggerTrigger } from '../../animations/animations';
   styleUrls: ['./property-details.component.css'],
   animations: [modalTrigger, listStaggerTrigger]
 })
-export class PropertyDetailsComponent implements OnInit {
+export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
   propertyId: string = '';
   property?: PropertyResponse;
   evaluations: EvaluationResponse[] = [];
@@ -404,5 +404,21 @@ export class PropertyDetailsComponent implements OnInit {
         this.prevMedia();
       }
     }
+  }
+
+  ngDoCheck(): void {
+    const active = this.isModalOpen || this.isConfirmDeleteOpen || this.isConfirmDeletePropOpen || this.isLightboxOpen;
+    if (active) {
+      document.documentElement.classList.add('no-scroll');
+      document.body.classList.add('no-scroll');
+    } else {
+      document.documentElement.classList.remove('no-scroll');
+      document.body.classList.remove('no-scroll');
+    }
+  }
+
+  ngOnDestroy(): void {
+    document.documentElement.classList.remove('no-scroll');
+    document.body.classList.remove('no-scroll');
   }
 }

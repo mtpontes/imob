@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { ScriptService } from '../../services/script.service';
@@ -14,7 +14,7 @@ import { modalTrigger, listStaggerTrigger } from '../../animations/animations';
   styleUrls: ['./scripts.component.css'],
   animations: [modalTrigger, listStaggerTrigger]
 })
-export class ScriptsComponent implements OnInit {
+export class ScriptsComponent implements OnInit, DoCheck, OnDestroy {
   scripts: ScriptResponse[] = [];
   loading: boolean = false;
   errorMessage: string = '';
@@ -79,5 +79,20 @@ export class ScriptsComponent implements OnInit {
         setTimeout(() => this.errorMessage = '', 4000);
       }
     });
+  }
+
+  ngDoCheck(): void {
+    if (this.isConfirmDeleteOpen) {
+      document.documentElement.classList.add('no-scroll');
+      document.body.classList.add('no-scroll');
+    } else {
+      document.documentElement.classList.remove('no-scroll');
+      document.body.classList.remove('no-scroll');
+    }
+  }
+
+  ngOnDestroy(): void {
+    document.documentElement.classList.remove('no-scroll');
+    document.body.classList.remove('no-scroll');
   }
 }
