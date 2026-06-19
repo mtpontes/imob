@@ -6,7 +6,7 @@
       <p>Histórico completo de vistorias técnicas e evolução de notas</p>
     </div>
     
-    <div class="page-actions" style="display: flex; gap: 0.75rem; align-items: center;" *ngIf="property">
+    <div class="page-actions" *ngIf="property">
       <button class="btn btn-danger-outline" (click)="deleteProperty()" id="btn-details-delete-prop" style="background: rgba(239, 68, 68, 0.05); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2);">
         <lucide-icon name="trash-2"></lucide-icon>
         <span>Excluir Imovel</span>
@@ -15,6 +15,11 @@
         <lucide-icon name="clipboard"></lucide-icon>
         <span>Nova Avaliacao</span>
       </button>
+    </div>
+
+    <div class="page-actions" *ngIf="!property && loading">
+      <div class="skeleton-shimmer" style="width: 130px; height: 38px; border-radius: var(--radius-sm);"></div>
+      <div class="skeleton-shimmer" style="width: 145px; height: 38px; border-radius: var(--radius-sm);"></div>
     </div>
   </div>
 
