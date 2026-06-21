@@ -37,9 +37,13 @@
   --radius-lg: 24px;
   --radius-round: 50%;
 
-  --transition-fast: 0.2s ease;
-  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 0.5s ease;
+  --transition-duration-fast: 0.2s;
+  --transition-duration-normal: 0.3s;
+  --transition-duration-slow: 0.5s;
+
+  --transition-fast: var(--transition-duration-fast) ease;
+  --transition-normal: var(--transition-duration-normal) cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: var(--transition-duration-slow) ease;
 
   --shadow-glow: 0 0 20px var(--primary-glow);
   --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
@@ -437,7 +441,7 @@ body::after {
 /* Cascading delays para animacoes sequenciais */
 .animate-cascade {
   opacity: 0;
-  animation: entryCascade var(--transition-normal) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: entryCascade var(--transition-duration-normal) cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .delay-1 {
@@ -460,7 +464,7 @@ body::after {
 .login-section,
 .template-builder-section,
 .view {
-  animation: pageFadeIn var(--transition-normal) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: pageFadeIn var(--transition-duration-normal) cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .view.active {
