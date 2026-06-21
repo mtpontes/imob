@@ -12,7 +12,7 @@ Resources:
   ImobAppUserPool:
     Type: AWS::Cognito::UserPool
     Properties:
-      UserPoolName: ImobAppUserPool
+      UserPoolName: !Sub ${AWS::StackName}-UserPool
       UsernameAttributes:
         - email
       AutoVerifiedAttributes:
@@ -59,7 +59,7 @@ Resources:
   ImobAppTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ImobAppDB
+      TableName: !Sub ${AWS::StackName}-DB
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
         - AttributeName: PK
