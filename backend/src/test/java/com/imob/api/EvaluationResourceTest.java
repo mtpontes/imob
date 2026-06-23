@@ -45,25 +45,16 @@ public class EvaluationResourceTest {
     }
 
     @Test
-    public void shouldRejectEvaluationWithInactiveScript() {
+    public void shouldRejectEvaluationWithNonexistentScript() {
         // Arrange
-        String scriptId = "script-inactive";
-        int version = 1;
+        String scriptId = "script-nonexistent";
 
-        ScriptEntity script = new ScriptEntity();
-        script.setWorkspaceId("workspace_test");
-        script.setId(scriptId);
-        script.setVersion(version);
-        script.setActive(false); // Inativo!
-        script.setCriteria(List.of());
-
-        Mockito.when(this.repository.getScript("workspace_test", scriptId, version))
-                .thenReturn(script);
+        Mockito.when(this.repository.getScript("workspace_test", scriptId))
+                .thenReturn(null);
 
         Map<String, Object> payload = Map.of(
                 "propertyId", "prop-123",
                 "scriptId", scriptId,
-                "scriptVersion", version,
                 "answers", Map.of(),
                 "notes", "Nota fiscal",
                 "mediaKeys", List.of()
@@ -86,7 +77,6 @@ public class EvaluationResourceTest {
     public void shouldRejectEvaluationWithInvalidCriteriaAnswer() {
         // Arrange
         String scriptId = "script-active";
-        int version = 1;
 
         CriteriaDTO c1 = new CriteriaDTO();
         c1.setId("c1");
@@ -97,18 +87,15 @@ public class EvaluationResourceTest {
         ScriptEntity script = new ScriptEntity();
         script.setWorkspaceId("workspace_test");
         script.setId(scriptId);
-        script.setVersion(version);
-        script.setActive(true);
         script.setCriteria(List.of(c1));
 
-        Mockito.when(this.repository.getScript("workspace_test", scriptId, version))
+        Mockito.when(this.repository.getScript("workspace_test", scriptId))
                 .thenReturn(script);
 
         // Answers contem 'c2' que nao pertence ao roteiro (apenas 'c1' pertence)
         Map<String, Object> payload = Map.of(
                 "propertyId", "prop-123",
                 "scriptId", scriptId,
-                "scriptVersion", version,
                 "answers", Map.of("c1", true, "c2", "invalido"),
                 "notes", "Nota fiscal",
                 "mediaKeys", List.of()
@@ -131,7 +118,6 @@ public class EvaluationResourceTest {
     public void shouldCreateEvaluation() {
         // Arrange
         String scriptId = "script-active";
-        int version = 1;
 
         CriteriaDTO c1 = new CriteriaDTO();
         c1.setId("c1");
@@ -142,17 +128,14 @@ public class EvaluationResourceTest {
         ScriptEntity script = new ScriptEntity();
         script.setWorkspaceId("workspace_test");
         script.setId(scriptId);
-        script.setVersion(version);
-        script.setActive(true);
         script.setCriteria(List.of(c1));
 
-        Mockito.when(this.repository.getScript("workspace_test", scriptId, version))
+        Mockito.when(this.repository.getScript("workspace_test", scriptId))
                 .thenReturn(script);
 
         Map<String, Object> payload = Map.of(
                 "propertyId", "prop-123",
                 "scriptId", scriptId,
-                "scriptVersion", version,
                 "answers", Map.of("c1", true),
                 "notes", "Nota fiscal",
                 "mediaKeys", List.of()
@@ -209,7 +192,6 @@ public class EvaluationResourceTest {
         eval.setPropertyId(propertyId);
         eval.setCreatedAt("2026-06-03T10:00:00Z");
         eval.setScriptId("script-1");
-        eval.setScriptVersion(1);
 
         eval.setNotes("Test note");
         eval.setMediaKeys(List.of("workspace_test/uploads/foto1.jpg"));
@@ -250,7 +232,6 @@ public class EvaluationResourceTest {
         eval.setPropertyId(propertyId);
         eval.setCreatedAt(createdAt);
         eval.setScriptId("script-1");
-        eval.setScriptVersion(1);
         eval.setNotes("Notes initial");
         eval.setMediaKeys(List.of());
         eval.setAnswers(Map.of());
@@ -298,14 +279,12 @@ public class EvaluationResourceTest {
         String propertyId = "prop-123";
         String createdAt = "2026-06-07T22:24:45Z";
         String scriptId = "script-active";
-        int version = 1;
 
         EvaluationEntity existing = new EvaluationEntity();
         existing.setWorkspaceId("workspace_test");
         existing.setPropertyId(propertyId);
         existing.setCreatedAt(createdAt);
         existing.setScriptId(scriptId);
-        existing.setScriptVersion(version);
         existing.setNotes("Notes initial");
         existing.setMediaKeys(List.of());
         existing.setAnswers(Map.of());
@@ -316,11 +295,9 @@ public class EvaluationResourceTest {
         ScriptEntity script = new ScriptEntity();
         script.setWorkspaceId("workspace_test");
         script.setId(scriptId);
-        script.setVersion(version);
-        script.setActive(true);
         script.setCriteria(List.of());
 
-        Mockito.when(this.repository.getScript("workspace_test", scriptId, version))
+        Mockito.when(this.repository.getScript("workspace_test", scriptId))
                 .thenReturn(script);
 
         Map<String, Object> payload = Map.of(
@@ -358,7 +335,6 @@ public class EvaluationResourceTest {
         existing.setPropertyId(propertyId);
         existing.setCreatedAt(createdAt);
         existing.setScriptId("script-1");
-        existing.setScriptVersion(1);
 
         Mockito.when(this.repository.getEvaluation("workspace_test", propertyId, createdAt))
                 .thenReturn(existing);

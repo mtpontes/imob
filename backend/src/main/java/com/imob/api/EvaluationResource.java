@@ -47,17 +47,14 @@ public class EvaluationResource {
     public Response createEvaluation(CreateEvaluationRequest request) {
         String workspaceId = this.userContext.getWorkspaceId();
         
-        ScriptEntity script = this.repository.getScript(workspaceId, request.getScriptId(), request.getScriptVersion());
+        ScriptEntity script = this.repository.getScript(workspaceId, request.getScriptId());
         this.evaluationValidator.validate(request, script);
-
-
 
         EvaluationEntity entity = new EvaluationEntity();
         entity.setWorkspaceId(workspaceId);
         entity.setPropertyId(request.getPropertyId());
         entity.setCreatedAt(Instant.now().toString());
         entity.setScriptId(request.getScriptId());
-        entity.setScriptVersion(request.getScriptVersion());
 
         entity.setNotes(request.getNotes());
         entity.setMediaKeys(request.getMediaKeys());
@@ -131,7 +128,7 @@ public class EvaluationResource {
         if (entity == null)
             return Response.status(Response.Status.NOT_FOUND).build();
 
-        ScriptEntity script = this.repository.getScript(workspaceId, entity.getScriptId(), entity.getScriptVersion());
+        ScriptEntity script = this.repository.getScript(workspaceId, entity.getScriptId());
         this.evaluationValidator.validate(request, script);
 
         entity.setNotes(request.getNotes());
@@ -162,7 +159,6 @@ public class EvaluationResource {
         resp.setPropertyId(entity.getPropertyId());
         resp.setCreatedAt(entity.getCreatedAt());
         resp.setScriptId(entity.getScriptId());
-        resp.setScriptVersion(entity.getScriptVersion());
 
         resp.setNotes(entity.getNotes());
         resp.setAnswers(entity.getAnswers());

@@ -12,7 +12,6 @@ import java.util.Map;
 public class CreateEvaluationRequest {
     private String propertyId;
     private String scriptId;
-    private int scriptVersion;
     private String notes;
     private List<String> mediaKeys;
     private Map<String, Object> answers;

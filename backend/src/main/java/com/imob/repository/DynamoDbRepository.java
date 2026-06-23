@@ -42,10 +42,10 @@ public class DynamoDbRepository {
         this.dynamoDb.putItem(putReq);
     }
 
-    public ScriptEntity getScript(String workspaceId, String scriptId, int version) {
+    public ScriptEntity getScript(String workspaceId, String scriptId) {
         Map<String, AttributeValue> key = new HashMap<>();
         key.put("PK", AttributeValue.builder().s("WORKSPACE#" + workspaceId).build());
-        key.put("SK", AttributeValue.builder().s("SCRIPT#" + scriptId + "#v" + version).build());
+        key.put("SK", AttributeValue.builder().s("SCRIPT#" + scriptId).build());
 
         GetItemRequest getReq = GetItemRequest.builder()
                 .tableName(this.tableName)
@@ -53,7 +53,7 @@ public class DynamoDbRepository {
                 .build();
 
         GetItemResponse res = this.dynamoDb.getItem(getReq);
-        if (res.hasItem()) 
+        if (res.hasItem())
             return ScriptEntity.fromAttributeMap(res.item());
         return null;
     }
@@ -82,57 +82,23 @@ public class DynamoDbRepository {
         if (res.hasItems()) {
             for (Map<String, AttributeValue> item : res.items()) {
                 ScriptEntity script = ScriptEntity.fromAttributeMap(item);
-                if (script != null && script.isActive()) 
+                if (script != null)
                     list.add(script);
             }
         }
         return list;
     }
 
-    public List<ScriptEntity> getAllVersionsOfScript(String workspaceId, String scriptId) {
-        String pk = "WORKSPACE#" + workspaceId;
-        String skPrefix = "SCRIPT#" + scriptId + "#v";
+    public void deleteScript(String workspaceId, String scriptId) {
+        Map<String, AttributeValue> key = new HashMap<>();
+        key.put("PK", AttributeValue.builder().s("WORKSPACE#" + workspaceId).build());
+        key.put("SK", AttributeValue.builder().s("SCRIPT#" + scriptId).build());
 
-        Map<String, String> attributeNames = new HashMap<>();
-        attributeNames.put("#pk", "PK");
-        attributeNames.put("#sk", "SK");
-
-        Map<String, AttributeValue> attributeValues = new HashMap<>();
-        attributeValues.put(":pk", AttributeValue.builder().s(pk).build());
-        attributeValues.put(":skPrefix", AttributeValue.builder().s(skPrefix).build());
-
-        QueryRequest queryReq = QueryRequest.builder()
+        DeleteItemRequest delReq = DeleteItemRequest.builder()
                 .tableName(this.tableName)
-                .keyConditionExpression("#pk = :pk AND begins_with(#sk, :skPrefix)")
-                .expressionAttributeNames(attributeNames)
-                .expressionAttributeValues(attributeValues)
+                .key(key)
                 .build();
-
-        QueryResponse res = this.dynamoDb.query(queryReq);
-        List<ScriptEntity> list = new ArrayList<>();
-        if (res.hasItems()) {
-            for (Map<String, AttributeValue> item : res.items()) {
-                ScriptEntity script = ScriptEntity.fromAttributeMap(item);
-                if (script != null) 
-                    list.add(script);
-            }
-        }
-        return list;
-    }
-
-    public void deleteAllVersionsOfScript(String workspaceId, String scriptId) {
-        List<ScriptEntity> versions = this.getAllVersionsOfScript(workspaceId, scriptId);
-        for (ScriptEntity version : versions) {
-            Map<String, AttributeValue> key = new HashMap<>();
-            key.put("PK", AttributeValue.builder().s("WORKSPACE#" + workspaceId).build());
-            key.put("SK", AttributeValue.builder().s("SCRIPT#" + scriptId + "#v" + version.getVersion()).build());
-
-            DeleteItemRequest delReq = DeleteItemRequest.builder()
-                    .tableName(this.tableName)
-                    .key(key)
-                    .build();
-            this.dynamoDb.deleteItem(delReq);
-        }
+        this.dynamoDb.deleteItem(delReq);
     }
 
     // --- PROPERTIES ---

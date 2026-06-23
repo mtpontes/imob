@@ -10,6 +10,5 @@ import java.util.List;
 @RegisterForReflection
 public class UpdateScriptRequest {
     private List<CriteriaDTO> criteria;
-    private boolean newVersion;
     private String name;
 }

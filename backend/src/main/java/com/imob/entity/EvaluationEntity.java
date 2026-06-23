@@ -19,7 +19,6 @@ public class EvaluationEntity {
     private String workspaceId;
     private String propertyId;
     private String scriptId;
-    private int scriptVersion;
 
     private String notes;
     private List<String> mediaKeys;
@@ -34,11 +33,8 @@ public class EvaluationEntity {
         map.put("propertyId", AttributeValue.builder().s(this.propertyId).build());
         map.put("createdAt", AttributeValue.builder().s(this.createdAt).build());
         map.put("scriptId", AttributeValue.builder().s(this.scriptId).build());
-        map.put("scriptVersion", AttributeValue.builder().n(String.valueOf(this.scriptVersion)).build());
 
-
-
-        if (this.notes != null) 
+        if (this.notes != null)
             map.put("notes", AttributeValue.builder().s(this.notes).build());
 
         try {
@@ -59,7 +55,7 @@ public class EvaluationEntity {
     }
 
     public static EvaluationEntity fromAttributeMap(Map<String, AttributeValue> map) {
-        if (map == null || map.isEmpty()) 
+        if (map == null || map.isEmpty())
             return null;
         EvaluationEntity entity = new EvaluationEntity();
         String pk = map.get("PK").s();
@@ -67,9 +63,8 @@ public class EvaluationEntity {
         entity.setPropertyId(map.get("propertyId").s());
         entity.setCreatedAt(map.get("createdAt").s());
         entity.setScriptId(map.get("scriptId").s());
-        entity.setScriptVersion(Integer.parseInt(map.get("scriptVersion").n()));
 
-        if (map.containsKey("notes")) 
+        if (map.containsKey("notes"))
             entity.setNotes(map.get("notes").s());
 
 

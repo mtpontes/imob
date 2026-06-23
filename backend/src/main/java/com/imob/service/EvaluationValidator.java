@@ -33,7 +33,7 @@ public class EvaluationValidator {
     }
 
     private void validateScript(ScriptEntity script) {
-        if (script == null || !script.isActive())
+        if (script == null)
             throw new EvaluationException(EvaluationErrorCode.SCRIPT_NOT_FOUND_OR_INACTIVE);
     }
 

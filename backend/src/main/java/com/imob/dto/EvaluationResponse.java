@@ -13,7 +13,6 @@ public class EvaluationResponse {
     private String propertyId;
     private String createdAt;
     private String scriptId;
-    private int scriptVersion;
 
     private String notes;
     private List<String> mediaUrls;

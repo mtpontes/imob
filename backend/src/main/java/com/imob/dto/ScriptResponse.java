@@ -10,11 +10,6 @@ import java.util.List;
 @RegisterForReflection
 public class ScriptResponse {
     private String id;
-    private int version;
-
-    @com.fasterxml.jackson.annotation.JsonProperty("isActive")
-    private boolean isActive;
-
     private String createdAt;
     private List<CriteriaDTO> criteria;
     private String name;

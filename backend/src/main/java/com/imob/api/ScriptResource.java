@@ -52,11 +52,11 @@ public class ScriptResource {
     }
 
     @GET
-    @Path("/{id}/version/{version}")
-    public Response getScriptByIdAndVersion(@PathParam("id") String scriptId, @PathParam("version") int version) {
+    @Path("/{id}")
+    public Response getScriptById(@PathParam("id") String scriptId) {
         String workspaceId = this.userContext.getWorkspaceId();
-        ScriptEntity entity = this.repository.getScript(workspaceId, scriptId, version);
-        if (entity == null) 
+        ScriptEntity entity = this.repository.getScript(workspaceId, scriptId);
+        if (entity == null)
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("{\"error\":\"Roteiro nao encontrado\"}")
                     .build();
@@ -71,8 +71,6 @@ public class ScriptResource {
         var entity = new ScriptEntity();
         entity.setWorkspaceId(workspaceId);
         entity.setId(scriptId);
-        entity.setVersion(1);
-        entity.setActive(true);
         entity.setCreatedAt(Instant.now().toString());
         entity.setCriteria(request.getCriteria());
         entity.setName(request.getName());
@@ -88,62 +86,29 @@ public class ScriptResource {
     @Path("/{id}")
     public Response updateScript(@PathParam("id") String scriptId, UpdateScriptRequest request) {
         String workspaceId = this.userContext.getWorkspaceId();
-        List<ScriptEntity> allVersions = this.repository.getAllVersionsOfScript(workspaceId, scriptId);
+        ScriptEntity entity = this.repository.getScript(workspaceId, scriptId);
 
-        if (allVersions.isEmpty()) 
+        if (entity == null)
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("{\"error\":\"Roteiro nao encontrado\"}")
                     .build();
 
-        // Encontra a maior versao existente
-        ScriptEntity latestEntity = null;
-        for (ScriptEntity v : allVersions) {
-            if (latestEntity == null || v.getVersion() > latestEntity.getVersion()) 
-                latestEntity = v;
-        }
+        entity.setCriteria(request.getCriteria());
+        entity.setName(request.getName());
+        entity.setCreatedAt(Instant.now().toString());
+        
+        this.repository.saveScript(entity);
 
-        if (latestEntity == null) 
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity("{\"error\":\"Roteiro nao encontrado\"}")
-                    .build();
-
-        if (request.isNewVersion()) {
-            // Regra de Nova Versao: marca o antigo como inativo
-            latestEntity.setActive(false);
-            this.repository.saveScript(latestEntity);
-
-            // Cria novo item com version = current + 1
-            var newEntity = new ScriptEntity();
-            newEntity.setWorkspaceId(workspaceId);
-            newEntity.setId(scriptId);
-            newEntity.setVersion(latestEntity.getVersion() + 1);
-            newEntity.setActive(true);
-            newEntity.setCreatedAt(Instant.now().toString());
-            newEntity.setCriteria(request.getCriteria());
-            newEntity.setName(request.getName());
-
-            this.repository.saveScript(newEntity);
-
-            return Response.ok(this.mapToResponse(newEntity)).build();
-        } else {
-            // Regra de Sobrescrita Total: PutItem mantendo o mesmo ID e versao
-            latestEntity.setCriteria(request.getCriteria());
-            latestEntity.setName(request.getName());
-            latestEntity.setCreatedAt(Instant.now().toString());
-            
-            this.repository.saveScript(latestEntity);
-
-            return Response.ok(this.mapToResponse(latestEntity)).build();
-        }
+        return Response.ok(this.mapToResponse(entity)).build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response deleteScript(@PathParam("id") String scriptId) {
         String workspaceId = this.userContext.getWorkspaceId();
-        List<ScriptEntity> versions = this.repository.getAllVersionsOfScript(workspaceId, scriptId);
+        ScriptEntity script = this.repository.getScript(workspaceId, scriptId);
 
-        if (versions.isEmpty())
+        if (script == null)
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("{\"error\":\"Roteiro nao encontrado\"}")
                     .build();
@@ -157,7 +122,7 @@ public class ScriptResource {
                 this.repository.deleteEvaluation(workspaceId, eval.getPropertyId(), eval.getCreatedAt());
             }
 
-        this.repository.deleteAllVersionsOfScript(workspaceId, scriptId);
+        this.repository.deleteScript(workspaceId, scriptId);
 
         return Response.noContent().build();
     }
@@ -165,8 +130,6 @@ public class ScriptResource {
     private ScriptResponse mapToResponse(ScriptEntity entity) {
         var resp = new ScriptResponse();
         resp.setId(entity.getId());
-        resp.setVersion(entity.getVersion());
-        resp.setActive(entity.isActive());
         resp.setCreatedAt(entity.getCreatedAt());
         resp.setCriteria(entity.getCriteria());
         resp.setName(entity.getName());

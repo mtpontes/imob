@@ -18,8 +18,6 @@ import java.util.Map;
 public class ScriptEntity {
     private String workspaceId;
     private String id;
-    private int version;
-    private boolean isActive;
     private String createdAt;
     private List<CriteriaDTO> criteria;
     private String name;
@@ -28,10 +26,8 @@ public class ScriptEntity {
     public Map<String, AttributeValue> toAttributeMap() {
         Map<String, AttributeValue> map = new HashMap<>();
         map.put("PK", AttributeValue.builder().s("WORKSPACE#" + this.workspaceId).build());
-        map.put("SK", AttributeValue.builder().s("SCRIPT#" + this.id + "#v" + this.version).build());
+        map.put("SK", AttributeValue.builder().s("SCRIPT#" + this.id).build());
         map.put("id", AttributeValue.builder().s(this.id).build());
-        map.put("version", AttributeValue.builder().n(String.valueOf(this.version)).build());
-        map.put("isActive", AttributeValue.builder().bool(this.isActive).build());
         map.put("createdAt", AttributeValue.builder().s(this.createdAt).build());
         map.put("name", AttributeValue.builder().s(this.name != null ? this.name : "").build());
         try {
@@ -43,15 +39,13 @@ public class ScriptEntity {
         return map;
     }
     public static ScriptEntity fromAttributeMap(Map<String, AttributeValue> map) {
-        if (map == null || map.isEmpty()) 
+        if (map == null || map.isEmpty())
             return null;
         ScriptEntity entity = new ScriptEntity();
         
         String pk = map.get("PK").s();
         entity.setWorkspaceId(pk.substring("WORKSPACE#".length()));
         entity.setId(map.get("id").s());
-        entity.setVersion(Integer.parseInt(map.get("version").n()));
-        entity.setActive(map.get("isActive").bool());
         entity.setCreatedAt(map.get("createdAt").s());
         if (map.containsKey("name")) {
             entity.setName(map.get("name").s());

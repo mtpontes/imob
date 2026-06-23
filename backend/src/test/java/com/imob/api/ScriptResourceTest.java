@@ -51,8 +51,6 @@ public class ScriptResourceTest {
         ScriptEntity script = new ScriptEntity();
         script.setWorkspaceId("workspace_test");
         script.setId("script-123");
-        script.setVersion(1);
-        script.setActive(true);
         script.setCreatedAt("2026-05-30T00:00:00Z");
         script.setCriteria(List.of());
         script.setName("Roteiro Residencial Padrao");
@@ -69,13 +67,11 @@ public class ScriptResourceTest {
                 .statusCode(200)
                 .contentType(ContentType.JSON)
                 .body("[0].id", is("script-123"))
-                .body("[0].version", is(1))
-                .body("[0].isActive", is(true))
                 .body("[0].name", is("Roteiro Residencial Padrao"));
     }
 
     @Test
-    public void shouldCreateNewScriptVersionOne() {
+    public void shouldCreateScript() {
         // Arrange
         CriteriaDTO criteriaDto = new CriteriaDTO();
         criteriaDto.setId("crit-1");
@@ -99,8 +95,6 @@ public class ScriptResourceTest {
                 .then()
                 .statusCode(201)
                 .contentType(ContentType.JSON)
-                .body("version", is(1))
-                .body("isActive", is(true))
                 .body("name", is("Roteiro Teste"))
                 .body("criteria[0].id", is("crit-1"));
         
@@ -109,20 +103,18 @@ public class ScriptResourceTest {
     }
 
     @Test
-    public void shouldOverwriteScriptWhenNewVersionIsFalse() {
+    public void shouldUpdateScript() {
         // Arrange
         String scriptId = "script-123";
         ScriptEntity existingScript = new ScriptEntity();
         existingScript.setWorkspaceId("workspace_test");
         existingScript.setId(scriptId);
-        existingScript.setVersion(1);
-        existingScript.setActive(true);
         existingScript.setCreatedAt("2026-05-30T00:00:00Z");
         existingScript.setCriteria(List.of());
         existingScript.setName("Nome Antigo");
 
-        Mockito.when(this.repository.getAllVersionsOfScript("workspace_test", scriptId))
-                .thenReturn(List.of(existingScript));
+        Mockito.when(this.repository.getScript("workspace_test", scriptId))
+                .thenReturn(existingScript);
 
         CriteriaDTO criteriaDto = new CriteriaDTO();
         criteriaDto.setId("crit-new");
@@ -133,7 +125,6 @@ public class ScriptResourceTest {
 
         Map<String, Object> payload = Map.of(
                 "name", "Nome Novo",
-                "newVersion", false,
                 "criteria", List.of(criteriaDto)
         );
 
@@ -148,61 +139,10 @@ public class ScriptResourceTest {
                 .statusCode(200)
                 .contentType(ContentType.JSON)
                 .body("id", is(scriptId))
-                .body("version", is(1))
-                .body("isActive", is(true))
                 .body("name", is("Nome Novo"))
                 .body("criteria[0].id", is("crit-new"));
 
         Mockito.verify(this.repository, Mockito.times(1))
-                .saveScript(Mockito.any(ScriptEntity.class));
-    }
-
-    @Test
-    public void shouldCreateNewVersionWhenNewVersionIsTrue() {
-        // Arrange
-        String scriptId = "script-123";
-        ScriptEntity existingScript = new ScriptEntity();
-        existingScript.setWorkspaceId("workspace_test");
-        existingScript.setId(scriptId);
-        existingScript.setVersion(1);
-        existingScript.setActive(true);
-        existingScript.setCreatedAt("2026-05-30T00:00:00Z");
-        existingScript.setCriteria(List.of());
-        existingScript.setName("Nome Antigo");
-
-        Mockito.when(this.repository.getAllVersionsOfScript("workspace_test", scriptId))
-                .thenReturn(List.of(existingScript));
-
-        CriteriaDTO criteriaDto = new CriteriaDTO();
-        criteriaDto.setId("crit-new");
-        criteriaDto.setLabel("Estrutura");
-        criteriaDto.setType("text");
-        criteriaDto.setScorable(false);
-        criteriaDto.setWeight(0.0);
-
-        Map<String, Object> payload = Map.of(
-                "name", "Nome Nova Versao",
-                "newVersion", true,
-                "criteria", List.of(criteriaDto)
-        );
-
-        // Act & Assert
-        given()
-                .header("X-User-Email", "test@imob.com")
-                .contentType(ContentType.JSON)
-                .body(payload)
-                .when()
-                .put("/api/scripts/" + scriptId)
-                .then()
-                .statusCode(200)
-                .contentType(ContentType.JSON)
-                .body("id", is(scriptId))
-                .body("version", is(2))
-                .body("isActive", is(true))
-                .body("name", is("Nome Nova Versao"))
-                .body("criteria[0].id", is("crit-new"));
-
-        Mockito.verify(this.repository, Mockito.times(2))
                 .saveScript(Mockito.any(ScriptEntity.class));
     }
 
@@ -214,11 +154,9 @@ public class ScriptResourceTest {
         ScriptEntity script = new ScriptEntity();
         script.setWorkspaceId("workspace_test");
         script.setId(scriptId);
-        script.setVersion(1);
-        script.setActive(true);
 
-        Mockito.when(this.repository.getAllVersionsOfScript("workspace_test", scriptId))
-                .thenReturn(List.of(script));
+        Mockito.when(this.repository.getScript("workspace_test", scriptId))
+                .thenReturn(script);
 
         EvaluationEntity eval1 = new EvaluationEntity();
         eval1.setWorkspaceId("workspace_test");
@@ -267,7 +205,7 @@ public class ScriptResourceTest {
                 .deleteEvaluation("workspace_test", "prop-3", "2026-06-18T12:00:00Z");
 
         Mockito.verify(this.repository, Mockito.times(1))
-                .deleteAllVersionsOfScript("workspace_test", scriptId);
+                .deleteScript("workspace_test", scriptId);
     }
 
     @Test
@@ -275,8 +213,8 @@ public class ScriptResourceTest {
         // Arrange
         String scriptId = "nonexistent-script";
 
-        Mockito.when(this.repository.getAllVersionsOfScript("workspace_test", scriptId))
-                .thenReturn(List.of());
+        Mockito.when(this.repository.getScript("workspace_test", scriptId))
+                .thenReturn(null);
 
         // Act & Assert
         given()
@@ -289,6 +227,6 @@ public class ScriptResourceTest {
                 .body("error", is("Roteiro nao encontrado"));
 
         Mockito.verify(this.repository, Mockito.never())
-                .deleteAllVersionsOfScript(Mockito.anyString(), Mockito.anyString());
+                .deleteScript(Mockito.anyString(), Mockito.anyString());
     }
 }
