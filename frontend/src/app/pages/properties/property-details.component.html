@@ -123,7 +123,7 @@
             
             <div class="history-item-info">
               <h4 style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary);">
-                {{ getScriptName(ev.scriptId, ev.scriptVersion) }} (v{{ ev.scriptVersion }})
+                {{ getScriptName(ev.scriptId) }}
               </h4>
               <div class="history-item-meta">
                 <span>
@@ -171,11 +171,17 @@
         <div class="modal-score-banner">
           <div class="score-banner-item">
             <span class="label">Nota Final</span>
-            <span class="value score-value" id="modal-eval-score">{{ evaluationScores[selectedEvaluation.propertyId + '_' + selectedEvaluation.createdAt] | number:'1.1-1' }}</span>
+            <span class="value score-value" 
+                  [class.low]="(evaluationScores[selectedEvaluation.propertyId + '_' + selectedEvaluation.createdAt] ?? 0) < 50"
+                  [class.medium]="(evaluationScores[selectedEvaluation.propertyId + '_' + selectedEvaluation.createdAt] ?? 0) >= 50 && (evaluationScores[selectedEvaluation.propertyId + '_' + selectedEvaluation.createdAt] ?? 0) < 80"
+                  [class.high]="(evaluationScores[selectedEvaluation.propertyId + '_' + selectedEvaluation.createdAt] ?? 0) >= 80"
+                  id="modal-eval-score">
+              {{ evaluationScores[selectedEvaluation.propertyId + '_' + selectedEvaluation.createdAt] | number:'1.1-1' }}
+            </span>
           </div>
           <div class="score-banner-item">
             <span class="label">Roteiro Utilizado</span>
-            <span class="value template-value" id="modal-eval-template">{{ selectedScriptName }} (v{{ selectedEvaluation.scriptVersion }})</span>
+            <span class="value template-value" id="modal-eval-template">{{ selectedScriptName }}</span>
           </div>
         </div>
 
@@ -184,31 +190,31 @@
           <div class="answers-list" id="modal-eval-answers">
             <div *ngFor="let key of objectKeys(selectedEvaluation.answers)" class="answer-item">
               <span class="crit-title" style="display: inline-flex; align-items: center; gap: 0.25rem;">
-                {{ getCriteriaLabel(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) }}
+                {{ getCriteriaLabel(selectedEvaluation.scriptId, key) }}
               </span>
                
               <!-- Caso seja booleano -->
-              <span *ngIf="getCriteriaType(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) === 'bool'" 
+              <span *ngIf="getCriteriaType(selectedEvaluation.scriptId, key) === 'bool'" 
                     class="crit-ans" 
                     style="display: inline-flex; align-items: center; gap: 0.25rem;">
                 <lucide-icon 
-                    [class.yes]="isCriteriaPenalty(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) ? selectedEvaluation.answers[key] !== true : selectedEvaluation.answers[key] === true"
-                    [class.no]="isCriteriaPenalty(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) ? selectedEvaluation.answers[key] === true : selectedEvaluation.answers[key] !== true"
-                    [name]="(isCriteriaPenalty(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) ? selectedEvaluation.answers[key] !== true : selectedEvaluation.answers[key] === true) ? 'arrow-up' : 'arrow-down'" 
+                    [class.yes]="isCriteriaPenalty(selectedEvaluation.scriptId, key) ? selectedEvaluation.answers[key] !== true : selectedEvaluation.answers[key] === true"
+                    [class.no]="isCriteriaPenalty(selectedEvaluation.scriptId, key) ? selectedEvaluation.answers[key] === true : selectedEvaluation.answers[key] !== true"
+                    [name]="(isCriteriaPenalty(selectedEvaluation.scriptId, key) ? selectedEvaluation.answers[key] !== true : selectedEvaluation.answers[key] === true) ? 'arrow-up' : 'arrow-down'" 
                     style="width: 14px; height: 14px;">
                 </lucide-icon>
                 {{ selectedEvaluation.answers[key] === true ? 'Sim' : 'Não' }}
               </span>
 
               <!-- Caso seja range -->
-              <span *ngIf="getCriteriaType(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) === 'range'" 
+              <span *ngIf="getCriteriaType(selectedEvaluation.scriptId, key) === 'range'" 
                     class="crit-ans score-val"
-                    [class.penalty-range]="isCriteriaPenalty(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key)">
+                    [class.penalty-range]="isCriteriaPenalty(selectedEvaluation.scriptId, key)">
                 {{ selectedEvaluation.answers[key] }} / 5
               </span>
 
               <!-- Caso seja texto -->
-              <span *ngIf="getCriteriaType(selectedEvaluation.scriptId, selectedEvaluation.scriptVersion, key) === 'text'" class="crit-ans text-desc" style="font-weight: normal; color: var(--text-secondary); font-style: italic;">
+              <span *ngIf="getCriteriaType(selectedEvaluation.scriptId, key) === 'text'" class="crit-ans text-desc" style="font-weight: normal; color: var(--text-secondary); font-style: italic;">
                 "{{ selectedEvaluation.answers[key] }}"
               </span>
             </div>

@@ -45,8 +45,8 @@ export class ScriptsComponent implements OnInit, DoCheck, OnDestroy {
     });
   }
 
-  editScript(id: string, version: number): void {
-    this.router.navigate(['/roteiros/builder', id, version]);
+  editScript(id: string): void {
+    this.router.navigate(['/roteiros/builder', id]);
   }
 
   createNewScript(): void {

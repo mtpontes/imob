@@ -94,7 +94,7 @@
             <div class="custom-select-options glass" *ngIf="isScriptDropdownOpen" @dropdownTrigger>
               <div *ngFor="let p of scripts" class="custom-select-option" [class.selected]="selectedScript?.id === p.id"
                 (click)="selectScriptCustom(p.id)" [id]="'script-option-' + p.id">
-                {{ p.name || 'Roteiro de Vistoria' }} (v{{ p.version }})
+                {{ p.name || 'Roteiro de Vistoria' }}
               </div>
             </div>
           </div>

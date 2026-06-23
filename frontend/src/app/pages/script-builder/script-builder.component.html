@@ -2,7 +2,7 @@
 
   <div class="page-header">
     <div class="page-title-area">
-      <h1>{{ isEditMode ? 'Editar Roteiro (v' + selectedScript?.version + ')' : 'Criar Novo Roteiro' }}</h1>
+      <h1>{{ isEditMode ? 'Editar Roteiro' : 'Criar Novo Roteiro' }}</h1>
       <p>Monte o formulário dinâmico adicionando os critérios avaliativos</p>
     </div>
   </div>
@@ -61,8 +61,8 @@
                 <div class="criteria-drag-handle" cdkDragHandle>
                   <lucide-icon name="grip-vertical"></lucide-icon>
                 </div>
-                <div class="criteria-item-details">
-                  <span class="crit-name">{{ crit.get('label')?.value }}</span>
+                <div class="criteria-item-details" style="flex: 1; max-width: calc(100% - 40px);">
+                  <input type="text" formControlName="label" class="crit-name-input" placeholder="Texto do critério" required />
                   <div class="crit-meta-tags">
                     <span class="crit-badge type">
                       {{ crit.get('type')?.value === 'bool' ? 'Sim / Não' : crit.get('type')?.value === 'range' ?
@@ -101,33 +101,7 @@
           </div>
         </div>
 
-        <!-- Opção de Edição: Nova Versão ou Sobrescrita -->
-        <div class="version-control-box glass" *ngIf="isEditMode && selectedScript" @slideInOut>
-          <h4>Salvamento e Controle de Versão</h4>
-          <p>Este roteiro já possui dados persistidos. Escolha o comportamento de salvamento:</p>
 
-          <div class="version-options">
-            <label class="radio-card">
-              <input type="radio" [value]="false" formControlName="newVersion" name="newVersion">
-              <div class="radio-content">
-                <span class="radio-title">Sobrescrever Versão Atual (<span class="current-ver-badge">v{{
-                    selectedScript.version }}</span>)</span>
-                <span class="radio-desc">Substitui o roteiro atual inteiramente. Útil para corrigir erros
-                  rápidos.</span>
-              </div>
-            </label>
-
-            <label class="radio-card">
-              <input type="radio" [value]="true" formControlName="newVersion" name="newVersion">
-              <div class="radio-content">
-                <span class="radio-title">Criar Nova Versão (<span class="next-ver-badge">v{{ selectedScript.version + 1
-                    }}</span>)</span>
-                <span class="radio-desc">Desativa a versão anterior e gera uma nova. As avaliações antigas continuam
-                  associadas à versão anterior.</span>
-              </div>
-            </label>
-          </div>
-        </div>
 
         <div class="form-actions-footer">
           <button type="button" class="btn btn-outline" routerLink="/roteiros">Cancelar</button>

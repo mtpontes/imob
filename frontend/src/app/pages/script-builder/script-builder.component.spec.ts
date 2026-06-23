@@ -30,8 +30,6 @@ describe('ScriptBuilderComponent', () => {
   const mockActiveScripts: ScriptResponse[] = [
     {
       id: 'script-123',
-      version: 1,
-      isActive: true,
       createdAt: '2026-06-07T10:00:00Z',
       name: 'Roteiro Existente',
       criteria: [
@@ -47,6 +45,7 @@ describe('ScriptBuilderComponent', () => {
 
     scriptServiceMock = {
       getActiveScripts: jasmine.createSpy('getActiveScripts').and.returnValue(of(mockActiveScripts)),
+      getScript: jasmine.createSpy('getScript').and.returnValue(of(mockActiveScripts[0])),
       createScript: jasmine.createSpy('createScript').and.returnValue(of({})),
       updateScript: jasmine.createSpy('updateScript').and.returnValue(of({}))
     };
@@ -100,7 +99,7 @@ describe('ScriptBuilderComponent', () => {
 
   it('should load script and populate form in edit mode', () => {
     // Arrange
-    routeParams = of({ id: 'script-123', version: '1' });
+    routeParams = of({ id: 'script-123' });
     TestBed.overrideProvider(ActivatedRoute, { useValue: { params: routeParams } });
     
     // Act
@@ -108,7 +107,7 @@ describe('ScriptBuilderComponent', () => {
 
     // Assert
     expect(component.isEditMode).toBeTrue();
-    expect(scriptServiceMock.getActiveScripts).toHaveBeenCalled();
+    expect(scriptServiceMock.getScript).toHaveBeenCalledWith('script-123');
     expect(component.criteria.length).toBe(3);
     expect(component.criteria.at(0).get('label')?.value).toBe('Criterio 1');
     expect(component.criteria.at(1).get('label')?.value).toBe('Criterio 2');
@@ -117,7 +116,7 @@ describe('ScriptBuilderComponent', () => {
 
   it('should move criteria up when moveCriteria is called with valid indices', () => {
     // Arrange
-    routeParams = of({ id: 'script-123', version: '1' });
+    routeParams = of({ id: 'script-123' });
     TestBed.overrideProvider(ActivatedRoute, { useValue: { params: routeParams } });
     createComponent();
     expect(component.criteria.at(0).get('label')?.value).toBe('Criterio 1');
@@ -133,7 +132,7 @@ describe('ScriptBuilderComponent', () => {
 
   it('should move criteria down when moveCriteria is called with valid indices', () => {
     // Arrange
-    routeParams = of({ id: 'script-123', version: '1' });
+    routeParams = of({ id: 'script-123' });
     TestBed.overrideProvider(ActivatedRoute, { useValue: { params: routeParams } });
     createComponent();
     expect(component.criteria.at(1).get('label')?.value).toBe('Criterio 2');
@@ -149,7 +148,7 @@ describe('ScriptBuilderComponent', () => {
 
   it('should not move criteria if fromIndex or toIndex are out of bounds', () => {
     // Arrange
-    routeParams = of({ id: 'script-123', version: '1' });
+    routeParams = of({ id: 'script-123' });
     TestBed.overrideProvider(ActivatedRoute, { useValue: { params: routeParams } });
     createComponent();
 
@@ -164,7 +163,7 @@ describe('ScriptBuilderComponent', () => {
 
   it('should call moveCriteria when onCdkDrop is triggered with different indices', () => {
     // Arrange
-    routeParams = of({ id: 'script-123', version: '1' });
+    routeParams = of({ id: 'script-123' });
     TestBed.overrideProvider(ActivatedRoute, { useValue: { params: routeParams } });
     createComponent();
     spyOn(component, 'moveCriteria');
@@ -183,7 +182,7 @@ describe('ScriptBuilderComponent', () => {
 
   it('should not call moveCriteria when onCdkDrop is triggered with identical indices', () => {
     // Arrange
-    routeParams = of({ id: 'script-123', version: '1' });
+    routeParams = of({ id: 'script-123' });
     TestBed.overrideProvider(ActivatedRoute, { useValue: { params: routeParams } });
     createComponent();
     spyOn(component, 'moveCriteria');

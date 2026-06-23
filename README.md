@@ -2,7 +2,15 @@
 
 Este é um monorepo que contém o frontend e o backend da ImobApp, um sistema serverless de alta performance focado na criação e execução de protocolos de avaliação (Templates) de imóveis visitados.
 
-O sistema suporta versionamento de formulários dinâmicos, cálculo automático de pontuação por pesos, registro de dados do imóvel e upload direto de fotos para o Amazon S3 utilizando URLs pré-assinadas (Pre-Signed URLs).
+O sistema suporta a criação de formulários dinâmicos, cálculo automático de pontuação por pesos, registro de dados do imóvel e upload direto de fotos para o Amazon S3 utilizando URLs pré-assinadas (Pre-Signed URLs).
+
+````carousel
+![Painel e Lista de Imoveis](file:///e:/projetos/vibecode/app-de-avaliar-imoveis/.agents/prints/properties_dashboard_mockup.png)
+<!-- slide -->
+![Criador de Templates](file:///e:/projetos/vibecode/app-de-avaliar-imoveis/.agents/prints/template_builder_mockup.png)
+<!-- slide -->
+![Formulario de Avaliacao e Nota em Tempo Real](file:///e:/projetos/vibecode/app-de-avaliar-imoveis/.agents/prints/evaluation_score_mockup.png)
+````
 
 ---
 
@@ -12,6 +20,69 @@ O projeto está estruturado no formato de monorepo:
 
 *   **[backend/](file:///e:/projetos/vibecode/app-de-avaliar-imoveis/backend):** Código-fonte em Java 25 utilizando o framework Quarkus compilado para Imagem Nativa (GraalVM), empacotado para execução em ambiente AWS Lambda (Fat Lambda). Também contém o arquivo de infraestrutura do AWS SAM (`template.yaml`).
 *   **[frontend/](file:///e:/projetos/vibecode/app-de-avaliar-imoveis/frontend):** Aplicação Single Page Application (SPA) desenvolvida em Angular configurada como Progressive Web App (PWA) e hospedada na Vercel.
+
+---
+
+## Arquitetura do Sistema e Fluxos de Dados
+
+### Arquitetura de Componentes do Monorepo
+
+O sistema utiliza a arquitetura serverless no backend e SPA no frontend, otimizada para baixo custo e tempos de resposta rápidos.
+
+```mermaid
+graph TD
+    classDef frontend fill:#3b82f6,stroke:#1d4ed8,stroke-width:2px,color:#fff;
+    classDef backend fill:#10b981,stroke:#047857,stroke-width:2px,color:#fff;
+    classDef cloud fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff;
+
+    subgraph Vercel [Hospedagem Frontend]
+        Angular[Angular 19 SPA / PWA]:::frontend
+    end
+
+    subgraph AWS [AWS Cloud Infrastructure]
+        APIGateway[API Gateway HTTP API]:::cloud
+        Lambda[Fat Lambda Quarkus / Java 25]:::backend
+        DynamoDB[(DynamoDB Single-Table)]:::cloud
+        S3Bucket[(S3 Bucket Storage)]:::cloud
+        Cognito[Cognito User Pool]:::cloud
+    end
+
+    Angular -- JWT / HTTP API --> APIGateway
+    APIGateway -- Proxy Integration --> Lambda
+    Lambda -- Query / PutItem --> DynamoDB
+    Lambda -- Pre-Signed URLs --> S3Bucket
+    Angular -- Put / Direct Upload --> S3Bucket
+    Angular -- Authenticate --> Cognito
+```
+
+### Fluxo de Upload e Visualização de Fotos via S3 Pre-Signed URLs
+
+Para contornar o limite de payload de 10MB do API Gateway, a transferência binária de mídias é realizada diretamente entre o cliente frontend e o Amazon S3.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Corretor
+    participant App as Angular PWA (Frontend)
+    participant API as Quarkus Lambda (Backend)
+    participant S3 as Amazon S3 Bucket
+
+    Corretor->>App: Seleciona fotos do imovel
+    App->>API: POST /api/evaluations/upload-url { fileName, contentType }
+    Note over API: Valida extensao & gera PUT Pre-Signed URL (15 min)
+    API-->>App: Retorna { uploadUrl, s3Key }
+    App->>S3: PUT binario do arquivo diretamente na uploadUrl
+    S3-->>App: Retorna HTTP 200 OK
+    App->>API: POST /api/evaluations (Salva avaliacao com as s3Keys)
+    Note over API: Persiste chaves no DynamoDB
+    API-->>App: Retorna HTTP 201 Created
+
+    Note over App, API: Carregamento posterior da galeria de fotos:
+    App->>API: GET /api/evaluations/property/{id}
+    Note over API: Recupera s3Keys do banco e gera GET Pre-Signed URLs (1 hora)
+    API-->>App: Retorna DTO com URLs pré-assinadas temporarias
+    App->>Corretor: Renderiza imagens em tela com Lightbox premium
+```
 
 ---
 

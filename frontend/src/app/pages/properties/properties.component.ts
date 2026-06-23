@@ -66,7 +66,7 @@ export class PropertiesComponent implements OnInit {
           if (evals && evals.length > 0) {
             const sorted = evals.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
             const latestEval = sorted[0];
-            this.scriptService.getScript(latestEval.scriptId, latestEval.scriptVersion).subscribe({
+            this.scriptService.getScript(latestEval.scriptId).subscribe({
               next: (script) => {
                 this.propertyScores[p.id] = this.evaluationService.calculateScore(script, latestEval.answers);
                 this.propertyEvaluationsCount[p.id] = evals.length;

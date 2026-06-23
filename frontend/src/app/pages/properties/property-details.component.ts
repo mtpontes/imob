@@ -104,7 +104,7 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
   calculateEvaluationsScores(): void {
     this.evaluationScores = {};
     this.evaluations.forEach(ev => {
-      this.scriptService.getScript(ev.scriptId, ev.scriptVersion).subscribe({
+      this.scriptService.getScript(ev.scriptId).subscribe({
         next: (script) => {
           const score = this.evaluationService.calculateScore(script, ev.answers);
           this.evaluationScores = {
@@ -131,8 +131,8 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
     });
   }
 
-  getCriteriaLabel(scriptId: string, scriptVersion: number, criteriaId: string): string {
-    const script = this.scripts.find(s => s.id === scriptId && s.version === scriptVersion);
+  getCriteriaLabel(scriptId: string, criteriaId: string): string {
+    const script = this.scripts.find(s => s.id === scriptId);
     if (script) {
       const criteria = script.criteria.find(c => c.id === criteriaId);
       if (criteria) {
@@ -142,8 +142,8 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
     return criteriaId;
   }
 
-  getCriteriaType(scriptId: string, scriptVersion: number, criteriaId: string): string {
-    const script = this.scripts.find(s => s.id === scriptId && s.version === scriptVersion);
+  getCriteriaType(scriptId: string, criteriaId: string): string {
+    const script = this.scripts.find(s => s.id === scriptId);
     if (script) {
       const criteria = script.criteria.find(c => c.id === criteriaId);
       if (criteria) {
@@ -153,8 +153,8 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
     return 'text';
   }
 
-  isCriteriaPenalty(scriptId: string, scriptVersion: number, criteriaId: string): boolean {
-    const script = this.scripts.find(s => s.id === scriptId && s.version === scriptVersion);
+  isCriteriaPenalty(scriptId: string, criteriaId: string): boolean {
+    const script = this.scripts.find(s => s.id === scriptId);
     if (script) {
       const criteria = script.criteria.find(c => c.id === criteriaId);
       if (criteria) {
@@ -164,8 +164,8 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
     return false;
   }
 
-  getScriptName(scriptId: string, scriptVersion: number): string {
-    const scr = this.scripts.find(s => s.id === scriptId && s.version === scriptVersion);
+  getScriptName(scriptId: string): string {
+    const scr = this.scripts.find(s => s.id === scriptId);
     return scr && scr.name ? scr.name : `Roteiro #${scriptId.substring(0, 5)}`;
   }
 
@@ -174,7 +174,7 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
     this.isModalOpen = true;
 
     // Busca o nome do roteiro no backend se existir
-    const scr = this.scripts.find(s => s.id === ev.scriptId && s.version === ev.scriptVersion);
+    const scr = this.scripts.find(s => s.id === ev.scriptId);
     this.selectedScriptName = scr && scr.name ? scr.name : `Roteiro #${ev.scriptId.substring(0, 5)}`;
   }
 

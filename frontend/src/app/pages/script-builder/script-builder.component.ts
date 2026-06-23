@@ -44,7 +44,6 @@ export class ScriptBuilderComponent implements OnInit {
   ) {
     this.scriptForm = this.fb.group({
       name: ['', Validators.required],
-      newVersion: [false],
       criteria: this.fb.array([])
     });
   }
@@ -52,38 +51,35 @@ export class ScriptBuilderComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       const id = params['id'];
-      const version = params['version'];
-      if (id && version) {
+      if (id) {
         this.isEditMode = true;
-        this.loadScriptForEdit(id, Number(version));
+        this.loadScriptForEdit(id);
       } else {
         this.resetForm();
       }
     });
   }
 
-  loadScriptForEdit(id: string, version: number): void {
+  loadScriptForEdit(id: string): void {
     this.loading = true;
-    this.scriptService.getActiveScripts().subscribe({
-      next: (res) => {
-        const found = res.find(s => s.id === id && s.version === version);
+    this.scriptService.getScript(id).subscribe({
+      next: (found) => {
         if (found) {
           this.selectedScript = found;
           this.scriptForm.patchValue({
-            name: found.name || '',
-            newVersion: false
+            name: found.name || ''
           });
           
           this.criteria.clear();
           if (found.criteria)
             found.criteria.forEach(c => this.addCriteria(c));
         } else {
-          this.errorMessage = 'Roteiro nao encontrado ou inativo.';
+          this.errorMessage = 'Roteiro nao encontrado.';
         }
         this.loading = false;
       },
       error: () => {
-        this.errorMessage = 'Erro ao carregar roteiros.';
+        this.errorMessage = 'Erro ao carregar roteiro.';
         this.loading = false;
       }
     });
@@ -199,8 +195,7 @@ export class ScriptBuilderComponent implements OnInit {
     this.successMessage = '';
     this.criteria.clear();
     this.scriptForm.reset({
-      name: '',
-      newVersion: false
+      name: ''
     });
     this.newCritIsPenalty = false;
   }
@@ -220,7 +215,6 @@ export class ScriptBuilderComponent implements OnInit {
     if (this.isEditMode && this.selectedScript) {
       this.scriptService.updateScript(this.selectedScript.id, {
         name: payload.name,
-        newVersion: payload.newVersion,
         criteria: payload.criteria
       }).subscribe({
         next: () => {

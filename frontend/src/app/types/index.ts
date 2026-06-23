@@ -15,14 +15,11 @@ export interface CreateScriptRequest {
 
 export interface UpdateScriptRequest {
   name: string;
-  newVersion: boolean;
   criteria: Criteria[];
 }
 
 export interface ScriptResponse {
   id: string;
-  version: number;
-  isActive: boolean;
   createdAt: string;
   criteria: Criteria[];
   name: string;
@@ -53,7 +50,6 @@ export interface PropertyResponse {
 export interface CreateEvaluationRequest {
   propertyId: string;
   scriptId: string;
-  scriptVersion: number;
   answers: { [key: string]: any };
   notes: string;
   mediaKeys: string[];
@@ -69,7 +65,6 @@ export interface EvaluationResponse {
   propertyId: string;
   createdAt: string;
   scriptId: string;
-  scriptVersion: number;
   notes: string;
   answers: { [key: string]: any };
   mediaUrls: string[];

@@ -43,8 +43,6 @@ describe('EvaluationFormComponent', () => {
   const mockScripts: ScriptResponse[] = [
     {
       id: 'script-1',
-      version: 1,
-      isActive: true,
       createdAt: '2026-06-07T10:00:00Z',
       name: 'Roteiro de Vistoria Padrão',
       criteria: [
@@ -60,7 +58,6 @@ describe('EvaluationFormComponent', () => {
       propertyId: 'prop-123',
       createdAt: '2026-06-07T14:00:00Z',
       scriptId: 'script-1',
-      scriptVersion: 1,
       notes: 'Visita boa',
       answers: { 'crit-1': 4, 'crit-2': true, 'crit-3': 'OK' },
       mediaUrls: ['https://s3.com/foto.jpg']
@@ -201,7 +198,6 @@ describe('EvaluationFormComponent', () => {
     expect(evaluationServiceMock.createEvaluation).toHaveBeenCalledWith({
       propertyId: 'prop-123',
       scriptId: 'script-1',
-      scriptVersion: 1,
       answers: {
         'crit-1': 5,
         'crit-2': true,

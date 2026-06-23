@@ -85,9 +85,9 @@ export class EvaluationFormComponent implements OnInit {
           }));
         }
 
-        this.scriptService.getScript(evalRes.scriptId, evalRes.scriptVersion).subscribe({
+        this.scriptService.getScript(evalRes.scriptId).subscribe({
           next: (script) => {
-            if (!this.scripts.some(s => s.id === script.id && s.version === script.version)) {
+            if (!this.scripts.some(s => s.id === script.id)) {
               this.scripts.push(script);
             }
             this.selectedScript = script;
@@ -216,7 +216,7 @@ export class EvaluationFormComponent implements OnInit {
 
   getScriptLabel(): string {
     if (!this.selectedScript) return '-- Escolha um roteiro ativo --';
-    return `${this.selectedScript.name || 'Roteiro de Vistoria'} (v${this.selectedScript.version})`;
+    return this.selectedScript.name || 'Roteiro de Vistoria';
   }
 
   buildForm(script: ScriptResponse): void {
@@ -374,7 +374,6 @@ export class EvaluationFormComponent implements OnInit {
     const request = {
       propertyId: this.propertyId,
       scriptId: this.selectedScript.id,
-      scriptVersion: this.selectedScript.version,
       answers: answersMap,
       notes: this.evaluationForm.value.notes || '',
       mediaKeys: this.uploadedMediaKeys

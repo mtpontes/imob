@@ -47,12 +47,10 @@
   </div>
 
   <div class="templates-list-container" *ngIf="scripts.length > 0 && !loading" [@listStaggerTrigger]="scripts.length">
-    <div *ngFor="let s of scripts" class="template-row glass" (click)="editScript(s.id, s.version)">
+    <div *ngFor="let s of scripts" class="template-row glass" (click)="editScript(s.id)">
       <div class="template-row-info">
         <h3>
           {{ s.name || 'Roteiro de Vistoria' }} 
-          <span class="ver-badge">v{{ s.version }}</span>
-          <span class="status-badge-active">Ativo</span>
         </h3>
         <div class="template-row-meta">
           <span>Criado em: {{ s.createdAt | date:'dd/MM/yyyy' }}</span>
@@ -62,7 +60,7 @@
       </div>
       
       <div class="template-row-actions">
-        <button class="btn btn-outline" (click)="$event.stopPropagation(); editScript(s.id, s.version)" [id]="'btn-edit-template-' + s.id">
+        <button class="btn btn-outline" (click)="$event.stopPropagation(); editScript(s.id)" [id]="'btn-edit-template-' + s.id">
           <lucide-icon name="edit-3"></lucide-icon>
           <span>Ver / Editar</span>
         </button>
@@ -84,7 +82,7 @@
           <lucide-icon name="alert-triangle"></lucide-icon>
         </div>
         <h3>Excluir Roteiro?</h3>
-        <p>Esta ação não pode ser desfeita. Todas as versões do roteiro serão removidas permanentemente.</p>
+        <p>Esta ação não pode ser desfeita. O roteiro será removido permanentemente.</p>
       </div>
 
       <div class="delete-confirm-footer">

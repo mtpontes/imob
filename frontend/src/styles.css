@@ -324,6 +324,10 @@ body::after {
   margin: 0 auto;
 }
 
+body.no-scroll .app-main {
+  z-index: 600;
+}
+
 /* Logged out state hides header and nav */
 .logged-out .app-header,
 .logged-out .app-nav {
@@ -367,6 +371,15 @@ body::after {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes pageFadeInSimple {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 
@@ -464,7 +477,7 @@ body::after {
 .login-section,
 .template-builder-section,
 .view {
-  animation: pageFadeIn var(--transition-duration-normal) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: pageFadeInSimple var(--transition-duration-normal) cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .view.active {
@@ -1524,6 +1537,33 @@ input[type="range"]::-webkit-slider-thumb:hover {
   font-size: 0.95rem;
 }
 
+.crit-name-input {
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed transparent;
+  padding: 2px 6px;
+  margin-left: -6px;
+  width: 100%;
+  max-width: 480px;
+  border-radius: 4px;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.crit-name-input:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom-color: var(--glass-border);
+}
+
+.crit-name-input:focus {
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom-color: var(--primary);
+  outline: none;
+}
+
 .crit-meta-tags {
   display: flex;
   gap: 0.5rem;
@@ -2465,6 +2505,19 @@ body.no-scroll {
   color: var(--primary-light);
   line-height: 1.1;
   font-family: var(--font-heading);
+  transition: color var(--transition-normal);
+}
+
+.modal-score-banner .score-value.high {
+  color: var(--success);
+}
+
+.modal-score-banner .score-value.medium {
+  color: var(--warning);
+}
+
+.modal-score-banner .score-value.low {
+  color: var(--danger);
 }
 
 .modal-score-banner .template-value {

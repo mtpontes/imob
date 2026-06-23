@@ -11,11 +11,14 @@ else
     BASH := bash
 endif
 
-.PHONY: run infra-up infra-down
+.PHONY: run infra-up infra-down front
 
 run:
 	$(BASH) ./start-backend.sh
 	cd backend && mvn quarkus:dev
+
+front:
+	cd frontend && npm start
 
 infra-up:
 	docker compose up -d

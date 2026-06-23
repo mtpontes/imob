@@ -15,7 +15,7 @@ export const routes: Routes = [
   { path: 'properties/:propertyId', component: PropertyDetailsComponent, canActivate: [authGuard], data: { animation: 'DetailsPage' } },
   { path: 'roteiros', component: ScriptsComponent, canActivate: [authGuard], data: { animation: 'ScriptsPage' } },
   { path: 'roteiros/builder', component: ScriptBuilderComponent, canActivate: [authGuard], data: { animation: 'ScriptBuilderPage' } },
-  { path: 'roteiros/builder/:id/:version', component: ScriptBuilderComponent, canActivate: [authGuard], data: { animation: 'ScriptBuilderPage' } },
+  { path: 'roteiros/builder/:id', component: ScriptBuilderComponent, canActivate: [authGuard], data: { animation: 'ScriptBuilderPage' } },
   { path: 'evaluate/:propertyId', component: EvaluationFormComponent, canActivate: [authGuard], data: { animation: 'EvaluatePage' } },
   { path: 'evaluate/:propertyId/edit/:createdAt', component: EvaluationFormComponent, canActivate: [authGuard], data: { animation: 'EvaluatePage' } },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

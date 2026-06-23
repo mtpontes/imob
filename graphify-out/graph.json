@@ -67,7 +67,7 @@
       "label": ".getEvaluationsByProperty()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L73",
+      "source_location": "L70",
       "_origin": "ast",
       "id": "api_evaluationresource_evaluationresource_getevaluationsbyproperty",
       "community": 6,
@@ -77,7 +77,7 @@
       "label": "String",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L73",
+      "source_location": "L70",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_string",
       "community": 6,
@@ -87,7 +87,7 @@
       "label": "List",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L73",
+      "source_location": "L70",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_list",
       "community": 6,
@@ -97,7 +97,7 @@
       "label": "EvaluationResponse",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L73",
+      "source_location": "L70",
       "_origin": "ast",
       "id": "evaluationresponse",
       "community": 6,
@@ -107,7 +107,7 @@
       "label": "GET",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L73",
+      "source_location": "L70",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_get",
       "community": 6,
@@ -117,7 +117,7 @@
       "label": "Path",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L73",
+      "source_location": "L70",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_path",
       "community": 6,
@@ -127,7 +127,7 @@
       "label": ".generateUploadUrl()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L86",
+      "source_location": "L83",
       "_origin": "ast",
       "id": "api_evaluationresource_evaluationresource_generateuploadurl",
       "community": 6,
@@ -137,7 +137,7 @@
       "label": "GenerateUploadUrlRequest",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L86",
+      "source_location": "L83",
       "_origin": "ast",
       "id": "generateuploadurlrequest",
       "community": 6,
@@ -147,7 +147,7 @@
       "label": ".getEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L111",
+      "source_location": "L108",
       "_origin": "ast",
       "id": "api_evaluationresource_evaluationresource_getevaluation",
       "community": 6,
@@ -157,7 +157,7 @@
       "label": ".updateEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L123",
+      "source_location": "L120",
       "_origin": "ast",
       "id": "api_evaluationresource_evaluationresource_updateevaluation",
       "community": 6,
@@ -167,7 +167,7 @@
       "label": "UpdateEvaluationRequest",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L123",
+      "source_location": "L120",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_updateevaluationrequest",
       "community": 6,
@@ -177,7 +177,7 @@
       "label": "PUT",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L123",
+      "source_location": "L120",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_put",
       "community": 6,
@@ -187,7 +187,7 @@
       "label": ".deleteEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L146",
+      "source_location": "L143",
       "_origin": "ast",
       "id": "api_evaluationresource_evaluationresource_deleteevaluation",
       "community": 6,
@@ -197,7 +197,7 @@
       "label": "DELETE",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L146",
+      "source_location": "L143",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_delete",
       "community": 6,
@@ -207,7 +207,7 @@
       "label": ".mapToResponse()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L160",
+      "source_location": "L157",
       "_origin": "ast",
       "id": "api_evaluationresource_evaluationresource_maptoresponse",
       "community": 6,
@@ -217,7 +217,7 @@
       "label": "EvaluationEntity",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L160",
+      "source_location": "L157",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_evaluationentity",
       "community": 6,
@@ -444,14 +444,14 @@
       "norm_label": "get"
     },
     {
-      "label": ".getScriptByIdAndVersion()",
+      "label": ".getScriptById()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
       "source_location": "L54",
       "_origin": "ast",
-      "id": "api_scriptresource_scriptresource_getscriptbyidandversion",
+      "id": "api_scriptresource_scriptresource_getscriptbyid",
       "community": 1,
-      "norm_label": ".getscriptbyidandversion()"
+      "norm_label": ".getscriptbyid()"
     },
     {
       "label": "String",
@@ -517,7 +517,7 @@
       "label": ".updateScript()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
-      "source_location": "L87",
+      "source_location": "L85",
       "_origin": "ast",
       "id": "api_scriptresource_scriptresource_updatescript",
       "community": 1,
@@ -527,7 +527,7 @@
       "label": "UpdateScriptRequest",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
-      "source_location": "L87",
+      "source_location": "L85",
       "_origin": "ast",
       "id": "updatescriptrequest",
       "community": 1,
@@ -537,7 +537,7 @@
       "label": "PUT",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
-      "source_location": "L87",
+      "source_location": "L85",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_scriptresource_java_put",
       "community": 1,
@@ -547,7 +547,7 @@
       "label": ".deleteScript()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
-      "source_location": "L140",
+      "source_location": "L105",
       "_origin": "ast",
       "id": "api_scriptresource_scriptresource_deletescript",
       "community": 1,
@@ -557,7 +557,7 @@
       "label": "DELETE",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
-      "source_location": "L140",
+      "source_location": "L105",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_scriptresource_java_delete",
       "community": 1,
@@ -567,7 +567,7 @@
       "label": ".mapToResponse()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
-      "source_location": "L165",
+      "source_location": "L130",
       "_origin": "ast",
       "id": "api_scriptresource_scriptresource_maptoresponse",
       "community": 1,
@@ -577,7 +577,7 @@
       "label": "ScriptEntity",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
-      "source_location": "L165",
+      "source_location": "L130",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_scriptresource_java_scriptentity",
       "community": 1,
@@ -1097,7 +1097,7 @@
       "label": ".toAttributeMap()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/entity/EvaluationEntity.java",
-      "source_location": "L30",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "entity_evaluationentity_evaluationentity_toattributemap",
       "community": 18,
@@ -1107,7 +1107,7 @@
       "label": "Map",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/entity/EvaluationEntity.java",
-      "source_location": "L30",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_entity_evaluationentity_java_map",
       "community": 18,
@@ -1117,7 +1117,7 @@
       "label": "String",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/entity/EvaluationEntity.java",
-      "source_location": "L30",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_entity_evaluationentity_java_string",
       "community": 18,
@@ -1127,7 +1127,7 @@
       "label": "AttributeValue",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/entity/EvaluationEntity.java",
-      "source_location": "L30",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_entity_evaluationentity_java_attributevalue",
       "community": 18,
@@ -1137,7 +1137,7 @@
       "label": ".fromAttributeMap()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/entity/EvaluationEntity.java",
-      "source_location": "L61",
+      "source_location": "L57",
       "_origin": "ast",
       "id": "entity_evaluationentity_evaluationentity_fromattributemap",
       "community": 18,
@@ -1220,7 +1220,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "entity_scriptentity",
-      "community": 17,
+      "community": 13,
       "norm_label": "scriptentity.java"
     },
     {
@@ -1230,57 +1230,57 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "entity_scriptentity_scriptentity",
-      "community": 17,
+      "community": 13,
       "norm_label": "scriptentity"
     },
     {
       "label": ".toAttributeMap()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/entity/ScriptEntity.java",
-      "source_location": "L28",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "entity_scriptentity_scriptentity_toattributemap",
-      "community": 17,
+      "community": 13,
       "norm_label": ".toattributemap()"
     },
     {
       "label": "Map",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/entity/ScriptEntity.java",
-      "source_location": "L28",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_entity_scriptentity_java_map",
-      "community": 17,
+      "community": 13,
       "norm_label": "map"
     },
     {
       "label": "String",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/entity/ScriptEntity.java",
-      "source_location": "L28",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_entity_scriptentity_java_string",
-      "community": 17,
+      "community": 13,
       "norm_label": "string"
     },
     {
       "label": "AttributeValue",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/entity/ScriptEntity.java",
-      "source_location": "L28",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_entity_scriptentity_java_attributevalue",
-      "community": 17,
+      "community": 13,
       "norm_label": "attributevalue"
     },
     {
       "label": ".fromAttributeMap()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/entity/ScriptEntity.java",
-      "source_location": "L45",
+      "source_location": "L41",
       "_origin": "ast",
       "id": "entity_scriptentity_scriptentity_fromattributemap",
-      "community": 17,
+      "community": 13,
       "norm_label": ".fromattributemap()"
     },
     {
@@ -1360,7 +1360,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "exception_evaluationerrorcode",
-      "community": 6,
+      "community": 1,
       "norm_label": "evaluationerrorcode.java"
     },
     {
@@ -1370,7 +1370,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "exception_evaluationerrorcode_evaluationerrorcode",
-      "community": 6,
+      "community": 1,
       "norm_label": "evaluationerrorcode()"
     },
     {
@@ -1380,7 +1380,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_exception_evaluationerrorcode_java_string",
-      "community": 6,
+      "community": 1,
       "norm_label": "string"
     },
     {
@@ -1390,7 +1390,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "status",
-      "community": 6,
+      "community": 1,
       "norm_label": "status"
     },
     {
@@ -1400,7 +1400,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "exception_evaluationerrorcode_getmessage",
-      "community": 6,
+      "community": 1,
       "norm_label": "getmessage()"
     },
     {
@@ -1410,7 +1410,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "exception_evaluationerrorcode_getstatus",
-      "community": 6,
+      "community": 1,
       "norm_label": "getstatus()"
     },
     {
@@ -1420,7 +1420,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "exception_evaluationexception",
-      "community": 6,
+      "community": 1,
       "norm_label": "evaluationexception.java"
     },
     {
@@ -1430,7 +1430,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "exception_evaluationexception_evaluationexception",
-      "community": 6,
+      "community": 1,
       "norm_label": "evaluationexception"
     },
     {
@@ -1440,7 +1440,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "runtimeexception",
-      "community": 6,
+      "community": 1,
       "norm_label": "runtimeexception"
     },
     {
@@ -1450,7 +1450,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "exception_evaluationexception_evaluationexception_evaluationexception",
-      "community": 6,
+      "community": 1,
       "norm_label": ".evaluationexception()"
     },
     {
@@ -1460,7 +1460,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "evaluationerrorcode",
-      "community": 6,
+      "community": 1,
       "norm_label": "evaluationerrorcode"
     },
     {
@@ -1470,7 +1470,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "exception_evaluationexception_evaluationexception_geterrorcode",
-      "community": 6,
+      "community": 1,
       "norm_label": ".geterrorcode()"
     },
     {
@@ -1480,7 +1480,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "exception_globalexceptionmapper",
-      "community": 6,
+      "community": 1,
       "norm_label": "globalexceptionmapper.java"
     },
     {
@@ -1490,7 +1490,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "exception_globalexceptionmapper_globalexceptionmapper",
-      "community": 6,
+      "community": 1,
       "norm_label": "globalexceptionmapper"
     },
     {
@@ -1500,7 +1500,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "exception_globalexceptionmapper_globalexceptionmapper_toresponse",
-      "community": 6,
+      "community": 1,
       "norm_label": ".toresponse()"
     },
     {
@@ -1510,7 +1510,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "exception",
-      "community": 6,
+      "community": 1,
       "norm_label": "exception"
     },
     {
@@ -1520,7 +1520,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_exception_globalexceptionmapper_java_response",
-      "community": 6,
+      "community": 1,
       "norm_label": "response"
     },
     {
@@ -1530,7 +1530,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_exception_globalexceptionmapper_java_override",
-      "community": 6,
+      "community": 1,
       "norm_label": "override"
     },
     {
@@ -1780,7 +1780,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "repository_dynamodbrepository_dynamodbrepository_savescript",
-      "community": 3,
+      "community": 13,
       "norm_label": ".savescript()"
     },
     {
@@ -1824,30 +1824,20 @@
       "norm_label": "list"
     },
     {
-      "label": ".getAllVersionsOfScript()",
+      "label": ".deleteScript()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
       "source_location": "L92",
       "_origin": "ast",
-      "id": "repository_dynamodbrepository_dynamodbrepository_getallversionsofscript",
+      "id": "repository_dynamodbrepository_dynamodbrepository_deletescript",
       "community": 3,
-      "norm_label": ".getallversionsofscript()"
-    },
-    {
-      "label": ".deleteAllVersionsOfScript()",
-      "file_type": "code",
-      "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L123",
-      "_origin": "ast",
-      "id": "repository_dynamodbrepository_dynamodbrepository_deleteallversionsofscript",
-      "community": 3,
-      "norm_label": ".deleteallversionsofscript()"
+      "norm_label": ".deletescript()"
     },
     {
       "label": ".saveProperty()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L140",
+      "source_location": "L106",
       "_origin": "ast",
       "id": "repository_dynamodbrepository_dynamodbrepository_saveproperty",
       "community": 3,
@@ -1857,7 +1847,7 @@
       "label": "PropertyEntity",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L140",
+      "source_location": "L106",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_repository_dynamodbrepository_java_propertyentity",
       "community": 3,
@@ -1867,7 +1857,7 @@
       "label": ".getProperty()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L148",
+      "source_location": "L114",
       "_origin": "ast",
       "id": "repository_dynamodbrepository_dynamodbrepository_getproperty",
       "community": 3,
@@ -1877,7 +1867,7 @@
       "label": ".getProperties()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L164",
+      "source_location": "L130",
       "_origin": "ast",
       "id": "repository_dynamodbrepository_dynamodbrepository_getproperties",
       "community": 3,
@@ -1887,7 +1877,7 @@
       "label": ".saveEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L200",
+      "source_location": "L166",
       "_origin": "ast",
       "id": "repository_dynamodbrepository_dynamodbrepository_saveevaluation",
       "community": 4,
@@ -1897,7 +1887,7 @@
       "label": "EvaluationEntity",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L200",
+      "source_location": "L166",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_repository_dynamodbrepository_java_evaluationentity",
       "community": 3,
@@ -1907,7 +1897,7 @@
       "label": ".getEvaluationsByProperty()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L208",
+      "source_location": "L174",
       "_origin": "ast",
       "id": "repository_dynamodbrepository_dynamodbrepository_getevaluationsbyproperty",
       "community": 3,
@@ -1917,7 +1907,7 @@
       "label": ".getEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L242",
+      "source_location": "L208",
       "_origin": "ast",
       "id": "repository_dynamodbrepository_dynamodbrepository_getevaluation",
       "community": 3,
@@ -1927,7 +1917,7 @@
       "label": ".getEvaluations()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L258",
+      "source_location": "L224",
       "_origin": "ast",
       "id": "repository_dynamodbrepository_dynamodbrepository_getevaluations",
       "community": 3,
@@ -1937,7 +1927,7 @@
       "label": ".deleteEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L288",
+      "source_location": "L254",
       "_origin": "ast",
       "id": "repository_dynamodbrepository_dynamodbrepository_deleteevaluation",
       "community": 3,
@@ -1947,7 +1937,7 @@
       "label": ".deleteProperty()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L300",
+      "source_location": "L266",
       "_origin": "ast",
       "id": "repository_dynamodbrepository_dynamodbrepository_deleteproperty",
       "community": 3,
@@ -2100,7 +2090,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "criteriadto",
-      "community": 3,
+      "community": 13,
       "norm_label": "criteriadto"
     },
     {
@@ -2244,14 +2234,14 @@
       "norm_label": "beforeeach"
     },
     {
-      "label": ".shouldRejectEvaluationWithInactiveScript()",
+      "label": ".shouldRejectEvaluationWithNonexistentScript()",
       "file_type": "code",
       "source_file": "backend/src/test/java/com/imob/api/EvaluationResourceTest.java",
       "source_location": "L47",
       "_origin": "ast",
-      "id": "api_evaluationresourcetest_evaluationresourcetest_shouldrejectevaluationwithinactivescript",
+      "id": "api_evaluationresourcetest_evaluationresourcetest_shouldrejectevaluationwithnonexistentscript",
       "community": 4,
-      "norm_label": ".shouldrejectevaluationwithinactivescript()"
+      "norm_label": ".shouldrejectevaluationwithnonexistentscript()"
     },
     {
       "label": "Test",
@@ -2267,7 +2257,7 @@
       "label": ".shouldRejectEvaluationWithInvalidCriteriaAnswer()",
       "file_type": "code",
       "source_file": "backend/src/test/java/com/imob/api/EvaluationResourceTest.java",
-      "source_location": "L85",
+      "source_location": "L76",
       "_origin": "ast",
       "id": "api_evaluationresourcetest_evaluationresourcetest_shouldrejectevaluationwithinvalidcriteriaanswer",
       "community": 4,
@@ -2277,7 +2267,7 @@
       "label": ".shouldCreateEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/test/java/com/imob/api/EvaluationResourceTest.java",
-      "source_location": "L130",
+      "source_location": "L117",
       "_origin": "ast",
       "id": "api_evaluationresourcetest_evaluationresourcetest_shouldcreateevaluation",
       "community": 4,
@@ -2287,7 +2277,7 @@
       "label": ".shouldGenerateUploadUrl()",
       "file_type": "code",
       "source_file": "backend/src/test/java/com/imob/api/EvaluationResourceTest.java",
-      "source_location": "L178",
+      "source_location": "L161",
       "_origin": "ast",
       "id": "api_evaluationresourcetest_evaluationresourcetest_shouldgenerateuploadurl",
       "community": 4,
@@ -2297,7 +2287,7 @@
       "label": ".shouldGenerateGetPresignedUrlsInPropertyEvaluations()",
       "file_type": "code",
       "source_file": "backend/src/test/java/com/imob/api/EvaluationResourceTest.java",
-      "source_location": "L202",
+      "source_location": "L185",
       "_origin": "ast",
       "id": "api_evaluationresourcetest_evaluationresourcetest_shouldgenerategetpresignedurlsinpropertyevaluations",
       "community": 4,
@@ -2307,7 +2297,7 @@
       "label": ".shouldGetEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/test/java/com/imob/api/EvaluationResourceTest.java",
-      "source_location": "L242",
+      "source_location": "L224",
       "_origin": "ast",
       "id": "api_evaluationresourcetest_evaluationresourcetest_shouldgetevaluation",
       "community": 4,
@@ -2317,7 +2307,7 @@
       "label": ".shouldReturnNotFoundWhenGettingNonexistentEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/test/java/com/imob/api/EvaluationResourceTest.java",
-      "source_location": "L277",
+      "source_location": "L258",
       "_origin": "ast",
       "id": "api_evaluationresourcetest_evaluationresourcetest_shouldreturnnotfoundwhengettingnonexistentevaluation",
       "community": 4,
@@ -2327,7 +2317,7 @@
       "label": ".shouldUpdateEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/test/java/com/imob/api/EvaluationResourceTest.java",
-      "source_location": "L295",
+      "source_location": "L276",
       "_origin": "ast",
       "id": "api_evaluationresourcetest_evaluationresourcetest_shouldupdateevaluation",
       "community": 4,
@@ -2337,7 +2327,7 @@
       "label": ".shouldDeleteEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/test/java/com/imob/api/EvaluationResourceTest.java",
-      "source_location": "L350",
+      "source_location": "L327",
       "_origin": "ast",
       "id": "api_evaluationresourcetest_evaluationresourcetest_shoulddeleteevaluation",
       "community": 4,
@@ -2440,7 +2430,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "api_scriptresourcetest",
-      "community": 3,
+      "community": 13,
       "norm_label": "scriptresourcetest.java"
     },
     {
@@ -2450,7 +2440,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "api_scriptresourcetest_scriptresourcetest",
-      "community": 3,
+      "community": 13,
       "norm_label": "scriptresourcetest"
     },
     {
@@ -2460,7 +2450,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "api_scriptresourcetest_scriptresourcetest_setup",
-      "community": 3,
+      "community": 13,
       "norm_label": ".setup()"
     },
     {
@@ -2470,7 +2460,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "backend_src_test_java_com_imob_api_scriptresourcetest_java_beforeeach",
-      "community": 3,
+      "community": 13,
       "norm_label": "beforeeach"
     },
     {
@@ -2480,7 +2470,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "api_scriptresourcetest_scriptresourcetest_shouldreturnactivescripts",
-      "community": 3,
+      "community": 13,
       "norm_label": ".shouldreturnactivescripts()"
     },
     {
@@ -2490,57 +2480,47 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "backend_src_test_java_com_imob_api_scriptresourcetest_java_test",
-      "community": 3,
+      "community": 13,
       "norm_label": "test"
     },
     {
-      "label": ".shouldCreateNewScriptVersionOne()",
+      "label": ".shouldCreateScript()",
       "file_type": "code",
       "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L77",
+      "source_location": "L73",
       "_origin": "ast",
-      "id": "api_scriptresourcetest_scriptresourcetest_shouldcreatenewscriptversionone",
-      "community": 3,
-      "norm_label": ".shouldcreatenewscriptversionone()"
+      "id": "api_scriptresourcetest_scriptresourcetest_shouldcreatescript",
+      "community": 13,
+      "norm_label": ".shouldcreatescript()"
     },
     {
-      "label": ".shouldOverwriteScriptWhenNewVersionIsFalse()",
+      "label": ".shouldUpdateScript()",
       "file_type": "code",
       "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L111",
+      "source_location": "L105",
       "_origin": "ast",
-      "id": "api_scriptresourcetest_scriptresourcetest_shouldoverwritescriptwhennewversionisfalse",
-      "community": 3,
-      "norm_label": ".shouldoverwritescriptwhennewversionisfalse()"
-    },
-    {
-      "label": ".shouldCreateNewVersionWhenNewVersionIsTrue()",
-      "file_type": "code",
-      "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L160",
-      "_origin": "ast",
-      "id": "api_scriptresourcetest_scriptresourcetest_shouldcreatenewversionwhennewversionistrue",
-      "community": 3,
-      "norm_label": ".shouldcreatenewversionwhennewversionistrue()"
+      "id": "api_scriptresourcetest_scriptresourcetest_shouldupdatescript",
+      "community": 13,
+      "norm_label": ".shouldupdatescript()"
     },
     {
       "label": ".shouldDeleteScriptAndCascadeDeleteEvaluationsAndS3Media()",
       "file_type": "code",
       "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L209",
+      "source_location": "L149",
       "_origin": "ast",
       "id": "api_scriptresourcetest_scriptresourcetest_shoulddeletescriptandcascadedeleteevaluationsands3media",
-      "community": 3,
+      "community": 13,
       "norm_label": ".shoulddeletescriptandcascadedeleteevaluationsands3media()"
     },
     {
       "label": ".shouldReturnNotFoundWhenDeletingNonexistentScript()",
       "file_type": "code",
       "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L273",
+      "source_location": "L211",
       "_origin": "ast",
       "id": "api_scriptresourcetest_scriptresourcetest_shouldreturnnotfoundwhendeletingnonexistentscript",
-      "community": 3,
+      "community": 13,
       "norm_label": ".shouldreturnnotfoundwhendeletingnonexistentscript()"
     },
     {
@@ -3357,7 +3337,7 @@
       "label": ".cancelEvaluation()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/evaluation/evaluation-form.component.ts",
-      "source_location": "L416",
+      "source_location": "L415",
       "_origin": "ast",
       "id": "evaluation_evaluation_form_component_evaluationformcomponent_cancelevaluation",
       "community": 7,
@@ -3367,7 +3347,7 @@
       "label": ".onClickOutside()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/evaluation/evaluation-form.component.ts",
-      "source_location": "L421",
+      "source_location": "L420",
       "_origin": "ast",
       "id": "evaluation_evaluation_form_component_evaluationformcomponent_onclickoutside",
       "community": 7,
@@ -4167,7 +4147,7 @@
       "label": "createComponent()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.spec.ts",
-      "source_location": "L84",
+      "source_location": "L83",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_spec_createcomponent",
       "community": 0,
@@ -4207,7 +4187,7 @@
       "label": ".ngOnInit()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L52",
+      "source_location": "L51",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_ngoninit",
       "community": 10,
@@ -4217,7 +4197,7 @@
       "label": ".loadScriptForEdit()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L65",
+      "source_location": "L63",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_loadscriptforedit",
       "community": 10,
@@ -4227,7 +4207,7 @@
       "label": ".criteria()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L92",
+      "source_location": "L88",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_criteria",
       "community": 10,
@@ -4237,7 +4217,7 @@
       "label": ".addCriteria()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L96",
+      "source_location": "L92",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_addcriteria",
       "community": 10,
@@ -4247,7 +4227,7 @@
       "label": ".removeCriteria()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L110",
+      "source_location": "L106",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_removecriteria",
       "community": 10,
@@ -4257,7 +4237,7 @@
       "label": ".moveCriteria()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L114",
+      "source_location": "L110",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_movecriteria",
       "community": 10,
@@ -4267,7 +4247,7 @@
       "label": ".moveCriteriaWithAnimation()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L122",
+      "source_location": "L118",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_movecriteriawithanimation",
       "community": 10,
@@ -4277,7 +4257,7 @@
       "label": ".onCdkDrop()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L143",
+      "source_location": "L139",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_oncdkdrop",
       "community": 10,
@@ -4287,7 +4267,7 @@
       "label": ".trackByCriteria()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L150",
+      "source_location": "L146",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_trackbycriteria",
       "community": 10,
@@ -4297,7 +4277,7 @@
       "label": ".addCriteriaLocal()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L154",
+      "source_location": "L150",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_addcriterialocal",
       "community": 10,
@@ -4307,7 +4287,7 @@
       "label": ".onTypeChange()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L179",
+      "source_location": "L175",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_ontypechange",
       "community": 10,
@@ -4317,7 +4297,7 @@
       "label": ".selectCritType()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L190",
+      "source_location": "L186",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_selectcrittype",
       "community": 10,
@@ -4327,7 +4307,7 @@
       "label": ".resetForm()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L195",
+      "source_location": "L191",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_resetform",
       "community": 10,
@@ -4337,7 +4317,7 @@
       "label": ".onSubmit()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/script-builder/script-builder.component.ts",
-      "source_location": "L208",
+      "source_location": "L203",
       "_origin": "ast",
       "id": "script_builder_script_builder_component_scriptbuildercomponent_onsubmit",
       "community": 10,
@@ -4797,7 +4777,7 @@
       "label": ".createScript()",
       "file_type": "code",
       "source_file": "frontend/src/app/services/script.service.ts",
-      "source_location": "L30",
+      "source_location": "L29",
       "_origin": "ast",
       "id": "services_script_service_scriptservice_createscript",
       "community": 0,
@@ -4807,7 +4787,7 @@
       "label": ".updateScript()",
       "file_type": "code",
       "source_file": "frontend/src/app/services/script.service.ts",
-      "source_location": "L34",
+      "source_location": "L33",
       "_origin": "ast",
       "id": "services_script_service_scriptservice_updatescript",
       "community": 0,
@@ -4817,7 +4797,7 @@
       "label": ".deleteScript()",
       "file_type": "code",
       "source_file": "frontend/src/app/services/script.service.ts",
-      "source_location": "L38",
+      "source_location": "L39",
       "_origin": "ast",
       "id": "services_script_service_scriptservice_deletescript",
       "community": 0,
@@ -4867,7 +4847,7 @@
       "label": "ScriptResponse",
       "file_type": "code",
       "source_file": "frontend/src/app/types/index.ts",
-      "source_location": "L22",
+      "source_location": "L21",
       "_origin": "ast",
       "id": "types_index_scriptresponse",
       "community": 0,
@@ -4877,7 +4857,7 @@
       "label": "CreatePropertyRequest",
       "file_type": "code",
       "source_file": "frontend/src/app/types/index.ts",
-      "source_location": "L31",
+      "source_location": "L28",
       "_origin": "ast",
       "id": "types_index_createpropertyrequest",
       "community": 0,
@@ -4887,7 +4867,7 @@
       "label": "PropertyResponse",
       "file_type": "code",
       "source_file": "frontend/src/app/types/index.ts",
-      "source_location": "L41",
+      "source_location": "L38",
       "_origin": "ast",
       "id": "types_index_propertyresponse",
       "community": 0,
@@ -4897,7 +4877,7 @@
       "label": "CreateEvaluationRequest",
       "file_type": "code",
       "source_file": "frontend/src/app/types/index.ts",
-      "source_location": "L53",
+      "source_location": "L50",
       "_origin": "ast",
       "id": "types_index_createevaluationrequest",
       "community": 0,
@@ -4907,7 +4887,7 @@
       "label": "UpdateEvaluationRequest",
       "file_type": "code",
       "source_file": "frontend/src/app/types/index.ts",
-      "source_location": "L62",
+      "source_location": "L58",
       "_origin": "ast",
       "id": "types_index_updateevaluationrequest",
       "community": 0,
@@ -4917,7 +4897,7 @@
       "label": "EvaluationResponse",
       "file_type": "code",
       "source_file": "frontend/src/app/types/index.ts",
-      "source_location": "L68",
+      "source_location": "L64",
       "_origin": "ast",
       "id": "types_index_evaluationresponse",
       "community": 0,
@@ -4927,7 +4907,7 @@
       "label": "GenerateUploadUrlRequest",
       "file_type": "code",
       "source_file": "frontend/src/app/types/index.ts",
-      "source_location": "L79",
+      "source_location": "L74",
       "_origin": "ast",
       "id": "types_index_generateuploadurlrequest",
       "community": 0,
@@ -4937,7 +4917,7 @@
       "label": "GenerateUploadUrlResponse",
       "file_type": "code",
       "source_file": "frontend/src/app/types/index.ts",
-      "source_location": "L84",
+      "source_location": "L79",
       "_origin": "ast",
       "id": "types_index_generateuploadurlresponse",
       "community": 0,
@@ -6218,11 +6198,11 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
-      "source_location": "L51",
+      "source_location": "L54",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "api_scriptresource_scriptresource",
-      "target": "api_scriptresource_scriptresource_getscriptbyidandversion"
+      "target": "api_scriptresource_scriptresource_getscriptbyid",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -6303,56 +6283,56 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
-      "source_location": "L51",
+      "source_location": "L54",
       "weight": 1.0,
       "context": "attribute",
-      "confidence_score": 1.0,
-      "source": "api_scriptresource_scriptresource_getscriptbyidandversion",
-      "target": "backend_src_main_java_com_imob_api_scriptresource_java_get"
+      "source": "api_scriptresource_scriptresource_getscriptbyid",
+      "target": "backend_src_main_java_com_imob_api_scriptresource_java_get",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
-      "source_location": "L60",
+      "source_location": "L63",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_scriptresource_scriptresource_getscriptbyidandversion",
-      "target": "api_scriptresource_scriptresource_maptoresponse"
+      "source": "api_scriptresource_scriptresource_getscriptbyid",
+      "target": "api_scriptresource_scriptresource_maptoresponse",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
-      "source_location": "L51",
+      "source_location": "L54",
       "weight": 1.0,
       "context": "attribute",
-      "confidence_score": 1.0,
-      "source": "api_scriptresource_scriptresource_getscriptbyidandversion",
-      "target": "backend_src_main_java_com_imob_api_scriptresource_java_path"
+      "source": "api_scriptresource_scriptresource_getscriptbyid",
+      "target": "backend_src_main_java_com_imob_api_scriptresource_java_path",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
-      "source_location": "L51",
+      "source_location": "L54",
       "weight": 1.0,
       "context": "return_type",
-      "confidence_score": 1.0,
-      "source": "api_scriptresource_scriptresource_getscriptbyidandversion",
-      "target": "backend_src_main_java_com_imob_api_scriptresource_java_response"
+      "source": "api_scriptresource_scriptresource_getscriptbyid",
+      "target": "backend_src_main_java_com_imob_api_scriptresource_java_response",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
-      "source_location": "L51",
+      "source_location": "L54",
       "weight": 1.0,
       "context": "parameter_type",
-      "confidence_score": 1.0,
-      "source": "api_scriptresource_scriptresource_getscriptbyidandversion",
-      "target": "backend_src_main_java_com_imob_api_scriptresource_java_string"
+      "source": "api_scriptresource_scriptresource_getscriptbyid",
+      "target": "backend_src_main_java_com_imob_api_scriptresource_java_string",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -6360,9 +6340,9 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
-      "source_location": "L57",
+      "source_location": "L60",
       "weight": 1.0,
-      "source": "api_scriptresource_scriptresource_getscriptbyidandversion",
+      "source": "api_scriptresource_scriptresource_getscriptbyid",
       "target": "status"
     },
     {
@@ -6525,17 +6505,6 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
-      "source_location": "L88",
-      "weight": 1.0,
-      "source": "api_scriptresource_scriptresource_updatescript",
-      "target": "repository_dynamodbrepository_dynamodbrepository_getallversionsofscript"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
       "source_location": "L110",
       "weight": 1.0,
       "source": "api_scriptresource_scriptresource_updatescript",
@@ -6573,28 +6542,6 @@
       "confidence_score": 1.0,
       "source": "api_scriptresource_scriptresource_deletescript",
       "target": "backend_src_main_java_com_imob_api_scriptresource_java_delete"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
-      "source_location": "L148",
-      "weight": 1.0,
-      "source": "api_scriptresource_scriptresource_deletescript",
-      "target": "repository_dynamodbrepository_dynamodbrepository_deleteallversionsofscript"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
-      "source_location": "L141",
-      "weight": 1.0,
-      "source": "api_scriptresource_scriptresource_deletescript",
-      "target": "repository_dynamodbrepository_dynamodbrepository_getallversionsofscript"
     },
     {
       "relation": "calls",
@@ -8346,16 +8293,6 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L123",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "repository_dynamodbrepository_dynamodbrepository",
-      "target": "repository_dynamodbrepository_dynamodbrepository_deleteallversionsofscript"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
       "source_location": "L258",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -8376,6 +8313,16 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
+      "source_location": "L92",
+      "weight": 1.0,
+      "source": "repository_dynamodbrepository_dynamodbrepository",
+      "target": "repository_dynamodbrepository_dynamodbrepository_deletescript",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
       "source_location": "L30",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -8391,16 +8338,6 @@
       "confidence_score": 1.0,
       "source": "repository_dynamodbrepository_dynamodbrepository",
       "target": "repository_dynamodbrepository_dynamodbrepository_getactivescripts"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L92",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "repository_dynamodbrepository_dynamodbrepository",
-      "target": "repository_dynamodbrepository_dynamodbrepository_getallversionsofscript"
     },
     {
       "relation": "method",
@@ -8518,17 +8455,6 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L123",
-      "weight": 1.0,
-      "context": "parameter_type",
-      "confidence_score": 1.0,
-      "source": "repository_dynamodbrepository_dynamodbrepository_deleteallversionsofscript",
-      "target": "backend_src_main_java_com_imob_repository_dynamodbrepository_java_string"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
       "source_location": "L258",
       "weight": 1.0,
       "context": "parameter_type",
@@ -8551,22 +8477,22 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L61",
+      "source_location": "L92",
       "weight": 1.0,
       "context": "parameter_type",
-      "confidence_score": 1.0,
-      "source": "repository_dynamodbrepository_dynamodbrepository_getactivescripts",
-      "target": "backend_src_main_java_com_imob_repository_dynamodbrepository_java_string"
+      "source": "repository_dynamodbrepository_dynamodbrepository_deletescript",
+      "target": "backend_src_main_java_com_imob_repository_dynamodbrepository_java_string",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L92",
+      "source_location": "L61",
       "weight": 1.0,
       "context": "parameter_type",
       "confidence_score": 1.0,
-      "source": "repository_dynamodbrepository_dynamodbrepository_getallversionsofscript",
+      "source": "repository_dynamodbrepository_dynamodbrepository_getactivescripts",
       "target": "backend_src_main_java_com_imob_repository_dynamodbrepository_java_string"
     },
     {
@@ -8641,9 +8567,9 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L102",
+      "source_location": "L101",
       "weight": 1.0,
-      "source": "api_scriptresourcetest_scriptresourcetest_shouldcreatenewscriptversionone",
+      "source": "api_scriptresourcetest_scriptresourcetest_shouldcreatescript",
       "target": "repository_dynamodbrepository_dynamodbrepository_savescript"
     },
     {
@@ -8652,20 +8578,9 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L200",
+      "source_location": "L145",
       "weight": 1.0,
-      "source": "api_scriptresourcetest_scriptresourcetest_shouldcreatenewversionwhennewversionistrue",
-      "target": "repository_dynamodbrepository_dynamodbrepository_savescript"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L151",
-      "weight": 1.0,
-      "source": "api_scriptresourcetest_scriptresourcetest_shouldoverwritescriptwhennewversionisfalse",
+      "source": "api_scriptresourcetest_scriptresourcetest_shouldupdatescript",
       "target": "repository_dynamodbrepository_dynamodbrepository_savescript"
     },
     {
@@ -8694,17 +8609,6 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L92",
-      "weight": 1.0,
-      "context": "generic_arg",
-      "confidence_score": 1.0,
-      "source": "repository_dynamodbrepository_dynamodbrepository_getallversionsofscript",
-      "target": "backend_src_main_java_com_imob_repository_dynamodbrepository_java_scriptentity"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
       "source_location": "L45",
       "weight": 1.0,
       "context": "return_type",
@@ -8721,17 +8625,6 @@
       "context": "return_type",
       "confidence_score": 1.0,
       "source": "repository_dynamodbrepository_dynamodbrepository_getactivescripts",
-      "target": "backend_src_main_java_com_imob_repository_dynamodbrepository_java_list"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L92",
-      "weight": 1.0,
-      "context": "return_type",
-      "confidence_score": 1.0,
-      "source": "repository_dynamodbrepository_dynamodbrepository_getallversionsofscript",
       "target": "backend_src_main_java_com_imob_repository_dynamodbrepository_java_list"
     },
     {
@@ -8766,83 +8659,6 @@
       "confidence_score": 1.0,
       "source": "repository_dynamodbrepository_dynamodbrepository_getproperties",
       "target": "backend_src_main_java_com_imob_repository_dynamodbrepository_java_list"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L168",
-      "weight": 1.0,
-      "source": "api_scriptresourcetest_scriptresourcetest_shouldcreatenewversionwhennewversionistrue",
-      "target": "repository_dynamodbrepository_dynamodbrepository_getallversionsofscript"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L220",
-      "weight": 1.0,
-      "source": "api_scriptresourcetest_scriptresourcetest_shoulddeletescriptandcascadedeleteevaluationsands3media",
-      "target": "repository_dynamodbrepository_dynamodbrepository_getallversionsofscript"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L119",
-      "weight": 1.0,
-      "source": "api_scriptresourcetest_scriptresourcetest_shouldoverwritescriptwhennewversionisfalse",
-      "target": "repository_dynamodbrepository_dynamodbrepository_getallversionsofscript"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L278",
-      "weight": 1.0,
-      "source": "api_scriptresourcetest_scriptresourcetest_shouldreturnnotfoundwhendeletingnonexistentscript",
-      "target": "repository_dynamodbrepository_dynamodbrepository_getallversionsofscript"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
-      "source_location": "L124",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "repository_dynamodbrepository_dynamodbrepository_deleteallversionsofscript",
-      "target": "repository_dynamodbrepository_dynamodbrepository_getallversionsofscript"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L269",
-      "weight": 1.0,
-      "source": "api_scriptresourcetest_scriptresourcetest_shoulddeletescriptandcascadedeleteevaluationsands3media",
-      "target": "repository_dynamodbrepository_dynamodbrepository_deleteallversionsofscript"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L291",
-      "weight": 1.0,
-      "source": "api_scriptresourcetest_scriptresourcetest_shouldreturnnotfoundwhendeletingnonexistentscript",
-      "target": "repository_dynamodbrepository_dynamodbrepository_deleteallversionsofscript"
     },
     {
       "relation": "calls",
@@ -9611,21 +9427,21 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/test/java/com/imob/api/EvaluationResourceTest.java",
-      "source_location": "L47",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_evaluationresourcetest_evaluationresourcetest",
-      "target": "api_evaluationresourcetest_evaluationresourcetest_shouldrejectevaluationwithinactivescript"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "backend/src/test/java/com/imob/api/EvaluationResourceTest.java",
       "source_location": "L85",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "api_evaluationresourcetest_evaluationresourcetest",
       "target": "api_evaluationresourcetest_evaluationresourcetest_shouldrejectevaluationwithinvalidcriteriaanswer"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/test/java/com/imob/api/EvaluationResourceTest.java",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "api_evaluationresourcetest_evaluationresourcetest",
+      "target": "api_evaluationresourcetest_evaluationresourcetest_shouldrejectevaluationwithnonexistentscript",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -9665,9 +9481,9 @@
       "source_location": "L47",
       "weight": 1.0,
       "context": "attribute",
-      "confidence_score": 1.0,
-      "source": "api_evaluationresourcetest_evaluationresourcetest_shouldrejectevaluationwithinactivescript",
-      "target": "backend_src_test_java_com_imob_api_evaluationresourcetest_java_test"
+      "source": "api_evaluationresourcetest_evaluationresourcetest_shouldrejectevaluationwithnonexistentscript",
+      "target": "backend_src_test_java_com_imob_api_evaluationresourcetest_java_test",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -9940,21 +9756,11 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L72",
+      "source_location": "L73",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "api_scriptresourcetest_scriptresourcetest",
-      "target": "api_scriptresourcetest_scriptresourcetest_shouldcreatenewscriptversionone"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L155",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_scriptresourcetest_scriptresourcetest",
-      "target": "api_scriptresourcetest_scriptresourcetest_shouldcreatenewversionwhennewversionistrue"
+      "target": "api_scriptresourcetest_scriptresourcetest_shouldcreatescript",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -9965,16 +9771,6 @@
       "confidence_score": 1.0,
       "source": "api_scriptresourcetest_scriptresourcetest",
       "target": "api_scriptresourcetest_scriptresourcetest_shoulddeletescriptandcascadedeleteevaluationsands3media"
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L106",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "api_scriptresourcetest_scriptresourcetest",
-      "target": "api_scriptresourcetest_scriptresourcetest_shouldoverwritescriptwhennewversionisfalse"
     },
     {
       "relation": "method",
@@ -9995,6 +9791,16 @@
       "confidence_score": 1.0,
       "source": "api_scriptresourcetest_scriptresourcetest",
       "target": "api_scriptresourcetest_scriptresourcetest_shouldreturnnotfoundwhendeletingnonexistentscript"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
+      "source_location": "L105",
+      "weight": 1.0,
+      "source": "api_scriptresourcetest_scriptresourcetest",
+      "target": "api_scriptresourcetest_scriptresourcetest_shouldupdatescript",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -10022,23 +9828,12 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L72",
+      "source_location": "L73",
       "weight": 1.0,
       "context": "attribute",
-      "confidence_score": 1.0,
-      "source": "api_scriptresourcetest_scriptresourcetest_shouldcreatenewscriptversionone",
-      "target": "backend_src_test_java_com_imob_api_scriptresourcetest_java_test"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L155",
-      "weight": 1.0,
-      "context": "attribute",
-      "confidence_score": 1.0,
-      "source": "api_scriptresourcetest_scriptresourcetest_shouldcreatenewversionwhennewversionistrue",
-      "target": "backend_src_test_java_com_imob_api_scriptresourcetest_java_test"
+      "source": "api_scriptresourcetest_scriptresourcetest_shouldcreatescript",
+      "target": "backend_src_test_java_com_imob_api_scriptresourcetest_java_test",
+      "confidence_score": 1.0
     },
     {
       "relation": "references",
@@ -10055,23 +9850,23 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
-      "source_location": "L106",
-      "weight": 1.0,
-      "context": "attribute",
-      "confidence_score": 1.0,
-      "source": "api_scriptresourcetest_scriptresourcetest_shouldoverwritescriptwhennewversionisfalse",
-      "target": "backend_src_test_java_com_imob_api_scriptresourcetest_java_test"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
       "source_location": "L273",
       "weight": 1.0,
       "context": "attribute",
       "confidence_score": 1.0,
       "source": "api_scriptresourcetest_scriptresourcetest_shouldreturnnotfoundwhendeletingnonexistentscript",
       "target": "backend_src_test_java_com_imob_api_scriptresourcetest_java_test"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
+      "source_location": "L105",
+      "weight": 1.0,
+      "context": "attribute",
+      "source": "api_scriptresourcetest_scriptresourcetest_shouldupdatescript",
+      "target": "backend_src_test_java_com_imob_api_scriptresourcetest_java_test",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports",
@@ -13629,9 +13424,9 @@
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
       "source_location": "L424",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "properties_property_details_component_propertydetailscomponent_ontouchend",
-      "target": "properties_property_details_component_propertydetailscomponent_nextmedia",
-      "confidence_score": 1.0
+      "target": "properties_property_details_component_propertydetailscomponent_nextmedia"
     },
     {
       "relation": "calls",
@@ -13640,9 +13435,9 @@
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
       "source_location": "L343",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "properties_property_details_component_propertydetailscomponent_onwheelzoom",
-      "target": "properties_property_details_component_propertydetailscomponent_nextmedia",
-      "confidence_score": 1.0
+      "target": "properties_property_details_component_propertydetailscomponent_nextmedia"
     },
     {
       "relation": "calls",
@@ -13662,9 +13457,9 @@
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
       "source_location": "L426",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "properties_property_details_component_propertydetailscomponent_ontouchend",
-      "target": "properties_property_details_component_propertydetailscomponent_prevmedia",
-      "confidence_score": 1.0
+      "target": "properties_property_details_component_propertydetailscomponent_prevmedia"
     },
     {
       "relation": "calls",
@@ -13673,9 +13468,9 @@
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
       "source_location": "L345",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "properties_property_details_component_propertydetailscomponent_onwheelzoom",
-      "target": "properties_property_details_component_propertydetailscomponent_prevmedia",
-      "confidence_score": 1.0
+      "target": "properties_property_details_component_propertydetailscomponent_prevmedia"
     },
     {
       "relation": "calls",
@@ -15262,5 +15057,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "0bb77eea5be76a70cf7f2f6611ea39a3a9642098"
+  "built_at_commit": "086b23988946b9ab238793da38f389d6ce41e08e"
 }

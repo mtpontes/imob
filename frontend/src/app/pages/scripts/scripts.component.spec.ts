@@ -19,16 +19,12 @@ describe('ScriptsComponent', () => {
   const mockScripts: ScriptResponse[] = [
     {
       id: 'script-1',
-      version: 1,
-      isActive: true,
       createdAt: '2026-06-07T10:00:00Z',
       name: 'Roteiro A',
       criteria: []
     },
     {
       id: 'script-2',
-      version: 2,
-      isActive: true,
       createdAt: '2026-06-07T11:00:00Z',
       name: 'Roteiro B',
       criteria: []
@@ -89,7 +85,7 @@ describe('ScriptsComponent', () => {
     cards[0].nativeElement.click();
 
     // Assert
-    expect(router.navigate).toHaveBeenCalledWith(['/roteiros/builder', 'script-2', 2]);
+    expect(router.navigate).toHaveBeenCalledWith(['/roteiros/builder', 'script-2']);
   });
 
   it('should navigate to script builder on button click and stop propagation', () => {
@@ -103,6 +99,6 @@ describe('ScriptsComponent', () => {
 
     // Assert
     expect(clickEvent.stopPropagation).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['/roteiros/builder', 'script-2', 2]);
+    expect(router.navigate).toHaveBeenCalledWith(['/roteiros/builder', 'script-2']);
   });
 });

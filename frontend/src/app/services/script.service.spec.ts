@@ -30,7 +30,7 @@ describe('ScriptService', () => {
 
   it('should fetch active scripts', () => {
     const dummyScripts: ScriptResponse[] = [
-      { id: '1', version: 1, isActive: true, createdAt: '2026-06-04', criteria: [], name: 'Roteiro Padrao' }
+      { id: '1', createdAt: '2026-06-04', criteria: [], name: 'Roteiro Padrao' }
     ];
 
     service.getActiveScripts().subscribe(scripts => {
@@ -45,7 +45,7 @@ describe('ScriptService', () => {
 
   it('should create script', () => {
     const newRequest: CreateScriptRequest = { name: 'Novo Roteiro', criteria: [] };
-    const dummyResponse: ScriptResponse = { id: '2', version: 1, isActive: true, createdAt: '2026-06-04', criteria: [], name: 'Novo Roteiro' };
+    const dummyResponse: ScriptResponse = { id: '2', createdAt: '2026-06-04', criteria: [], name: 'Novo Roteiro' };
 
     service.createScript(newRequest).subscribe(response => {
       expect(response).toEqual(dummyResponse);
@@ -58,8 +58,8 @@ describe('ScriptService', () => {
   });
 
   it('should update script', () => {
-    const updateRequest: UpdateScriptRequest = { name: 'Roteiro Atualizado', newVersion: false, criteria: [] };
-    const dummyResponse: ScriptResponse = { id: '1', version: 1, isActive: true, createdAt: '2026-06-04', criteria: [], name: 'Roteiro Atualizado' };
+    const updateRequest: UpdateScriptRequest = { name: 'Roteiro Atualizado', criteria: [] };
+    const dummyResponse: ScriptResponse = { id: '1', createdAt: '2026-06-04', criteria: [], name: 'Roteiro Atualizado' };
 
     service.updateScript('1', updateRequest).subscribe(response => {
       expect(response).toEqual(dummyResponse);

@@ -44,7 +44,6 @@ describe('PropertyDetailsComponent', () => {
       propertyId: 'prop-1',
       createdAt: '2026-06-05T10:00:00Z',
       scriptId: 'script-1',
-      scriptVersion: 1,
       notes: 'Avaliação excelente',
       answers: { score: 85.0 },
       mediaUrls: []
@@ -53,7 +52,6 @@ describe('PropertyDetailsComponent', () => {
       propertyId: 'prop-1',
       createdAt: '2026-06-06T10:00:00Z',
       scriptId: 'script-1',
-      scriptVersion: 1,
       notes: 'Avaliação com avarias',
       answers: { score: -12.5 },
       mediaUrls: []
@@ -75,7 +73,7 @@ describe('PropertyDetailsComponent', () => {
 
     scriptServiceMock = {
       getActiveScripts: jasmine.createSpy('getActiveScripts').and.returnValue(of([])),
-      getScript: jasmine.createSpy('getScript').and.returnValue(of({ id: 'script-1', version: 1, criteria: [] }))
+      getScript: jasmine.createSpy('getScript').and.returnValue(of({ id: 'script-1', criteria: [] }))
     };
 
     activatedRouteMock = {
@@ -119,7 +117,7 @@ describe('PropertyDetailsComponent', () => {
     
     // Assegura que houve chamadas ao ScriptService.getScript(...)
     expect(scriptServiceMock.getScript).toHaveBeenCalledTimes(2);
-    expect(scriptServiceMock.getScript).toHaveBeenCalledWith('script-1', 1);
+    expect(scriptServiceMock.getScript).toHaveBeenCalledWith('script-1');
     
     // Verifica se os scores foram calculados e mapeados
     expect(component.evaluationScores['prop-1_2026-06-05T10:00:00Z']).toBe(85.0);

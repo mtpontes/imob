@@ -17,13 +17,12 @@ export class ScriptService {
     return this.http.get<ScriptResponse[]>(this.apiUrl);
   }
 
-  getScript(id: string, version: number): Observable<ScriptResponse> {
-    const cacheKey = `${id}_v${version}`;
-    if (this.scriptCache.has(cacheKey)) {
-      return of(this.scriptCache.get(cacheKey)!);
+  getScript(id: string): Observable<ScriptResponse> {
+    if (this.scriptCache.has(id)) {
+      return of(this.scriptCache.get(id)!);
     }
-    return this.http.get<ScriptResponse>(`${this.apiUrl}/${id}/version/${version}`).pipe(
-      tap(script => this.scriptCache.set(cacheKey, script))
+    return this.http.get<ScriptResponse>(`${this.apiUrl}/${id}`).pipe(
+      tap(script => this.scriptCache.set(id, script))
     );
   }
 
@@ -32,13 +31,13 @@ export class ScriptService {
   }
 
   updateScript(id: string, request: UpdateScriptRequest): Observable<ScriptResponse> {
-    return this.http.put<ScriptResponse>(`${this.apiUrl}/${id}`, request);
+    return this.http.put<ScriptResponse>(`${this.apiUrl}/${id}`, request).pipe(
+      tap(script => this.scriptCache.set(id, script))
+    );
   }
 
   deleteScript(id: string): Observable<void> {
-    this.scriptCache.forEach((_, key) => {
-      if (key.startsWith(`${id}_`)) this.scriptCache.delete(key);
-    });
+    this.scriptCache.delete(id);
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }
