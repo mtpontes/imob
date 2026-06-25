@@ -130,9 +130,9 @@
     "semantic_hash": "d06996a4a2bf0172946edf9525e92cba"
   },
   "backend/src/main/java/com/imob/filter/AuthFilter.java": {
-    "mtime": 1781062737.277795,
-    "ast_hash": "cd4b3c796a3d4c4bc2909426f87ef0f0",
-    "semantic_hash": "cd4b3c796a3d4c4bc2909426f87ef0f0"
+    "mtime": 1782352804.747152,
+    "ast_hash": "93fb6861da7d29697d65479bf86c2593",
+    "semantic_hash": ""
   },
   "backend/src/main/java/com/imob/repository/DynamoDbRepository.java": {
     "mtime": 1782172053.6646824,
@@ -342,6 +342,41 @@
   "backend/media-processor/watch-local.js": {
     "mtime": 1782350206.8299022,
     "ast_hash": "e243d24644652b534563548d46501afd",
+    "semantic_hash": ""
+  },
+  "frontend/.vercel/output/functions/api/proxy.func/frontend/api/proxy.js": {
+    "mtime": 1782353043.7025406,
+    "ast_hash": "e3c8d27f4e1954c59e7135ad6e5a7537",
+    "semantic_hash": ""
+  },
+  "frontend/.vercel/output/static/main-JJGQAZNR.js": {
+    "mtime": 1782353043.5448668,
+    "ast_hash": "3803aeb2f4c8613be026586e607c248e",
+    "semantic_hash": ""
+  },
+  "frontend/.vercel/output/static/ngsw-worker.js": {
+    "mtime": 1780599494.8765306,
+    "ast_hash": "9726ae8c6a87e69ce919af7c93f0c7fa",
+    "semantic_hash": ""
+  },
+  "frontend/.vercel/output/static/polyfills-5CFQRCPP.js": {
+    "mtime": 1782353043.5448668,
+    "ast_hash": "41da3262ca56b0745a8b7fe7e7600db7",
+    "semantic_hash": ""
+  },
+  "frontend/.vercel/output/static/safety-worker.js": {
+    "mtime": 1780599494.883542,
+    "ast_hash": "56747b008a542a447b32cf21d9a6278a",
+    "semantic_hash": ""
+  },
+  "frontend/.vercel/output/static/worker-basic.min.js": {
+    "mtime": 1780599494.883542,
+    "ast_hash": "56747b008a542a447b32cf21d9a6278a",
+    "semantic_hash": ""
+  },
+  "frontend/api/proxy.js": {
+    "mtime": 1782352991.196272,
+    "ast_hash": "d5e7a4364082536da1d187d7d68edbf6",
     "semantic_hash": ""
   }
 }
