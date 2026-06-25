@@ -11,7 +11,7 @@ else
     BASH := bash
 endif
 
-.PHONY: run infra-up infra-down front
+.PHONY: run infra-up infra-down front watch-media
 
 run:
 	$(BASH) ./start-backend.sh
@@ -19,6 +19,9 @@ run:
 
 front:
 	cd frontend && npm start
+
+watch-media:
+	cd backend/media-processor && node watch-local.js
 
 infra-up:
 	docker compose up -d

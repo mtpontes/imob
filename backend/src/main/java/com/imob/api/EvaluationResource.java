@@ -5,6 +5,7 @@ import com.imob.dto.CreateEvaluationRequest;
 import com.imob.dto.EvaluationResponse;
 import com.imob.dto.GenerateUploadUrlRequest;
 import com.imob.dto.GenerateUploadUrlResponse;
+import com.imob.dto.MediaItemDto;
 import com.imob.dto.UpdateEvaluationRequest;
 import com.imob.entity.EvaluationEntity;
 import com.imob.entity.ScriptEntity;
@@ -164,14 +165,45 @@ public class EvaluationResource {
         resp.setAnswers(entity.getAnswers());
 
         List<String> mediaUrls = new ArrayList<>();
+        List<MediaItemDto> mediaItems = new ArrayList<>();
         if (entity.getMediaKeys() != null) {
             for (String key : entity.getMediaKeys()) {
-                String url = this.s3Service.generateGetPresignedUrl(key, Duration.ofHours(1));
-                mediaUrls.add(url);
+                String originalUrl = this.s3Service.generateGetPresignedUrl(key, Duration.ofHours(1));
+                mediaUrls.add(originalUrl);
+
+                String thumbKey = this.getThumbnailKey(key);
+                String thumbnailUrl = this.s3Service.generateGetPresignedUrl(thumbKey, Duration.ofHours(1));
+                String mediaType = this.isVideoKey(key) ? "VIDEO" : "IMAGE";
+
+                var mediaItem = new MediaItemDto(key, originalUrl, thumbnailUrl, mediaType);
+                mediaItems.add(mediaItem);
             }
         }
         resp.setMediaUrls(mediaUrls);
+        resp.setMediaItems(mediaItems);
         resp.setMediaKeys(entity.getMediaKeys());
         return resp;
+    }
+
+    private String getThumbnailKey(String originalKey) {
+        int uploadIndex = originalKey.indexOf("/uploads/");
+        if (uploadIndex == -1)
+            return originalKey;
+        String prefix = originalKey.substring(0, uploadIndex + 9);
+        String filename = originalKey.substring(uploadIndex + 9);
+        int lastDot = filename.lastIndexOf('.');
+        String nameWithoutExt = lastDot == -1 ? filename : filename.substring(0, lastDot);
+        return prefix + "thumbnails/" + nameWithoutExt + ".jpg";
+    }
+
+    private boolean isVideoKey(String key) {
+        if (key == null)
+            return false;
+        String lowerKey = key.toLowerCase();
+        return lowerKey.endsWith(".mp4") || 
+               lowerKey.endsWith(".webm") || 
+               lowerKey.endsWith(".ogg") || 
+               lowerKey.endsWith(".mov") || 
+               lowerKey.endsWith(".avi");
     }
 }

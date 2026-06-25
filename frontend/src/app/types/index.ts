@@ -61,6 +61,13 @@ export interface UpdateEvaluationRequest {
   mediaKeys: string[];
 }
 
+export interface MediaItem {
+  s3Key: string;
+  originalUrl: string;
+  thumbnailUrl: string;
+  mediaType: 'IMAGE' | 'VIDEO';
+}
+
 export interface EvaluationResponse {
   propertyId: string;
   createdAt: string;
@@ -68,6 +75,7 @@ export interface EvaluationResponse {
   notes: string;
   answers: { [key: string]: any };
   mediaUrls: string[];
+  mediaItems?: MediaItem[];
   mediaKeys?: string[];
 }
 

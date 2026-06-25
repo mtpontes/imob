@@ -203,6 +203,9 @@ public class EvaluationResourceTest {
         Mockito.when(this.s3Service.generateGetPresignedUrl("workspace_test/uploads/foto1.jpg", java.time.Duration.ofHours(1)))
                 .thenReturn("https://s3-fake-get-url");
 
+        Mockito.when(this.s3Service.generateGetPresignedUrl("workspace_test/uploads/thumbnails/foto1.jpg", java.time.Duration.ofHours(1)))
+                .thenReturn("https://s3-fake-thumb-url");
+
         // Act & Assert
         given()
                 .header("X-User-Email", "test@imob.com")
@@ -212,13 +215,19 @@ public class EvaluationResourceTest {
                 .statusCode(200)
                 .contentType(ContentType.JSON)
                 .body("[0].propertyId", is(propertyId))
-                .body("[0].mediaUrls[0]", is("https://s3-fake-get-url"));
+                .body("[0].mediaUrls[0]", is("https://s3-fake-get-url"))
+                .body("[0].mediaItems[0].originalUrl", is("https://s3-fake-get-url"))
+                .body("[0].mediaItems[0].thumbnailUrl", is("https://s3-fake-thumb-url"))
+                .body("[0].mediaItems[0].mediaType", is("IMAGE"));
 
         Mockito.verify(this.repository, Mockito.times(1))
                 .getEvaluationsByProperty("workspace_test", propertyId);
 
         Mockito.verify(this.s3Service, Mockito.times(1))
                 .generateGetPresignedUrl("workspace_test/uploads/foto1.jpg", java.time.Duration.ofHours(1));
+
+        Mockito.verify(this.s3Service, Mockito.times(1))
+                .generateGetPresignedUrl("workspace_test/uploads/thumbnails/foto1.jpg", java.time.Duration.ofHours(1));
     }
 
     @Test

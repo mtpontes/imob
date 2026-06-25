@@ -4,6 +4,296 @@
   "graph": {},
   "nodes": [
     {
+      "label": "index.js",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "media_processor_index",
+      "community": 17,
+      "norm_label": "index.js"
+    },
+    {
+      "label": "{ S3Client, GetObjectCommand, PutObjectCommand }",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "media_processor_index_s3client_getobjectcommand_putobjectcommand",
+      "community": 17,
+      "norm_label": "{ s3client, getobjectcommand, putobjectcommand }"
+    },
+    {
+      "label": "sharp",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "media_processor_index_sharp",
+      "community": 17,
+      "norm_label": "sharp"
+    },
+    {
+      "label": "ffmpeg",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "media_processor_index_ffmpeg",
+      "community": 17,
+      "norm_label": "ffmpeg"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "media_processor_index_fs",
+      "community": 17,
+      "norm_label": "fs"
+    },
+    {
+      "label": "path",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "media_processor_index_path",
+      "community": 17,
+      "norm_label": "path"
+    },
+    {
+      "label": "{ Readable }",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "media_processor_index_readable",
+      "community": 17,
+      "norm_label": "{ readable }"
+    },
+    {
+      "label": "os",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "media_processor_index_os",
+      "community": 17,
+      "norm_label": "os"
+    },
+    {
+      "label": "s3Config",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "media_processor_index_s3config",
+      "community": 17,
+      "norm_label": "s3config"
+    },
+    {
+      "label": "s3",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "media_processor_index_s3",
+      "community": 17,
+      "norm_label": "s3"
+    },
+    {
+      "label": "getExtension()",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "media_processor_index_getextension",
+      "community": 17,
+      "norm_label": "getextension()"
+    },
+    {
+      "label": "isVideo()",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "media_processor_index_isvideo",
+      "community": 17,
+      "norm_label": "isvideo()"
+    },
+    {
+      "label": "isImage()",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L29",
+      "_origin": "ast",
+      "id": "media_processor_index_isimage",
+      "community": 17,
+      "norm_label": "isimage()"
+    },
+    {
+      "label": "getThumbnailKey()",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L35",
+      "_origin": "ast",
+      "id": "media_processor_index_getthumbnailkey",
+      "community": 17,
+      "norm_label": "getthumbnailkey()"
+    },
+    {
+      "label": "saveStreamToFile()",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L50",
+      "_origin": "ast",
+      "id": "media_processor_index_savestreamtofile",
+      "community": 17,
+      "norm_label": "savestreamtofile()"
+    },
+    {
+      "label": "handler()",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L59",
+      "_origin": "ast",
+      "id": "media_processor_index_handler",
+      "community": 17,
+      "norm_label": "handler()"
+    },
+    {
+      "label": "index.test.js",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.test.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "media_processor_index_test",
+      "community": 17,
+      "norm_label": "index.test.js"
+    },
+    {
+      "label": "{ handler }",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.test.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "media_processor_index_test_handler",
+      "community": 17,
+      "norm_label": "{ handler }"
+    },
+    {
+      "label": "{ S3Client, GetObjectCommand, PutObjectCommand }",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.test.js",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "media_processor_index_test_s3client_getobjectcommand_putobjectcommand",
+      "community": 17,
+      "norm_label": "{ s3client, getobjectcommand, putobjectcommand }"
+    },
+    {
+      "label": "sharp",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.test.js",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "media_processor_index_test_sharp",
+      "community": 17,
+      "norm_label": "sharp"
+    },
+    {
+      "label": "ffmpeg",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.test.js",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "media_processor_index_test_ffmpeg",
+      "community": 17,
+      "norm_label": "ffmpeg"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "backend/media-processor/index.test.js",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "media_processor_index_test_fs",
+      "community": 17,
+      "norm_label": "fs"
+    },
+    {
+      "label": "watch-local.js",
+      "file_type": "code",
+      "source_file": "backend/media-processor/watch-local.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "media_processor_watch_local",
+      "community": 17,
+      "norm_label": "watch-local.js"
+    },
+    {
+      "label": "{ S3Client, ListObjectsV2Command, HeadObjectCommand }",
+      "file_type": "code",
+      "source_file": "backend/media-processor/watch-local.js",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "media_processor_watch_local_s3client_listobjectsv2command_headobjectcommand",
+      "community": 17,
+      "norm_label": "{ s3client, listobjectsv2command, headobjectcommand }"
+    },
+    {
+      "label": "{ handler }",
+      "file_type": "code",
+      "source_file": "backend/media-processor/watch-local.js",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "media_processor_watch_local_handler",
+      "community": 17,
+      "norm_label": "{ handler }"
+    },
+    {
+      "label": "s3",
+      "file_type": "code",
+      "source_file": "backend/media-processor/watch-local.js",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "media_processor_watch_local_s3",
+      "community": 17,
+      "norm_label": "s3"
+    },
+    {
+      "label": "getThumbnailKey()",
+      "file_type": "code",
+      "source_file": "backend/media-processor/watch-local.js",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "media_processor_watch_local_getthumbnailkey",
+      "community": 17,
+      "norm_label": "getthumbnailkey()"
+    },
+    {
+      "label": "checkThumbnailExists()",
+      "file_type": "code",
+      "source_file": "backend/media-processor/watch-local.js",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "media_processor_watch_local_checkthumbnailexists",
+      "community": 17,
+      "norm_label": "checkthumbnailexists()"
+    },
+    {
+      "label": "runWatcher()",
+      "file_type": "code",
+      "source_file": "backend/media-processor/watch-local.js",
+      "source_location": "L50",
+      "_origin": "ast",
+      "id": "media_processor_watch_local_runwatcher",
+      "community": 17,
+      "norm_label": "runwatcher()"
+    },
+    {
       "label": "EvaluationResource.java",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
@@ -17,7 +307,7 @@
       "label": "EvaluationResource",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L33",
+      "source_location": "L34",
       "_origin": "ast",
       "id": "api_evaluationresource_evaluationresource",
       "community": 6,
@@ -27,7 +317,7 @@
       "label": ".createEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L46",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "api_evaluationresource_evaluationresource_createevaluation",
       "community": 6,
@@ -37,7 +327,7 @@
       "label": "CreateEvaluationRequest",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L46",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_createevaluationrequest",
       "community": 6,
@@ -47,7 +337,7 @@
       "label": "Response",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L46",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_response",
       "community": 6,
@@ -57,7 +347,7 @@
       "label": "POST",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L46",
+      "source_location": "L47",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_post",
       "community": 6,
@@ -67,7 +357,7 @@
       "label": ".getEvaluationsByProperty()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L70",
+      "source_location": "L71",
       "_origin": "ast",
       "id": "api_evaluationresource_evaluationresource_getevaluationsbyproperty",
       "community": 6,
@@ -77,7 +367,7 @@
       "label": "String",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L70",
+      "source_location": "L71",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_string",
       "community": 6,
@@ -87,7 +377,7 @@
       "label": "List",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L70",
+      "source_location": "L71",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_list",
       "community": 6,
@@ -97,7 +387,7 @@
       "label": "EvaluationResponse",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L70",
+      "source_location": "L71",
       "_origin": "ast",
       "id": "evaluationresponse",
       "community": 6,
@@ -107,7 +397,7 @@
       "label": "GET",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L70",
+      "source_location": "L71",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_get",
       "community": 6,
@@ -117,7 +407,7 @@
       "label": "Path",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L70",
+      "source_location": "L71",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_path",
       "community": 6,
@@ -127,7 +417,7 @@
       "label": ".generateUploadUrl()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L83",
+      "source_location": "L84",
       "_origin": "ast",
       "id": "api_evaluationresource_evaluationresource_generateuploadurl",
       "community": 6,
@@ -137,7 +427,7 @@
       "label": "GenerateUploadUrlRequest",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L83",
+      "source_location": "L84",
       "_origin": "ast",
       "id": "generateuploadurlrequest",
       "community": 6,
@@ -147,7 +437,7 @@
       "label": ".getEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L108",
+      "source_location": "L109",
       "_origin": "ast",
       "id": "api_evaluationresource_evaluationresource_getevaluation",
       "community": 6,
@@ -157,7 +447,7 @@
       "label": ".updateEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L120",
+      "source_location": "L121",
       "_origin": "ast",
       "id": "api_evaluationresource_evaluationresource_updateevaluation",
       "community": 6,
@@ -167,7 +457,7 @@
       "label": "UpdateEvaluationRequest",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L120",
+      "source_location": "L121",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_updateevaluationrequest",
       "community": 6,
@@ -177,7 +467,7 @@
       "label": "PUT",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L120",
+      "source_location": "L121",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_put",
       "community": 6,
@@ -187,7 +477,7 @@
       "label": ".deleteEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L143",
+      "source_location": "L144",
       "_origin": "ast",
       "id": "api_evaluationresource_evaluationresource_deleteevaluation",
       "community": 6,
@@ -197,7 +487,7 @@
       "label": "DELETE",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L143",
+      "source_location": "L144",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_delete",
       "community": 6,
@@ -207,7 +497,7 @@
       "label": ".mapToResponse()",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L157",
+      "source_location": "L158",
       "_origin": "ast",
       "id": "api_evaluationresource_evaluationresource_maptoresponse",
       "community": 6,
@@ -217,11 +507,31 @@
       "label": "EvaluationEntity",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
-      "source_location": "L157",
+      "source_location": "L158",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_api_evaluationresource_java_evaluationentity",
       "community": 6,
       "norm_label": "evaluationentity"
+    },
+    {
+      "label": ".getThumbnailKey()",
+      "file_type": "code",
+      "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
+      "source_location": "L188",
+      "_origin": "ast",
+      "id": "api_evaluationresource_evaluationresource_getthumbnailkey",
+      "community": 6,
+      "norm_label": ".getthumbnailkey()"
+    },
+    {
+      "label": ".isVideoKey()",
+      "file_type": "code",
+      "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
+      "source_location": "L199",
+      "_origin": "ast",
+      "id": "api_evaluationresource_evaluationresource_isvideokey",
+      "community": 6,
+      "norm_label": ".isvideokey()"
     },
     {
       "label": "PropertyResource.java",
@@ -994,6 +1304,26 @@
       "norm_label": "generateuploadurlresponse"
     },
     {
+      "label": "MediaItemDto.java",
+      "file_type": "code",
+      "source_file": "backend/src/main/java/com/imob/dto/MediaItemDto.java",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "dto_mediaitemdto",
+      "community": 20,
+      "norm_label": "mediaitemdto.java"
+    },
+    {
+      "label": "MediaItemDto",
+      "file_type": "code",
+      "source_file": "backend/src/main/java/com/imob/dto/MediaItemDto.java",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "dto_mediaitemdto_mediaitemdto",
+      "community": 20,
+      "norm_label": "mediaitemdto"
+    },
+    {
       "label": "PropertyResponse.java",
       "file_type": "code",
       "source_file": "backend/src/main/java/com/imob/dto/PropertyResponse.java",
@@ -1360,7 +1690,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "exception_evaluationerrorcode",
-      "community": 1,
+      "community": 6,
       "norm_label": "evaluationerrorcode.java"
     },
     {
@@ -1370,7 +1700,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "exception_evaluationerrorcode_evaluationerrorcode",
-      "community": 1,
+      "community": 6,
       "norm_label": "evaluationerrorcode()"
     },
     {
@@ -1380,7 +1710,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_exception_evaluationerrorcode_java_string",
-      "community": 1,
+      "community": 6,
       "norm_label": "string"
     },
     {
@@ -1390,7 +1720,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "status",
-      "community": 1,
+      "community": 6,
       "norm_label": "status"
     },
     {
@@ -1400,7 +1730,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "exception_evaluationerrorcode_getmessage",
-      "community": 1,
+      "community": 6,
       "norm_label": "getmessage()"
     },
     {
@@ -1410,7 +1740,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "exception_evaluationerrorcode_getstatus",
-      "community": 1,
+      "community": 6,
       "norm_label": "getstatus()"
     },
     {
@@ -1420,7 +1750,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "exception_evaluationexception",
-      "community": 1,
+      "community": 13,
       "norm_label": "evaluationexception.java"
     },
     {
@@ -1430,7 +1760,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "exception_evaluationexception_evaluationexception",
-      "community": 1,
+      "community": 13,
       "norm_label": "evaluationexception"
     },
     {
@@ -1440,7 +1770,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "runtimeexception",
-      "community": 1,
+      "community": 13,
       "norm_label": "runtimeexception"
     },
     {
@@ -1450,7 +1780,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "exception_evaluationexception_evaluationexception_evaluationexception",
-      "community": 1,
+      "community": 13,
       "norm_label": ".evaluationexception()"
     },
     {
@@ -1460,7 +1790,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "evaluationerrorcode",
-      "community": 1,
+      "community": 13,
       "norm_label": "evaluationerrorcode"
     },
     {
@@ -1470,7 +1800,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "exception_evaluationexception_evaluationexception_geterrorcode",
-      "community": 1,
+      "community": 13,
       "norm_label": ".geterrorcode()"
     },
     {
@@ -1480,7 +1810,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "exception_globalexceptionmapper",
-      "community": 1,
+      "community": 6,
       "norm_label": "globalexceptionmapper.java"
     },
     {
@@ -1490,7 +1820,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "exception_globalexceptionmapper_globalexceptionmapper",
-      "community": 1,
+      "community": 6,
       "norm_label": "globalexceptionmapper"
     },
     {
@@ -1500,7 +1830,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "exception_globalexceptionmapper_globalexceptionmapper_toresponse",
-      "community": 1,
+      "community": 6,
       "norm_label": ".toresponse()"
     },
     {
@@ -1510,7 +1840,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "exception",
-      "community": 1,
+      "community": 6,
       "norm_label": "exception"
     },
     {
@@ -1520,7 +1850,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_exception_globalexceptionmapper_java_response",
-      "community": 1,
+      "community": 6,
       "norm_label": "response"
     },
     {
@@ -1530,7 +1860,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "backend_src_main_java_com_imob_exception_globalexceptionmapper_java_override",
-      "community": 1,
+      "community": 6,
       "norm_label": "override"
     },
     {
@@ -1780,7 +2110,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "repository_dynamodbrepository_dynamodbrepository_savescript",
-      "community": 13,
+      "community": 1,
       "norm_label": ".savescript()"
     },
     {
@@ -2190,7 +2520,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "service_s3service_s3service_deleteobject",
-      "community": 14,
+      "community": 4,
       "norm_label": ".deleteobject()"
     },
     {
@@ -2297,7 +2627,7 @@
       "label": ".shouldGetEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/test/java/com/imob/api/EvaluationResourceTest.java",
-      "source_location": "L224",
+      "source_location": "L233",
       "_origin": "ast",
       "id": "api_evaluationresourcetest_evaluationresourcetest_shouldgetevaluation",
       "community": 4,
@@ -2307,7 +2637,7 @@
       "label": ".shouldReturnNotFoundWhenGettingNonexistentEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/test/java/com/imob/api/EvaluationResourceTest.java",
-      "source_location": "L258",
+      "source_location": "L267",
       "_origin": "ast",
       "id": "api_evaluationresourcetest_evaluationresourcetest_shouldreturnnotfoundwhengettingnonexistentevaluation",
       "community": 4,
@@ -2317,7 +2647,7 @@
       "label": ".shouldUpdateEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/test/java/com/imob/api/EvaluationResourceTest.java",
-      "source_location": "L276",
+      "source_location": "L285",
       "_origin": "ast",
       "id": "api_evaluationresourcetest_evaluationresourcetest_shouldupdateevaluation",
       "community": 4,
@@ -2327,7 +2657,7 @@
       "label": ".shouldDeleteEvaluation()",
       "file_type": "code",
       "source_file": "backend/src/test/java/com/imob/api/EvaluationResourceTest.java",
-      "source_location": "L327",
+      "source_location": "L336",
       "_origin": "ast",
       "id": "api_evaluationresourcetest_evaluationresourcetest_shoulddeleteevaluation",
       "community": 4,
@@ -2430,7 +2760,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "api_scriptresourcetest",
-      "community": 13,
+      "community": 1,
       "norm_label": "scriptresourcetest.java"
     },
     {
@@ -2440,7 +2770,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "api_scriptresourcetest_scriptresourcetest",
-      "community": 13,
+      "community": 1,
       "norm_label": "scriptresourcetest"
     },
     {
@@ -2450,7 +2780,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "api_scriptresourcetest_scriptresourcetest_setup",
-      "community": 13,
+      "community": 1,
       "norm_label": ".setup()"
     },
     {
@@ -2460,7 +2790,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "backend_src_test_java_com_imob_api_scriptresourcetest_java_beforeeach",
-      "community": 13,
+      "community": 1,
       "norm_label": "beforeeach"
     },
     {
@@ -2470,7 +2800,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "api_scriptresourcetest_scriptresourcetest_shouldreturnactivescripts",
-      "community": 13,
+      "community": 1,
       "norm_label": ".shouldreturnactivescripts()"
     },
     {
@@ -2480,7 +2810,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "backend_src_test_java_com_imob_api_scriptresourcetest_java_test",
-      "community": 13,
+      "community": 1,
       "norm_label": "test"
     },
     {
@@ -2490,7 +2820,7 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "api_scriptresourcetest_scriptresourcetest_shouldcreatescript",
-      "community": 13,
+      "community": 1,
       "norm_label": ".shouldcreatescript()"
     },
     {
@@ -2500,7 +2830,7 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "api_scriptresourcetest_scriptresourcetest_shouldupdatescript",
-      "community": 13,
+      "community": 1,
       "norm_label": ".shouldupdatescript()"
     },
     {
@@ -2510,7 +2840,7 @@
       "source_location": "L149",
       "_origin": "ast",
       "id": "api_scriptresourcetest_scriptresourcetest_shoulddeletescriptandcascadedeleteevaluationsands3media",
-      "community": 13,
+      "community": 1,
       "norm_label": ".shoulddeletescriptandcascadedeleteevaluationsands3media()"
     },
     {
@@ -2520,7 +2850,7 @@
       "source_location": "L211",
       "_origin": "ast",
       "id": "api_scriptresourcetest_scriptresourcetest_shouldreturnnotfoundwhendeletingnonexistentscript",
-      "community": 13,
+      "community": 1,
       "norm_label": ".shouldreturnnotfoundwhendeletingnonexistentscript()"
     },
     {
@@ -2977,7 +3307,7 @@
       "label": "appConfig",
       "file_type": "code",
       "source_file": "frontend/src/app/app.config.ts",
-      "source_location": "L57",
+      "source_location": "L59",
       "_origin": "ast",
       "id": "app_app_config_appconfig",
       "community": 2,
@@ -3450,7 +3780,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "properties_properties_component_propertiescomponent_constructor",
-      "community": 11,
+      "community": 0,
       "norm_label": ".constructor()"
     },
     {
@@ -3957,7 +4287,7 @@
       "label": ".openLightbox()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
-      "source_location": "L257",
+      "source_location": "L261",
       "_origin": "ast",
       "id": "properties_property_details_component_propertydetailscomponent_openlightbox",
       "community": 5,
@@ -3967,7 +4297,7 @@
       "label": ".closeLightbox()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
-      "source_location": "L263",
+      "source_location": "L267",
       "_origin": "ast",
       "id": "properties_property_details_component_propertydetailscomponent_closelightbox",
       "community": 5,
@@ -3977,7 +4307,7 @@
       "label": ".nextMedia()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
-      "source_location": "L272",
+      "source_location": "L276",
       "_origin": "ast",
       "id": "properties_property_details_component_propertydetailscomponent_nextmedia",
       "community": 5,
@@ -3987,17 +4317,47 @@
       "label": ".prevMedia()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
-      "source_location": "L282",
+      "source_location": "L287",
       "_origin": "ast",
       "id": "properties_property_details_component_propertydetailscomponent_prevmedia",
       "community": 5,
       "norm_label": ".prevmedia()"
     },
     {
+      "label": ".getMediaCount()",
+      "file_type": "code",
+      "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
+      "source_location": "L298",
+      "_origin": "ast",
+      "id": "properties_property_details_component_propertydetailscomponent_getmediacount",
+      "community": 5,
+      "norm_label": ".getmediacount()"
+    },
+    {
+      "label": ".getActiveMediaUrl()",
+      "file_type": "code",
+      "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
+      "source_location": "L306",
+      "_origin": "ast",
+      "id": "properties_property_details_component_propertydetailscomponent_getactivemediaurl",
+      "community": 5,
+      "norm_label": ".getactivemediaurl()"
+    },
+    {
+      "label": ".getActiveMedia()",
+      "file_type": "code",
+      "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
+      "source_location": "L315",
+      "_origin": "ast",
+      "id": "properties_property_details_component_propertydetailscomponent_getactivemedia",
+      "community": 5,
+      "norm_label": ".getactivemedia()"
+    },
+    {
       "label": ".resetZoom()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
-      "source_location": "L293",
+      "source_location": "L323",
       "_origin": "ast",
       "id": "properties_property_details_component_propertydetailscomponent_resetzoom",
       "community": 5,
@@ -4007,7 +4367,7 @@
       "label": ".toggleFullscreen()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
-      "source_location": "L300",
+      "source_location": "L330",
       "_origin": "ast",
       "id": "properties_property_details_component_propertydetailscomponent_togglefullscreen",
       "community": 5,
@@ -4017,7 +4377,7 @@
       "label": ".onFullscreenChange()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
-      "source_location": "L320",
+      "source_location": "L350",
       "_origin": "ast",
       "id": "properties_property_details_component_propertydetailscomponent_onfullscreenchange",
       "community": 5,
@@ -4027,7 +4387,7 @@
       "label": ".onWheelZoom()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
-      "source_location": "L325",
+      "source_location": "L355",
       "_origin": "ast",
       "id": "properties_property_details_component_propertydetailscomponent_onwheelzoom",
       "community": 5,
@@ -4037,7 +4397,7 @@
       "label": ".startDrag()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
-      "source_location": "L352",
+      "source_location": "L382",
       "_origin": "ast",
       "id": "properties_property_details_component_propertydetailscomponent_startdrag",
       "community": 5,
@@ -4047,7 +4407,7 @@
       "label": ".onDrag()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
-      "source_location": "L360",
+      "source_location": "L390",
       "_origin": "ast",
       "id": "properties_property_details_component_propertydetailscomponent_ondrag",
       "community": 5,
@@ -4057,7 +4417,7 @@
       "label": ".endDrag()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
-      "source_location": "L367",
+      "source_location": "L397",
       "_origin": "ast",
       "id": "properties_property_details_component_propertydetailscomponent_enddrag",
       "community": 5,
@@ -4067,7 +4427,7 @@
       "label": ".onTouchStart()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
-      "source_location": "L372",
+      "source_location": "L402",
       "_origin": "ast",
       "id": "properties_property_details_component_propertydetailscomponent_ontouchstart",
       "community": 5,
@@ -4077,7 +4437,7 @@
       "label": ".onTouchMove()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
-      "source_location": "L390",
+      "source_location": "L420",
       "_origin": "ast",
       "id": "properties_property_details_component_propertydetailscomponent_ontouchmove",
       "community": 5,
@@ -4087,7 +4447,7 @@
       "label": ".onTouchEnd()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
-      "source_location": "L412",
+      "source_location": "L442",
       "_origin": "ast",
       "id": "properties_property_details_component_propertydetailscomponent_ontouchend",
       "community": 5,
@@ -4097,7 +4457,7 @@
       "label": ".getTouchDistance()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
-      "source_location": "L438",
+      "source_location": "L468",
       "_origin": "ast",
       "id": "properties_property_details_component_propertydetailscomponent_gettouchdistance",
       "community": 5,
@@ -4107,7 +4467,7 @@
       "label": ".handleKeyboardEvent()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
-      "source_location": "L445",
+      "source_location": "L475",
       "_origin": "ast",
       "id": "properties_property_details_component_propertydetailscomponent_handlekeyboardevent",
       "community": 5,
@@ -4117,7 +4477,7 @@
       "label": ".ngDoCheck()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
-      "source_location": "L457",
+      "source_location": "L487",
       "_origin": "ast",
       "id": "properties_property_details_component_propertydetailscomponent_ngdocheck",
       "community": 5,
@@ -4127,7 +4487,7 @@
       "label": ".ngOnDestroy()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
-      "source_location": "L468",
+      "source_location": "L498",
       "_origin": "ast",
       "id": "properties_property_details_component_propertydetailscomponent_ngondestroy",
       "community": 5,
@@ -4894,10 +5254,20 @@
       "norm_label": "updateevaluationrequest"
     },
     {
-      "label": "EvaluationResponse",
+      "label": "MediaItem",
       "file_type": "code",
       "source_file": "frontend/src/app/types/index.ts",
       "source_location": "L64",
+      "_origin": "ast",
+      "id": "types_index_mediaitem",
+      "community": 0,
+      "norm_label": "mediaitem"
+    },
+    {
+      "label": "EvaluationResponse",
+      "file_type": "code",
+      "source_file": "frontend/src/app/types/index.ts",
+      "source_location": "L71",
       "_origin": "ast",
       "id": "types_index_evaluationresponse",
       "community": 0,
@@ -4907,7 +5277,7 @@
       "label": "GenerateUploadUrlRequest",
       "file_type": "code",
       "source_file": "frontend/src/app/types/index.ts",
-      "source_location": "L74",
+      "source_location": "L82",
       "_origin": "ast",
       "id": "types_index_generateuploadurlrequest",
       "community": 0,
@@ -4917,7 +5287,7 @@
       "label": "GenerateUploadUrlResponse",
       "file_type": "code",
       "source_file": "frontend/src/app/types/index.ts",
-      "source_location": "L79",
+      "source_location": "L87",
       "_origin": "ast",
       "id": "types_index_generateuploadurlresponse",
       "community": 0,
@@ -4935,6 +5305,420 @@
     }
   ],
   "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index",
+      "target": "media_processor_index_ffmpeg"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index",
+      "target": "media_processor_index_fs"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index",
+      "target": "media_processor_index_getextension"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L29",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index",
+      "target": "media_processor_index_getthumbnailkey"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L53",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index",
+      "target": "media_processor_index_handler"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index",
+      "target": "media_processor_index_isimage"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L17",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index",
+      "target": "media_processor_index_isvideo"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index",
+      "target": "media_processor_index_os"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index",
+      "target": "media_processor_index_path"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index",
+      "target": "media_processor_index_readable"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index",
+      "target": "media_processor_index_s3"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index",
+      "target": "media_processor_index_s3client_getobjectcommand_putobjectcommand"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index",
+      "target": "media_processor_index_s3config"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L44",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index",
+      "target": "media_processor_index_savestreamtofile"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index",
+      "target": "media_processor_index_sharp"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.test.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index_test",
+      "target": "media_processor_index"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/watch-local.js",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_watch_local",
+      "target": "media_processor_index"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L102",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index_handler",
+      "target": "media_processor_index_sharp"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L24",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index_isimage",
+      "target": "media_processor_index_getextension"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L18",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index_isvideo",
+      "target": "media_processor_index_getextension"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L69",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index_handler",
+      "target": "media_processor_index_isvideo"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L69",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index_handler",
+      "target": "media_processor_index_isimage"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L74",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index_handler",
+      "target": "media_processor_index_getthumbnailkey"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.js",
+      "source_location": "L122",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index_handler",
+      "target": "media_processor_index_savestreamtofile"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.test.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index_test",
+      "target": "media_processor_index_handler"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/watch-local.js",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_watch_local",
+      "target": "media_processor_index_handler"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/media-processor/watch-local.js",
+      "source_location": "L85",
+      "weight": 1.0,
+      "source": "media_processor_watch_local_runwatcher",
+      "target": "media_processor_index_handler"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.test.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index_test",
+      "target": "media_processor_index_test_ffmpeg"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.test.js",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index_test",
+      "target": "media_processor_index_test_fs"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.test.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index_test",
+      "target": "media_processor_index_test_handler"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.test.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index_test",
+      "target": "media_processor_index_test_s3client_getobjectcommand_putobjectcommand"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/index.test.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_index_test",
+      "target": "media_processor_index_test_sharp"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/watch-local.js",
+      "source_location": "L32",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_watch_local",
+      "target": "media_processor_watch_local_checkthumbnailexists"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/watch-local.js",
+      "source_location": "L18",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_watch_local",
+      "target": "media_processor_watch_local_getthumbnailkey"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/watch-local.js",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_watch_local",
+      "target": "media_processor_watch_local_handler"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/watch-local.js",
+      "source_location": "L50",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_watch_local",
+      "target": "media_processor_watch_local_runwatcher"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/watch-local.js",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_watch_local",
+      "target": "media_processor_watch_local_s3"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/watch-local.js",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_watch_local",
+      "target": "media_processor_watch_local_s3client_listobjectsv2command_headobjectcommand"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/watch-local.js",
+      "source_location": "L33",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_watch_local_checkthumbnailexists",
+      "target": "media_processor_watch_local_getthumbnailkey"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/media-processor/watch-local.js",
+      "source_location": "L67",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "media_processor_watch_local_runwatcher",
+      "target": "media_processor_watch_local_checkthumbnailexists"
+    },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
@@ -5148,6 +5932,26 @@
       "confidence_score": 1.0,
       "source": "api_evaluationresource_evaluationresource",
       "target": "api_evaluationresource_evaluationresource_getevaluationsbyproperty"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
+      "source_location": "L188",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "api_evaluationresource_evaluationresource",
+      "target": "api_evaluationresource_evaluationresource_getthumbnailkey"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
+      "source_location": "L199",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "api_evaluationresource_evaluationresource",
+      "target": "api_evaluationresource_evaluationresource_isvideokey"
     },
     {
       "relation": "method",
@@ -5393,6 +6197,28 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
+      "source_location": "L188",
+      "weight": 1.0,
+      "context": "return_type",
+      "confidence_score": 1.0,
+      "source": "api_evaluationresource_evaluationresource_getthumbnailkey",
+      "target": "backend_src_main_java_com_imob_api_evaluationresource_java_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
+      "source_location": "L199",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "confidence_score": 1.0,
+      "source": "api_evaluationresource_evaluationresource_isvideokey",
+      "target": "backend_src_main_java_com_imob_api_evaluationresource_java_string"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
       "source_location": "L123",
       "weight": 1.0,
       "context": "parameter_type",
@@ -5630,6 +6456,28 @@
       "weight": 1.0,
       "source": "api_evaluationresource_evaluationresource_deleteevaluation",
       "target": "status"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
+      "source_location": "L174",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "api_evaluationresource_evaluationresource_maptoresponse",
+      "target": "api_evaluationresource_evaluationresource_getthumbnailkey"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/main/java/com/imob/api/EvaluationResource.java",
+      "source_location": "L176",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "api_evaluationresource_evaluationresource_maptoresponse",
+      "target": "api_evaluationresource_evaluationresource_isvideokey"
     },
     {
       "relation": "references",
@@ -6200,9 +7048,9 @@
       "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
       "source_location": "L54",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_scriptresource_scriptresource",
-      "target": "api_scriptresource_scriptresource_getscriptbyid",
-      "confidence_score": 1.0
+      "target": "api_scriptresource_scriptresource_getscriptbyid"
     },
     {
       "relation": "method",
@@ -6286,9 +7134,9 @@
       "source_location": "L54",
       "weight": 1.0,
       "context": "attribute",
+      "confidence_score": 1.0,
       "source": "api_scriptresource_scriptresource_getscriptbyid",
-      "target": "backend_src_main_java_com_imob_api_scriptresource_java_get",
-      "confidence_score": 1.0
+      "target": "backend_src_main_java_com_imob_api_scriptresource_java_get"
     },
     {
       "relation": "calls",
@@ -6297,9 +7145,9 @@
       "source_file": "backend/src/main/java/com/imob/api/ScriptResource.java",
       "source_location": "L63",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_scriptresource_scriptresource_getscriptbyid",
-      "target": "api_scriptresource_scriptresource_maptoresponse",
-      "confidence_score": 1.0
+      "target": "api_scriptresource_scriptresource_maptoresponse"
     },
     {
       "relation": "references",
@@ -6308,9 +7156,9 @@
       "source_location": "L54",
       "weight": 1.0,
       "context": "attribute",
+      "confidence_score": 1.0,
       "source": "api_scriptresource_scriptresource_getscriptbyid",
-      "target": "backend_src_main_java_com_imob_api_scriptresource_java_path",
-      "confidence_score": 1.0
+      "target": "backend_src_main_java_com_imob_api_scriptresource_java_path"
     },
     {
       "relation": "references",
@@ -6319,9 +7167,9 @@
       "source_location": "L54",
       "weight": 1.0,
       "context": "return_type",
+      "confidence_score": 1.0,
       "source": "api_scriptresource_scriptresource_getscriptbyid",
-      "target": "backend_src_main_java_com_imob_api_scriptresource_java_response",
-      "confidence_score": 1.0
+      "target": "backend_src_main_java_com_imob_api_scriptresource_java_response"
     },
     {
       "relation": "references",
@@ -6330,9 +7178,9 @@
       "source_location": "L54",
       "weight": 1.0,
       "context": "parameter_type",
+      "confidence_score": 1.0,
       "source": "api_scriptresource_scriptresource_getscriptbyid",
-      "target": "backend_src_main_java_com_imob_api_scriptresource_java_string",
-      "confidence_score": 1.0
+      "target": "backend_src_main_java_com_imob_api_scriptresource_java_string"
     },
     {
       "relation": "calls",
@@ -7047,6 +7895,16 @@
       "confidence_score": 1.0,
       "source": "dto_generateuploadurlresponse",
       "target": "dto_generateuploadurlresponse_generateuploadurlresponse"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "backend/src/main/java/com/imob/dto/MediaItemDto.java",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dto_mediaitemdto",
+      "target": "dto_mediaitemdto_mediaitemdto"
     },
     {
       "relation": "contains",
@@ -8315,9 +9173,9 @@
       "source_file": "backend/src/main/java/com/imob/repository/DynamoDbRepository.java",
       "source_location": "L92",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "repository_dynamodbrepository_dynamodbrepository",
-      "target": "repository_dynamodbrepository_dynamodbrepository_deletescript",
-      "confidence_score": 1.0
+      "target": "repository_dynamodbrepository_dynamodbrepository_deletescript"
     },
     {
       "relation": "method",
@@ -8480,9 +9338,9 @@
       "source_location": "L92",
       "weight": 1.0,
       "context": "parameter_type",
+      "confidence_score": 1.0,
       "source": "repository_dynamodbrepository_dynamodbrepository_deletescript",
-      "target": "backend_src_main_java_com_imob_repository_dynamodbrepository_java_string",
-      "confidence_score": 1.0
+      "target": "backend_src_main_java_com_imob_repository_dynamodbrepository_java_string"
     },
     {
       "relation": "references",
@@ -9439,9 +10297,9 @@
       "source_file": "backend/src/test/java/com/imob/api/EvaluationResourceTest.java",
       "source_location": "L47",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_evaluationresourcetest_evaluationresourcetest",
-      "target": "api_evaluationresourcetest_evaluationresourcetest_shouldrejectevaluationwithnonexistentscript",
-      "confidence_score": 1.0
+      "target": "api_evaluationresourcetest_evaluationresourcetest_shouldrejectevaluationwithnonexistentscript"
     },
     {
       "relation": "method",
@@ -9481,9 +10339,9 @@
       "source_location": "L47",
       "weight": 1.0,
       "context": "attribute",
+      "confidence_score": 1.0,
       "source": "api_evaluationresourcetest_evaluationresourcetest_shouldrejectevaluationwithnonexistentscript",
-      "target": "backend_src_test_java_com_imob_api_evaluationresourcetest_java_test",
-      "confidence_score": 1.0
+      "target": "backend_src_test_java_com_imob_api_evaluationresourcetest_java_test"
     },
     {
       "relation": "references",
@@ -9758,9 +10616,9 @@
       "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
       "source_location": "L73",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_scriptresourcetest_scriptresourcetest",
-      "target": "api_scriptresourcetest_scriptresourcetest_shouldcreatescript",
-      "confidence_score": 1.0
+      "target": "api_scriptresourcetest_scriptresourcetest_shouldcreatescript"
     },
     {
       "relation": "method",
@@ -9798,9 +10656,9 @@
       "source_file": "backend/src/test/java/com/imob/api/ScriptResourceTest.java",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "api_scriptresourcetest_scriptresourcetest",
-      "target": "api_scriptresourcetest_scriptresourcetest_shouldupdatescript",
-      "confidence_score": 1.0
+      "target": "api_scriptresourcetest_scriptresourcetest_shouldupdatescript"
     },
     {
       "relation": "references",
@@ -9831,9 +10689,9 @@
       "source_location": "L73",
       "weight": 1.0,
       "context": "attribute",
+      "confidence_score": 1.0,
       "source": "api_scriptresourcetest_scriptresourcetest_shouldcreatescript",
-      "target": "backend_src_test_java_com_imob_api_scriptresourcetest_java_test",
-      "confidence_score": 1.0
+      "target": "backend_src_test_java_com_imob_api_scriptresourcetest_java_test"
     },
     {
       "relation": "references",
@@ -9864,9 +10722,9 @@
       "source_location": "L105",
       "weight": 1.0,
       "context": "attribute",
+      "confidence_score": 1.0,
       "source": "api_scriptresourcetest_scriptresourcetest_shouldupdatescript",
-      "target": "backend_src_test_java_com_imob_api_scriptresourcetest_java_test",
-      "confidence_score": 1.0
+      "target": "backend_src_test_java_com_imob_api_scriptresourcetest_java_test"
     },
     {
       "relation": "imports",
@@ -12954,6 +13812,26 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
+      "source_location": "L315",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "properties_property_details_component_propertydetailscomponent",
+      "target": "properties_property_details_component_propertydetailscomponent_getactivemedia"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
+      "source_location": "L306",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "properties_property_details_component_propertydetailscomponent",
+      "target": "properties_property_details_component_propertydetailscomponent_getactivemediaurl"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
       "source_location": "L109",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -12969,6 +13847,16 @@
       "confidence_score": 1.0,
       "source": "properties_property_details_component_propertydetailscomponent",
       "target": "properties_property_details_component_propertydetailscomponent_getcriteriatype"
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
+      "source_location": "L298",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "properties_property_details_component_propertydetailscomponent",
+      "target": "properties_property_details_component_propertydetailscomponent_getmediacount"
     },
     {
       "relation": "method",
@@ -13411,6 +14299,17 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
+      "source_location": "L281",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "properties_property_details_component_propertydetailscomponent_nextmedia",
+      "target": "properties_property_details_component_propertydetailscomponent_getmediacount"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
       "source_location": "L227",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -13471,6 +14370,17 @@
       "confidence_score": 1.0,
       "source": "properties_property_details_component_propertydetailscomponent_onwheelzoom",
       "target": "properties_property_details_component_propertydetailscomponent_prevmedia"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/src/app/pages/properties/property-details.component.ts",
+      "source_location": "L292",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "properties_property_details_component_propertydetailscomponent_prevmedia",
+      "target": "properties_property_details_component_propertydetailscomponent_getmediacount"
     },
     {
       "relation": "calls",
@@ -15019,6 +15929,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "frontend/src/app/types/index.ts",
+      "source_location": "L64",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "types_index",
+      "target": "types_index_mediaitem"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "frontend/src/app/types/index.ts",
       "source_location": "L41",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -15057,5 +15977,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "086b23988946b9ab238793da38f389d6ce41e08e"
+  "built_at_commit": "62f246e0740c5f994617e7091d5b26cb5fe7ce0a"
 }

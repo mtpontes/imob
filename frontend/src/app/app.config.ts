@@ -47,7 +47,9 @@ import {
   ArrowUp,
   ArrowDown,
   TrendingUp,
-  TrendingDown
+  TrendingDown,
+  Play,
+  PlayCircle
 } from 'lucide-angular';
 
 import { routes } from './app.routes';
@@ -109,7 +111,9 @@ export const appConfig: ApplicationConfig = {
         ArrowUp,
         ArrowDown,
         TrendingUp,
-        TrendingDown
+        TrendingDown,
+        Play,
+        PlayCircle
       })
     )
   ]

@@ -15,7 +15,8 @@ public class EvaluationResponse {
     private String scriptId;
 
     private String notes;
-    private List<String> mediaUrls;
+    private List<String> mediaUrls; // Mantido por retrocompatibilidade se necessario, mas sera obsoleto
+    private List<MediaItemDto> mediaItems;
     private List<String> mediaKeys;
     private Map<String, Object> answers;
 }

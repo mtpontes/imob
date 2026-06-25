@@ -125,6 +125,25 @@ Resources:
             ApiId: !Ref ImobAppHttpApi
             PayloadFormatVersion: '2.0'
 
+  # 6. Lambda Function Node.js para processamento de midias (geracao de thumbnails)
+  MediaProcessorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs20.x
+      CodeUri: media-processor/
+      MemorySize: 1024
+      Timeout: 60
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref ImobAppBucket
+      Events:
+        S3NewObjectEvent:
+          Type: S3
+          Properties:
+            Bucket: !Ref ImobAppBucket
+            Events: s3:ObjectCreated:*
+
 Outputs:
   ApiUrl:
     Description: HTTP API Gateway URL

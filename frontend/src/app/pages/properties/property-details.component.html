@@ -226,22 +226,42 @@
           <p id="modal-eval-notes">{{ selectedEvaluation.notes }}</p>
         </div>
 
-        <div class="modal-photos-section" *ngIf="selectedEvaluation.mediaUrls && selectedEvaluation.mediaUrls.length > 0">
+        <div class="modal-photos-section" *ngIf="getMediaCount() > 0">
           <h4>Galeria de Mídias</h4>
           <div class="modal-photos-grid" id="modal-eval-photos">
-            <div *ngFor="let url of selectedEvaluation.mediaUrls; let i = index" class="modal-photo-item" (click)="openLightbox(i)">
-              <ng-container *ngIf="isVideoButton(url); else isImage">
-                <div class="video-thumbnail-wrapper">
-                  <video [src]="url" preload="metadata" class="thumbnail-media"></video>
-                  <div class="play-overlay">
-                    <lucide-icon name="play-circle"></lucide-icon>
+            <!-- Modo Novo: se mediaItems estiver presente -->
+            <ng-container *ngIf="selectedEvaluation.mediaItems && selectedEvaluation.mediaItems.length > 0; else fallbackUrls">
+              <div *ngFor="let media of selectedEvaluation.mediaItems; let i = index" class="modal-photo-item" (click)="openLightbox(i)">
+                <ng-container *ngIf="media.mediaType === 'VIDEO'; else isNewImage">
+                  <div class="video-thumbnail-wrapper">
+                    <img [src]="media.thumbnailUrl" alt="Prévia do vídeo" class="thumbnail-media" />
+                    <div class="play-overlay">
+                      <lucide-icon name="play-circle"></lucide-icon>
+                    </div>
                   </div>
-                </div>
-              </ng-container>
-              <ng-template #isImage>
-                <img [src]="url" alt="Foto da visita" class="thumbnail-media" />
-              </ng-template>
-            </div>
+                </ng-container>
+                <ng-template #isNewImage>
+                  <img [src]="media.thumbnailUrl" alt="Foto da visita" class="thumbnail-media" />
+                </ng-template>
+              </div>
+            </ng-container>
+
+            <!-- Modo Antigo: fallback para mediaUrls se mediaItems nao existir -->
+            <ng-template #fallbackUrls>
+              <div *ngFor="let url of selectedEvaluation.mediaUrls; let i = index" class="modal-photo-item" (click)="openLightbox(i)">
+                <ng-container *ngIf="isVideoButton(url); else isFallbackImage">
+                  <div class="video-thumbnail-wrapper">
+                    <video [src]="url" preload="metadata" class="thumbnail-media"></video>
+                    <div class="play-overlay">
+                      <lucide-icon name="play-circle"></lucide-icon>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-template #isFallbackImage>
+                  <img [src]="url" alt="Foto da visita" class="thumbnail-media" />
+                </ng-template>
+              </div>
+            </ng-template>
           </div>
         </div>
 
@@ -308,31 +328,43 @@
   </div>
 
   <!-- Modal Lightbox para visualização premium de fotos e vídeos -->
-  <div id="lightbox-modal" class="modal-wrapper lightbox-wrapper" *ngIf="isLightboxOpen && selectedEvaluation && selectedEvaluation.mediaUrls" @modalTrigger>
-    <div class="modal-backdrop lightbox-backdrop" (click)="closeLightbox()"></div>
+  <div id="lightbox-modal" class="modal-wrapper lightbox-wrapper" *ngIf="isLightboxOpen && selectedEvaluation && getMediaCount() > 0" @modalTrigger (click)="closeLightbox()"
+       (touchstart)="onTouchStart($event)"
+       (touchmove)="onTouchMove($event)"
+       (touchend)="onTouchEnd()">
+    <div class="modal-backdrop lightbox-backdrop"></div>
     
     <div class="lightbox-container">
-      <button class="btn btn-icon lightbox-close-btn" (click)="closeLightbox()">
+      <button class="btn btn-icon lightbox-close-btn" (click)="closeLightbox(); $event.stopPropagation()"
+              (touchstart)="$event.stopPropagation()"
+              (touchmove)="$event.stopPropagation()"
+              (touchend)="$event.stopPropagation()">
         <lucide-icon name="x"></lucide-icon>
       </button>
       
       <!-- Botões de navegação: visíveis lateralmente no desktop, ocultos no mobile -->
       <button class="btn btn-icon lightbox-nav-btn prev" 
-              *ngIf="selectedEvaluation.mediaUrls.length > 1" 
-              (click)="prevMedia($event)">
+              *ngIf="getMediaCount() > 1" 
+              (click)="prevMedia($event)"
+              (touchstart)="$event.stopPropagation()"
+              (touchmove)="$event.stopPropagation()"
+              (touchend)="$event.stopPropagation()">
         <lucide-icon name="chevron-left"></lucide-icon>
       </button>
       
       <div class="lightbox-content-area">
-        <button class="btn btn-icon lightbox-zoom-action-btn" (click)="toggleFullscreen($event)" [title]="isFullscreen ? 'Sair da Tela Cheia' : 'Tela Cheia'">
+        <button class="btn btn-icon lightbox-zoom-action-btn" (click)="toggleFullscreen($event)" [title]="isFullscreen ? 'Sair da Tela Cheia' : 'Tela Cheia'"
+                (touchstart)="$event.stopPropagation()"
+                (touchmove)="$event.stopPropagation()"
+                (touchend)="$event.stopPropagation()">
           <lucide-icon [name]="isFullscreen ? 'minimize-2' : 'maximize-2'"></lucide-icon>
         </button>
         
-        <ng-container *ngIf="isVideoButton(selectedEvaluation.mediaUrls[activeMediaIndex]); else lightboxImage">
-          <video [src]="selectedEvaluation.mediaUrls[activeMediaIndex]" controls autoplay class="lightbox-media"></video>
+        <ng-container *ngIf="isVideoButton(getActiveMedia()); else lightboxImage">
+          <video [src]="getActiveMediaUrl()" controls autoplay class="lightbox-media" (click)="$event.stopPropagation()"></video>
         </ng-container>
         <ng-template #lightboxImage>
-          <img [src]="selectedEvaluation.mediaUrls[activeMediaIndex]" 
+          <img [src]="getActiveMediaUrl()" 
                alt="Mídia ampliada da avaliação" 
                class="lightbox-media zoomable"
                [style.transform]="'translate(' + panX + 'px, ' + panY + 'px) scale(' + zoomLevel + ')'"
@@ -341,39 +373,67 @@
                (mousemove)="onDrag($event)"
                (mouseup)="endDrag()"
                (mouseleave)="endDrag()"
-               (touchstart)="onTouchStart($event)"
-               (touchmove)="onTouchMove($event)"
-               (touchend)="onTouchEnd()" />
+               (click)="$event.stopPropagation()" />
         </ng-template>
       </div>
       
       <button class="btn btn-icon lightbox-nav-btn next" 
-              *ngIf="selectedEvaluation.mediaUrls.length > 1" 
-              (click)="nextMedia($event)">
+              *ngIf="getMediaCount() > 1" 
+              (click)="nextMedia($event)"
+              (touchstart)="$event.stopPropagation()"
+              (touchmove)="$event.stopPropagation()"
+              (touchend)="$event.stopPropagation()">
         <lucide-icon name="chevron-right"></lucide-icon>
       </button>
       
       <!-- Footer: counter + strip de miniaturas -->
-      <div class="lightbox-footer" *ngIf="selectedEvaluation.mediaUrls.length > 1">
+      <div class="lightbox-footer" *ngIf="getMediaCount() > 1" (click)="$event.stopPropagation()"
+           (touchstart)="$event.stopPropagation()"
+           (touchmove)="$event.stopPropagation()"
+           (touchend)="$event.stopPropagation()">
         <div class="lightbox-counter">
-          {{ activeMediaIndex + 1 }} / {{ selectedEvaluation.mediaUrls.length }}
+          {{ activeMediaIndex + 1 }} / {{ getMediaCount() }}
         </div>
         <div class="lightbox-thumbnails">
-          <div
-            *ngFor="let url of selectedEvaluation.mediaUrls; let i = index"
-            class="lightbox-thumb"
-            [class.active]="i === activeMediaIndex"
-            (click)="activeMediaIndex = i; $event.stopPropagation()"
-          >
-            <ng-container *ngIf="isVideoButton(url); else thumbImg">
-              <div class="lightbox-thumb-video-icon">
-                <lucide-icon name="play" style="width: 10px; height: 10px;"></lucide-icon>
-              </div>
-            </ng-container>
-            <ng-template #thumbImg>
-              <img [src]="url" alt="Miniatura" />
-            </ng-template>
-          </div>
+          <!-- Se mediaItems existir -->
+          <ng-container *ngIf="selectedEvaluation.mediaItems && selectedEvaluation.mediaItems.length > 0; else fallbackThumbs">
+            <div
+              *ngFor="let media of selectedEvaluation.mediaItems; let i = index"
+              class="lightbox-thumb"
+              [class.active]="i === activeMediaIndex"
+              (click)="activeMediaIndex = i; $event.stopPropagation()"
+            >
+              <ng-container *ngIf="media.mediaType === 'VIDEO'; else thumbImgNew">
+                <div class="lightbox-thumb-video-icon">
+                  <img [src]="media.thumbnailUrl" alt="Miniatura" class="lightbox-thumb-img" />
+                  <div style="position: absolute; inset: 0; background: rgba(0, 0, 0, 0.35); z-index: 1;"></div>
+                  <lucide-icon name="play" style="width: 12px; height: 12px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; color: white;"></lucide-icon>
+                </div>
+              </ng-container>
+              <ng-template #thumbImgNew>
+                <img [src]="media.thumbnailUrl" alt="Miniatura" />
+              </ng-template>
+            </div>
+          </ng-container>
+
+          <!-- Fallback se nao existir mediaItems -->
+          <ng-template #fallbackThumbs>
+            <div
+              *ngFor="let url of selectedEvaluation.mediaUrls; let i = index"
+              class="lightbox-thumb"
+              [class.active]="i === activeMediaIndex"
+              (click)="activeMediaIndex = i; $event.stopPropagation()"
+            >
+              <ng-container *ngIf="isVideoButton(url); else thumbImgFallback">
+                <div class="lightbox-thumb-video-icon">
+                  <lucide-icon name="play" style="width: 12px; height: 12px;"></lucide-icon>
+                </div>
+              </ng-container>
+              <ng-template #thumbImgFallback>
+                <img [src]="url" alt="Miniatura" />
+              </ng-template>
+            </div>
+          </ng-template>
         </div>
       </div>
     </div>

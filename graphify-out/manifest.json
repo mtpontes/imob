@@ -5,8 +5,8 @@
     "semantic_hash": "ab50dd89da7da2346b28003352eeeeeb"
   },
   "backend/src/main/java/com/imob/api/EvaluationResource.java": {
-    "mtime": 1782172070.149653,
-    "ast_hash": "048f696aecd6ea5a87177988a0d1ca93",
+    "mtime": 1782257037.507479,
+    "ast_hash": "0f86a78d951192b0e788cfcb99457d02",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/imob/api/PropertyResource.java": {
@@ -60,8 +60,8 @@
     "semantic_hash": "58792ea962a81d547e32937ff1c57270"
   },
   "backend/src/main/java/com/imob/dto/EvaluationResponse.java": {
-    "mtime": 1782172045.0493462,
-    "ast_hash": "e45001ee0201b34b6df63a1261250ae4",
+    "mtime": 1782257026.8740747,
+    "ast_hash": "4b69bf8b10797a066446c0b546cb0db7",
     "semantic_hash": ""
   },
   "backend/src/main/java/com/imob/dto/GenerateUploadUrlRequest.java": {
@@ -150,8 +150,8 @@
     "semantic_hash": ""
   },
   "backend/src/test/java/com/imob/api/EvaluationResourceTest.java": {
-    "mtime": 1782172103.7741394,
-    "ast_hash": "dfbe490998addc4e9147a6d55430b172",
+    "mtime": 1782257046.2686281,
+    "ast_hash": "7a3c37d58e7038af8c2c3f24d226f91e",
     "semantic_hash": ""
   },
   "backend/src/test/java/com/imob/api/PropertyResourceTest.java": {
@@ -185,8 +185,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/app.config.ts": {
-    "mtime": 1781906995.202248,
-    "ast_hash": "97becbd7d040f7654420df2221d5770b",
+    "mtime": 1782351126.1655116,
+    "ast_hash": "929ee6425898a73387ac701f26d233aa",
     "semantic_hash": ""
   },
   "frontend/src/app/app.routes.ts": {
@@ -250,8 +250,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/pages/properties/property-details.component.ts": {
-    "mtime": 1782172222.2499435,
-    "ast_hash": "051a47c9f3a6036cca372d5ab693b486",
+    "mtime": 1782257085.851373,
+    "ast_hash": "a3367df7ebdf45c44307bb2b61d79910",
     "semantic_hash": ""
   },
   "frontend/src/app/pages/script-builder/script-builder.component.spec.ts": {
@@ -310,8 +310,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/types/index.ts": {
-    "mtime": 1782172133.6259947,
-    "ast_hash": "5aafb6d7031382cab17214c0cb8d036a",
+    "mtime": 1782257072.638718,
+    "ast_hash": "d1994a803e72fdffbca9bb5b1720fa85",
     "semantic_hash": ""
   },
   "frontend/src/main.ts": {
@@ -322,6 +322,26 @@
   "frontend/src/app/animations/animations.ts": {
     "mtime": 1781901729.8774107,
     "ast_hash": "1e8e210c320413759d9856abd556447c",
+    "semantic_hash": ""
+  },
+  "backend/media-processor/index.js": {
+    "mtime": 1782350217.0083213,
+    "ast_hash": "d0d6000d5e75848a431e140f474dfdc0",
+    "semantic_hash": ""
+  },
+  "backend/media-processor/index.test.js": {
+    "mtime": 1782256999.210529,
+    "ast_hash": "a9badd5c5dbbe6fccb02a8e7d9790330",
+    "semantic_hash": ""
+  },
+  "backend/src/main/java/com/imob/dto/MediaItemDto.java": {
+    "mtime": 1782257018.5530589,
+    "ast_hash": "0e7d27ff6aee5ccd3d98e0273fea2751",
+    "semantic_hash": ""
+  },
+  "backend/media-processor/watch-local.js": {
+    "mtime": 1782350206.8299022,
+    "ast_hash": "e243d24644652b534563548d46501afd",
     "semantic_hash": ""
   }
 }

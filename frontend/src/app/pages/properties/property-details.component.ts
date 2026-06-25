@@ -244,8 +244,12 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
     return obj ? Object.keys(obj) : [];
   }
 
-  isVideoButton(url: string): boolean {
-    if (!url) return false;
+  isVideoButton(media: any): boolean {
+    if (!media) return false;
+    if (typeof media === 'object' && media.mediaType) {
+      return media.mediaType === 'VIDEO';
+    }
+    const url = typeof media === 'string' ? media : (media.originalUrl || '');
     const cleanUrl = url.split('?')[0].toLowerCase();
     return cleanUrl.endsWith('.mp4') || 
            cleanUrl.endsWith('.webm') || 
@@ -274,8 +278,9 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
       event.stopPropagation();
     }
     this.resetZoom();
-    if (this.selectedEvaluation && this.selectedEvaluation.mediaUrls) {
-      this.activeMediaIndex = (this.activeMediaIndex + 1) % this.selectedEvaluation.mediaUrls.length;
+    const mediaCount = this.getMediaCount();
+    if (mediaCount > 0) {
+      this.activeMediaIndex = (this.activeMediaIndex + 1) % mediaCount;
     }
   }
 
@@ -284,10 +289,35 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
       event.stopPropagation();
     }
     this.resetZoom();
-    if (this.selectedEvaluation && this.selectedEvaluation.mediaUrls) {
-      const len = this.selectedEvaluation.mediaUrls.length;
-      this.activeMediaIndex = (this.activeMediaIndex - 1 + len) % len;
+    const mediaCount = this.getMediaCount();
+    if (mediaCount > 0) {
+      this.activeMediaIndex = (this.activeMediaIndex - 1 + mediaCount) % mediaCount;
     }
+  }
+
+  getMediaCount(): number {
+    if (!this.selectedEvaluation) return 0;
+    if (this.selectedEvaluation.mediaItems && this.selectedEvaluation.mediaItems.length > 0) {
+      return this.selectedEvaluation.mediaItems.length;
+    }
+    return this.selectedEvaluation.mediaUrls ? this.selectedEvaluation.mediaUrls.length : 0;
+  }
+
+  getActiveMediaUrl(): string {
+    if (!this.selectedEvaluation) return '';
+    if (this.selectedEvaluation.mediaItems && this.selectedEvaluation.mediaItems.length > 0) {
+      const item = this.selectedEvaluation.mediaItems[this.activeMediaIndex];
+      return item ? item.originalUrl : '';
+    }
+    return this.selectedEvaluation.mediaUrls ? this.selectedEvaluation.mediaUrls[this.activeMediaIndex] : '';
+  }
+
+  getActiveMedia(): any {
+    if (!this.selectedEvaluation) return null;
+    if (this.selectedEvaluation.mediaItems && this.selectedEvaluation.mediaItems.length > 0) {
+      return this.selectedEvaluation.mediaItems[this.activeMediaIndex];
+    }
+    return this.selectedEvaluation.mediaUrls ? this.selectedEvaluation.mediaUrls[this.activeMediaIndex] : null;
   }
 
   resetZoom(): void {
