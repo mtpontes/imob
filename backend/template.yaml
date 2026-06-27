@@ -78,6 +78,7 @@ Resources:
   ImobAppBucket:
     Type: AWS::S3::Bucket
     Properties:
+      BucketName: !Sub ${AWS::StackName}-photos-bucket
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         BlockPublicPolicy: true
@@ -109,11 +110,11 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Ref ImobAppTable
         - S3CrudPolicy:
-            BucketName: !Ref ImobAppBucket
+            BucketName: !Sub ${AWS::StackName}-photos-bucket
       Environment:
         Variables:
           IMOB_TABLE_NAME: !Ref ImobAppTable
-          IMOB_BUCKET_NAME: !Ref ImobAppBucket
+          IMOB_BUCKET_NAME: !Sub ${AWS::StackName}-photos-bucket
           IMOB_MOCK_AUTH: true
           DISABLE_SIGNAL_HANDLERS: true
       Events:
@@ -136,7 +137,7 @@ Resources:
       Timeout: 60
       Policies:
         - S3CrudPolicy:
-            BucketName: !Ref ImobAppBucket
+            BucketName: !Sub ${AWS::StackName}-photos-bucket
       Events:
         S3NewObjectEvent:
           Type: S3
