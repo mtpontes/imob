@@ -1,6 +1,13 @@
 name: Deploy Backend & Infra
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
+  push:
+    branches:
+      - dev
+      - master
   workflow_dispatch:
     inputs:
       environment:
@@ -51,7 +58,9 @@ jobs:
     name: Deploy AWS SAM
     needs: build
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment || 'dev' }}
+    environment: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs.environment) || (github.ref_name == 'master' && 'prod') || 'dev' }}
+    env:
+      DEPLOY_ENV: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs.environment) || (github.ref_name == 'master' && 'prod') || 'dev' }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -63,16 +72,24 @@ jobs:
           path: backend/target
 
       - name: Setup AWS SAM CLI
-        uses: aws-actions/setup-sam@v2
+        uses: aws-actions/setup-sam@v3
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4.1.0
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_DEFAULT_REGION || 'us-east-1' }}
 
+      - name: Cache Media Processor Dependencies
+        id: cache-media-processor
+        uses: actions/cache@v4
+        with:
+          path: backend/media-processor/node_modules
+          key: ${{ runner.os }}-media-processor-${{ hashFiles('backend/media-processor/package-lock.json', 'backend/media-processor/package.json') }}
+
       - name: Install Media Processor Dependencies
+        if: steps.cache-media-processor.outputs.cache-hit != 'true'
         run: |
           cd backend/media-processor
           npm ci --omit=dev
@@ -81,7 +98,7 @@ jobs:
         run: |
           sam deploy \
             --template-file backend/template.yaml \
-            --stack-name imob-app-infra-${{ github.event.inputs.environment || 'dev' }} \
+            --stack-name imob-app-infra-$DEPLOY_ENV \
             --resolve-s3 \
             --capabilities CAPABILITY_IAM \
             --no-confirm-changeset \
