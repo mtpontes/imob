@@ -43,7 +43,7 @@ public class EvaluationResource {
 
     private final S3Service s3Service;
     private final EvaluationValidator evaluationValidator;
-
+    
     @POST
     public Response createEvaluation(CreateEvaluationRequest request) {
         String workspaceId = this.userContext.getWorkspaceId();
