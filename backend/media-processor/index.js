@@ -6,6 +6,23 @@ const path = require('path');
 const { Readable } = require('stream');
 const os = require('os');
 
+let ffmpegInitialized = false;
+function initializeFfmpeg() {
+    if (ffmpegInitialized) return;
+    try {
+        const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
+        if (fs.existsSync(ffmpegPath)) {
+            ffmpeg.setFfmpegPath(ffmpegPath);
+            console.log('FFmpeg configurado com o path:', ffmpegPath);
+        } else {
+            console.warn('Binario do FFmpeg nao encontrado no caminho:', ffmpegPath);
+        }
+        ffmpegInitialized = true;
+    } catch (err) {
+        console.warn('Nao foi possivel inicializar o ffmpeg-installer:', err.message);
+    }
+}
+
 const s3Config = {};
 if (process.env.AWS_ENDPOINT_URL) {
     s3Config.endpoint = process.env.AWS_ENDPOINT_URL;
@@ -123,6 +140,7 @@ exports.handler = async (event) => {
             } else if (isVideo(key)) {
                 // 2b. Processar Video via FFmpeg
                 console.log('Processando video com FFmpeg...');
+                initializeFfmpeg();
                 
                 const uniqueId = Math.random().toString(36).substring(2, 9);
                 const tempVideoPath = path.join(os.tmpdir(), `video_${uniqueId}.mp4`);
