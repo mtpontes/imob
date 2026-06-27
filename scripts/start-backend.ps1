@@ -7,7 +7,7 @@ Write-Host "==================================================" -ForegroundColor
 
 # 1. Subir os containers do Docker Compose
 Write-Host "`n[1/4] Subindo containers Docker..." -ForegroundColor Cyan
-docker compose up -d
+docker compose -f "$PSScriptRoot/../docker-compose.yml" up -d
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Falha ao iniciar os containers do Docker Compose."
     exit 1
@@ -112,4 +112,4 @@ if ($corsStatus -eq "200" -or $corsStatus -eq "204") {
 
 # 4. Iniciar o Backend Quarkus em modo dev
 Write-Host "`n[4/4] Inicializando o Quarkus Dev Server..." -ForegroundColor Yellow
-mvn -f backend/pom.xml quarkus:dev
+mvn -f "$PSScriptRoot/../backend/api/pom.xml" quarkus:dev

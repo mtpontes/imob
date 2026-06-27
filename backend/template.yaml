@@ -105,7 +105,7 @@ Resources:
     Properties:
       Handler: io.quarkus.amazon.lambda.runtime.QuarkusStreamHandler::handleRequest
       Runtime: provided.al2023
-      CodeUri: target/function.zip
+      CodeUri: api/target/function.zip
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref ImobAppTable

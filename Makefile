@@ -14,8 +14,8 @@ endif
 .PHONY: run infra-up infra-down front watch-media
 
 run:
-	$(BASH) ./start-backend.sh
-	cd backend && mvn quarkus:dev
+	$(BASH) ./scripts/start-backend.sh
+	cd backend/api && mvn quarkus:dev
 
 front:
 	cd frontend && npm start
