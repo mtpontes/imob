@@ -23,7 +23,7 @@ build:
 	docker compose build
 
 run:
-	$(BASH) ./scripts/start-backend.sh
+	docker compose up -d localstack dynamodb
 	cd backend/api && mvn quarkus:dev
 
 front:

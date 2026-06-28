@@ -100,44 +100,34 @@ Para rodar o projeto localmente, certifique-se de possuir instalado:
 
 ## Como Executar o Projeto Localmente
 
-### 1. Inicializar os Serviços Locais (DynamoDB e S3)
+### 1. Inicializar a Infraestrutura Local (DynamoDB e S3)
 
-O projeto utiliza um container com DynamoDB Local e LocalStack (para o S3 simulado) no desenvolvimento local. Suba esses recursos utilizando o Docker Compose:
+O projeto utiliza containers com DynamoDB Local e LocalStack (para o S3 simulado) no desenvolvimento local. A tabela e o bucket S3 são criados e configurados automaticamente ao subir a infraestrutura.
 
+Suba os recursos utilizando o Docker Compose:
 ```bash
-docker compose up -d
+docker compose up -d localstack dynamodb
 ```
 ou utilizando o Makefile:
 ```bash
-make infra-up
+make dev-infra
 ```
 
-### 2. Inicializar o Banco de Dados e Bucket Locais
-
-Execute o script de inicialização para criar as tabelas no DynamoDB Local e o bucket no S3 simulado:
-
-**No Linux/macOS:**
-```bash
-chmod +x start-backend.sh
-./start-backend.sh
-```
-
-**No Windows (PowerShell):**
-```powershell
-./start-backend.ps1
-```
-
-### 3. Executar o Backend (Quarkus Dev Mode)
+### 2. Executar o Backend (Quarkus Dev Mode)
 
 Acesse a pasta do backend e inicie o Quarkus em modo de desenvolvimento. O modo de desenvolvimento local habilita o bypass de autenticação por padrão (`imob.mock.auth=true`), simulando um token com e-mail corporativo:
 
 ```bash
-cd backend
+cd backend/api
 mvn quarkus:dev
+```
+ou utilizando o Makefile:
+```bash
+make run
 ```
 O backend estará disponível em `http://localhost:8080`.
 
-### 4. Executar o Frontend (Angular)
+### 3. Executar o Frontend (Angular)
 
 Instale as dependências e inicie o servidor de desenvolvimento do Angular. O frontend está configurado com um proxy local (`proxy.conf.json`) para redirecionar todas as chamadas de `/api/*` para o backend rodando em `http://localhost:8080`:
 
@@ -145,6 +135,10 @@ Instale as dependências e inicie o servidor de desenvolvimento do Angular. O fr
 cd frontend
 npm install
 npm start
+```
+ou utilizando o Makefile:
+```bash
+make front
 ```
 O frontend estará disponível em `http://localhost:4200`.
 
