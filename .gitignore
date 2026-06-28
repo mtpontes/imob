@@ -71,3 +71,5 @@ graphify-out/.graphify_analysis.json
 
 .vercel
 .env*
+
+dynamodb-backup/

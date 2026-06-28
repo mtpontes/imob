@@ -12,6 +12,7 @@ services:
       - EAGER_SERVICE_LOADING=1
     volumes:
       - ./containers/localstack:/var/lib/localstack
+      - ./scripts/init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh:ro
 
   dynamodb:
     image: amazon/dynamodb-local:latest
@@ -22,3 +23,50 @@ services:
     volumes:
       - ./containers/dynamodb:/data
     working_dir: /home/dynamodblocal
+
+  backend:
+    build:
+      context: ./backend/api
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "8080:8080"
+    environment:
+      - IMOB_TABLE_NAME=ImobAppDB
+      - IMOB_BUCKET_NAME=imob-app-bucket
+      - IMOB_MOCK_AUTH=true
+      - QUARKUS_DYNAMODB_ENDPOINT_OVERRIDE=http://dynamodb:8000
+      - QUARKUS_DYNAMODB_AWS_CREDENTIALS_TYPE=static
+      - QUARKUS_DYNAMODB_AWS_CREDENTIALS_STATIC_PROVIDER_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+      - QUARKUS_DYNAMODB_AWS_CREDENTIALS_STATIC_PROVIDER_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+      - QUARKUS_S3_ENDPOINT_OVERRIDE=http://localstack:4566
+      - QUARKUS_S3_AWS_CREDENTIALS_TYPE=static
+      - QUARKUS_S3_AWS_CREDENTIALS_STATIC_PROVIDER_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+      - QUARKUS_S3_AWS_CREDENTIALS_STATIC_PROVIDER_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+      - QUARKUS_S3_PATH_STYLE_ACCESS=true
+    depends_on:
+      - dynamodb
+      - localstack
+
+  media-processor:
+    build:
+      context: ./backend/media-processor
+      dockerfile: Dockerfile
+    container_name: media-processor
+    environment:
+      - AWS_ENDPOINT_URL=http://localstack:4566
+      - AWS_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+      - AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    depends_on:
+      - localstack
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend

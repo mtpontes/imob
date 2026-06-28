@@ -1,8 +1,8 @@
-// Define as variaveis de ambiente antes de carregar o index.js e o SDK
-process.env.AWS_ENDPOINT_URL = 'http://localhost:4566';
-process.env.AWS_REGION = 'us-east-1';
-process.env.AWS_ACCESS_KEY_ID = 'AKIAIOSFODNN7EXAMPLE';
-process.env.AWS_SECRET_ACCESS_KEY = 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY';
+// Define as variaveis de ambiente antes de carregar o index.js e o SDK (permitindo overrides via Docker)
+process.env.AWS_ENDPOINT_URL = process.env.AWS_ENDPOINT_URL || 'http://localhost:4566';
+process.env.AWS_REGION = process.env.AWS_REGION || 'us-east-1';
+process.env.AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID || 'AKIAIOSFODNN7EXAMPLE';
+process.env.AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY || 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY';
 
 const { S3Client, ListObjectsV2Command, HeadObjectCommand } = require('@aws-sdk/client-s3');
 const { handler } = require('./index');
@@ -22,10 +22,10 @@ function getThumbnailKey(originalKey) {
     }
     const prefix = originalKey.substring(0, uploadIndex + 9);
     const filename = originalKey.substring(uploadIndex + 9);
-    
+
     const lastDot = filename.lastIndexOf('.');
     const nameWithoutExt = lastDot === -1 ? filename : filename.substring(0, lastDot);
-    
+
     return prefix + 'thumbnails/' + nameWithoutExt + '.jpg';
 }
 
@@ -36,11 +36,12 @@ async function checkThumbnailExists(key) {
             Bucket: BUCKET_NAME,
             Key: thumbKey
         }));
-        return true; // Thumbnail existe
+        return true;
     } catch (err) {
         if (err.name === 'NotFound' || err.$metadata?.httpStatusCode === 404) {
-            return false; // Thumbnail nao existe
+            return false;
         }
+
         // Se for outro erro, exibe mas assume que nao existe
         console.error(`Erro ao verificar thumbnail para ${key}:`, err.message);
         return false;
@@ -58,17 +59,17 @@ async function runWatcher() {
         }
 
         // Filtra para pegar apenas arquivos que sao de upload e nao sao thumbnails nem a pasta thumbnails em si
-        const originalObjects = response.Contents.filter(obj => 
+        const originalObjects = response.Contents.filter(obj =>
             obj.Key.includes('/uploads/') &&
             !obj.Key.includes('/thumbnails/')
         );
 
         for (const obj of originalObjects) {
             const exists = await checkThumbnailExists(obj.Key);
-            
+
             if (!exists) {
                 console.log(`[Watcher] Nova midia encontrada no LocalStack S3: ${obj.Key}. Gerando thumbnail...`);
-                
+
                 // Mock do evento S3 do ObjectCreated
                 const fakeEvent = {
                     Records: [
