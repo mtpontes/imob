@@ -42,6 +42,7 @@ graph TD
     subgraph AWS [AWS Cloud Infrastructure]
         APIGateway[API Gateway HTTP API]:::cloud
         Lambda[Fat Lambda Quarkus / Java 25]:::backend
+        MediaProcessor[Lambda Media Processor / Node.js]:::backend
         DynamoDB[(DynamoDB Single-Table)]:::cloud
         S3Bucket[(S3 Bucket Storage)]:::cloud
         Cognito[Cognito User Pool]:::cloud
@@ -53,6 +54,8 @@ graph TD
     Lambda -- Pre-Signed URLs --> S3Bucket
     Angular -- Put / Direct Upload --> S3Bucket
     Angular -- Authenticate --> Cognito
+    S3Bucket -- ObjectCreated Event --> MediaProcessor
+    MediaProcessor -- Read / Write Thumbnails --> S3Bucket
 ```
 
 ### Fluxo de Upload e Visualização de Fotos via S3 Pre-Signed URLs
