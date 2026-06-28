@@ -1,8 +1,8 @@
-// Define as variaveis de ambiente antes de carregar o index.js e o SDK
-process.env.AWS_ENDPOINT_URL = 'http://localhost:4566';
-process.env.AWS_REGION = 'us-east-1';
-process.env.AWS_ACCESS_KEY_ID = 'AKIAIOSFODNN7EXAMPLE';
-process.env.AWS_SECRET_ACCESS_KEY = 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY';
+// Define as variaveis de ambiente antes de carregar o index.js e o SDK (permitindo overrides via Docker)
+process.env.AWS_ENDPOINT_URL = process.env.AWS_ENDPOINT_URL || 'http://localhost:4566';
+process.env.AWS_REGION = process.env.AWS_REGION || 'us-east-1';
+process.env.AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID || 'AKIAIOSFODNN7EXAMPLE';
+process.env.AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY || 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY';
 
 const { S3Client, ListObjectsV2Command, HeadObjectCommand } = require('@aws-sdk/client-s3');
 const { handler } = require('./index');

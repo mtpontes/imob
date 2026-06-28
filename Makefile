@@ -11,7 +11,16 @@ else
     BASH := bash
 endif
 
-.PHONY: run infra-up infra-down front watch-media
+.PHONY: run dev-infra dev-infra-down front watch-media up down build
+
+up:
+	docker compose up -d
+
+down:
+	docker compose down -v --remove-orphans
+
+build:
+	docker compose build
 
 run:
 	$(BASH) ./scripts/start-backend.sh
@@ -23,8 +32,8 @@ front:
 watch-media:
 	cd backend/media-processor && node watch-local.js
 
-infra-up:
-	docker compose up -d
+dev-infra:
+	docker compose up -d localstack dynamodb
 
-infra-down:
+dev-infra-down:
 	docker compose down -v --remove-orphans

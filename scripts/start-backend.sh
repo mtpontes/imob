@@ -12,7 +12,7 @@ echo -e "==================================================${RESET}"
 
 # 1. Subir o container LocalStack (DynamoDB + S3)
 echo -e "\n${CYAN}[1/4] Subindo container LocalStack...${RESET}"
-docker compose -f "$(dirname "$0")/../docker-compose.yml" up -d
+docker compose -f "$(dirname "$0")/../docker-compose.yml" up -d localstack dynamodb
 
 # 2. Aguardar LocalStack S3 (4566) e DynamoDB Local (8000) estarem prontos
 echo -e "\n${CYAN}[2/4] Aguardando LocalStack S3 na porta 4566...${RESET}"

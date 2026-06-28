@@ -14,11 +14,10 @@ RUN mvn package -DskipTests
 FROM eclipse-temurin:25-jre
 WORKDIR /app
 
-# Copy the Quarkus runner jar and lib directory (Quarkus thin-jar layout)
-COPY --from=build /usr/src/app/target/backend-1.0.0-SNAPSHOT-runner.jar /app/runner.jar
-COPY --from=build /usr/src/app/target/lib/ /app/lib/
+# Copy the Quarkus fast-jar application
+COPY --from=build /usr/src/app/target/quarkus-app/ /app/
 
 EXPOSE 8080
 
 # Command to run the application
-CMD ["java", "-jar", "runner.jar"]
+CMD ["java", "-jar", "quarkus-run.jar"]

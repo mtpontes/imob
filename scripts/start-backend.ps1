@@ -7,7 +7,7 @@ Write-Host "==================================================" -ForegroundColor
 
 # 1. Subir os containers do Docker Compose
 Write-Host "`n[1/4] Subindo containers Docker..." -ForegroundColor Cyan
-docker compose -f "$PSScriptRoot/../docker-compose.yml" up -d
+docker compose -f "$PSScriptRoot/../docker-compose.yml" up -d localstack dynamodb
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Falha ao iniciar os containers do Docker Compose."
     exit 1
