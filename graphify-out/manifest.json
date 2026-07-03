@@ -75,8 +75,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/pages/properties/property-details.component.ts": {
-    "mtime": 1783048216.3332534,
-    "ast_hash": "560c14fa7b11102cbca5dc673adbd649",
+    "mtime": 1783048416.132143,
+    "ast_hash": "3c4bdac3e30b735615ca4695fb0459db",
     "semantic_hash": ""
   },
   "frontend/src/app/pages/script-builder/script-builder.component.spec.ts": {
