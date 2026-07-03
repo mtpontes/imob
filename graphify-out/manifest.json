@@ -378,5 +378,15 @@
     "mtime": 1781057981.6682484,
     "ast_hash": "7da3243e7d8cb991c6f3b4f58cb88785",
     "semantic_hash": ""
+  },
+  "assets/app_demo_flow.webp": {
+    "mtime": 1782676463.89097,
+    "ast_hash": "1b6578f2b98a3f70765a12016956b89e",
+    "semantic_hash": ""
+  },
+  "assets/app_demo_mobile.webp": {
+    "mtime": 1782676854.1017318,
+    "ast_hash": "1b6578f2b98a3f70765a12016956b89e",
+    "semantic_hash": ""
   }
 }

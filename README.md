@@ -4,13 +4,16 @@ Este é um monorepo que contém o frontend e o backend da ImobApp, um sistema se
 
 O sistema suporta a criação de formulários dinâmicos, cálculo automático de pontuação por pesos, registro de dados do imóvel e upload direto de fotos para o Amazon S3 utilizando URLs pré-assinadas (Pre-Signed URLs).
 
-````carousel
-![Painel e Lista de Imoveis](file:///e:/projetos/vibecode/app-de-avaliar-imoveis/.agents/prints/properties_dashboard_mockup.png)
-<!-- slide -->
-![Criador de Templates](file:///e:/projetos/vibecode/app-de-avaliar-imoveis/.agents/prints/template_builder_mockup.png)
-<!-- slide -->
-![Formulario de Avaliacao e Nota em Tempo Real](file:///e:/projetos/vibecode/app-de-avaliar-imoveis/.agents/prints/evaluation_score_mockup.png)
-````
+<p align="center">
+  <strong>Painel de Imoveis (Dashboard)</strong><br>
+  <img src="assets/dashboard_properties.png" width="60%" alt="Painel de Imoveis Desktop" />
+  <img src="assets/dashboard_properties_mobile.png" width="25%" alt="Painel de Imoveis Mobile" />
+</p>
+<p align="center">
+  <strong>Formulario de Avaliacao Dinamica (Vistoria)</strong><br>
+  <img src="assets/evaluation_form.png" width="60%" alt="Vistoria Desktop" />
+  <img src="assets/evaluation_form_mobile.png" width="25%" alt="Vistoria Mobile" />
+</p>
 
 ---
 
