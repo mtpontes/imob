@@ -154,7 +154,13 @@
   <!-- Modal para visualização detalhada de respostas de uma avaliação -->
   <div id="evaluation-details-modal" class="modal-wrapper" *ngIf="isModalOpen" @modalTrigger>
     <div class="modal-backdrop" (click)="closeModal()"></div>
-    <div class="modal-content glass" *ngIf="selectedEvaluation">
+    <div class="modal-content glass" 
+         *ngIf="selectedEvaluation"
+         [class.expanded]="isModalExpanded"
+         (scroll)="onModalScroll($event)"
+         (touchstart)="onModalTouchStart($event)"
+         (touchmove)="onModalTouchMove($event)"
+         (touchend)="onModalTouchEnd($event)">
       <div class="modal-drag-indicator"></div>
       <div class="modal-header">
         <div>
