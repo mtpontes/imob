@@ -29,6 +29,10 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
   selectedEvaluation: EvaluationResponse | null = null;
   selectedScriptName: string = '';
   evaluationScores: { [key: string]: number | undefined } = {};
+  isModalExpanded: boolean = false;
+  isDraggingModal: boolean = false;
+  modalTouchStartY: number = 0;
+  modalTouchCurrentY: number = 0;
   
   // Controle do Modal de Exclusão Customizado
   isConfirmDeleteOpen: boolean = false;
@@ -182,6 +186,8 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
     this.isModalOpen = false;
     this.selectedEvaluation = null;
     this.selectedScriptName = '';
+    this.isModalExpanded = false;
+    this.isDraggingModal = false;
   }
 
   editEvaluation(ev: EvaluationResponse): void {
@@ -481,6 +487,58 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
       } else if (event.key === 'ArrowLeft') {
         this.prevMedia();
       }
+    }
+  }
+
+  onModalScroll(event: Event): void {
+    const element = event.target as HTMLElement;
+    if (element.scrollTop > 5) {
+      this.isModalExpanded = true;
+    } else if (element.scrollTop <= 0) {
+      this.isModalExpanded = false;
+    }
+  }
+
+  onModalTouchStart(event: TouchEvent): void {
+    const element = event.currentTarget as HTMLElement;
+    if (element.scrollTop <= 0) {
+      this.modalTouchStartY = event.touches[0].clientY;
+      this.modalTouchCurrentY = event.touches[0].clientY;
+      this.isDraggingModal = true;
+      element.style.transition = 'none';
+    } else {
+      this.isDraggingModal = false;
+    }
+  }
+
+  onModalTouchMove(event: TouchEvent): void {
+    if (!this.isDraggingModal) return;
+
+    const element = event.currentTarget as HTMLElement;
+    this.modalTouchCurrentY = event.touches[0].clientY;
+    const deltaY = this.modalTouchCurrentY - this.modalTouchStartY;
+
+    if (deltaY > 0) {
+      element.style.transform = `translateY(${deltaY}px)`;
+      event.preventDefault();
+    } else {
+      element.style.transform = '';
+      element.style.transition = '';
+      this.isDraggingModal = false;
+    }
+  }
+
+  onModalTouchEnd(event: TouchEvent): void {
+    if (!this.isDraggingModal) return;
+
+    const element = event.currentTarget as HTMLElement;
+    element.style.transition = '';
+    element.style.transform = '';
+    this.isDraggingModal = false;
+
+    const deltaY = this.modalTouchCurrentY - this.modalTouchStartY;
+    if (deltaY > 120) {
+      this.closeModal();
     }
   }
 
