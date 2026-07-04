@@ -170,7 +170,7 @@ public class AuthFilterTest {
 
         Mockito.verify(this.dynamoDbClient, Mockito.times(1))
                 .getItem(Mockito.any(GetItemRequest.class));
-        Mockito.verify(this.dynamoDbClient, Mockito.times(1))
+        Mockito.verify(this.dynamoDbClient, Mockito.times(3))
                 .putItem(Mockito.any(PutItemRequest.class));
     }
 

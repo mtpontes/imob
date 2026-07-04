@@ -174,17 +174,55 @@ public class AuthFilter implements ContainerRequestFilter {
 
         // Se nao existir perfil cadastrado, auto-provisiona um WorkspaceId
         String newWorkspaceId = "workspace_" + UUID.randomUUID().toString();
+        String domain = email.contains("@") ? email.split("@")[1] : "";
+        String workspaceName = "Workspace Principal";
+        if (!domain.isBlank()) {
+            String name = domain.split("\\.")[0];
+            workspaceName = name.substring(0, 1).toUpperCase() + name.substring(1) + " Workspace";
+        }
+
+        // 1. Cria o perfil
         Map<String, AttributeValue> newItem = new HashMap<>();
         newItem.put("PK", AttributeValue.builder().s(pk).build());
         newItem.put("SK", AttributeValue.builder().s(sk).build());
         newItem.put("workspaceId", AttributeValue.builder().s(newWorkspaceId).build());
 
-        PutItemRequest putReq = PutItemRequest.builder()
+        PutItemRequest putProfile = PutItemRequest.builder()
                 .tableName(this.getTableName())
                 .item(newItem)
                 .build();
+        this.dynamoDb.putItem(putProfile);
 
-        this.dynamoDb.putItem(putReq);
+        // 2. Cria os metadados do Workspace
+        Map<String, AttributeValue> workspaceMetadata = new HashMap<>();
+        workspaceMetadata.put("PK", AttributeValue.builder().s("WORKSPACE#" + newWorkspaceId).build());
+        workspaceMetadata.put("SK", AttributeValue.builder().s("METADATA").build());
+        workspaceMetadata.put("id", AttributeValue.builder().s(newWorkspaceId).build());
+        workspaceMetadata.put("name", AttributeValue.builder().s(workspaceName).build());
+        workspaceMetadata.put("ownerEmail", AttributeValue.builder().s(email).build());
+
+        PutItemRequest putWorkspace = PutItemRequest.builder()
+                .tableName(this.getTableName())
+                .item(workspaceMetadata)
+                .build();
+        this.dynamoDb.putItem(putWorkspace);
+
+        // 3. Cria a relacao de vinculo
+        Map<String, AttributeValue> relation = new HashMap<>();
+        relation.put("PK", AttributeValue.builder().s("USER#" + email).build());
+        relation.put("SK", AttributeValue.builder().s("WORKSPACE#" + newWorkspaceId).build());
+        relation.put("email", AttributeValue.builder().s(email).build());
+        relation.put("workspaceId", AttributeValue.builder().s(newWorkspaceId).build());
+        relation.put("role", AttributeValue.builder().s("OWNER").build());
+        relation.put("joinedAt", AttributeValue.builder().s(java.time.Instant.now().toString()).build());
+        relation.put("workspaceName", AttributeValue.builder().s(workspaceName).build());
+
+        PutItemRequest putRelation = PutItemRequest.builder()
+                .tableName(this.getTableName())
+                .item(relation)
+                .build();
+        this.dynamoDb.putItem(putRelation);
+
         return newWorkspaceId;
     }
 }

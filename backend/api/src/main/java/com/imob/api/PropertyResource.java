@@ -5,7 +5,8 @@ import com.imob.dto.CreatePropertyRequest;
 import com.imob.dto.PropertyResponse;
 import com.imob.entity.PropertyEntity;
 import com.imob.entity.EvaluationEntity;
-import com.imob.repository.DynamoDbRepository;
+import com.imob.repository.PropertyRepository;
+import com.imob.repository.EvaluationRepository;
 import com.imob.service.S3Service;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.ws.rs.Consumes;
@@ -32,7 +33,8 @@ import java.util.UUID;
 public class PropertyResource {
 
     private final UserContext userContext;
-    private final DynamoDbRepository repository;
+    private final PropertyRepository repository;
+    private final EvaluationRepository evaluationRepository;
     private final S3Service s3Service;
 
     @GET
@@ -81,12 +83,12 @@ public class PropertyResource {
                     .entity("{\"error\":\"Imovel nao encontrado\"}")
                     .build();
 
-        List<EvaluationEntity> evaluations = this.repository.getEvaluationsByProperty(workspaceId, propertyId);
+        List<EvaluationEntity> evaluations = this.evaluationRepository.getEvaluationsByProperty(workspaceId, propertyId);
         for (EvaluationEntity eval : evaluations) {
             if (eval.getMediaKeys() != null)
                 for (String key : eval.getMediaKeys())
                     this.s3Service.deleteObject(key);
-            this.repository.deleteEvaluation(workspaceId, propertyId, eval.getCreatedAt());
+            this.evaluationRepository.deleteEvaluation(workspaceId, propertyId, eval.getCreatedAt());
         }
 
         this.repository.deleteProperty(workspaceId, propertyId);
