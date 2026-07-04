@@ -67,6 +67,11 @@ html {
   scrollbar-gutter: stable;
 }
 
+app-root {
+  display: block;
+  width: 100%;
+}
+
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
@@ -138,16 +143,18 @@ body::after {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  width: 100%;
 }
 
 /* Header */
 .app-header {
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 200;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--glass-border);
   background: hsla(222, 47%, 7%, 0.8);
@@ -2650,6 +2657,10 @@ body.no-scroll {
     padding: 1.25rem 3rem;
   }
 
+  .header-back-btn {
+    display: none !important;
+  }
+
   .app-main {
     grid-area: main;
     padding: 2.5rem 3rem 4rem;
@@ -2663,7 +2674,7 @@ body.no-scroll {
     right: auto;
     bottom: auto;
     width: 260px;
-    height: calc(100vh - 7rem);
+    height: calc(100vh - 5.5rem);
     border-top: none;
     border-right: 1px solid var(--glass-border);
     background: transparent;
@@ -2861,7 +2872,7 @@ input[type=number] {
 .dropdown-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 190;
+  z-index: -1;
   background: transparent;
 }
 
@@ -2871,30 +2882,18 @@ input[type=number] {
   top: calc(100% + 0.75rem);
   right: 0;
   width: 240px;
-  background: hsla(222, 47%, 11%, 0.95);
+  background: hsla(222, 47%, 9%, 0.98);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg), 0 10px 30px rgba(0, 0, 0, 0.6);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.55);
   padding: 0.75rem;
-  z-index: 200;
+  z-index: 210;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
-  transform-origin: top right;
-  animation: dropdownExpand var(--transition-normal) cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-@keyframes dropdownExpand {
-  from {
-    opacity: 0;
-    transform: scale(0.92) translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+  overflow: hidden;
 }
 
 .dropdown-user-details {
@@ -2932,6 +2931,182 @@ input[type=number] {
   width: 14px;
   height: 14px;
   color: var(--primary-light);
+}
+
+/* Workspace Selector & Dropdown (Premium Styling) */
+.workspace-selector-container {
+  position: relative;
+}
+
+.workspace-badge.clickable {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  transition: all var(--transition-fast);
+}
+
+.workspace-badge.clickable:hover {
+  background: var(--glass-hover);
+  border-color: var(--glass-border-focus);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.chevron-workspace {
+  width: 14px;
+  height: 14px;
+  opacity: 0.7;
+  transition: transform var(--transition-fast);
+}
+
+.workspace-badge.clickable:hover .chevron-workspace {
+  transform: translateY(1px);
+}
+
+.workspace-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  width: 260px;
+  background: hsla(222, 47%, 9%, 0.98);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.55);
+  z-index: 1000;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  overflow: hidden;
+}
+
+.workspace-list {
+  max-height: 200px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.workspace-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.workspace-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.workspace-item.active {
+  background: rgba(59, 130, 246, 0.1);
+  border-left: 3px solid var(--primary);
+  padding-left: calc(0.75rem - 3px);
+}
+
+.workspace-item-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.workspace-item-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.workspace-item-role {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.active-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--primary);
+}
+
+/* Mobile Workspace Styling */
+.workspace-list-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.01);
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--glass-border);
+  margin-top: 0.25rem;
+}
+
+.workspace-item-mobile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.workspace-item-mobile.active {
+  border-color: var(--primary);
+  background: rgba(59, 130, 246, 0.05);
+  color: var(--primary-light);
+}
+
+.badge-role {
+  font-size: 0.65rem;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+}
+
+.workspace-item-mobile.active .badge-role {
+  background: rgba(59, 130, 246, 0.2);
+  color: var(--primary-light);
+}
+
+.workspace-mobile-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.workspace-mobile-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.workspace-mobile-action lucide-icon {
+  width: 12px;
+  height: 12px;
 }
 
 .dropdown-divider {
@@ -2986,6 +3161,11 @@ input[type=number] {
   
   .brand-logo {
     font-size: 1.35rem;
+  }
+
+  /* Ocultação da logo se o botão de voltar estiver presente e visível no mobile */
+  .header-back-btn + .brand-logo {
+    display: none !important;
   }
 
   /* Ajuste no padding geral da página */
@@ -3141,8 +3321,9 @@ input[type=number] {
   }
 
   .modal-content {
-    padding: 1.25rem 1.25rem 2rem !important;
-    max-height: 75vh !important;
+    padding: 0 1.25rem 2rem !important;
+    height: 78vh !important;
+    max-height: 78vh !important;
     overflow-y: auto !important;
     width: 100% !important;
     max-width: 100% !important;
@@ -3150,14 +3331,8 @@ input[type=number] {
     border-radius: var(--radius-md) var(--radius-md) 0 0 !important;
     overscroll-behavior: contain !important;
     transform: translateZ(0);
-    will-change: max-height, transform;
-    transition: max-height 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-radius 0.25s ease, transform 0.15s ease-out;
-  }
-
-  .modal-content.expanded {
-    max-height: 100vh !important;
-    height: 100vh !important;
-    border-radius: 0 !important;
+    will-change: transform;
+    transition: border-radius 0.25s ease, transform 0.15s ease-out;
   }
 
   .modal-content.glass {
@@ -3171,13 +3346,22 @@ input[type=number] {
     -webkit-backdrop-filter: none !important;
   }
 
+  .modal-drag-zone {
+    display: block !important;
+    width: 100% !important;
+    padding: 1.25rem 0 0.75rem !important;
+    cursor: grab !important;
+    flex-shrink: 0 !important;
+    touch-action: none;
+  }
+
   .modal-drag-indicator {
     display: block !important;
     width: 36px !important;
     height: 4px !important;
     background-color: rgba(255, 255, 255, 0.2) !important;
     border-radius: 2px !important;
-    margin: 0 auto 1.25rem !important;
+    margin: 0 auto !important;
     flex-shrink: 0 !important;
   }
 
@@ -3680,7 +3864,7 @@ input[type=number] {
   border-bottom-right-radius: var(--radius-sm);
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.55), 0 0 15px var(--primary-glow);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.55);
   z-index: 300;
   overflow: hidden;
   backdrop-filter: blur(15px);

@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { RouterOutlet, RouterModule, ChildrenOutletContexts, Router, NavigationEnd } from '@angular/router';
 import { CommonModule, Location } from '@angular/common';
 import { AuthService } from './services/auth.service';
+import { WorkspaceService } from './services/workspace.service';
+import { WorkspaceResponse } from './types';
 import { LucideAngularModule } from 'lucide-angular';
-import { routeAnimations } from './animations/animations';
+import { routeAnimations, dropdownTrigger } from './animations/animations';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -12,15 +14,19 @@ import { filter } from 'rxjs/operators';
   imports: [CommonModule, RouterOutlet, RouterModule, LucideAngularModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  animations: [routeAnimations]
+  animations: [routeAnimations, dropdownTrigger]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'frontend';
   isProfileMenuOpen = false;
+  isWorkspaceMenuOpen = false;
   showBackButton = false;
+  workspaces: WorkspaceResponse[] = [];
+  activeWorkspace: WorkspaceResponse | null = null;
 
   constructor(
     private authService: AuthService,
+    private workspaceService: WorkspaceService,
     private contexts: ChildrenOutletContexts,
     private router: Router,
     private location: Location
@@ -34,6 +40,92 @@ export class AppComponent {
         url.startsWith('/roteiros/builder') || 
         url.startsWith('/evaluate/')
       );
+    });
+  }
+
+  ngOnInit(): void {
+    if (this.isLoggedIn()) {
+      this.loadWorkspaces();
+    }
+  }
+
+  loadWorkspaces(): void {
+    this.workspaceService.getWorkspaces().subscribe({
+      next: (list) => {
+        this.workspaces = list;
+        this.activeWorkspace = list.find(w => w.active) || list[0] || null;
+      },
+      error: (err) => {
+        console.error('Erro ao carregar workspaces', err);
+      }
+    });
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    // Se o clique for fora do seletor do workspace e o menu estiver aberto, fecha o menu
+    const workspaceContainer = document.querySelector('.workspace-selector-container');
+    if (workspaceContainer && !workspaceContainer.contains(target)) {
+      this.isWorkspaceMenuOpen = false;
+    }
+    // Se o clique for fora do perfil e o menu estiver aberto, fecha o menu
+    const profileContainer = document.querySelector('.user-profile-menu-container');
+    if (profileContainer && !profileContainer.contains(target)) {
+      this.isProfileMenuOpen = false;
+    }
+  }
+
+  toggleWorkspaceMenu(event: Event): void {
+    event.stopPropagation();
+    this.isWorkspaceMenuOpen = !this.isWorkspaceMenuOpen;
+    if (this.isWorkspaceMenuOpen) {
+      this.isProfileMenuOpen = false;
+    }
+  }
+
+  closeWorkspaceMenu(): void {
+    this.isWorkspaceMenuOpen = false;
+  }
+
+  selectWorkspace(ws: WorkspaceResponse): void {
+    if (ws.active) return;
+    this.workspaceService.changeActiveWorkspace(ws.workspaceId).subscribe({
+      next: () => {
+        window.location.reload();
+      },
+      error: (err) => {
+        alert('Erro ao alterar ambiente: ' + (err.error?.error || err.message));
+      }
+    });
+  }
+
+  createWorkspace(): void {
+    const name = prompt('Digite o nome do novo ambiente:');
+    if (!name || !name.trim()) return;
+
+    this.workspaceService.createWorkspace({ name: name.trim() }).subscribe({
+      next: (newWs) => {
+        alert(`Ambiente "${newWs.workspaceName}" criado com sucesso!`);
+        window.location.reload();
+      },
+      error: (err) => {
+        alert('Erro ao criar ambiente: ' + (err.error?.error || err.message));
+      }
+    });
+  }
+
+  inviteUser(): void {
+    const email = prompt('Digite o e-mail do usuário que deseja convidar para este ambiente:');
+    if (!email || !email.trim()) return;
+
+    this.workspaceService.inviteUser(email.trim()).subscribe({
+      next: (res) => {
+        alert(res.message || 'Usuário convidado com sucesso!');
+      },
+      error: (err) => {
+        alert('Erro ao enviar convite: ' + (err.error?.error || err.message));
+      }
     });
   }
 
@@ -59,6 +151,9 @@ export class AppComponent {
   toggleProfileMenu(event: Event): void {
     event.stopPropagation();
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
+    if (this.isProfileMenuOpen) {
+      this.isWorkspaceMenuOpen = false;
+    }
   }
 
   closeProfileMenu(): void {
@@ -71,17 +166,6 @@ export class AppComponent {
 
   get userEmail(): string | null {
     return this.authService.getUserEmail();
-  }
-
-  get workspaceName(): string {
-    const email = this.userEmail || '';
-    if (!email) return 'Workspace Principal';
-    const domain = email.split('@')[1];
-    if (domain) {
-      const name = domain.split('.')[0];
-      return name.charAt(0).toUpperCase() + name.slice(1);
-    }
-    return 'Workspace Principal';
   }
 
   get userInitials(): string {

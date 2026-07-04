@@ -29,7 +29,6 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
   selectedEvaluation: EvaluationResponse | null = null;
   selectedScriptName: string = '';
   evaluationScores: { [key: string]: number | undefined } = {};
-  isModalExpanded: boolean = false;
   isDraggingModal: boolean = false;
   modalTouchStartY: number = 0;
   modalTouchCurrentY: number = 0;
@@ -186,7 +185,6 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
     this.isModalOpen = false;
     this.selectedEvaluation = null;
     this.selectedScriptName = '';
-    this.isModalExpanded = false;
     this.isDraggingModal = false;
   }
 
@@ -490,17 +488,9 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
     }
   }
 
-  onModalScroll(event: Event): void {
-    const element = event.target as HTMLElement;
-    if (element.scrollTop > 5) {
-      this.isModalExpanded = true;
-    } else if (element.scrollTop <= 0) {
-      this.isModalExpanded = false;
-    }
-  }
-
   onModalTouchStart(event: TouchEvent): void {
     const element = event.currentTarget as HTMLElement;
+
     if (element.scrollTop <= 0) {
       this.modalTouchStartY = event.touches[0].clientY;
       this.modalTouchCurrentY = event.touches[0].clientY;
@@ -515,12 +505,15 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
     if (!this.isDraggingModal) return;
 
     const element = event.currentTarget as HTMLElement;
+
     this.modalTouchCurrentY = event.touches[0].clientY;
     const deltaY = this.modalTouchCurrentY - this.modalTouchStartY;
 
     if (deltaY > 0) {
       element.style.transform = `translateY(${deltaY}px)`;
-      event.preventDefault();
+      if (event.cancelable) {
+        event.preventDefault();
+      }
     } else {
       element.style.transform = '';
       element.style.transition = '';
@@ -532,6 +525,7 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
     if (!this.isDraggingModal) return;
 
     const element = event.currentTarget as HTMLElement;
+
     element.style.transition = '';
     element.style.transform = '';
     this.isDraggingModal = false;

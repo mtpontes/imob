@@ -3,16 +3,45 @@
   <!-- Header Geral (Oculto em Login) -->
   <header class="app-header glass" *ngIf="isLoggedIn()">
     <div class="header-brand">
-      <div class="brand-logo" *ngIf="!showBackButton" routerLink="/properties">
-        <img src="icons/icon-96x96.png?v=1" class="brand-logo-img" alt="ImobApp Logo" />
-        <span>ImobApp</span>
-      </div>
       <button class="header-back-btn" *ngIf="showBackButton" (click)="goBack()" title="Voltar">
         <lucide-icon name="chevron-left"></lucide-icon>
       </button>
-      <div class="workspace-badge desktop-only" id="current-workspace-badge">
-        <lucide-icon name="briefcase"></lucide-icon>
-        <span id="workspace-name-display">Workspace: {{ workspaceName }}</span>
+      <div class="brand-logo" routerLink="/properties">
+        <img src="icons/icon-96x96.png?v=1" class="brand-logo-img" alt="ImobApp Logo" />
+        <span>ImobApp</span>
+      </div>
+      <div class="workspace-selector-container desktop-only">
+        <div class="workspace-badge clickable" (click)="toggleWorkspaceMenu($event)" id="current-workspace-badge">
+          <lucide-icon name="briefcase"></lucide-icon>
+          <span id="workspace-name-display">{{ activeWorkspace ? activeWorkspace.workspaceName : 'Carregando...' }}</span>
+          <lucide-icon name="chevron-down" class="chevron-workspace"></lucide-icon>
+        </div>
+        
+        <!-- Menu Dropdown de Workspaces -->
+        <div class="workspace-dropdown glass" *ngIf="isWorkspaceMenuOpen" id="workspace-dropdown-menu" @dropdownTrigger>
+          <div class="dropdown-header">Meus Ambientes</div>
+          <div class="workspace-list">
+            <div *ngFor="let ws of workspaces" 
+                 class="workspace-item" 
+                 [class.active]="ws.active"
+                 (click)="selectWorkspace(ws)">
+              <lucide-icon name="check" class="active-icon" *ngIf="ws.active"></lucide-icon>
+              <div class="workspace-item-details">
+                <span class="workspace-item-name">{{ ws.workspaceName }}</span>
+                <span class="workspace-item-role">{{ ws.role === 'OWNER' ? 'Proprietário' : 'Convidado' }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+          <button (click)="createWorkspace()" class="dropdown-item">
+            <lucide-icon name="plus"></lucide-icon>
+            <span>Novo Ambiente</span>
+          </button>
+          <button (click)="inviteUser()" class="dropdown-item" *ngIf="activeWorkspace?.role === 'OWNER'">
+            <lucide-icon name="plus-circle"></lucide-icon>
+            <span>Convidar Usuário</span>
+          </button>
+        </div>
       </div>
     </div>
     
@@ -27,18 +56,33 @@
           <lucide-icon name="chevron-down" class="chevron-profile desktop-only"></lucide-icon>
         </div>
 
-        <!-- Backdrop invisível para fechar o menu ao clicar fora -->
-        <div class="dropdown-backdrop" *ngIf="isProfileMenuOpen" (click)="closeProfileMenu()"></div>
-
         <!-- Menu Dropdown de Perfil -->
-        <div class="profile-dropdown glass" *ngIf="isProfileMenuOpen" id="profile-dropdown-menu">
+        <div class="profile-dropdown glass" *ngIf="isProfileMenuOpen" id="profile-dropdown-menu" @dropdownTrigger>
           <div class="dropdown-user-details mobile-only">
             <span class="dropdown-user-email">{{ userEmail }}</span>
           </div>
           
           <div class="dropdown-workspace mobile-only">
             <lucide-icon name="briefcase"></lucide-icon>
-            <span>Workspace: {{ workspaceName }}</span>
+            <span>Ambiente: {{ activeWorkspace ? activeWorkspace.workspaceName : 'Carregando...' }}</span>
+          </div>
+          
+          <div class="workspace-list-mobile mobile-only">
+            <div *ngFor="let ws of workspaces" 
+                 class="workspace-item-mobile" 
+                 [class.active]="ws.active"
+                 (click)="selectWorkspace(ws)">
+              <span>{{ ws.workspaceName }}</span>
+              <span class="badge-role">{{ ws.role === 'OWNER' ? 'Dono' : 'Membro' }}</span>
+            </div>
+            <div class="workspace-mobile-actions">
+              <button (click)="createWorkspace()" class="workspace-mobile-action">
+                <lucide-icon name="plus"></lucide-icon> Criar Ambiente
+              </button>
+              <button (click)="inviteUser()" class="workspace-mobile-action" *ngIf="activeWorkspace?.role === 'OWNER'">
+                <lucide-icon name="plus-circle"></lucide-icon> Convidar
+              </button>
+            </div>
           </div>
           
           <div class="dropdown-divider mobile-only"></div>

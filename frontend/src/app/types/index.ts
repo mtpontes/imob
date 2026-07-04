@@ -88,3 +88,23 @@ export interface GenerateUploadUrlResponse {
   uploadUrl: string;
   s3Key: string;
 }
+
+export interface WorkspaceResponse {
+  workspaceId: string;
+  workspaceName: string;
+  role: string;
+  joinedAt: string;
+  active: boolean;
+}
+
+export interface CreateWorkspaceRequest {
+  name: string;
+}
+
+export interface ChangeActiveWorkspaceRequest {
+  workspaceId: string;
+}
+
+export interface InviteUserRequest {
+  email: string;
+}
