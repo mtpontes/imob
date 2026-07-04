@@ -24,6 +24,11 @@ export class AppComponent implements OnInit {
   workspaces: WorkspaceResponse[] = [];
   activeWorkspace: WorkspaceResponse | null = null;
 
+  // Controle do Drag do Perfil (Bottom Sheet no Mobile)
+  isDraggingProfile = false;
+  profileTouchStartY = 0;
+  profileTouchCurrentY = 0;
+
   constructor(
     private authService: AuthService,
     private workspaceService: WorkspaceService,
@@ -176,5 +181,48 @@ export class AppComponent implements OnInit {
   logout(): void {
     this.authService.logout();
     window.location.reload();
+  }
+
+  onProfileTouchStart(event: TouchEvent): void {
+    const element = event.currentTarget as HTMLElement;
+    if (element.scrollTop <= 0) {
+      this.profileTouchStartY = event.touches[0].clientY;
+      this.profileTouchCurrentY = event.touches[0].clientY;
+      this.isDraggingProfile = true;
+      element.style.transition = 'none';
+    } else {
+      this.isDraggingProfile = false;
+    }
+  }
+
+  onProfileTouchMove(event: TouchEvent): void {
+    if (!this.isDraggingProfile) return;
+    const element = event.currentTarget as HTMLElement;
+    this.profileTouchCurrentY = event.touches[0].clientY;
+    const deltaY = this.profileTouchCurrentY - this.profileTouchStartY;
+
+    if (deltaY > 0) {
+      element.style.transform = `translateY(${deltaY}px)`;
+      if (event.cancelable) {
+        event.preventDefault();
+      }
+    } else {
+      element.style.transform = '';
+      element.style.transition = '';
+      this.isDraggingProfile = false;
+    }
+  }
+
+  onProfileTouchEnd(event: TouchEvent): void {
+    if (!this.isDraggingProfile) return;
+    const element = event.currentTarget as HTMLElement;
+    element.style.transition = '';
+    element.style.transform = '';
+    this.isDraggingProfile = false;
+
+    const deltaY = this.profileTouchCurrentY - this.profileTouchStartY;
+    if (deltaY > 120) {
+      this.isProfileMenuOpen = false;
+    }
   }
 }
