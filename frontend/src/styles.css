@@ -3322,8 +3322,8 @@ input[type=number] {
 
   .modal-content {
     padding: 0 1.25rem 2rem !important;
-    height: 78vh !important;
-    max-height: 78vh !important;
+    height: auto !important;
+    max-height: 70vh !important;
     overflow-y: auto !important;
     width: 100% !important;
     max-width: 100% !important;
@@ -3331,8 +3331,12 @@ input[type=number] {
     border-radius: var(--radius-md) var(--radius-md) 0 0 !important;
     overscroll-behavior: contain !important;
     transform: translateZ(0);
-    will-change: transform;
-    transition: border-radius 0.25s ease, transform 0.15s ease-out;
+    will-change: transform, max-height;
+    transition: max-height 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-radius 0.25s ease, transform 0.15s ease-out;
+  }
+
+  .modal-content.expanded {
+    max-height: 94vh !important;
   }
 
   .modal-content.glass {

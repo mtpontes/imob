@@ -156,6 +156,8 @@
     <div class="modal-backdrop" (click)="closeModal()"></div>
     <div class="modal-content glass" 
          *ngIf="selectedEvaluation"
+         [class.expanded]="isModalExpanded"
+         (scroll)="onModalScroll($event)"
          (touchstart)="onModalTouchStart($event)"
          (touchmove)="onModalTouchMove($event)"
          (touchend)="onModalTouchEnd($event)">
