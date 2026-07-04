@@ -83,12 +83,12 @@ Para contornar o limite de payload de 10MB do API Gateway, a transferência bin�
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Corretor
+    actor Usuario
     participant App as Angular PWA (Frontend)
     participant API as Quarkus Lambda (Backend)
     participant S3 as Amazon S3 Bucket
 
-    Corretor->>App: Seleciona fotos do imovel
+    Usuario->>App: Seleciona fotos do imovel
     App->>API: POST /api/evaluations/upload-url { fileName, contentType }
     Note over API: Valida extensao & gera PUT Pre-Signed URL (15 min)
     API-->>App: Retorna { uploadUrl, s3Key }
@@ -102,7 +102,7 @@ sequenceDiagram
     App->>API: GET /api/evaluations/property/{id}
     Note over API: Recupera s3Keys do banco e gera GET Pre-Signed URLs (1 hora)
     API-->>App: Retorna DTO com URLs pré-assinadas temporarias
-    App->>Corretor: Renderiza imagens em tela com Lightbox premium
+    App->>Usuario: Renderiza imagens em tela com Lightbox premium
 ```
 
 <details>
