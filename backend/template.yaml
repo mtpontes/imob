@@ -51,7 +51,7 @@ Resources:
   ImobAppUserPoolDomain:
     Type: AWS::Cognito::UserPoolDomain
     Properties:
-      Domain: !Sub imobapp-auth-${AWS::AccountId}
+      Domain: !Sub imobapp-auth-${AWS::StackName}
       UserPoolId: !Ref ImobAppUserPool
 
   # Google como Identity Provider (requer GoogleClientId e GoogleClientSecret preenchidos)
@@ -216,7 +216,7 @@ Outputs:
     Value: !Ref ImobAppUserPoolClient
   CognitoDomain:
     Description: Cognito Hosted UI Domain (para configurar no frontend)
-    Value: !Sub https://imobapp-auth-${AWS::AccountId}.auth.${AWS::Region}.amazoncognito.com
+    Value: !Sub https://imobapp-auth-${AWS::StackName}.auth.${AWS::Region}.amazoncognito.com
   BucketName:
     Description: S3 Bucket Name
     Value: !Ref ImobAppBucket
