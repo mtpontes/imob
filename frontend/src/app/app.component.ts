@@ -49,6 +49,9 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Processa o redirect do Cognito apos login social (hash com #id_token=...&access_token=...)
+    this.authService.handleCognitoCallback(window.location.hash);
+
     if (this.isLoggedIn()) {
       this.loadWorkspaces();
     }
