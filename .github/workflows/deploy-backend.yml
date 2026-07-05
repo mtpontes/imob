@@ -96,10 +96,16 @@ jobs:
 
       - name: SAM Deploy
         run: |
+          PARAMETER_OVERRIDES="EnableMockAuth=false"
+          if [ ! -z "${{ secrets.GOOGLE_CLIENT_ID }}" ] && [ ! -z "${{ secrets.GOOGLE_CLIENT_SECRET }}" ]; then
+            PARAMETER_OVERRIDES="$PARAMETER_OVERRIDES GoogleClientId=${{ secrets.GOOGLE_CLIENT_ID }} GoogleClientSecret=${{ secrets.GOOGLE_CLIENT_SECRET }}"
+          fi
+
           sam deploy \
             --template-file backend/template.yaml \
             --stack-name imob-app-infra-$DEPLOY_ENV \
             --resolve-s3 \
             --capabilities CAPABILITY_IAM \
             --no-confirm-changeset \
-            --no-fail-on-empty-changeset
+            --no-fail-on-empty-changeset \
+            --parameter-overrides $PARAMETER_OVERRIDES

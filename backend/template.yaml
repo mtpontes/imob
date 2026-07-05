@@ -23,11 +23,13 @@ Parameters:
     Type: String
     Description: URL do frontend para callbacks OAuth (localhost em dev, URL da Vercel em prod)
     Default: 'http://localhost:4200'
-
 Globals:
   Function:
     Timeout: 30
     MemorySize: 512
+
+Conditions:
+  CreateGoogleIdP: !Not [ !Equals [ !Ref GoogleClientId, '' ] ]
 
 Resources:
   # 1. Cognito User Pool para autenticacao
@@ -57,6 +59,7 @@ Resources:
   # Google como Identity Provider (requer GoogleClientId e GoogleClientSecret preenchidos)
   ImobAppGoogleIdP:
     Type: AWS::Cognito::UserPoolIdentityProvider
+    Condition: CreateGoogleIdP
     Properties:
       UserPoolId: !Ref ImobAppUserPool
       ProviderName: Google
@@ -92,8 +95,11 @@ Resources:
       LogoutURLs:
         - !Ref FrontendCallbackUrl
       SupportedIdentityProviders:
-        - Google
-        - COGNITO
+        !If
+          - CreateGoogleIdP
+          - - Google
+            - COGNITO
+          - - COGNITO
 
   # 2. API Gateway HTTP API (Sem Cognito obrigatorio por enquanto)
   ImobAppHttpApi:
