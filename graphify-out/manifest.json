@@ -5,8 +5,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/app.component.ts": {
-    "mtime": 1783204426.9004347,
-    "ast_hash": "de778f3ae7390dad43e9516db53d9328",
+    "mtime": 1783205743.3654563,
+    "ast_hash": "a6d8777d8bcab3c0adc79525273d4a42",
     "semantic_hash": ""
   },
   "frontend/src/app/app.config.ts": {
@@ -45,9 +45,9 @@
     "semantic_hash": "0bfe73bacb6a201a586bf4043cb8538b"
   },
   "frontend/src/app/pages/login/login.component.ts": {
-    "mtime": 1780811038.5706787,
-    "ast_hash": "94cdfb484e57acc7dc5fb44e3ee9c69a",
-    "semantic_hash": "94cdfb484e57acc7dc5fb44e3ee9c69a"
+    "mtime": 1783206743.3684604,
+    "ast_hash": "62fc158237d70ed9e9e8999eecc79ff2",
+    "semantic_hash": ""
   },
   "frontend/src/app/pages/properties/properties.component.spec.ts": {
     "mtime": 1781833944.846092,

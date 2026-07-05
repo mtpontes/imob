@@ -1,39 +1,43 @@
-ifeq ($(OS),Windows_NT)
-    # Detect Windows and try to use Git Bash
-    GIT_BASH := "C:\Program Files\Git\bin\bash.exe"
-    BASH_EXISTS := $(shell if exist $(GIT_BASH) echo yes)
-    ifeq ($(BASH_EXISTS),yes)
-        BASH := $(GIT_BASH)
-    else
-        BASH := bash
-    endif
-else
-    BASH := bash
+# Carrega variaveis do arquivo .env se ele existir na raiz
+ifneq ("$(wildcard .env)","")
+    include .env
+    export
 endif
 
-.PHONY: run dev-infra dev-infra-down front watch-media up down build
+STAGE ?= dev
+STACK_NAME ?= imob-app-infra-$(STAGE)
 
-up:
-	docker compose up -d
+.PHONY: run front watch-media down deploy fetch-outputs
 
-down:
-	docker compose down -v --remove-orphans
+# ==========================================
+# 1. Desenvolvimento Local
+# ==========================================
 
-build:
-	docker compose build
-
+# Inicia a infraestrutura local (Docker) e o servidor de backend Quarkus em modo dev
 run:
 	docker compose up -d localstack dynamodb
 	cd backend/api && mvn quarkus:dev
 
+# Inicia o frontend Angular localmente
 front:
 	cd frontend && npm start
 
+# Inicia o processador de mídias localmente
 watch-media:
 	cd backend/media-processor && node watch-local.js
 
-dev-infra:
-	docker compose up -d localstack dynamodb
-
-dev-infra-down:
+# Para e remove todos os containers e volumes locais do Docker
+down:
 	docker compose down -v --remove-orphans
+
+# ==========================================
+# 2. Infraestrutura & Autenticação (AWS CloudFormation)
+# ==========================================
+
+# Compila o backend nativo e faz deploy na AWS passando as credenciais do Google OAuth
+deploy:
+	node scripts/deploy-sam.js
+
+# Sincroniza os endpoints do Cognito remotos criados na AWS para o .env do frontend local
+fetch-outputs:
+	node scripts/fetch-aws-outputs.js
