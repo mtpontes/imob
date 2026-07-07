@@ -1,5 +1,6 @@
 package com.imob.filter;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.imob.context.UserContext;
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -24,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@ApplicationScoped
 @Provider
 @PreMatching
 @Priority(Priorities.AUTHENTICATION)
@@ -59,6 +61,10 @@ public class AuthFilter implements ContainerRequestFilter {
     public AuthFilter(UserContext userContext, DynamoDbClient dynamoDb) {
         this.userContext = userContext;
         this.dynamoDb = dynamoDb;
+    }
+
+    public void invalidateCache(String email) {
+        if (email != null) this.cache.remove(email);
     }
 
     private String getTableName() {

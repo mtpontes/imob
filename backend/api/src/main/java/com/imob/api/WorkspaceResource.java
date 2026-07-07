@@ -1,6 +1,7 @@
 package com.imob.api;
 
 import com.imob.context.UserContext;
+import com.imob.filter.AuthFilter;
 import com.imob.dto.CreateWorkspaceRequest;
 import com.imob.dto.ChangeActiveWorkspaceRequest;
 import com.imob.dto.InviteUserRequest;
@@ -34,6 +35,7 @@ public class WorkspaceResource {
 
     private final UserContext userContext;
     private final WorkspaceRepository repository;
+    private final AuthFilter authFilter;
 
     @GET
     public List<WorkspaceResponse> getWorkspaces() {
@@ -106,6 +108,7 @@ public class WorkspaceResource {
 
         this.repository.updateActiveWorkspace(email, workspaceId);
         this.userContext.setWorkspaceId(workspaceId);
+        this.authFilter.invalidateCache(email);
 
         WorkspaceResponse resp = new WorkspaceResponse();
         resp.setWorkspaceId(workspaceId);
@@ -142,6 +145,7 @@ public class WorkspaceResource {
 
         this.repository.updateActiveWorkspace(email, targetWorkspaceId);
         this.userContext.setWorkspaceId(targetWorkspaceId);
+        this.authFilter.invalidateCache(email);
 
         return Response.noContent().build();
     }
