@@ -97,12 +97,7 @@ jobs:
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          if [ "${{ github.event.inputs.environment || 'dev' }}" = "prod" ]; then
-            vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-          else
-            vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-          fi
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Project Artifacts
         env:
@@ -111,20 +106,10 @@ jobs:
           NG_APP_COGNITO_USER_POOL_ID: ${{ env.COGNITO_USER_POOL_ID }}
           NG_APP_COGNITO_CLIENT_ID: ${{ env.COGNITO_USER_POOL_CLIENT_ID }}
           NG_APP_COGNITO_DOMAIN: ${{ env.COGNITO_DOMAIN }}
-        run: |
-          if [ "${{ github.event.inputs.environment || 'dev' }}" = "prod" ]; then
-            vercel build --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
-          else
-            vercel build --yes --token=${{ secrets.VERCEL_TOKEN }}
-          fi
+        run: vercel build --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy Project to Vercel
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          if [ "${{ github.event.inputs.environment || 'dev' }}" = "prod" ]; then
-            vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-          else
-            vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
-          fi
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
