@@ -1,20 +1,21 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { RouterOutlet, RouterModule, ChildrenOutletContexts, Router, NavigationEnd } from '@angular/router';
 import { CommonModule, Location } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { WorkspaceService } from './services/workspace.service';
 import { WorkspaceResponse } from './types';
 import { LucideAngularModule } from 'lucide-angular';
-import { routeAnimations, dropdownTrigger } from './animations/animations';
+import { routeAnimations, dropdownTrigger, modalTrigger, slideUpMobile } from './animations/animations';
 import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterModule, LucideAngularModule],
+  imports: [CommonModule, RouterOutlet, RouterModule, LucideAngularModule, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  animations: [routeAnimations, dropdownTrigger]
+  animations: [routeAnimations, dropdownTrigger, modalTrigger, slideUpMobile]
 })
 export class AppComponent implements OnInit {
   title = 'frontend';
@@ -23,6 +24,20 @@ export class AppComponent implements OnInit {
   showBackButton = false;
   workspaces: WorkspaceResponse[] = [];
   activeWorkspace: WorkspaceResponse | null = null;
+
+  // Controle de Modais Customizados
+  isCreateWorkspaceModalOpen = false;
+  newWorkspaceName = '';
+  isInviteUserModalOpen = false;
+  inviteUserEmail = '';
+
+  // Toast de Notificação Customizado
+  toast = {
+    show: false,
+    message: '',
+    type: 'success' as 'success' | 'error' | 'warning',
+    icon: 'check-circle'
+  };
 
   // Controle do Drag do Perfil (Bottom Sheet no Mobile)
   isDraggingProfile = false;
@@ -54,6 +69,15 @@ export class AppComponent implements OnInit {
 
     if (this.isLoggedIn()) {
       this.loadWorkspaces();
+    }
+
+    // Verifica se há toast pendente após recarregamento de página
+    const pendingToastMessage = localStorage.getItem('pending_toast_message');
+    const pendingToastType = localStorage.getItem('pending_toast_type') as 'success' | 'error' | 'warning' | null;
+    if (pendingToastMessage && pendingToastType) {
+      this.showToast(pendingToastMessage, pendingToastType);
+      localStorage.removeItem('pending_toast_message');
+      localStorage.removeItem('pending_toast_type');
     }
   }
 
@@ -103,38 +127,85 @@ export class AppComponent implements OnInit {
         window.location.reload();
       },
       error: (err) => {
-        alert('Erro ao alterar ambiente: ' + (err.error?.error || err.message));
+        this.showToast('Erro ao alterar ambiente: ' + (err.error?.error || err.message), 'error');
       }
     });
   }
 
   createWorkspace(): void {
-    const name = prompt('Digite o nome do novo ambiente:');
-    if (!name || !name.trim()) return;
+    this.isCreateWorkspaceModalOpen = true;
+    this.newWorkspaceName = '';
+    this.isProfileMenuOpen = false;
+    this.isWorkspaceMenuOpen = false;
+  }
 
-    this.workspaceService.createWorkspace({ name: name.trim() }).subscribe({
+  closeCreateWorkspaceModal(): void {
+    this.isCreateWorkspaceModalOpen = false;
+    this.newWorkspaceName = '';
+  }
+
+  submitCreateWorkspace(): void {
+    const name = this.newWorkspaceName.trim();
+    if (!name) return;
+
+    this.workspaceService.createWorkspace({ name }).subscribe({
       next: (newWs) => {
-        alert(`Ambiente "${newWs.workspaceName}" criado com sucesso!`);
+        localStorage.setItem('pending_toast_message', `Ambiente "${newWs.workspaceName}" criado com sucesso!`);
+        localStorage.setItem('pending_toast_type', 'success');
+        this.closeCreateWorkspaceModal();
         window.location.reload();
       },
       error: (err) => {
-        alert('Erro ao criar ambiente: ' + (err.error?.error || err.message));
+        this.showToast('Erro ao criar ambiente: ' + (err.error?.error || err.message), 'error');
       }
     });
   }
 
   inviteUser(): void {
-    const email = prompt('Digite o e-mail do usuário que deseja convidar para este ambiente:');
-    if (!email || !email.trim()) return;
+    this.isInviteUserModalOpen = true;
+    this.inviteUserEmail = '';
+    this.isProfileMenuOpen = false;
+    this.isWorkspaceMenuOpen = false;
+  }
 
-    this.workspaceService.inviteUser(email.trim()).subscribe({
+  closeInviteUserModal(): void {
+    this.isInviteUserModalOpen = false;
+    this.inviteUserEmail = '';
+  }
+
+  submitInviteUser(): void {
+    const email = this.inviteUserEmail.trim();
+    if (!email) return;
+
+    this.workspaceService.inviteUser(email).subscribe({
       next: (res) => {
-        alert(res.message || 'Usuário convidado com sucesso!');
+        this.showToast(res.message || 'Usuário convidado com sucesso!', 'success');
+        this.closeInviteUserModal();
       },
       error: (err) => {
-        alert('Erro ao enviar convite: ' + (err.error?.error || err.message));
+        this.showToast('Erro ao enviar convite: ' + (err.error?.error || err.message), 'error');
       }
     });
+  }
+
+  showToast(message: string, type: 'success' | 'error' | 'warning' = 'success', duration = 3000): void {
+    let icon = 'check-circle';
+    if (type === 'error') {
+      icon = 'alert-triangle';
+    } else if (type === 'warning') {
+      icon = 'alert-circle';
+    }
+
+    this.toast = {
+      show: true,
+      message,
+      type,
+      icon
+    };
+
+    setTimeout(() => {
+      this.toast.show = false;
+    }, duration);
   }
 
   goBack(): void {
@@ -161,6 +232,7 @@ export class AppComponent implements OnInit {
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
     if (this.isProfileMenuOpen) {
       this.isWorkspaceMenuOpen = false;
+      this.loadWorkspaces();
     }
   }
 
@@ -219,9 +291,13 @@ export class AppComponent implements OnInit {
   onProfileTouchEnd(event: TouchEvent): void {
     if (!this.isDraggingProfile) return;
     const element = event.currentTarget as HTMLElement;
-    element.style.transition = '';
+    element.style.transition = 'transform 0.15s ease-out';
     element.style.transform = '';
     this.isDraggingProfile = false;
+
+    setTimeout(() => {
+      element.style.transition = '';
+    }, 150);
 
     const deltaY = this.profileTouchCurrentY - this.profileTouchStartY;
     if (deltaY > 120) {

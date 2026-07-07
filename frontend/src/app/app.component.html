@@ -37,7 +37,7 @@
             <lucide-icon name="plus"></lucide-icon>
             <span>Novo Ambiente</span>
           </button>
-          <button (click)="inviteUser()" class="dropdown-item" *ngIf="activeWorkspace?.role === 'OWNER'">
+          <button (click)="inviteUser()" class="dropdown-item" [style.display]="activeWorkspace?.role === 'OWNER' ? 'flex' : 'none'">
             <lucide-icon name="plus-circle"></lucide-icon>
             <span>Convidar Usuário</span>
           </button>
@@ -75,7 +75,8 @@
   <div class="modal-backdrop mobile-only" *ngIf="isProfileMenuOpen" (click)="closeProfileMenu()"></div>
 
   <!-- Bottom Sheet de Perfil (Mobile Only) -->
-  <div class="profile-sheet-mobile glass mobile-only" *ngIf="isProfileMenuOpen" id="profile-sheet-mobile-menu"
+  <div class="profile-sheet-mobile mobile-only" *ngIf="isProfileMenuOpen" id="profile-sheet-mobile-menu"
+       [@slideUpMobile]
        (touchstart)="onProfileTouchStart($event)"
        (touchmove)="onProfileTouchMove($event)"
        (touchend)="onProfileTouchEnd($event)">
@@ -121,7 +122,7 @@
           <lucide-icon name="plus"></lucide-icon>
           <span>Criar Ambiente</span>
         </button>
-        <button (click)="inviteUser()" class="workspace-mobile-action btn-invite-user" *ngIf="activeWorkspace?.role === 'OWNER'">
+        <button (click)="inviteUser()" class="workspace-mobile-action btn-invite-user" [style.display]="activeWorkspace?.role === 'OWNER' ? 'flex' : 'none'">
           <lucide-icon name="plus-circle"></lucide-icon>
           <span>Convidar</span>
         </button>
@@ -152,5 +153,83 @@
   <main class="app-main" [@routeAnimations]="getRouteAnimationData()">
     <router-outlet></router-outlet>
   </main>
+
+  <!-- Modal customizado de Criar Ambiente -->
+  <div id="create-workspace-modal" class="modal-wrapper" *ngIf="isCreateWorkspaceModalOpen" @modalTrigger>
+    <div class="modal-backdrop" (click)="closeCreateWorkspaceModal()"></div>
+    <div class="modal-content delete-confirm-modal-content glass">
+      <div class="modal-drag-indicator"></div>
+      <div class="delete-confirm-body">
+        <div class="alert-icon-wrapper" style="background: hsla(250, 84%, 67%, 0.1); border-color: rgba(139, 92, 246, 0.2); color: var(--primary-light);">
+          <lucide-icon name="briefcase"></lucide-icon>
+        </div>
+        <h3>Criar Novo Ambiente</h3>
+        <p>Insira o nome do ambiente de trabalho para organizar seus imóveis e avaliações.</p>
+        
+        <div class="form-group" style="width: 100%; text-align: left; margin-top: 1rem;">
+          <label for="newWorkspaceName">Nome do Ambiente</label>
+          <div class="input-wrapper">
+            <lucide-icon name="edit-3"></lucide-icon>
+            <input 
+              type="text" 
+              id="newWorkspaceName" 
+              [(ngModel)]="newWorkspaceName"
+              placeholder="Ex: Minha Imobiliária"
+              (keyup.enter)="submitCreateWorkspace()"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="delete-confirm-footer">
+        <button class="btn btn-outline" (click)="closeCreateWorkspaceModal()" id="btn-cancel-create-ws">Cancelar</button>
+        <button class="btn btn-primary" (click)="submitCreateWorkspace()" [disabled]="!newWorkspaceName.trim()" id="btn-confirm-create-ws-exec">
+          <span>Criar Ambiente</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal customizado de Convidar Usuário -->
+  <div id="invite-user-modal" class="modal-wrapper" *ngIf="isInviteUserModalOpen" @modalTrigger>
+    <div class="modal-backdrop" (click)="closeInviteUserModal()"></div>
+    <div class="modal-content delete-confirm-modal-content glass">
+      <div class="modal-drag-indicator"></div>
+      <div class="delete-confirm-body">
+        <div class="alert-icon-wrapper" style="background: hsla(250, 84%, 67%, 0.1); border-color: rgba(139, 92, 246, 0.2); color: var(--primary-light);">
+          <lucide-icon name="plus-circle"></lucide-icon>
+        </div>
+        <h3>Convidar para o Ambiente</h3>
+        <p>Digite o e-mail do usuário que deseja convidar para colaborar neste ambiente.</p>
+        
+        <div class="form-group" style="width: 100%; text-align: left; margin-top: 1rem;">
+          <label for="inviteUserEmail">E-mail do Usuário</label>
+          <div class="input-wrapper">
+            <lucide-icon name="mail"></lucide-icon>
+            <input 
+              type="email" 
+              id="inviteUserEmail" 
+              [(ngModel)]="inviteUserEmail"
+              placeholder="usuario@email.com"
+              (keyup.enter)="submitInviteUser()"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="delete-confirm-footer">
+        <button class="btn btn-outline" (click)="closeInviteUserModal()" id="btn-cancel-invite">Cancelar</button>
+        <button class="btn btn-primary" (click)="submitInviteUser()" [disabled]="!inviteUserEmail.trim()" id="btn-confirm-invite-exec">
+          <span>Enviar Convite</span>
+        </button>
+    </div>
+  </div>
+</div>
+
+  <!-- Toast de Notificação Customizado (Premium) -->
+  <div class="toast-message" [class.visible]="toast.show" [class.success]="toast.type === 'success'" [class.error]="toast.type === 'error'" [class.warning]="toast.type === 'warning'">
+    <lucide-icon [name]="toast.icon" [style.color]="toast.type === 'success' ? 'var(--success)' : (toast.type === 'error' ? 'var(--danger)' : 'var(--warning)')"></lucide-icon>
+    <span>{{ toast.message }}</span>
+  </div>
 
 </div>

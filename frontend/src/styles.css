@@ -3598,13 +3598,11 @@ input[type=number] {
     max-height: 85vh !important;
     border-radius: var(--radius-md) var(--radius-md) 0 0 !important;
     padding: 0 1.5rem 2.5rem !important;
-    background: hsla(222, 47%, 9%, 0.98) !important;
+    background: hsla(222, 47%, 9%, 1) !important;
     box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5) !important;
     z-index: 9999 !important;
-    transform: translateZ(0);
-    will-change: transform;
-    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
-    transition: transform 0.15s ease-out;
+    border: 1px solid var(--glass-border) !important;
+    border-bottom: none !important;
   }
 
   /* Detalhes do Usuário no Topo do Bottom Sheet */
@@ -3623,6 +3621,7 @@ input[type=number] {
     border: 1px solid rgba(139, 92, 246, 0.2);
     border-radius: var(--radius-round);
     color: var(--primary-light);
+    flex-shrink: 0;
   }
 
   .user-details-text {
