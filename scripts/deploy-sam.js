@@ -34,11 +34,18 @@ if (fs.existsSync(credsPath)) {
       googleClientSecret = credsData.web.client_secret || '';
       console.log("Credenciais do Google OAuth2 encontradas localmente.");
     }
+    
+    if (!googleClientId || !googleClientSecret) {
+      throw new Error("client_id ou client_secret ausentes no JSON de credenciais.");
+    }
   } catch (error) {
-    console.error(`Erro ao ler credenciais do Google em ${credsPath}: ${error.message}`);
+    console.error(`Erro ao processar arquivo de credenciais do Google em ${credsPath}: ${error.message}`);
+    process.exit(1);
   }
 } else {
-  console.log("Aviso: Arquivo de credenciais do Google não encontrado. O Cognito será criado sem suporte ao Google OAuth.");
+  console.error(`Erro: Arquivo de credenciais do Google não encontrado em: ${credsPath}`);
+  console.error("Para realizar o deploy, configure o arquivo com as credenciais do Google OAuth.");
+  process.exit(1);
 }
 
 // 2. Compilar o Quarkus Backend (Imagem Nativa)
@@ -62,10 +69,7 @@ try {
 // 3. Executar o SAM Deploy
 console.log("Preparando deploy com o AWS SAM CLI...");
 
-let parameterOverrides = `EnableMockAuth=false`;
-if (googleClientId && googleClientSecret) {
-  parameterOverrides += ` GoogleClientId="${googleClientId}" GoogleClientSecret="${googleClientSecret}"`;
-}
+const parameterOverrides = `EnableMockAuth=false GoogleClientId="${googleClientId}" GoogleClientSecret="${googleClientSecret}"`;
 
 // Define os argumentos do comando SAM
 const samArgs = [
@@ -95,7 +99,7 @@ samProcess.on('close', (code) => {
   // 4. Executar a sincronização dos outputs para o frontend
   try {
     console.log("Sincronizando outputs com o frontend...");
-    execSync('node ' + path.join(__dirname, 'fetch-aws-outputs.js'), { stdio: 'inherit' });
+    execSync('node ' + path.join(__dirname, 'sync.js'), { stdio: 'inherit' });
   } catch (syncError) {
     console.error("Erro ao sincronizar outputs com o frontend:", syncError.message);
   }

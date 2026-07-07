@@ -96,9 +96,10 @@ jobs:
 
       - name: SAM Deploy
         run: |
-          PARAMETER_OVERRIDES="EnableMockAuth=false"
-          if [ ! -z "${{ secrets.GOOGLE_CLIENT_ID }}" ] && [ ! -z "${{ secrets.GOOGLE_CLIENT_SECRET }}" ]; then
-            PARAMETER_OVERRIDES="$PARAMETER_OVERRIDES GoogleClientId=${{ secrets.GOOGLE_CLIENT_ID }} GoogleClientSecret=${{ secrets.GOOGLE_CLIENT_SECRET }}"
+          # Validar se as credenciais do Google estão presentes nos Secrets do GitHub
+          if [ -z "${{ secrets.GOOGLE_CLIENT_ID }}" ] || [ -z "${{ secrets.GOOGLE_CLIENT_SECRET }}" ]; then
+            echo "::error::ERRO: As credenciais do Google (GOOGLE_CLIENT_ID e GOOGLE_CLIENT_SECRET) não estão configuradas nos Secrets do repositório."
+            exit 1
           fi
 
           sam deploy \
@@ -108,4 +109,4 @@ jobs:
             --capabilities CAPABILITY_IAM \
             --no-confirm-changeset \
             --no-fail-on-empty-changeset \
-            --parameter-overrides $PARAMETER_OVERRIDES
+            --parameter-overrides "EnableMockAuth=false GoogleClientId=${{ secrets.GOOGLE_CLIENT_ID }} GoogleClientSecret=${{ secrets.GOOGLE_CLIENT_SECRET }}"

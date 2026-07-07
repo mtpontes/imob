@@ -6,8 +6,10 @@ endif
 
 STAGE ?= dev
 STACK_NAME ?= imob-app-infra-$(STAGE)
+AWS_PROFILE ?= imobi
+export AWS_PROFILE
 
-.PHONY: run front watch-media down deploy fetch-outputs
+.PHONY: run front watch-media down deploy sync
 
 # ==========================================
 # 1. Desenvolvimento Local
@@ -39,5 +41,5 @@ deploy:
 	node scripts/deploy-sam.js
 
 # Sincroniza os endpoints do Cognito remotos criados na AWS para o .env do frontend local
-fetch-outputs:
-	node scripts/fetch-aws-outputs.js
+sync:
+	node scripts/sync.js

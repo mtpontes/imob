@@ -26,7 +26,7 @@ try {
   const command = `aws cloudformation describe-stacks --stack-name ${stackName} --region ${region} --output json`;
   console.log(`Executando: ${command}`);
   
-  const data = execSync(command, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'ignore'] });
+  const data = execSync(command, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] });
   const stackInfo = JSON.parse(data);
   const stack = stackInfo.Stacks[0];
 
@@ -69,6 +69,9 @@ NG_APP_COGNITO_DOMAIN=${cognitoDomain}
 
 } catch (error) {
   console.error(`Erro ao buscar outputs da stack CloudFormation: ${error.message}`);
+  if (error.stderr) {
+    console.error(`\nDetalhes do erro da AWS CLI:\n${error.stderr.toString()}`);
+  }
   console.error("Certifique-se de que a stack está implantada na AWS e que você possui credenciais válidas configuradas.");
   process.exit(1);
 }

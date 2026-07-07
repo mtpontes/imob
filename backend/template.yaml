@@ -74,7 +74,6 @@ Resources:
 
   ImobAppUserPoolClient:
     Type: AWS::Cognito::UserPoolClient
-    DependsOn: ImobAppGoogleIdP
     Properties:
       ClientName: !Sub ${AWS::StackName}-UserPoolClient
       UserPoolId: !Ref ImobAppUserPool
@@ -97,7 +96,7 @@ Resources:
       SupportedIdentityProviders:
         !If
           - CreateGoogleIdP
-          - - Google
+          - - !Ref ImobAppGoogleIdP
             - COGNITO
           - - COGNITO
 
