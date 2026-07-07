@@ -53,7 +53,7 @@ try {
 
   // Gera o arquivo .env do frontend
   const frontendEnvPath = path.join(__dirname, '..', 'frontend', '.env');
-  const frontendEnvContent = `# Gerado automaticamente via 'make fetch-outputs' em ${new Date().toISOString()}
+  const frontendEnvContent = `# Gerado automaticamente via 'make sync' em ${new Date().toISOString()}
 NG_APP_COGNITO_USER_POOL_ID=${userPoolId}
 NG_APP_COGNITO_CLIENT_ID=${userPoolClientId}
 NG_APP_COGNITO_DOMAIN=${cognitoDomain}

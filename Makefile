@@ -9,14 +9,14 @@ STACK_NAME ?= imob-app-infra-$(STAGE)
 AWS_PROFILE ?= imobi
 export AWS_PROFILE
 
-.PHONY: run front watch-media down deploy sync
+.PHONY: back front media down deploy sync
 
 # ==========================================
 # 1. Desenvolvimento Local
 # ==========================================
 
 # Inicia a infraestrutura local (Docker) e o servidor de backend Quarkus em modo dev
-run:
+back:
 	docker compose up -d localstack dynamodb
 	cd backend/api && mvn quarkus:dev
 
@@ -25,7 +25,7 @@ front:
 	cd frontend && npm start
 
 # Inicia o processador de mídias localmente
-watch-media:
+media:
 	cd backend/media-processor && node watch-local.js
 
 # Para e remove todos os containers e volumes locais do Docker

@@ -120,32 +120,31 @@ Para rodar o projeto localmente, certifique-se de possuir instalado:
 
 ### Como Executar o Projeto Localmente
 
-#### 1. Inicializar a Infraestrutura Local (DynamoDB e S3)
+#### 1. Inicializar a Infraestrutura Local e o Backend (Quarkus)
 
-O projeto utiliza containers com DynamoDB Local e LocalStack (para o S3 simulado) no desenvolvimento local. A tabela e o bucket S3 são criados e configurados automaticamente ao subir a infraestrutura.
+O projeto utiliza containers com DynamoDB Local e LocalStack (para o S3 simulado) no desenvolvimento local. O backend Quarkus roda em modo de desenvolvimento.
 
-Suba os recursos utilizando o Docker Compose:
+**Passo a passo manual:**
+
+A) Suba os recursos de infraestrutura utilizando o Docker Compose:
 ```bash
 docker compose up -d localstack dynamodb
 ```
-ou utilizando o Makefile:
-```bash
-make dev-infra
-```
 
-#### 2. Executar o Backend (Quarkus Dev Mode)
-
-Acesse a pasta do backend e inicie o Quarkus em modo de desenvolvimento. O modo de desenvolvimento local habilita o bypass de autenticação por padrão (`imob.mock.auth=true`), simulando um token com e-mail corporativo:
-
+B) Acesse a pasta do backend e inicie o Quarkus em modo de desenvolvimento (o modo de desenvolvimento local habilita o bypass de autenticação por padrão, `imob.mock.auth=true`):
 ```bash
 cd backend/api
 mvn quarkus:dev
 ```
-ou utilizando o Makefile:
+
+**Alternativa rápida via Makefile (Recomendado):**
+
+Para subir a infraestrutura Docker e rodar o backend Quarkus em modo de desenvolvimento com um único comando, execute:
 ```bash
-make run
+make back
 ```
 O backend estará disponível em `http://localhost:8080`.
+
 
 #### 3. Executar o Frontend (Angular)
 
