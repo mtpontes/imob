@@ -14,7 +14,7 @@
     </div>
     <h1 class="invite-title">Convite inválido</h1>
     <p class="invite-description">{{ error }}</p>
-    <button class="invite-btn invite-btn--secondary" (click)="goToProperties()" id="btn-invite-go-home">
+    <button class="btn btn-outline" (click)="goToProperties()" id="btn-invite-go-home">
       Ir para o início
     </button>
   </div>
@@ -43,7 +43,7 @@
 
     <div class="invite-actions">
       <button
-        class="invite-btn invite-btn--primary"
+        class="btn btn-primary"
         (click)="acceptInvite()"
         [disabled]="accepting"
         id="btn-accept-invite"
@@ -51,7 +51,7 @@
         <span *ngIf="!accepting">Aceitar convite</span>
         <span *ngIf="accepting">Entrando...</span>
       </button>
-      <button class="invite-btn invite-btn--secondary" (click)="goToProperties()" id="btn-decline-invite">
+      <button class="btn btn-outline" (click)="goToProperties()" id="btn-decline-invite">
         Recusar
       </button>
     </div>

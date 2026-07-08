@@ -331,6 +331,25 @@ body::after {
   margin: 0 auto;
 }
 
+/* Standalone layout para fluxo de convites */
+.invite-flow .app-main {
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 0 !important;
+  flex: 1 !important;
+}
+
+.invite-flow app-invite-accept {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
 body.no-scroll .app-main {
   z-index: 600;
 }

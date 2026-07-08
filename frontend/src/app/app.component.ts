@@ -32,6 +32,7 @@ export class AppComponent implements OnInit {
   inviteUserRole = 'MEMBER';
   generatedInviteUrl = '';
   isInviteLinkGenerated = false;
+  isInviteRoute = false;
 
   // Toast de Notificação Customizado
   toast = {
@@ -53,6 +54,15 @@ export class AppComponent implements OnInit {
     private router: Router,
     private location: Location
   ) {
+    // Inicialização síncrona imediata para evitar race conditions na primeira renderização
+    const path = window.location.pathname;
+    this.isInviteRoute = path.startsWith('/invite/');
+    this.showBackButton = (
+      path.startsWith('/properties/') || 
+      path.startsWith('/roteiros/builder/') || 
+      path.startsWith('/evaluate/')
+    );
+
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd)
     ).subscribe(() => {
@@ -62,6 +72,7 @@ export class AppComponent implements OnInit {
         url.startsWith('/roteiros/builder') || 
         url.startsWith('/evaluate/')
       );
+      this.isInviteRoute = url.startsWith('/invite/');
     });
   }
 

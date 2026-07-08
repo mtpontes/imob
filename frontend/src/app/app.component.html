@@ -1,4 +1,4 @@
-<div [class.logged-out]="!isLoggedIn()" class="app-container">
+<div [class.logged-out]="!isLoggedIn()" [class.invite-flow]="isInviteRoute" class="app-container">
   
   <!-- Header Geral (Oculto em Login) -->
   <header class="app-header glass" *ngIf="isLoggedIn()">
@@ -138,7 +138,7 @@
   </div>
 
   <!-- Barra de Navegação Inferior (Foco em Mobile/PWA) -->
-  <nav class="app-nav glass" *ngIf="isLoggedIn()">
+  <nav class="app-nav glass" *ngIf="isLoggedIn() && !isInviteRoute">
     <button class="nav-item" routerLink="/properties" routerLinkActive="active" id="nav-item-properties">
       <lucide-icon name="home"></lucide-icon>
       <span>Imoveis</span>

@@ -1,174 +1,207 @@
 .invite-page {
-  min-height: 100vh;
+  min-height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-bg, #0f0f0f);
-  padding: 24px;
+  padding: 1.5rem;
+  position: relative;
+  box-sizing: border-box;
 }
 
+/* Card com Glassmorphism Premium integrado */
 .invite-card {
-  background: var(--color-surface, #1a1a1a);
-  border: 1px solid var(--color-border, #2a2a2a);
-  border-radius: 16px;
-  padding: 48px 40px;
-  max-width: 440px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-glass);
+  padding: 2.5rem 2rem;
+  max-width: 400px;
   width: 100%;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  gap: 1.25rem;
+  box-sizing: border-box;
+  transition: border-color var(--transition-fast), transform var(--transition-normal);
+}
+
+.invite-card:hover {
+  border-color: var(--glass-border-focus);
 }
 
 .invite-card--error {
-  border-color: rgba(239, 68, 68, 0.3);
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+.invite-card--error:hover {
+  border-color: var(--danger);
 }
 
 .invite-card--success {
-  border-color: rgba(34, 197, 94, 0.3);
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+.invite-card--success:hover {
+  border-color: var(--success);
 }
 
 .invite-icon {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: rgba(99, 102, 241, 0.12);
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-round);
+  background: hsla(250, 84%, 67%, 0.12);
+  border: 1px solid hsla(250, 84%, 67%, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #818cf8;
-  margin-bottom: 8px;
+  color: var(--primary-light);
+  margin-bottom: 0.25rem;
+  box-shadow: 0 0 15px rgba(129, 140, 248, 0.08);
 }
 
 .invite-icon--error {
   background: rgba(239, 68, 68, 0.12);
-  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.25);
+  color: var(--danger);
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.08);
 }
 
 .invite-icon--success {
   background: rgba(34, 197, 94, 0.12);
-  color: #4ade80;
+  border-color: rgba(34, 197, 94, 0.25);
+  color: var(--success);
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.08);
 }
 
 .invite-eyebrow {
-  font-size: 12px;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-text-muted, #6b7280);
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  font-weight: 700;
   margin: 0;
 }
 
 .invite-workspace-name {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--color-text, #f1f5f9);
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
   margin: 0;
-  line-height: 1.2;
+  line-height: 1.25;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .invite-title {
-  font-size: 20px;
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
   font-weight: 700;
-  color: var(--color-text, #f1f5f9);
+  color: var(--text-primary);
   margin: 0;
+  letter-spacing: -0.3px;
 }
 
 .invite-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
-  background: rgba(99, 102, 241, 0.15);
-  border: 1px solid rgba(99, 102, 241, 0.3);
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #a5b4fc;
+  gap: 0.5rem;
+  padding: 0.3rem 0.75rem;
+  background: hsla(250, 84%, 67%, 0.15);
+  border: 1px solid hsla(250, 84%, 67%, 0.3);
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--primary-light);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .invite-expiry {
-  font-size: 12px;
-  color: var(--color-text-muted, #6b7280);
+  font-size: 0.75rem;
+  color: var(--text-muted);
   margin: 0;
 }
 
 .invite-description {
-  font-size: 14px;
-  color: var(--color-text-secondary, #94a3b8);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .invite-actions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.65rem;
   width: 100%;
-  margin-top: 8px;
+  margin-top: 0.25rem;
 }
 
-.invite-btn {
+.invite-actions .btn {
   width: 100%;
-  padding: 12px 24px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.15s, transform 0.1s;
-  border: none;
-}
-
-.invite-btn:active {
-  transform: scale(0.98);
-}
-
-.invite-btn--primary {
-  background: #6366f1;
-  color: #fff;
-}
-
-.invite-btn--primary:hover:not(:disabled) {
-  opacity: 0.9;
-}
-
-.invite-btn--primary:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.invite-btn--secondary {
-  background: transparent;
-  color: var(--color-text-muted, #6b7280);
-  border: 1px solid var(--color-border, #2a2a2a);
-}
-
-.invite-btn--secondary:hover {
-  border-color: var(--color-text-muted, #6b7280);
+  padding: 0.7rem 1.25rem; /* Botões um pouco mais compactos verticalmente */
 }
 
 .invite-spinner {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  padding: 16px 0;
-  color: var(--color-text-muted, #6b7280);
-  font-size: 14px;
+  gap: 1rem;
+  padding: 1rem 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
 
 .spinner {
   width: 36px;
   height: 36px;
-  border: 3px solid var(--color-border, #2a2a2a);
-  border-top-color: #6366f1;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
+  border: 3px solid var(--glass-border);
+  border-top-color: var(--primary);
+  border-radius: var(--radius-round);
+  animation: spin 0.8s cubic-bezier(0.5, 0.1, 0.4, 0.9) infinite;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* Responsividade móvel extrema (telas pequenas, ex: iPhone 12 Pro) */
+@media (max-width: 480px) {
+  .invite-page {
+    padding: 1rem;
+  }
+
+  .invite-card {
+    padding: 2rem 1.25rem;
+    gap: 1rem;
+  }
+
+  .invite-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .invite-workspace-name {
+    font-size: 1.35rem;
+  }
+
+  .invite-title {
+    font-size: 1.25rem;
+  }
+
+  .invite-actions {
+    gap: 0.5rem;
+  }
+
+  .invite-actions .btn {
+    padding: 0.65rem 1rem;
+    font-size: 0.85rem;
+  }
 }
