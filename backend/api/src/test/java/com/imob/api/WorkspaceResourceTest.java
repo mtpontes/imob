@@ -2,7 +2,9 @@ package com.imob.api;
 
 import com.imob.entity.WorkspaceEntity;
 import com.imob.entity.UserWorkspaceRelationEntity;
+import com.imob.entity.InviteEntity;
 import com.imob.repository.WorkspaceRepository;
+import com.imob.repository.InviteRepository;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
@@ -14,11 +16,13 @@ import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 
 @QuarkusTest
 public class WorkspaceResourceTest {
@@ -27,11 +31,13 @@ public class WorkspaceResourceTest {
     WorkspaceRepository repository;
 
     @InjectMock
+    InviteRepository inviteRepository;
+
+    @InjectMock
     DynamoDbClient dynamoDbClient;
 
     @BeforeEach
     public void setup() {
-        // Arrange comum para o AuthFilter
         GetItemResponse getItemResponse = GetItemResponse.builder()
                 .item(Map.of("workspaceId", AttributeValue.builder().s("workspace_test").build()))
                 .build();
@@ -51,7 +57,6 @@ public class WorkspaceResourceTest {
 
     @Test
     public void shouldListWorkspaces() {
-        // Arrange
         String email = "test@imob.com";
         UserWorkspaceRelationEntity rel1 = new UserWorkspaceRelationEntity();
         rel1.setEmail(email);
@@ -70,7 +75,6 @@ public class WorkspaceResourceTest {
         Mockito.when(this.repository.getUserWorkspaceRelations(email))
                 .thenReturn(List.of(rel1, rel2));
 
-        // Act & Assert
         given()
                 .header("X-User-Email", email)
                 .when()
@@ -89,13 +93,11 @@ public class WorkspaceResourceTest {
 
     @Test
     public void shouldCreateWorkspace() {
-        // Arrange
         String email = "test@imob.com";
         Map<String, Object> payload = Map.of(
                 "name", "Novo Workspace"
         );
 
-        // Act & Assert
         given()
                 .header("X-User-Email", email)
                 .contentType(ContentType.JSON)
@@ -119,7 +121,6 @@ public class WorkspaceResourceTest {
 
     @Test
     public void shouldChangeActiveWorkspace() {
-        // Arrange
         String email = "test@imob.com";
         UserWorkspaceRelationEntity rel1 = new UserWorkspaceRelationEntity();
         rel1.setEmail(email);
@@ -132,7 +133,6 @@ public class WorkspaceResourceTest {
                 "workspaceId", "workspace_other"
         );
 
-        // Act & Assert
         given()
                 .header("X-User-Email", email)
                 .contentType(ContentType.JSON)
@@ -148,7 +148,6 @@ public class WorkspaceResourceTest {
 
     @Test
     public void shouldReturnForbiddenWhenChangingToInvalidActiveWorkspace() {
-        // Arrange
         String email = "test@imob.com";
         UserWorkspaceRelationEntity rel1 = new UserWorkspaceRelationEntity();
         rel1.setEmail(email);
@@ -161,7 +160,6 @@ public class WorkspaceResourceTest {
                 "workspaceId", "workspace_non_existent"
         );
 
-        // Act & Assert
         given()
                 .header("X-User-Email", email)
                 .contentType(ContentType.JSON)
@@ -173,10 +171,8 @@ public class WorkspaceResourceTest {
     }
 
     @Test
-    public void shouldInviteUserToWorkspace() {
-        // Arrange
+    public void shouldCreateInviteToWorkspace() {
         String email = "test@imob.com";
-        String inviteeEmail = "invitee@imob.com";
 
         WorkspaceEntity workspace = new WorkspaceEntity();
         workspace.setId("workspace_test");
@@ -186,11 +182,9 @@ public class WorkspaceResourceTest {
                 .thenReturn(workspace);
 
         Map<String, Object> payload = Map.of(
-                "email", inviteeEmail,
                 "role", "ADMIN"
         );
 
-        // Act & Assert
         given()
                 .header("X-User-Email", email)
                 .contentType(ContentType.JSON)
@@ -198,17 +192,19 @@ public class WorkspaceResourceTest {
                 .when()
                 .post("/api/workspaces/invite")
                 .then()
-                .statusCode(200);
+                .statusCode(201)
+                .body("token", notNullValue())
+                .body("inviteUrl", notNullValue())
+                .body("role", is("ADMIN"))
+                .body("workspaceName", is("Test Workspace"));
 
-        Mockito.verify(this.repository, Mockito.times(1))
-                .saveUserWorkspaceRelation(Mockito.any(UserWorkspaceRelationEntity.class));
+        Mockito.verify(this.inviteRepository, Mockito.times(1))
+                .saveInvite(Mockito.any(InviteEntity.class));
     }
 
     @Test
     public void shouldDenyMemberFromInviting() {
-        // Arrange
         String email = "member@imob.com";
-        String inviteeEmail = "invitee@imob.com";
 
         UserWorkspaceRelationEntity memberRel = new UserWorkspaceRelationEntity();
         memberRel.setEmail(email);
@@ -219,10 +215,9 @@ public class WorkspaceResourceTest {
                 .thenReturn(memberRel);
 
         Map<String, Object> payload = Map.of(
-                "email", inviteeEmail
+                "role", "MEMBER"
         );
 
-        // Act & Assert
         given()
                 .header("X-User-Email", email)
                 .contentType(ContentType.JSON)
@@ -234,8 +229,125 @@ public class WorkspaceResourceTest {
     }
 
     @Test
+    public void shouldGetInviteDetails() {
+        String token = "invite-token-123";
+        InviteEntity invite = new InviteEntity();
+        invite.setToken(token);
+        invite.setWorkspaceId("workspace_test");
+        invite.setWorkspaceName("Test Workspace");
+        invite.setRole("MEMBER");
+        invite.setExpiresAt(Instant.now().getEpochSecond() + 3600);
+
+        Mockito.when(this.inviteRepository.getInvite(token))
+                .thenReturn(invite);
+
+        given()
+                .header("X-User-Email", "test@imob.com")
+                .when()
+                .get("/api/workspaces/invite/" + token)
+                .then()
+                .statusCode(200)
+                .body("workspaceName", is("Test Workspace"))
+                .body("role", is("MEMBER"));
+    }
+
+    @Test
+    public void shouldAcceptInvite() {
+        String token = "invite-token-123";
+        String email = "newuser@imob.com";
+
+        InviteEntity invite = new InviteEntity();
+        invite.setToken(token);
+        invite.setWorkspaceId("workspace_test");
+        invite.setWorkspaceName("Test Workspace");
+        invite.setRole("MEMBER");
+        invite.setExpiresAt(Instant.now().getEpochSecond() + 3600);
+
+        Mockito.when(this.inviteRepository.getInvite(token))
+                .thenReturn(invite);
+
+        Mockito.when(this.repository.getUserWorkspaceRelation(email, "workspace_test"))
+                .thenReturn(null);
+
+        given()
+                .header("X-User-Email", email)
+                .contentType(ContentType.JSON)
+                .when()
+                .post("/api/workspaces/invite/" + token + "/accept")
+                .then()
+                .statusCode(200)
+                .body("workspaceId", is("workspace_test"))
+                .body("role", is("MEMBER"));
+
+        Mockito.verify(this.repository, Mockito.times(1))
+                .saveUserWorkspaceRelation(Mockito.any(UserWorkspaceRelationEntity.class));
+        Mockito.verify(this.inviteRepository, Mockito.times(1))
+                .deleteInvite(token);
+    }
+
+    @Test
+    public void shouldReturnConflictWhenAcceptingInviteAndUserIsAlreadyMember() {
+        String token = "invite-token-123";
+        String email = "existing@imob.com";
+
+        InviteEntity invite = new InviteEntity();
+        invite.setToken(token);
+        invite.setWorkspaceId("workspace_test");
+        invite.setWorkspaceName("Test Workspace");
+        invite.setRole("MEMBER");
+        invite.setExpiresAt(Instant.now().getEpochSecond() + 3600);
+
+        Mockito.when(this.inviteRepository.getInvite(token))
+                .thenReturn(invite);
+
+        UserWorkspaceRelationEntity existingRel = new UserWorkspaceRelationEntity();
+        existingRel.setEmail(email);
+        existingRel.setWorkspaceId("workspace_test");
+        existingRel.setRole("MEMBER");
+
+        Mockito.when(this.repository.getUserWorkspaceRelation(email, "workspace_test"))
+                .thenReturn(existingRel);
+
+        given()
+                .header("X-User-Email", email)
+                .contentType(ContentType.JSON)
+                .when()
+                .post("/api/workspaces/invite/" + token + "/accept")
+                .then()
+                .statusCode(409);
+    }
+
+    @Test
+    public void shouldReturnGoneWhenInviteIsExpired() {
+        String token = "expired-token";
+        InviteEntity invite = new InviteEntity();
+        invite.setToken(token);
+        invite.setWorkspaceId("workspace_test");
+        invite.setWorkspaceName("Test Workspace");
+        invite.setRole("MEMBER");
+        invite.setExpiresAt(Instant.now().getEpochSecond() - 3600);
+
+        Mockito.when(this.inviteRepository.getInvite(token))
+                .thenReturn(invite);
+
+        given()
+                .header("X-User-Email", "test@imob.com")
+                .when()
+                .get("/api/workspaces/invite/" + token)
+                .then()
+                .statusCode(410);
+
+        given()
+                .header("X-User-Email", "test@imob.com")
+                .contentType(ContentType.JSON)
+                .when()
+                .post("/api/workspaces/invite/" + token + "/accept")
+                .then()
+                .statusCode(410);
+    }
+
+    @Test
     public void shouldAllowAdminToRemoveMemberButDenyRemovingOwner() {
-        // Arrange
         String adminEmail = "admin@imob.com";
         String memberEmail = "member@imob.com";
         String ownerEmail = "test@imob.com";
@@ -262,7 +374,6 @@ public class WorkspaceResourceTest {
         Mockito.when(this.repository.getUserWorkspaceRelation(ownerEmail, "workspace_test"))
                 .thenReturn(ownerRel);
 
-        // Act & Assert (Admin tenta remover Member - Permitido)
         given()
                 .header("X-User-Email", adminEmail)
                 .when()
@@ -273,7 +384,6 @@ public class WorkspaceResourceTest {
         Mockito.verify(this.repository, Mockito.times(1))
                 .deleteUserWorkspaceRelation(memberEmail, "workspace_test");
 
-        // Act & Assert (Admin tenta remover Owner - Proibido)
         given()
                 .header("X-User-Email", adminEmail)
                 .when()

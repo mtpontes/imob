@@ -7,6 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @RegisterForReflection
-public class InviteUserRequest {
+public class InviteDetailsResponse {
+    private String workspaceName;
     private String role;
+    private long expiresAt;
 }

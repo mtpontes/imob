@@ -2,12 +2,16 @@ package com.imob.api;
 
 import com.imob.context.UserContext;
 import com.imob.filter.AuthFilter;
-import com.imob.dto.CreateWorkspaceRequest;
 import com.imob.dto.ChangeActiveWorkspaceRequest;
+import com.imob.dto.CreateWorkspaceRequest;
+import com.imob.dto.InviteDetailsResponse;
+import com.imob.dto.InviteResponse;
 import com.imob.dto.InviteUserRequest;
 import com.imob.dto.WorkspaceResponse;
-import com.imob.entity.WorkspaceEntity;
+import com.imob.entity.InviteEntity;
 import com.imob.entity.UserWorkspaceRelationEntity;
+import com.imob.entity.WorkspaceEntity;
+import com.imob.repository.InviteRepository;
 import com.imob.repository.WorkspaceRepository;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.ws.rs.Consumes;
@@ -20,6 +24,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -33,9 +38,15 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class WorkspaceResource {
 
+    private static final long INVITE_TTL_SECONDS = 7L * 24 * 60 * 60;
+
     private final UserContext userContext;
     private final WorkspaceRepository repository;
+    private final InviteRepository inviteRepository;
     private final AuthFilter authFilter;
+
+    @ConfigProperty(name = "imob.app.url")
+    String appUrl;
 
     @GET
     public List<WorkspaceResponse> getWorkspaces() {
@@ -43,7 +54,7 @@ public class WorkspaceResource {
         String activeWorkspaceId = this.userContext.getWorkspaceId();
 
         List<UserWorkspaceRelationEntity> relations = this.repository.getUserWorkspaceRelations(email);
-        
+
         // Se nao houver relacoes criadas ainda (ex: migracao/retrocompatibilidade), cria a relacao padrao
         if (relations.isEmpty() && activeWorkspaceId != null) {
             String domain = email.contains("@") ? email.split("@")[1] : "";
@@ -137,11 +148,10 @@ public class WorkspaceResource {
             }
         }
 
-        if (!hasAccess) {
+        if (!hasAccess)
             return Response.status(Response.Status.FORBIDDEN)
                     .entity("{\"error\":\"Acesso negado a este workspace\"}")
                     .build();
-        }
 
         this.repository.updateActiveWorkspace(email, targetWorkspaceId);
         this.userContext.setWorkspaceId(targetWorkspaceId);
@@ -152,43 +162,120 @@ public class WorkspaceResource {
 
     @POST
     @Path("/invite")
-    public Response inviteUser(InviteUserRequest request) {
+    public Response createInvite(InviteUserRequest request) {
         String activeWorkspaceId = this.userContext.getWorkspaceId();
-        String inviteeEmail = request.getEmail();
         String callerEmail = this.userContext.getEmail();
 
-        if (inviteeEmail == null || inviteeEmail.isBlank()) 
+        String targetRole = request.getRole() != null ? request.getRole().toUpperCase() : null;
+        if (targetRole == null || targetRole.isBlank())
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"Email do convidado e obrigatorio\"}")
+                    .entity("{\"error\":\"O campo role e obrigatorio\"}")
+                    .build();
+
+        if (!targetRole.equals("ADMIN") && !targetRole.equals("MEMBER"))
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\":\"Papel invalido. Use ADMIN ou MEMBER\"}")
                     .build();
 
         UserWorkspaceRelationEntity callerRel = this.repository.getUserWorkspaceRelation(callerEmail, activeWorkspaceId);
-        if (callerRel == null || (!callerRel.getRole().equals("OWNER") && !callerRel.getRole().equals("ADMIN"))) 
+        if (callerRel == null || (!callerRel.getRole().equals("OWNER") && !callerRel.getRole().equals("ADMIN")))
             return Response.status(Response.Status.FORBIDDEN)
                     .entity("{\"error\":\"Acesso negado: apenas administradores ou proprietarios podem convidar\"}")
                     .build();
 
         WorkspaceEntity workspace = this.repository.getWorkspace(activeWorkspaceId);
-        if (workspace == null) 
+        if (workspace == null)
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("{\"error\":\"Workspace atual nao encontrado\"}")
                     .build();
 
-        String targetRole = request.getRole() != null && !request.getRole().isBlank() ? request.getRole().toUpperCase() : "ADMIN";
-        if (!targetRole.equals("ADMIN") && !targetRole.equals("MEMBER")) 
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"Papel invalido para o convite\"}")
+        String token = UUID.randomUUID().toString();
+        long expiresAt = Instant.now().getEpochSecond() + INVITE_TTL_SECONDS;
+
+        InviteEntity invite = new InviteEntity();
+        invite.setToken(token);
+        invite.setWorkspaceId(activeWorkspaceId);
+        invite.setWorkspaceName(workspace.getName());
+        invite.setRole(targetRole);
+        invite.setCreatedByEmail(callerEmail);
+        invite.setExpiresAt(expiresAt);
+
+        this.inviteRepository.saveInvite(invite);
+
+        InviteResponse response = new InviteResponse();
+        response.setToken(token);
+        response.setInviteUrl(this.appUrl + "/invite/" + token);
+        response.setRole(targetRole);
+        response.setWorkspaceName(workspace.getName());
+        response.setExpiresAt(expiresAt);
+
+        return Response.status(Response.Status.CREATED)
+                .entity(response)
+                .build();
+    }
+
+    @GET
+    @Path("/invite/{token}")
+    public Response getInviteDetails(@PathParam("token") String token) {
+        InviteEntity invite = this.inviteRepository.getInvite(token);
+        if (invite == null)
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"error\":\"Convite nao encontrado\"}")
+                    .build();
+
+        if (Instant.now().getEpochSecond() > invite.getExpiresAt())
+            return Response.status(410)
+                    .entity("{\"error\":\"Este convite expirou\"}")
+                    .build();
+
+        InviteDetailsResponse response = new InviteDetailsResponse();
+        response.setWorkspaceName(invite.getWorkspaceName());
+        response.setRole(invite.getRole());
+        response.setExpiresAt(invite.getExpiresAt());
+
+        return Response.ok(response).build();
+    }
+
+    @POST
+    @Path("/invite/{token}/accept")
+    public Response acceptInvite(@PathParam("token") String token) {
+        String userEmail = this.userContext.getEmail();
+
+        InviteEntity invite = this.inviteRepository.getInvite(token);
+        if (invite == null)
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"error\":\"Convite nao encontrado\"}")
+                    .build();
+
+        if (Instant.now().getEpochSecond() > invite.getExpiresAt())
+            return Response.status(410)
+                    .entity("{\"error\":\"Este convite expirou\"}")
+                    .build();
+
+        UserWorkspaceRelationEntity existing = this.repository.getUserWorkspaceRelation(userEmail, invite.getWorkspaceId());
+        if (existing != null)
+            return Response.status(Response.Status.CONFLICT)
+                    .entity("{\"error\":\"Voce ja e membro deste workspace\"}")
                     .build();
 
         UserWorkspaceRelationEntity relation = new UserWorkspaceRelationEntity();
-        relation.setEmail(inviteeEmail);
-        relation.setWorkspaceId(activeWorkspaceId);
-        relation.setRole(targetRole);
+        relation.setEmail(userEmail);
+        relation.setWorkspaceId(invite.getWorkspaceId());
+        relation.setRole(invite.getRole());
         relation.setJoinedAt(Instant.now().toString());
-        relation.setWorkspaceName(workspace.getName());
+        relation.setWorkspaceName(invite.getWorkspaceName());
         this.repository.saveUserWorkspaceRelation(relation);
 
-        return Response.ok("{\"message\":\"Usuario convidado com sucesso\"}").build();
+        this.inviteRepository.deleteInvite(token);
+
+        WorkspaceResponse response = new WorkspaceResponse();
+        response.setWorkspaceId(invite.getWorkspaceId());
+        response.setWorkspaceName(invite.getWorkspaceName());
+        response.setRole(invite.getRole());
+        response.setJoinedAt(relation.getJoinedAt());
+        response.setActive(false);
+
+        return Response.ok(response).build();
     }
 
     @DELETE
@@ -198,25 +285,25 @@ public class WorkspaceResource {
         String callerEmail = this.userContext.getEmail();
 
         UserWorkspaceRelationEntity callerRel = this.repository.getUserWorkspaceRelation(callerEmail, activeWorkspaceId);
-        if (callerRel == null) 
+        if (callerRel == null)
             return Response.status(Response.Status.FORBIDDEN)
                     .entity("{\"error\":\"Acesso negado ao workspace\"}")
                     .build();
 
         UserWorkspaceRelationEntity targetRel = this.repository.getUserWorkspaceRelation(targetEmail, activeWorkspaceId);
-        if (targetRel == null) 
+        if (targetRel == null)
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("{\"error\":\"Relacao de workspace do usuario alvo nao encontrada\"}")
                     .build();
 
         // Regra de negocio: Um convidado (ADMIN/MEMBER) nunca pode expulsar o OWNER
-        if (targetRel.getRole().equals("OWNER") && !callerEmail.equals(targetEmail)) 
+        if (targetRel.getRole().equals("OWNER") && !callerEmail.equals(targetEmail))
             return Response.status(Response.Status.FORBIDDEN)
                     .entity("{\"error\":\"Acesso negado: nao e permitido expulsar o proprietario do workspace\"}")
                     .build();
 
         // Regra de negocio: MEMBER nao pode expulsar ninguem (exceto sair a si mesmo)
-        if (callerRel.getRole().equals("MEMBER") && !callerEmail.equals(targetEmail)) 
+        if (callerRel.getRole().equals("MEMBER") && !callerEmail.equals(targetEmail))
             return Response.status(Response.Status.FORBIDDEN)
                     .entity("{\"error\":\"Acesso negado: membros comuns nao podem remover outros membros\"}")
                     .build();
