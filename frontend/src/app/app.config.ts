@@ -54,7 +54,8 @@ import {
   PlayCircle,
   Copy,
   Users,
-  XCircle
+  XCircle,
+  Settings
 } from 'lucide-angular';
 
 import { routes } from './app.routes';
@@ -123,7 +124,8 @@ export const appConfig: ApplicationConfig = {
         PlayCircle,
         Copy,
         Users,
-        XCircle
+        XCircle,
+        Settings
       })
     )
   ]

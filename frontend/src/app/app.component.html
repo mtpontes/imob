@@ -33,9 +33,9 @@
             </div>
           </div>
           <div class="dropdown-divider"></div>
-          <button (click)="createWorkspace()" class="dropdown-item">
-            <lucide-icon name="plus"></lucide-icon>
-            <span>Novo Ambiente</span>
+          <button routerLink="/environments" (click)="closeWorkspaceMenu()" class="dropdown-item" id="btn-manage-environments">
+            <lucide-icon name="settings"></lucide-icon>
+            <span>Gerenciar Ambientes</span>
           </button>
           <button (click)="inviteUser()" class="dropdown-item" [style.display]="activeWorkspace?.role === 'OWNER' ? 'flex' : 'none'">
             <lucide-icon name="plus-circle"></lucide-icon>
@@ -118,9 +118,9 @@
       </div>
       
       <div class="workspace-mobile-actions">
-        <button (click)="createWorkspace()" class="workspace-mobile-action btn-add-workspace">
-          <lucide-icon name="plus"></lucide-icon>
-          <span>Criar Ambiente</span>
+        <button routerLink="/environments" (click)="closeProfileMenu()" class="workspace-mobile-action btn-add-workspace" id="btn-manage-environments-mobile">
+          <lucide-icon name="settings"></lucide-icon>
+          <span>Gerenciar Ambientes</span>
         </button>
         <button (click)="inviteUser()" class="workspace-mobile-action btn-invite-user" [style.display]="activeWorkspace?.role === 'OWNER' ? 'flex' : 'none'">
           <lucide-icon name="plus-circle"></lucide-icon>

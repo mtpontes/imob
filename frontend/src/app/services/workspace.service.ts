@@ -35,4 +35,12 @@ export class WorkspaceService {
   acceptInvite(token: string): Observable<WorkspaceResponse> {
     return this.http.post<WorkspaceResponse>(`${this.apiUrl}/invite/${token}/accept`, {});
   }
+
+  updateWorkspace(workspaceId: string, name: string): Observable<WorkspaceResponse> {
+    return this.http.put<WorkspaceResponse>(`${this.apiUrl}/${workspaceId}`, { name });
+  }
+
+  deleteWorkspace(workspaceId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${workspaceId}`);
+  }
 }

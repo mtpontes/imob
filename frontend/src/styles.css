@@ -2969,10 +2969,10 @@ input[type=number] {
 /* Menu Dropdown com Glassmorphism */
 .profile-dropdown {
   position: absolute;
-  top: calc(100% + 0.75rem);
+  top: calc(100% + 0.5rem);
   right: 0;
   width: 240px;
-  background: hsla(222, 47%, 9%, 0.98);
+  background: hsla(222, 47%, 9%, 0.90);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.55);
@@ -2981,8 +2981,8 @@ input[type=number] {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   overflow: hidden;
   animation: dropdownFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -3072,7 +3072,7 @@ input[type=number] {
   top: calc(100% + 0.5rem);
   left: 0;
   width: 260px;
-  background: hsla(222, 47%, 9%, 0.98);
+  background: hsla(222, 47%, 9%, 0.90);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-sm);
   padding: 0.5rem;
@@ -3211,6 +3211,15 @@ input[type=number] {
   height: 1px;
   background: var(--glass-border);
   margin: 0.25rem 0;
+}
+
+.dropdown-header {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  padding: 0.5rem 0.75rem 0.25rem;
 }
 
 .dropdown-item {
@@ -3894,13 +3903,19 @@ input[type=number] {
 
 .delete-confirm-footer {
   display: flex;
+  align-items: center !important;
   justify-content: flex-end;
   gap: 0.75rem;
-  margin-top: 0.5rem;
+  margin-top: 1.5rem;
 }
 
 .delete-confirm-footer .btn {
-  flex: 1;
+  flex: 1 1 0% !important;
+  height: 42px !important;
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .btn-danger-filled {

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { LoginComponent } from './login.component';
 import { AuthService } from '../../services/auth.service';
 import { importProvidersFrom } from '@angular/core';
@@ -24,13 +24,21 @@ describe('LoginComponent', () => {
       'isLoggedIn',
       'getUserEmail'
     ]);
-    const rSpy = jasmine.createSpyObj('Router', ['navigate']);
+    const rSpy = jasmine.createSpyObj('Router', ['navigate', 'navigateByUrl']);
+    const activatedRouteMock = {
+      snapshot: {
+        queryParamMap: {
+          get: (key: string) => null
+        }
+      }
+    };
 
     await TestBed.configureTestingModule({
       imports: [LoginComponent],
       providers: [
         { provide: AuthService, useValue: authSpy },
         { provide: Router, useValue: rSpy },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
         importProvidersFrom(
           LucideAngularModule.pick({
             Mail, Lock, ArrowRight, Zap, Building2, Info, Briefcase, LogOut, Plus, Search,
@@ -73,14 +81,14 @@ describe('LoginComponent', () => {
   it('should call bypassLogin and navigate to properties on bypass', () => {
     // Arrange
     authServiceSpy.bypassLogin.and.stub();
-    routerSpy.navigate.and.returnValue(Promise.resolve(true));
+    routerSpy.navigateByUrl.and.returnValue(Promise.resolve(true));
 
     // Act
     component.bypassLogin();
 
     // Assert
     expect(authServiceSpy.bypassLogin).toHaveBeenCalledWith('demo@imobapp.com.br');
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['/properties']);
+    expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('/properties');
   });
 
   it('should show error message when bypassLogin throws', () => {

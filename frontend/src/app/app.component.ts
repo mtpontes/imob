@@ -60,7 +60,8 @@ export class AppComponent implements OnInit {
     this.showBackButton = (
       path.startsWith('/properties/') || 
       path.startsWith('/roteiros/builder/') || 
-      path.startsWith('/evaluate/')
+      path.startsWith('/evaluate/') ||
+      path.startsWith('/environments')
     );
 
     this.router.events.pipe(
@@ -70,7 +71,8 @@ export class AppComponent implements OnInit {
       this.showBackButton = (
         url.startsWith('/properties/') || 
         url.startsWith('/roteiros/builder') || 
-        url.startsWith('/evaluate/')
+        url.startsWith('/evaluate/') ||
+        url.startsWith('/environments')
       );
       this.isInviteRoute = url.startsWith('/invite/');
     });
@@ -241,6 +243,8 @@ export class AppComponent implements OnInit {
       const parts = url.split('/');
       const propertyId = parts[2];
       this.router.navigate(['/properties', propertyId]);
+    } else if (url.startsWith('/environments')) {
+      this.router.navigate(['/properties']);
     } else {
       this.location.back();
     }
