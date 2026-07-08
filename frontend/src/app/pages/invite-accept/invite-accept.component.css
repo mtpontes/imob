@@ -111,6 +111,7 @@
 .invite-badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   padding: 0.3rem 0.75rem;
   background: hsla(250, 84%, 67%, 0.15);
@@ -121,6 +122,22 @@
   color: var(--primary-light);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.invite-badge span {
+  display: inline-block;
+  line-height: 1;
+}
+
+.invite-badge i-lucide,
+.invite-badge lucide-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  line-height: 1;
 }
 
 .invite-expiry {
