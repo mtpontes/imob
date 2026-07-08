@@ -51,7 +51,10 @@ import {
   TrendingUp,
   TrendingDown,
   Play,
-  PlayCircle
+  PlayCircle,
+  Copy,
+  Users,
+  XCircle
 } from 'lucide-angular';
 
 import { routes } from './app.routes';
@@ -117,7 +120,10 @@ export const appConfig: ApplicationConfig = {
         TrendingUp,
         TrendingDown,
         Play,
-        PlayCircle
+        PlayCircle,
+        Copy,
+        Users,
+        XCircle
       })
     )
   ]

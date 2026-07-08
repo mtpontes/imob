@@ -207,13 +207,10 @@
           
           <div class="form-group" style="width: 100%; text-align: left; margin-top: 1rem;">
             <label for="inviteUserRole">Nivel de Permissao</label>
-            <div class="input-wrapper">
-              <lucide-icon name="shield"></lucide-icon>
-              <select id="inviteUserRole" [(ngModel)]="inviteUserRole" style="width: 100%; background: transparent; border: none; color: inherit; padding-left: 0.5rem; outline: none; cursor: pointer;">
-                <option value="MEMBER" style="background: var(--color-surface, #1a1a1a); color: var(--color-text, #f1f5f9);">Membro</option>
-                <option value="ADMIN" style="background: var(--color-surface, #1a1a1a); color: var(--color-text, #f1f5f9);">Administrador</option>
-              </select>
-            </div>
+            <select id="inviteUserRole" [(ngModel)]="inviteUserRole" class="select-styled" style="width: 100%; cursor: pointer; margin-top: 0.5rem;">
+              <option value="MEMBER" style="background: var(--color-surface, #1a1a1a); color: var(--color-text, #f1f5f9);">Membro</option>
+              <option value="ADMIN" style="background: var(--color-surface, #1a1a1a); color: var(--color-text, #f1f5f9);">Administrador</option>
+            </select>
           </div>
         </div>
 
@@ -236,10 +233,10 @@
           
           <div class="form-group" style="width: 100%; text-align: left; margin-top: 1rem;">
             <label>Link de Acesso</label>
-            <div class="input-wrapper" style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
-              <span class="invite-url-text" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.85rem; flex-grow: 1; text-align: left;">{{ generatedInviteUrl }}</span>
-              <button class="btn btn-outline" (click)="copyInviteUrl()" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; margin: 0; min-height: auto; flex-shrink: 0;" id="btn-copy-invite-link">
-                <lucide-icon name="copy" [size]="14"></lucide-icon>
+            <div class="invite-link-container">
+              <span class="invite-url-text">{{ generatedInviteUrl }}</span>
+              <button type="button" class="btn-copy" (click)="copyInviteUrl()" id="btn-copy-invite-link" title="Copiar Link">
+                <lucide-icon name="copy" [size]="16"></lucide-icon>
               </button>
             </div>
           </div>

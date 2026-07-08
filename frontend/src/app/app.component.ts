@@ -181,7 +181,7 @@ export class AppComponent implements OnInit {
   submitInviteUser(): void {
     this.workspaceService.createInvite(this.inviteUserRole).subscribe({
       next: (res) => {
-        this.generatedInviteUrl = res.inviteUrl;
+        this.generatedInviteUrl = `${window.location.origin}/invite/${res.token}`;
         this.isInviteLinkGenerated = true;
         this.showToast('Link de convite gerado com sucesso!', 'success');
       },
