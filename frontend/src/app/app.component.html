@@ -195,36 +195,65 @@
     <div class="modal-backdrop" (click)="closeInviteUserModal()"></div>
     <div class="modal-content delete-confirm-modal-content glass">
       <div class="modal-drag-indicator"></div>
-      <div class="delete-confirm-body">
-        <div class="alert-icon-wrapper" style="background: hsla(250, 84%, 67%, 0.1); border-color: rgba(139, 92, 246, 0.2); color: var(--primary-light);">
-          <lucide-icon name="plus-circle"></lucide-icon>
-        </div>
-        <h3>Convidar para o Ambiente</h3>
-        <p>Digite o e-mail do usuário que deseja convidar para colaborar neste ambiente.</p>
-        
-        <div class="form-group" style="width: 100%; text-align: left; margin-top: 1rem;">
-          <label for="inviteUserEmail">E-mail do Usuário</label>
-          <div class="input-wrapper">
-            <lucide-icon name="mail"></lucide-icon>
-            <input 
-              type="email" 
-              id="inviteUserEmail" 
-              [(ngModel)]="inviteUserEmail"
-              placeholder="usuario@email.com"
-              (keyup.enter)="submitInviteUser()"
-            />
+      
+      <!-- Passo 1: Configuracao do convite -->
+      <ng-container *ngIf="!isInviteLinkGenerated">
+        <div class="delete-confirm-body">
+          <div class="alert-icon-wrapper" style="background: hsla(250, 84%, 67%, 0.1); border-color: rgba(139, 92, 246, 0.2); color: var(--primary-light);">
+            <lucide-icon name="plus-circle"></lucide-icon>
+          </div>
+          <h3>Convidar para o Ambiente</h3>
+          <p>Selecione a permissao do usuario que ira acessar este ambiente atraves do link gerado.</p>
+          
+          <div class="form-group" style="width: 100%; text-align: left; margin-top: 1rem;">
+            <label for="inviteUserRole">Nivel de Permissao</label>
+            <div class="input-wrapper">
+              <lucide-icon name="shield"></lucide-icon>
+              <select id="inviteUserRole" [(ngModel)]="inviteUserRole" style="width: 100%; background: transparent; border: none; color: inherit; padding-left: 0.5rem; outline: none; cursor: pointer;">
+                <option value="MEMBER" style="background: var(--color-surface, #1a1a1a); color: var(--color-text, #f1f5f9);">Membro</option>
+                <option value="ADMIN" style="background: var(--color-surface, #1a1a1a); color: var(--color-text, #f1f5f9);">Administrador</option>
+              </select>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="delete-confirm-footer">
-        <button class="btn btn-outline" (click)="closeInviteUserModal()" id="btn-cancel-invite">Cancelar</button>
-        <button class="btn btn-primary" (click)="submitInviteUser()" [disabled]="!inviteUserEmail.trim()" id="btn-confirm-invite-exec">
-          <span>Enviar Convite</span>
-        </button>
+        <div class="delete-confirm-footer">
+          <button class="btn btn-outline" (click)="closeInviteUserModal()" id="btn-cancel-invite">Cancelar</button>
+          <button class="btn btn-primary" (click)="submitInviteUser()" id="btn-confirm-invite-exec">
+            <span>Gerar Link de Convite</span>
+          </button>
+        </div>
+      </ng-container>
+
+      <!-- Passo 2: Link Gerado -->
+      <ng-container *ngIf="isInviteLinkGenerated">
+        <div class="delete-confirm-body">
+          <div class="alert-icon-wrapper" style="background: hsla(150, 84%, 67%, 0.1); border-color: rgba(34, 197, 94, 0.2); color: var(--success);">
+            <lucide-icon name="check-circle"></lucide-icon>
+          </div>
+          <h3>Link Gerado com Sucesso!</h3>
+          <p>Copie o link temporario abaixo e envie para o convidado. O convite e valido por 7 dias.</p>
+          
+          <div class="form-group" style="width: 100%; text-align: left; margin-top: 1rem;">
+            <label>Link de Acesso</label>
+            <div class="input-wrapper" style="display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+              <span class="invite-url-text" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.85rem; flex-grow: 1; text-align: left;">{{ generatedInviteUrl }}</span>
+              <button class="btn btn-outline" (click)="copyInviteUrl()" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; margin: 0; min-height: auto; flex-shrink: 0;" id="btn-copy-invite-link">
+                <lucide-icon name="copy" [size]="14"></lucide-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="delete-confirm-footer">
+          <button class="btn btn-primary" (click)="closeInviteUserModal()" id="btn-close-invite-modal">
+            <span>Concluido</span>
+          </button>
+        </div>
+      </ng-container>
+
     </div>
   </div>
-</div>
 
   <!-- Toast de Notificação Customizado (Premium) -->
   <div class="toast-message" [class.visible]="toast.show" [class.success]="toast.type === 'success'" [class.error]="toast.type === 'error'" [class.warning]="toast.type === 'warning'">

@@ -29,7 +29,9 @@ export class AppComponent implements OnInit {
   isCreateWorkspaceModalOpen = false;
   newWorkspaceName = '';
   isInviteUserModalOpen = false;
-  inviteUserEmail = '';
+  inviteUserRole = 'MEMBER';
+  generatedInviteUrl = '';
+  isInviteLinkGenerated = false;
 
   // Toast de Notificação Customizado
   toast = {
@@ -163,28 +165,38 @@ export class AppComponent implements OnInit {
 
   inviteUser(): void {
     this.isInviteUserModalOpen = true;
-    this.inviteUserEmail = '';
+    this.inviteUserRole = 'MEMBER';
+    this.generatedInviteUrl = '';
+    this.isInviteLinkGenerated = false;
     this.isProfileMenuOpen = false;
     this.isWorkspaceMenuOpen = false;
   }
 
   closeInviteUserModal(): void {
     this.isInviteUserModalOpen = false;
-    this.inviteUserEmail = '';
+    this.generatedInviteUrl = '';
+    this.isInviteLinkGenerated = false;
   }
 
   submitInviteUser(): void {
-    const email = this.inviteUserEmail.trim();
-    if (!email) return;
-
-    this.workspaceService.inviteUser(email).subscribe({
+    this.workspaceService.createInvite(this.inviteUserRole).subscribe({
       next: (res) => {
-        this.showToast(res.message || 'Usuário convidado com sucesso!', 'success');
-        this.closeInviteUserModal();
+        this.generatedInviteUrl = res.inviteUrl;
+        this.isInviteLinkGenerated = true;
+        this.showToast('Link de convite gerado com sucesso!', 'success');
       },
       error: (err) => {
-        this.showToast('Erro ao enviar convite: ' + (err.error?.error || err.message), 'error');
+        this.showToast('Erro ao gerar link de convite: ' + (err.error?.error || err.message), 'error');
       }
+    });
+  }
+
+  copyInviteUrl(): void {
+    if (!this.generatedInviteUrl) return;
+    navigator.clipboard.writeText(this.generatedInviteUrl).then(() => {
+      this.showToast('Link copiado para a área de transferência!', 'success');
+    }).catch(err => {
+      this.showToast('Erro ao copiar link.', 'error');
     });
   }
 

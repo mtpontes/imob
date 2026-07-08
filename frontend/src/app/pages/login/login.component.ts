@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { LucideAngularModule } from 'lucide-angular';
 
@@ -17,7 +17,8 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   loginWithGoogle(): void {
@@ -37,7 +38,8 @@ export class LoginComponent {
     try {
       this.authService.bypassLogin('demo@imobapp.com.br');
       this.loading = false;
-      this.router.navigate(['/properties']);
+      const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+      this.router.navigateByUrl(returnUrl ?? '/properties');
     } catch (err: any) {
       this.loading = false;
       this.errorMessage = 'Erro ao realizar login de bypass.';

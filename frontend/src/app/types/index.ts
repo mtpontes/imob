@@ -106,5 +106,19 @@ export interface ChangeActiveWorkspaceRequest {
 }
 
 export interface InviteUserRequest {
-  email: string;
+  role: string;
+}
+
+export interface InviteResponse {
+  token: string;
+  inviteUrl: string;
+  role: string;
+  workspaceName: string;
+  expiresAt: number;
+}
+
+export interface InviteDetailsResponse {
+  workspaceName: string;
+  role: string;
+  expiresAt: number;
 }

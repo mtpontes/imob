@@ -1,0 +1,59 @@
+<div class="invite-page">
+  <!-- Loading -->
+  <div class="invite-card" *ngIf="loading">
+    <div class="invite-spinner">
+      <div class="spinner"></div>
+      <p>Carregando convite...</p>
+    </div>
+  </div>
+
+  <!-- Erro -->
+  <div class="invite-card invite-card--error" *ngIf="!loading && error">
+    <div class="invite-icon invite-icon--error">
+      <i-lucide name="x-circle" [size]="40"></i-lucide>
+    </div>
+    <h1 class="invite-title">Convite inválido</h1>
+    <p class="invite-description">{{ error }}</p>
+    <button class="invite-btn invite-btn--secondary" (click)="goToProperties()" id="btn-invite-go-home">
+      Ir para o início
+    </button>
+  </div>
+
+  <!-- Sucesso -->
+  <div class="invite-card invite-card--success" *ngIf="!loading && success">
+    <div class="invite-icon invite-icon--success">
+      <i-lucide name="check-circle" [size]="40"></i-lucide>
+    </div>
+    <h1 class="invite-title">Acesso confirmado!</h1>
+    <p class="invite-description">Você foi adicionado ao ambiente. Redirecionando...</p>
+  </div>
+
+  <!-- Detalhes do convite -->
+  <div class="invite-card" *ngIf="!loading && !error && !success && invite">
+    <div class="invite-icon">
+      <i-lucide name="users" [size]="40"></i-lucide>
+    </div>
+    <p class="invite-eyebrow">Você foi convidado para</p>
+    <h1 class="invite-workspace-name">{{ invite.workspaceName }}</h1>
+    <div class="invite-badge">
+      <i-lucide name="shield-check" [size]="14"></i-lucide>
+      <span>{{ getRoleLabel(invite.role) }}</span>
+    </div>
+    <p class="invite-expiry">Convite válido até {{ getExpiresAtLabel() }}</p>
+
+    <div class="invite-actions">
+      <button
+        class="invite-btn invite-btn--primary"
+        (click)="acceptInvite()"
+        [disabled]="accepting"
+        id="btn-accept-invite"
+      >
+        <span *ngIf="!accepting">Aceitar convite</span>
+        <span *ngIf="accepting">Entrando...</span>
+      </button>
+      <button class="invite-btn invite-btn--secondary" (click)="goToProperties()" id="btn-decline-invite">
+        Recusar
+      </button>
+    </div>
+  </div>
+</div>

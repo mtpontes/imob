@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { WorkspaceResponse, CreateWorkspaceRequest, ChangeActiveWorkspaceRequest, InviteUserRequest } from '../types';
+import { WorkspaceResponse, CreateWorkspaceRequest, ChangeActiveWorkspaceRequest, InviteResponse, InviteDetailsResponse } from '../types';
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +24,15 @@ export class WorkspaceService {
     return this.http.post<void>(`${this.apiUrl}/active`, request);
   }
 
-  inviteUser(email: string): Observable<any> {
-    const request: InviteUserRequest = { email };
-    return this.http.post<any>(`${this.apiUrl}/invite`, request);
+  createInvite(role: string): Observable<InviteResponse> {
+    return this.http.post<InviteResponse>(`${this.apiUrl}/invite`, { role });
+  }
+
+  getInviteDetails(token: string): Observable<InviteDetailsResponse> {
+    return this.http.get<InviteDetailsResponse>(`${this.apiUrl}/invite/${token}`);
+  }
+
+  acceptInvite(token: string): Observable<WorkspaceResponse> {
+    return this.http.post<WorkspaceResponse>(`${this.apiUrl}/invite/${token}/accept`, {});
   }
 }
