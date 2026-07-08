@@ -146,12 +146,99 @@ public class WorkspaceRepository {
             item.put("SK", AttributeValue.builder().s(sk).build());
         }
 
-        item.put("workspaceId", AttributeValue.builder().s(workspaceId).build());
+        if (workspaceId != null && !workspaceId.isBlank()) 
+            item.put("workspaceId", AttributeValue.builder().s(workspaceId).build());
+        else 
+            item.remove("workspaceId");
 
         PutItemRequest putReq = PutItemRequest.builder()
                 .tableName(this.tableName)
                 .item(item)
                 .build();
         this.dynamoDb.putItem(putReq);
+    }
+
+    public String getActiveWorkspace(String email) {
+        String pk = "USER#" + email;
+        String sk = "PROFILE";
+
+        Map<String, AttributeValue> key = new HashMap<>();
+        key.put("PK", AttributeValue.builder().s(pk).build());
+        key.put("SK", AttributeValue.builder().s(sk).build());
+
+        GetItemRequest getReq = GetItemRequest.builder()
+                .tableName(this.tableName)
+                .key(key)
+                .build();
+
+        GetItemResponse res = this.dynamoDb.getItem(getReq);
+        if (res.hasItem()) {
+            Map<String, AttributeValue> item = res.item();
+            if (item.containsKey("workspaceId")) 
+                return item.get("workspaceId").s();
+        }
+
+        return null;
+    }
+
+    public List<UserWorkspaceRelationEntity> getRelationsForWorkspace(String workspaceId) {
+        Map<String, String> attributeNames = new HashMap<>();
+        attributeNames.put("#sk", "SK");
+
+        Map<String, AttributeValue> attributeValues = new HashMap<>();
+        attributeValues.put(":sk", AttributeValue.builder().s("WORKSPACE#" + workspaceId).build());
+
+        software.amazon.awssdk.services.dynamodb.model.ScanRequest scanReq = software.amazon.awssdk.services.dynamodb.model.ScanRequest.builder()
+                .tableName(this.tableName)
+                .filterExpression("#sk = :sk")
+                .expressionAttributeNames(attributeNames)
+                .expressionAttributeValues(attributeValues)
+                .build();
+
+        software.amazon.awssdk.services.dynamodb.model.ScanResponse res = this.dynamoDb.scan(scanReq);
+        List<UserWorkspaceRelationEntity> list = new ArrayList<>();
+        if (res.hasItems()) {
+            for (Map<String, AttributeValue> item : res.items()) {
+                UserWorkspaceRelationEntity rel = UserWorkspaceRelationEntity.fromAttributeMap(item);
+                if (rel != null) 
+                    list.add(rel);
+            }
+        }
+
+        return list;
+    }
+
+    public void deleteWorkspaceAndAllRelatedItems(String workspaceId) {
+        String pk = "WORKSPACE#" + workspaceId;
+
+        Map<String, String> attributeNames = new HashMap<>();
+        attributeNames.put("#pk", "PK");
+
+        Map<String, AttributeValue> attributeValues = new HashMap<>();
+        attributeValues.put(":pk", AttributeValue.builder().s(pk).build());
+
+        QueryRequest queryReq = QueryRequest.builder()
+                .tableName(this.tableName)
+                .keyConditionExpression("#pk = :pk")
+                .expressionAttributeNames(attributeNames)
+                .expressionAttributeValues(attributeValues)
+                .build();
+
+        QueryResponse res = this.dynamoDb.query(queryReq);
+        if (res.hasItems()) {
+            for (Map<String, AttributeValue> item : res.items()) {
+                String sk = item.get("SK").s();
+                Map<String, AttributeValue> key = new HashMap<>();
+                key.put("PK", AttributeValue.builder().s(pk).build());
+                key.put("SK", AttributeValue.builder().s(sk).build());
+
+                DeleteItemRequest delReq = DeleteItemRequest.builder()
+                        .tableName(this.tableName)
+                        .key(key)
+                        .build();
+                this.dynamoDb.deleteItem(delReq);
+            }
+        }
+
     }
 }

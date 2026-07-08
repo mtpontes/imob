@@ -53,6 +53,14 @@ public class WorkspaceResourceTest {
 
         Mockito.when(this.repository.getUserWorkspaceRelation("test@imob.com", "workspace_test"))
                 .thenReturn(defaultRel);
+
+        WorkspaceEntity defaultWs = new WorkspaceEntity();
+        defaultWs.setId("workspace_test");
+        defaultWs.setName("Test Workspace");
+        defaultWs.setOwnerEmail("test@imob.com");
+
+        Mockito.when(this.repository.getWorkspace("workspace_test"))
+                .thenReturn(defaultWs);
     }
 
     @Test
@@ -390,5 +398,145 @@ public class WorkspaceResourceTest {
                 .delete("/api/workspaces/members/" + ownerEmail)
                 .then()
                 .statusCode(403);
+    }
+
+    @Test
+    public void shouldUpdateWorkspaceNameIfOwner() {
+        // Arrange
+        String email = "test@imob.com";
+        String wsId = "workspace_test";
+        String newName = "Workspace Renomeado";
+
+        WorkspaceEntity ws = new WorkspaceEntity();
+        ws.setId(wsId);
+        ws.setName("Test Workspace");
+        ws.setOwnerEmail(email);
+
+        UserWorkspaceRelationEntity rel = new UserWorkspaceRelationEntity();
+        rel.setEmail(email);
+        rel.setWorkspaceId(wsId);
+        rel.setRole("OWNER");
+        rel.setJoinedAt("2026-06-01T10:00:00Z");
+
+        Mockito.when(this.repository.getWorkspace(wsId)).thenReturn(ws);
+        Mockito.when(this.repository.getUserWorkspaceRelation(email, wsId)).thenReturn(rel);
+        Mockito.when(this.repository.getRelationsForWorkspace(wsId)).thenReturn(List.of(rel));
+
+        Map<String, Object> payload = Map.of("name", newName);
+
+        // Act & Then
+        given()
+                .header("X-User-Email", email)
+                .contentType(ContentType.JSON)
+                .body(payload)
+                .when()
+                .put("/api/workspaces/" + wsId)
+                .then()
+                .statusCode(200)
+                .body("workspaceId", is(wsId))
+                .body("workspaceName", is(newName))
+                .body("role", is("OWNER"));
+
+        Mockito.verify(this.repository, Mockito.times(1)).saveWorkspace(Mockito.any(WorkspaceEntity.class));
+        Mockito.verify(this.repository, Mockito.times(1)).saveUserWorkspaceRelation(Mockito.any(UserWorkspaceRelationEntity.class));
+    }
+
+    @Test
+    public void shouldDenyUpdateWorkspaceNameIfNotOwner() {
+        // Arrange
+        String email = "member@imob.com";
+        String wsId = "workspace_test";
+
+        WorkspaceEntity ws = new WorkspaceEntity();
+        ws.setId(wsId);
+        ws.setName("Test Workspace");
+        ws.setOwnerEmail("test@imob.com");
+
+        UserWorkspaceRelationEntity rel = new UserWorkspaceRelationEntity();
+        rel.setEmail(email);
+        rel.setWorkspaceId(wsId);
+        rel.setRole("MEMBER");
+
+        Mockito.when(this.repository.getWorkspace(wsId)).thenReturn(ws);
+        Mockito.when(this.repository.getUserWorkspaceRelation(email, wsId)).thenReturn(rel);
+
+        Map<String, Object> payload = Map.of("name", "Novo Nome");
+
+        // Act & Then
+        given()
+                .header("X-User-Email", email)
+                .contentType(ContentType.JSON)
+                .body(payload)
+                .when()
+                .put("/api/workspaces/" + wsId)
+                .then()
+                .statusCode(403);
+
+        Mockito.verify(this.repository, Mockito.never()).saveWorkspace(Mockito.any(WorkspaceEntity.class));
+    }
+
+    @Test
+    public void shouldDeleteWorkspaceIfOwner() {
+        // Arrange
+        String email = "test@imob.com";
+        String wsId = "workspace_test";
+
+        WorkspaceEntity ws = new WorkspaceEntity();
+        ws.setId(wsId);
+        ws.setName("Test Workspace");
+        ws.setOwnerEmail(email);
+
+        UserWorkspaceRelationEntity rel = new UserWorkspaceRelationEntity();
+        rel.setEmail(email);
+        rel.setWorkspaceId(wsId);
+        rel.setRole("OWNER");
+
+        Mockito.when(this.repository.getWorkspace(wsId)).thenReturn(ws);
+        Mockito.when(this.repository.getUserWorkspaceRelation(email, wsId)).thenReturn(rel);
+        Mockito.when(this.repository.getRelationsForWorkspace(wsId)).thenReturn(List.of(rel));
+        Mockito.when(this.repository.getUserWorkspaceRelations(email)).thenReturn(List.of(rel));
+        Mockito.when(this.repository.getActiveWorkspace(email)).thenReturn(wsId);
+
+        // Act & Then
+        given()
+                .header("X-User-Email", email)
+                .when()
+                .delete("/api/workspaces/" + wsId)
+                .then()
+                .statusCode(204);
+
+        Mockito.verify(this.repository, Mockito.times(1)).deleteUserWorkspaceRelation(email, wsId);
+        Mockito.verify(this.repository, Mockito.times(1)).updateActiveWorkspace(email, null);
+        Mockito.verify(this.repository, Mockito.times(1)).deleteWorkspaceAndAllRelatedItems(wsId);
+    }
+
+    @Test
+    public void shouldDenyDeleteWorkspaceIfNotOwner() {
+        // Arrange
+        String email = "admin@imob.com";
+        String wsId = "workspace_test";
+
+        WorkspaceEntity ws = new WorkspaceEntity();
+        ws.setId(wsId);
+        ws.setName("Test Workspace");
+        ws.setOwnerEmail("test@imob.com");
+
+        UserWorkspaceRelationEntity rel = new UserWorkspaceRelationEntity();
+        rel.setEmail(email);
+        rel.setWorkspaceId(wsId);
+        rel.setRole("ADMIN");
+
+        Mockito.when(this.repository.getWorkspace(wsId)).thenReturn(ws);
+        Mockito.when(this.repository.getUserWorkspaceRelation(email, wsId)).thenReturn(rel);
+
+        // Act & Then
+        given()
+                .header("X-User-Email", email)
+                .when()
+                .delete("/api/workspaces/" + wsId)
+                .then()
+                .statusCode(403);
+
+        Mockito.verify(this.repository, Mockito.never()).deleteWorkspaceAndAllRelatedItems(wsId);
     }
 }

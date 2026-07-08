@@ -13,11 +13,13 @@ import com.imob.entity.UserWorkspaceRelationEntity;
 import com.imob.entity.WorkspaceEntity;
 import com.imob.repository.InviteRepository;
 import com.imob.repository.WorkspaceRepository;
+import com.imob.dto.UpdateWorkspaceRequest;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -252,6 +254,12 @@ public class WorkspaceResource {
                     .entity("{\"error\":\"Este convite expirou\"}")
                     .build();
 
+        WorkspaceEntity workspace = this.repository.getWorkspace(invite.getWorkspaceId());
+        if (workspace == null) 
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"error\":\"O ambiente associado a este convite nao existe mais\"}")
+                    .build();
+
         UserWorkspaceRelationEntity existing = this.repository.getUserWorkspaceRelation(userEmail, invite.getWorkspaceId());
         if (existing != null)
             return Response.status(Response.Status.CONFLICT)
@@ -309,6 +317,95 @@ public class WorkspaceResource {
                     .build();
 
         this.repository.deleteUserWorkspaceRelation(targetEmail, activeWorkspaceId);
+        return Response.noContent().build();
+    }
+
+    @PUT
+    @Path("/{workspaceId}")
+    public Response updateWorkspace(@PathParam("workspaceId") String workspaceId, UpdateWorkspaceRequest request) {
+        String email = this.userContext.getEmail();
+
+        WorkspaceEntity workspace = this.repository.getWorkspace(workspaceId);
+        if (workspace == null) 
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"error\":\"Ambiente nao encontrado\"}")
+                    .build();
+
+        UserWorkspaceRelationEntity relation = this.repository.getUserWorkspaceRelation(email, workspaceId);
+        if (relation == null || !relation.getRole().equals("OWNER")) 
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity("{\"error\":\"Acesso negado: apenas o proprietario pode renomear o ambiente\"}")
+                    .build();
+
+        String newName = request.getName();
+        if (newName == null || newName.isBlank()) 
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\":\"O nome do ambiente e obrigatorio\"}")
+                    .build();
+
+        workspace.setName(newName);
+        this.repository.saveWorkspace(workspace);
+
+        List<UserWorkspaceRelationEntity> relations = this.repository.getRelationsForWorkspace(workspaceId);
+        for (UserWorkspaceRelationEntity rel : relations) {
+            rel.setWorkspaceName(newName);
+            this.repository.saveUserWorkspaceRelation(rel);
+            this.authFilter.invalidateCache(rel.getEmail());
+        }
+
+        WorkspaceResponse response = new WorkspaceResponse();
+        response.setWorkspaceId(workspaceId);
+        response.setWorkspaceName(newName);
+        response.setRole("OWNER");
+        response.setJoinedAt(relation.getJoinedAt());
+        response.setActive(workspaceId.equals(this.userContext.getWorkspaceId()));
+
+        return Response.ok(response).build();
+    }
+
+    @DELETE
+    @Path("/{workspaceId}")
+    public Response deleteWorkspace(@PathParam("workspaceId") String workspaceId) {
+        String email = this.userContext.getEmail();
+
+        WorkspaceEntity workspace = this.repository.getWorkspace(workspaceId);
+        if (workspace == null) 
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity("{\"error\":\"Ambiente nao encontrado\"}")
+                    .build();
+
+        UserWorkspaceRelationEntity relation = this.repository.getUserWorkspaceRelation(email, workspaceId);
+        if (relation == null || !relation.getRole().equals("OWNER")) 
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity("{\"error\":\"Acesso negado: apenas o proprietario pode excluir o ambiente\"}")
+                    .build();
+
+        List<UserWorkspaceRelationEntity> relations = this.repository.getRelationsForWorkspace(workspaceId);
+        for (UserWorkspaceRelationEntity rel : relations) {
+            String memberEmail = rel.getEmail();
+            this.repository.deleteUserWorkspaceRelation(memberEmail, workspaceId);
+            this.authFilter.invalidateCache(memberEmail);
+
+            List<UserWorkspaceRelationEntity> memberRelations = this.repository.getUserWorkspaceRelations(memberEmail);
+            String novoWorkspaceAtivo = null;
+            for (UserWorkspaceRelationEntity mRel : memberRelations) {
+                if (!mRel.getWorkspaceId().equals(workspaceId)) {
+                    novoWorkspaceAtivo = mRel.getWorkspaceId();
+                    break;
+                }
+            }
+
+            String activeWorkspaceDoMembro = this.repository.getActiveWorkspace(memberEmail);
+            if (workspaceId.equals(activeWorkspaceDoMembro)) {
+                this.repository.updateActiveWorkspace(memberEmail, novoWorkspaceAtivo);
+                if (memberEmail.equals(email)) 
+                    this.userContext.setWorkspaceId(novoWorkspaceAtivo);
+            }
+            
+        }
+
+        this.repository.deleteWorkspaceAndAllRelatedItems(workspaceId);
+
         return Response.noContent().build();
     }
 }
