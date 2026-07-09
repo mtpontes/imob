@@ -270,23 +270,23 @@
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/entity/EvaluationEntity.java": {
-    "mtime": 1782172017.9368734,
-    "ast_hash": "0dc3e2bcee888fc4690b36de4ea67bb5",
+    "mtime": 1783621521.4024596,
+    "ast_hash": "2c3506d3e63d98f82e07fe6e10006628",
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/entity/PropertyEntity.java": {
-    "mtime": 1780851472.854256,
-    "ast_hash": "cd18465f2cb3fa35893cabc8a4e488b2",
+    "mtime": 1783621515.7628715,
+    "ast_hash": "9938e6bf4a74a2f4f40e0e0009bd1b2a",
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/entity/ScriptEntity.java": {
-    "mtime": 1782172011.931842,
-    "ast_hash": "021fc077123fafbd033c2c396f3f8502",
+    "mtime": 1783621526.0932019,
+    "ast_hash": "2d2470bbd9f815a67e71cd1207b3c683",
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/entity/UserProfileEntity.java": {
-    "mtime": 1780851488.4869442,
-    "ast_hash": "921d0594fcda7430a8a3ee239642dfcf",
+    "mtime": 1783621537.082615,
+    "ast_hash": "bed2eb5df013726a446d86f5fdc9fe00",
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/exception/EvaluationErrorCode.java": {
@@ -305,8 +305,8 @@
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/filter/AuthFilter.java": {
-    "mtime": 1783396672.1138568,
-    "ast_hash": "a154342915a08a10cd851e946ae19aec",
+    "mtime": 1783621608.4348571,
+    "ast_hash": "6957c23e8ad3ecc2dadf7b07d2ca5efa",
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/service/EvaluationValidator.java": {
@@ -380,13 +380,13 @@
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/entity/UserWorkspaceRelationEntity.java": {
-    "mtime": 1783200960.426775,
-    "ast_hash": "27f50426f934e74ef0556d1dc998b68e",
+    "mtime": 1783621542.5298157,
+    "ast_hash": "7a692991117607ba86b829874b1deb26",
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/entity/WorkspaceEntity.java": {
-    "mtime": 1783200955.5692744,
-    "ast_hash": "6bdcc7452a3247e0087d5bdb76272526",
+    "mtime": 1783621508.6883278,
+    "ast_hash": "ff0a4f55cda33fdb4f669a809f3bdfa8",
     "semantic_hash": ""
   },
   "backend/api/src/test/java/com/imob/api/WorkspaceResourceTest.java": {
@@ -400,23 +400,23 @@
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/repository/EvaluationRepository.java": {
-    "mtime": 1783202445.5138574,
-    "ast_hash": "e66d38019c0886d3a9229992f039ebe4",
+    "mtime": 1783621575.2696576,
+    "ast_hash": "741f0b16829f695cc6a992e6c841a152",
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/repository/PropertyRepository.java": {
-    "mtime": 1783202438.9977832,
-    "ast_hash": "243c5232fd8e70b0061a9e740a411acd",
+    "mtime": 1783621569.3528557,
+    "ast_hash": "8c8a4ccdbb850763dd80814aea3979c2",
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/repository/ScriptRepository.java": {
-    "mtime": 1783202432.8348382,
-    "ast_hash": "9a07dacfcbf29bbef3b74c5cdf47bc14",
+    "mtime": 1783621676.6266418,
+    "ast_hash": "15404442b81a9987e040e0b66a2f2f0b",
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/repository/WorkspaceRepository.java": {
-    "mtime": 1783472888.398918,
-    "ast_hash": "f7dd52b4e433598719842f6d3b763c5c",
+    "mtime": 1783621563.0197246,
+    "ast_hash": "cf7e8e8a20b872d5e7d96d1b8770b2d4",
     "semantic_hash": ""
   },
   "frontend/src/env.d.ts": {
@@ -460,13 +460,13 @@
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/entity/InviteEntity.java": {
-    "mtime": 1783456379.0301912,
-    "ast_hash": "7ace1d8c7e821e03b24c287cfce9a2f8",
+    "mtime": 1783621531.270009,
+    "ast_hash": "ad8e172766bf70b13682b3ae97ad2cf5",
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/repository/InviteRepository.java": {
-    "mtime": 1783456415.5365405,
-    "ast_hash": "9dee2085e860841e725900fa9b97f00e",
+    "mtime": 1783621589.0448208,
+    "ast_hash": "7d7a29e01c3a6f705ec91f2de665eb53",
     "semantic_hash": ""
   },
   "frontend/src/app/pages/invite-accept/invite-accept.component.ts": {
@@ -482,6 +482,11 @@
   "frontend/src/app/pages/workspaces-management/workspaces-management.component.ts": {
     "mtime": 1783472932.3991814,
     "ast_hash": "77ed7903134c0846920c37e1a672d462",
+    "semantic_hash": ""
+  },
+  "scripts/migrate-to-multitable.js": {
+    "mtime": 1783621866.8746586,
+    "ast_hash": "286fb894e50635d7d2485a89c57d6d3a",
     "semantic_hash": ""
   }
 }
