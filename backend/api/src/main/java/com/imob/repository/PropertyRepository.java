@@ -23,16 +23,16 @@ import java.util.Map;
 public class PropertyRepository {
 
     private final DynamoDbClient dynamoDb;
-    private final String tableName;
+    private final String propertiesTableName;
 
-    public PropertyRepository(DynamoDbClient dynamoDb, @ConfigProperty(name = "imob.table.name") String tableName) {
+    public PropertyRepository(DynamoDbClient dynamoDb, @ConfigProperty(name = "imob.properties.table.name") String propertiesTableName) {
         this.dynamoDb = dynamoDb;
-        this.tableName = tableName;
+        this.propertiesTableName = propertiesTableName;
     }
 
     public void saveProperty(PropertyEntity property) {
         PutItemRequest putReq = PutItemRequest.builder()
-                .tableName(this.tableName)
+                .tableName(this.propertiesTableName)
                 .item(property.toAttributeMap())
                 .build();
         this.dynamoDb.putItem(putReq);
@@ -40,11 +40,11 @@ public class PropertyRepository {
 
     public PropertyEntity getProperty(String workspaceId, String propertyId) {
         Map<String, AttributeValue> key = new HashMap<>();
-        key.put("PK", AttributeValue.builder().s("WORKSPACE#" + workspaceId).build());
-        key.put("SK", AttributeValue.builder().s("PROPERTY#" + propertyId).build());
+        key.put("workspaceId", AttributeValue.builder().s(workspaceId).build());
+        key.put("id", AttributeValue.builder().s(propertyId).build());
 
         GetItemRequest getReq = GetItemRequest.builder()
-                .tableName(this.tableName)
+                .tableName(this.propertiesTableName)
                 .key(key)
                 .build();
 
@@ -56,20 +56,15 @@ public class PropertyRepository {
     }
 
     public List<PropertyEntity> getProperties(String workspaceId) {
-        String pk = "WORKSPACE#" + workspaceId;
-        String skPrefix = "PROPERTY#";
-
         Map<String, String> attributeNames = new HashMap<>();
-        attributeNames.put("#pk", "PK");
-        attributeNames.put("#sk", "SK");
+        attributeNames.put("#pk", "workspaceId");
 
         Map<String, AttributeValue> attributeValues = new HashMap<>();
-        attributeValues.put(":pk", AttributeValue.builder().s(pk).build());
-        attributeValues.put(":skPrefix", AttributeValue.builder().s(skPrefix).build());
+        attributeValues.put(":pk", AttributeValue.builder().s(workspaceId).build());
 
         QueryRequest queryReq = QueryRequest.builder()
-                .tableName(this.tableName)
-                .keyConditionExpression("#pk = :pk AND begins_with(#sk, :skPrefix)")
+                .tableName(this.propertiesTableName)
+                .keyConditionExpression("#pk = :pk")
                 .expressionAttributeNames(attributeNames)
                 .expressionAttributeValues(attributeValues)
                 .build();
@@ -89,11 +84,11 @@ public class PropertyRepository {
 
     public void deleteProperty(String workspaceId, String propertyId) {
         Map<String, AttributeValue> key = new HashMap<>();
-        key.put("PK", AttributeValue.builder().s("WORKSPACE#" + workspaceId).build());
-        key.put("SK", AttributeValue.builder().s("PROPERTY#" + propertyId).build());
+        key.put("workspaceId", AttributeValue.builder().s(workspaceId).build());
+        key.put("id", AttributeValue.builder().s(propertyId).build());
 
         DeleteItemRequest delReq = DeleteItemRequest.builder()
-                .tableName(this.tableName)
+                .tableName(this.propertiesTableName)
                 .key(key)
                 .build();
         this.dynamoDb.deleteItem(delReq);

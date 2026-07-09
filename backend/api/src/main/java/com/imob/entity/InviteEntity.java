@@ -22,8 +22,6 @@ public class InviteEntity {
 
     public Map<String, AttributeValue> toAttributeMap() {
         Map<String, AttributeValue> map = new HashMap<>();
-        map.put("PK", AttributeValue.builder().s("INVITE#" + this.token).build());
-        map.put("SK", AttributeValue.builder().s("METADATA").build());
         map.put("token", AttributeValue.builder().s(this.token).build());
         map.put("workspaceId", AttributeValue.builder().s(this.workspaceId).build());
         map.put("workspaceName", AttributeValue.builder().s(this.workspaceName != null ? this.workspaceName : "").build());
@@ -38,8 +36,7 @@ public class InviteEntity {
             return null;
 
         InviteEntity entity = new InviteEntity();
-        String pk = map.get("PK").s();
-        entity.setToken(pk.substring("INVITE#".length()));
+        entity.setToken(map.get("token").s());
 
         if (map.containsKey("workspaceId"))
             entity.setWorkspaceId(map.get("workspaceId").s());

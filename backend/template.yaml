@@ -121,22 +121,127 @@ Resources:
           - '*'
         MaxAge: 3600
 
-  # 3. Tabela DynamoDB com Single-Table Design
-  ImobAppTable:
+  # 3. Novas Tabelas DynamoDB (Multi-Table Design)
+  ImobWorkspacesTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub ${AWS::StackName}-DB
+      TableName: !Sub ${AWS::StackName}-Workspaces
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
-        - AttributeName: PK
-          AttributeType: S
-        - AttributeName: SK
+        - AttributeName: id
           AttributeType: S
       KeySchema:
-        - AttributeName: PK
+        - AttributeName: id
           KeyType: HASH
-        - AttributeName: SK
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  ImobPropertiesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-Properties
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: workspaceId
+          AttributeType: S
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: workspaceId
+          KeyType: HASH
+        - AttributeName: id
           KeyType: RANGE
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  ImobEvaluationsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-Evaluations
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: workspaceId
+          AttributeType: S
+        - AttributeName: propertyId_createdAt
+          AttributeType: S
+      KeySchema:
+        - AttributeName: workspaceId
+          KeyType: HASH
+        - AttributeName: propertyId_createdAt
+          KeyType: RANGE
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  ImobScriptsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-Scripts
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: workspaceId
+          AttributeType: S
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: workspaceId
+          KeyType: HASH
+        - AttributeName: id
+          KeyType: RANGE
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  ImobInvitesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-Invites
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: token
+          AttributeType: S
+      KeySchema:
+        - AttributeName: token
+          KeyType: HASH
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  ImobUserProfilesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-UserProfiles
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  ImobUserWorkspaceRelationsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-UserWorkspaceRelations
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: S
+        - AttributeName: workspaceId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+        - AttributeName: workspaceId
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: WorkspaceIndex
+          KeySchema:
+            - AttributeName: workspaceId
+              KeyType: HASH
+            - AttributeName: email
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: true
 
@@ -174,12 +279,30 @@ Resources:
       CodeUri: api/target/function.zip
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref ImobAppTable
+            TableName: !Ref ImobWorkspacesTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ImobPropertiesTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ImobEvaluationsTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ImobScriptsTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ImobInvitesTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ImobUserProfilesTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ImobUserWorkspaceRelationsTable
         - S3CrudPolicy:
             BucketName: !Sub ${AWS::StackName}-photos-bucket
       Environment:
         Variables:
-          IMOB_TABLE_NAME: !Ref ImobAppTable
+          IMOB_WORKSPACES_TABLE_NAME: !Ref ImobWorkspacesTable
+          IMOB_PROPERTIES_TABLE_NAME: !Ref ImobPropertiesTable
+          IMOB_EVALUATIONS_TABLE_NAME: !Ref ImobEvaluationsTable
+          IMOB_SCRIPTS_TABLE_NAME: !Ref ImobScriptsTable
+          IMOB_INVITES_TABLE_NAME: !Ref ImobInvitesTable
+          IMOB_USER_PROFILES_TABLE_NAME: !Ref ImobUserProfilesTable
+          IMOB_USER_WORKSPACE_RELATIONS_TABLE_NAME: !Ref ImobUserWorkspaceRelationsTable
           IMOB_BUCKET_NAME: !Sub ${AWS::StackName}-photos-bucket
           IMOB_MOCK_AUTH: !Ref EnableMockAuth
           DISABLE_SIGNAL_HANDLERS: true

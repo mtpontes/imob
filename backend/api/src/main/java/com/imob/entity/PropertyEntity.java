@@ -25,8 +25,7 @@ public class PropertyEntity {
 
     public Map<String, AttributeValue> toAttributeMap() {
         Map<String, AttributeValue> map = new HashMap<>();
-        map.put("PK", AttributeValue.builder().s("WORKSPACE#" + this.workspaceId).build());
-        map.put("SK", AttributeValue.builder().s("PROPERTY#" + this.id).build());
+        map.put("workspaceId", AttributeValue.builder().s(this.workspaceId).build());
         map.put("id", AttributeValue.builder().s(this.id).build());
         map.put("address", AttributeValue.builder().s(this.address).build());
         map.put("price", AttributeValue.builder().n(String.valueOf(this.price)).build());
@@ -36,6 +35,7 @@ public class PropertyEntity {
         map.put("parking", AttributeValue.builder().n(String.valueOf(this.parking)).build());
         if (this.url != null) 
             map.put("url", AttributeValue.builder().s(this.url).build());
+
         map.put("createdAt", AttributeValue.builder().s(this.createdAt).build());
         return map;
     }
@@ -43,9 +43,9 @@ public class PropertyEntity {
     public static PropertyEntity fromAttributeMap(Map<String, AttributeValue> map) {
         if (map == null || map.isEmpty()) 
             return null;
-        var entity = new PropertyEntity();
-        var pk = map.get("PK").s();
-        entity.setWorkspaceId(pk.substring("WORKSPACE#".length()));
+
+        PropertyEntity entity = new PropertyEntity();
+        entity.setWorkspaceId(map.get("workspaceId").s());
         entity.setId(map.get("id").s());
         entity.setAddress(map.get("address").s());
         entity.setPrice(Double.parseDouble(map.get("price").n()));
@@ -55,6 +55,7 @@ public class PropertyEntity {
         entity.setParking(Integer.parseInt(map.get("parking").n()));
         if (map.containsKey("url")) 
             entity.setUrl(map.get("url").s());
+
         entity.setCreatedAt(map.get("createdAt").s());
         return entity;
     }

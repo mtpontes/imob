@@ -23,16 +23,16 @@ import java.util.Map;
 public class ScriptRepository {
 
     private final DynamoDbClient dynamoDb;
-    private final String tableName;
+    private final String scriptsTableName;
 
-    public ScriptRepository(DynamoDbClient dynamoDb, @ConfigProperty(name = "imob.table.name") String tableName) {
+    public ScriptRepository(DynamoDbClient dynamoDb, @ConfigProperty(name = "imob.scripts.table.name") String scriptsTableName) {
         this.dynamoDb = dynamoDb;
-        this.tableName = tableName;
+        this.scriptsTableName = scriptsTableName;
     }
 
     public void saveScript(ScriptEntity script) {
         PutItemRequest putReq = PutItemRequest.builder()
-                .tableName(this.tableName)
+                .tableName(this.scriptsTableName)
                 .item(script.toAttributeMap())
                 .build();
         this.dynamoDb.putItem(putReq);
@@ -40,11 +40,11 @@ public class ScriptRepository {
 
     public ScriptEntity getScript(String workspaceId, String scriptId) {
         Map<String, AttributeValue> key = new HashMap<>();
-        key.put("PK", AttributeValue.builder().s("WORKSPACE#" + workspaceId).build());
-        key.put("SK", AttributeValue.builder().s("SCRIPT#" + scriptId).build());
+        key.put("workspaceId", AttributeValue.builder().s(workspaceId).build());
+        key.put("id", AttributeValue.builder().s(scriptId).build());
 
         GetItemRequest getReq = GetItemRequest.builder()
-                .tableName(this.tableName)
+                .tableName(this.scriptsTableName)
                 .key(key)
                 .build();
 
@@ -56,20 +56,15 @@ public class ScriptRepository {
     }
 
     public List<ScriptEntity> getActiveScripts(String workspaceId) {
-        String pk = "WORKSPACE#" + workspaceId;
-        String skPrefix = "SCRIPT#";
-
         Map<String, String> attributeNames = new HashMap<>();
-        attributeNames.put("#pk", "PK");
-        attributeNames.put("#sk", "SK");
+        attributeNames.put("#pk", "workspaceId");
 
         Map<String, AttributeValue> attributeValues = new HashMap<>();
-        attributeValues.put(":pk", AttributeValue.builder().s(pk).build());
-        attributeValues.put(":skPrefix", AttributeValue.builder().s(skPrefix).build());
+        attributeValues.put(":pk", AttributeValue.builder().s(workspaceId).build());
 
         QueryRequest queryReq = QueryRequest.builder()
-                .tableName(this.tableName)
-                .keyConditionExpression("#pk = :pk AND begins_with(#sk, :skPrefix)")
+                .tableName(this.scriptsTableName)
+                .keyConditionExpression("#pk = :pk")
                 .expressionAttributeNames(attributeNames)
                 .expressionAttributeValues(attributeValues)
                 .build();
@@ -89,11 +84,11 @@ public class ScriptRepository {
 
     public void deleteScript(String workspaceId, String scriptId) {
         Map<String, AttributeValue> key = new HashMap<>();
-        key.put("PK", AttributeValue.builder().s("WORKSPACE#" + workspaceId).build());
-        key.put("SK", AttributeValue.builder().s("SCRIPT#" + scriptId).build());
+        key.put("workspaceId", AttributeValue.builder().s(workspaceId).build());
+        key.put("id", AttributeValue.builder().s(scriptId).build());
 
         DeleteItemRequest delReq = DeleteItemRequest.builder()
-                .tableName(this.tableName)
+                .tableName(this.scriptsTableName)
                 .key(key)
                 .build();
         this.dynamoDb.deleteItem(delReq);

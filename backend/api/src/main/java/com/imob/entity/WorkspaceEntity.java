@@ -17,8 +17,6 @@ public class WorkspaceEntity {
 
     public Map<String, AttributeValue> toAttributeMap() {
         Map<String, AttributeValue> map = new HashMap<>();
-        map.put("PK", AttributeValue.builder().s("WORKSPACE#" + this.id).build());
-        map.put("SK", AttributeValue.builder().s("METADATA").build());
         map.put("id", AttributeValue.builder().s(this.id).build());
         map.put("name", AttributeValue.builder().s(this.name != null ? this.name : "").build());
         map.put("ownerEmail", AttributeValue.builder().s(this.ownerEmail != null ? this.ownerEmail : "").build());
@@ -28,13 +26,15 @@ public class WorkspaceEntity {
     public static WorkspaceEntity fromAttributeMap(Map<String, AttributeValue> map) {
         if (map == null || map.isEmpty())
             return null;
+
         WorkspaceEntity entity = new WorkspaceEntity();
-        String pk = map.get("PK").s();
-        entity.setId(pk.substring("WORKSPACE#".length()));
+        entity.setId(map.get("id").s());
         if (map.containsKey("name")) 
             entity.setName(map.get("name").s());
+
         if (map.containsKey("ownerEmail")) 
             entity.setOwnerEmail(map.get("ownerEmail").s());
+
         return entity;
     }
 }

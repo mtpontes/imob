@@ -67,9 +67,19 @@ public class AuthFilter implements ContainerRequestFilter {
         if (email != null) this.cache.remove(email);
     }
 
-    private String getTableName() {
+    private String getUserProfilesTableName() {
         return org.eclipse.microprofile.config.ConfigProvider.getConfig()
-                .getValue("imob.table.name", String.class);
+                .getValue("imob.user-profiles.table.name", String.class);
+    }
+
+    private String getWorkspacesTableName() {
+        return org.eclipse.microprofile.config.ConfigProvider.getConfig()
+                .getValue("imob.workspaces.table.name", String.class);
+    }
+
+    private String getRelationsTableName() {
+        return org.eclipse.microprofile.config.ConfigProvider.getConfig()
+                .getValue("imob.user-workspace-relations.table.name", String.class);
     }
 
     private boolean isMockAuth() {
@@ -159,15 +169,11 @@ public class AuthFilter implements ContainerRequestFilter {
     }
 
     private String resolveWorkspaceIdFromDb(String email) {
-        String pk = "USER#" + email;
-        String sk = "PROFILE";
-
         Map<String, AttributeValue> key = new HashMap<>();
-        key.put("PK", AttributeValue.builder().s(pk).build());
-        key.put("SK", AttributeValue.builder().s(sk).build());
+        key.put("email", AttributeValue.builder().s(email).build());
 
         GetItemRequest getReq = GetItemRequest.builder()
-                .tableName(this.getTableName())
+                .tableName(this.getUserProfilesTableName())
                 .key(key)
                 .build();
 
@@ -189,34 +195,29 @@ public class AuthFilter implements ContainerRequestFilter {
 
         // 1. Cria o perfil
         Map<String, AttributeValue> newItem = new HashMap<>();
-        newItem.put("PK", AttributeValue.builder().s(pk).build());
-        newItem.put("SK", AttributeValue.builder().s(sk).build());
+        newItem.put("email", AttributeValue.builder().s(email).build());
         newItem.put("workspaceId", AttributeValue.builder().s(newWorkspaceId).build());
 
         PutItemRequest putProfile = PutItemRequest.builder()
-                .tableName(this.getTableName())
+                .tableName(this.getUserProfilesTableName())
                 .item(newItem)
                 .build();
         this.dynamoDb.putItem(putProfile);
 
         // 2. Cria os metadados do Workspace
         Map<String, AttributeValue> workspaceMetadata = new HashMap<>();
-        workspaceMetadata.put("PK", AttributeValue.builder().s("WORKSPACE#" + newWorkspaceId).build());
-        workspaceMetadata.put("SK", AttributeValue.builder().s("METADATA").build());
         workspaceMetadata.put("id", AttributeValue.builder().s(newWorkspaceId).build());
         workspaceMetadata.put("name", AttributeValue.builder().s(workspaceName).build());
         workspaceMetadata.put("ownerEmail", AttributeValue.builder().s(email).build());
 
         PutItemRequest putWorkspace = PutItemRequest.builder()
-                .tableName(this.getTableName())
+                .tableName(this.getWorkspacesTableName())
                 .item(workspaceMetadata)
                 .build();
         this.dynamoDb.putItem(putWorkspace);
 
         // 3. Cria a relacao de vinculo
         Map<String, AttributeValue> relation = new HashMap<>();
-        relation.put("PK", AttributeValue.builder().s("USER#" + email).build());
-        relation.put("SK", AttributeValue.builder().s("WORKSPACE#" + newWorkspaceId).build());
         relation.put("email", AttributeValue.builder().s(email).build());
         relation.put("workspaceId", AttributeValue.builder().s(newWorkspaceId).build());
         relation.put("role", AttributeValue.builder().s("OWNER").build());
@@ -224,7 +225,7 @@ public class AuthFilter implements ContainerRequestFilter {
         relation.put("workspaceName", AttributeValue.builder().s(workspaceName).build());
 
         PutItemRequest putRelation = PutItemRequest.builder()
-                .tableName(this.getTableName())
+                .tableName(this.getRelationsTableName())
                 .item(relation)
                 .build();
         this.dynamoDb.putItem(putRelation);

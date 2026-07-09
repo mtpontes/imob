@@ -23,35 +23,34 @@ import java.util.Map;
 public class EvaluationRepository {
 
     private final DynamoDbClient dynamoDb;
-    private final String tableName;
+    private final String evaluationsTableName;
 
-    public EvaluationRepository(DynamoDbClient dynamoDb, @ConfigProperty(name = "imob.table.name") String tableName) {
+    public EvaluationRepository(DynamoDbClient dynamoDb, @ConfigProperty(name = "imob.evaluations.table.name") String evaluationsTableName) {
         this.dynamoDb = dynamoDb;
-        this.tableName = tableName;
+        this.evaluationsTableName = evaluationsTableName;
     }
 
     public void saveEvaluation(EvaluationEntity evaluation) {
         PutItemRequest putReq = PutItemRequest.builder()
-                .tableName(this.tableName)
+                .tableName(this.evaluationsTableName)
                 .item(evaluation.toAttributeMap())
                 .build();
         this.dynamoDb.putItem(putReq);
     }
 
     public List<EvaluationEntity> getEvaluationsByProperty(String workspaceId, String propertyId) {
-        String pk = "WORKSPACE#" + workspaceId;
-        String skPrefix = "EVALUATION#" + propertyId + "#";
+        String skPrefix = propertyId + "#";
 
         Map<String, String> attributeNames = new HashMap<>();
-        attributeNames.put("#pk", "PK");
-        attributeNames.put("#sk", "SK");
+        attributeNames.put("#pk", "workspaceId");
+        attributeNames.put("#sk", "propertyId_createdAt");
 
         Map<String, AttributeValue> attributeValues = new HashMap<>();
-        attributeValues.put(":pk", AttributeValue.builder().s(pk).build());
+        attributeValues.put(":pk", AttributeValue.builder().s(workspaceId).build());
         attributeValues.put(":skPrefix", AttributeValue.builder().s(skPrefix).build());
 
         QueryRequest queryReq = QueryRequest.builder()
-                .tableName(this.tableName)
+                .tableName(this.evaluationsTableName)
                 .keyConditionExpression("#pk = :pk AND begins_with(#sk, :skPrefix)")
                 .expressionAttributeNames(attributeNames)
                 .expressionAttributeValues(attributeValues)
@@ -72,11 +71,11 @@ public class EvaluationRepository {
 
     public EvaluationEntity getEvaluation(String workspaceId, String propertyId, String createdAt) {
         Map<String, AttributeValue> key = new HashMap<>();
-        key.put("PK", AttributeValue.builder().s("WORKSPACE#" + workspaceId).build());
-        key.put("SK", AttributeValue.builder().s("EVALUATION#" + propertyId + "#" + createdAt).build());
+        key.put("workspaceId", AttributeValue.builder().s(workspaceId).build());
+        key.put("propertyId_createdAt", AttributeValue.builder().s(propertyId + "#" + createdAt).build());
 
         GetItemRequest getReq = GetItemRequest.builder()
-                .tableName(this.tableName)
+                .tableName(this.evaluationsTableName)
                 .key(key)
                 .build();
 
@@ -88,20 +87,15 @@ public class EvaluationRepository {
     }
 
     public List<EvaluationEntity> getEvaluations(String workspaceId) {
-        String pk = "WORKSPACE#" + workspaceId;
-        String skPrefix = "EVALUATION#";
-
         Map<String, String> attributeNames = new HashMap<>();
-        attributeNames.put("#pk", "PK");
-        attributeNames.put("#sk", "SK");
+        attributeNames.put("#pk", "workspaceId");
 
         Map<String, AttributeValue> attributeValues = new HashMap<>();
-        attributeValues.put(":pk", AttributeValue.builder().s(pk).build());
-        attributeValues.put(":skPrefix", AttributeValue.builder().s(skPrefix).build());
+        attributeValues.put(":pk", AttributeValue.builder().s(workspaceId).build());
 
         QueryRequest queryReq = QueryRequest.builder()
-                .tableName(this.tableName)
-                .keyConditionExpression("#pk = :pk AND begins_with(#sk, :skPrefix)")
+                .tableName(this.evaluationsTableName)
+                .keyConditionExpression("#pk = :pk")
                 .expressionAttributeNames(attributeNames)
                 .expressionAttributeValues(attributeValues)
                 .build();
@@ -121,11 +115,11 @@ public class EvaluationRepository {
 
     public void deleteEvaluation(String workspaceId, String propertyId, String createdAt) {
         Map<String, AttributeValue> key = new HashMap<>();
-        key.put("PK", AttributeValue.builder().s("WORKSPACE#" + workspaceId).build());
-        key.put("SK", AttributeValue.builder().s("EVALUATION#" + propertyId + "#" + createdAt).build());
+        key.put("workspaceId", AttributeValue.builder().s(workspaceId).build());
+        key.put("propertyId_createdAt", AttributeValue.builder().s(propertyId + "#" + createdAt).build());
 
         DeleteItemRequest delReq = DeleteItemRequest.builder()
-                .tableName(this.tableName)
+                .tableName(this.evaluationsTableName)
                 .key(key)
                 .build();
         this.dynamoDb.deleteItem(delReq);

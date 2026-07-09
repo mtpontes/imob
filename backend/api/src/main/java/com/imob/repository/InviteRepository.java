@@ -19,16 +19,16 @@ import java.util.Map;
 public class InviteRepository {
 
     private final DynamoDbClient dynamoDb;
-    private final String tableName;
+    private final String invitesTableName;
 
-    public InviteRepository(DynamoDbClient dynamoDb, @ConfigProperty(name = "imob.table.name") String tableName) {
+    public InviteRepository(DynamoDbClient dynamoDb, @ConfigProperty(name = "imob.invites.table.name") String invitesTableName) {
         this.dynamoDb = dynamoDb;
-        this.tableName = tableName;
+        this.invitesTableName = invitesTableName;
     }
 
     public void saveInvite(InviteEntity invite) {
         PutItemRequest putReq = PutItemRequest.builder()
-                .tableName(this.tableName)
+                .tableName(this.invitesTableName)
                 .item(invite.toAttributeMap())
                 .build();
         this.dynamoDb.putItem(putReq);
@@ -36,11 +36,10 @@ public class InviteRepository {
 
     public InviteEntity getInvite(String token) {
         Map<String, AttributeValue> key = new HashMap<>();
-        key.put("PK", AttributeValue.builder().s("INVITE#" + token).build());
-        key.put("SK", AttributeValue.builder().s("METADATA").build());
+        key.put("token", AttributeValue.builder().s(token).build());
 
         GetItemRequest getReq = GetItemRequest.builder()
-                .tableName(this.tableName)
+                .tableName(this.invitesTableName)
                 .key(key)
                 .build();
 
@@ -53,11 +52,10 @@ public class InviteRepository {
 
     public void deleteInvite(String token) {
         Map<String, AttributeValue> key = new HashMap<>();
-        key.put("PK", AttributeValue.builder().s("INVITE#" + token).build());
-        key.put("SK", AttributeValue.builder().s("METADATA").build());
+        key.put("token", AttributeValue.builder().s(token).build());
 
         DeleteItemRequest delReq = DeleteItemRequest.builder()
-                .tableName(this.tableName)
+                .tableName(this.invitesTableName)
                 .key(key)
                 .build();
         this.dynamoDb.deleteItem(delReq);

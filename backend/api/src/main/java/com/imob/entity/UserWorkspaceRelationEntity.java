@@ -19,8 +19,6 @@ public class UserWorkspaceRelationEntity {
 
     public Map<String, AttributeValue> toAttributeMap() {
         Map<String, AttributeValue> map = new HashMap<>();
-        map.put("PK", AttributeValue.builder().s("USER#" + this.email).build());
-        map.put("SK", AttributeValue.builder().s("WORKSPACE#" + this.workspaceId).build());
         map.put("email", AttributeValue.builder().s(this.email).build());
         map.put("workspaceId", AttributeValue.builder().s(this.workspaceId).build());
         map.put("role", AttributeValue.builder().s(this.role != null ? this.role : "MEMBER").build());
@@ -32,17 +30,19 @@ public class UserWorkspaceRelationEntity {
     public static UserWorkspaceRelationEntity fromAttributeMap(Map<String, AttributeValue> map) {
         if (map == null || map.isEmpty())
             return null;
+
         UserWorkspaceRelationEntity entity = new UserWorkspaceRelationEntity();
-        String pk = map.get("PK").s();
-        entity.setEmail(pk.substring("USER#".length()));
-        String sk = map.get("SK").s();
-        entity.setWorkspaceId(sk.substring("WORKSPACE#".length()));
+        entity.setEmail(map.get("email").s());
+        entity.setWorkspaceId(map.get("workspaceId").s());
         if (map.containsKey("role")) 
             entity.setRole(map.get("role").s());
+
         if (map.containsKey("joinedAt")) 
             entity.setJoinedAt(map.get("joinedAt").s());
+
         if (map.containsKey("workspaceName")) 
             entity.setWorkspaceName(map.get("workspaceName").s());
+
         return entity;
     }
 }
