@@ -425,13 +425,13 @@
     "semantic_hash": ""
   },
   "frontend/src/environments/environment.production.ts": {
-    "mtime": 1783631399.3580997,
-    "ast_hash": "ecf5b0844ca9451420e52135829934b4",
+    "mtime": 1783632080.6814344,
+    "ast_hash": "43d40943b90eda8bc60879512217abec",
     "semantic_hash": ""
   },
   "frontend/src/environments/environment.ts": {
-    "mtime": 1783631405.1890569,
-    "ast_hash": "d213d9fc78f6e3f8e8c30b5c7c32d720",
+    "mtime": 1783632086.529707,
+    "ast_hash": "403ed1e286ae878fdd8701416b6302a6",
     "semantic_hash": ""
   },
   "frontend/src/polyfills.ts": {

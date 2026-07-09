@@ -7247,7 +7247,7 @@
       "label": "environment",
       "file_type": "code",
       "source_file": "frontend/src/environments/environment.production.ts",
-      "source_location": "L6",
+      "source_location": "L4",
       "_origin": "ast",
       "id": "environments_environment_production_environment",
       "community": 73,
@@ -7267,7 +7267,7 @@
       "label": "environment",
       "file_type": "code",
       "source_file": "frontend/src/environments/environment.ts",
-      "source_location": "L6",
+      "source_location": "L4",
       "_origin": "ast",
       "id": "environments_environment_environment",
       "community": 12,
@@ -23040,5 +23040,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "524324af81758885bd4e0dc6f3477863c7158fab"
+  "built_at_commit": "3888ffc593b54c8bf2382af84cc95c55e2b3d70f"
 }

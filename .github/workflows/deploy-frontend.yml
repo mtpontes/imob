@@ -106,6 +106,19 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
+      - name: Inject Cognito outputs into environment.production.ts
+        run: |
+          node -e "
+            const fs = require('fs');
+            const file = 'frontend/src/environments/environment.production.ts';
+            let content = fs.readFileSync(file, 'utf8');
+            content = content.replace(/userPoolId:.*/, \"userPoolId: '${{ env.COGNITO_USER_POOL_ID }}',\");
+            content = content.replace(/clientId:.*/, \"clientId: '${{ env.COGNITO_USER_POOL_CLIENT_ID }}',\");
+            content = content.replace(/domain:.*/, \"domain: '${{ env.COGNITO_DOMAIN }}'\");
+            fs.writeFileSync(file, content, 'utf8');
+            console.log('Cognito outputs injetados estaticamente com sucesso em environment.production.ts');
+          "
+
       - name: Build Project Artifacts
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
