@@ -425,13 +425,13 @@
     "semantic_hash": ""
   },
   "frontend/src/environments/environment.production.ts": {
-    "mtime": 1783210315.198688,
-    "ast_hash": "00946a2dbdc1d145c385a86a11d57cad",
+    "mtime": 1783630473.9530613,
+    "ast_hash": "c414ca8451f1426a31552030c678ec33",
     "semantic_hash": ""
   },
   "frontend/src/environments/environment.ts": {
-    "mtime": 1783210304.6753335,
-    "ast_hash": "e29a5a8addb0f429da3e1ba194e5cd4c",
+    "mtime": 1783630479.9748592,
+    "ast_hash": "c19c523b7adc321b2b480c7c41210c9b",
     "semantic_hash": ""
   },
   "frontend/src/polyfills.ts": {
@@ -485,8 +485,8 @@
     "semantic_hash": ""
   },
   "scripts/migrate-to-multitable.js": {
-    "mtime": 1783621866.8746586,
-    "ast_hash": "286fb894e50635d7d2485a89c57d6d3a",
+    "mtime": 1783624223.2394385,
+    "ast_hash": "afe19f997f6b0377069a87e68e3a62bd",
     "semantic_hash": ""
   }
 }
