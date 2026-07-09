@@ -92,9 +92,11 @@ Resources:
       CallbackURLs:
         - !Ref FrontendCallbackUrl
         - https://imob-beta-dev.vercel.app
+        - https://imob-beta.vercel.app
       LogoutURLs:
         - !Ref FrontendCallbackUrl
         - https://imob-beta-dev.vercel.app
+        - https://imob-beta.vercel.app
       SupportedIdentityProviders:
         !If
           - CreateGoogleIdP

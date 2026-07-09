@@ -69,7 +69,8 @@ try {
 // 3. Executar o SAM Deploy
 console.log("Preparando deploy com o AWS SAM CLI...");
 
-const parameterOverrides = `EnableMockAuth=false GoogleClientId="${googleClientId}" GoogleClientSecret="${googleClientSecret}"`;
+const frontendUrl = stage === 'prod' ? 'https://imob-beta.vercel.app' : 'https://imob-beta-dev.vercel.app';
+const parameterOverrides = `EnableMockAuth=false GoogleClientId="${googleClientId}" GoogleClientSecret="${googleClientSecret}" FrontendCallbackUrl="${frontendUrl}"`;
 
 // Define os argumentos do comando SAM
 const samArgs = [
