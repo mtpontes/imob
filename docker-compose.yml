@@ -32,7 +32,13 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - IMOB_TABLE_NAME=ImobAppDB
+      - IMOB_WORKSPACES_TABLE_NAME=ImobWorkspaces
+      - IMOB_PROPERTIES_TABLE_NAME=ImobProperties
+      - IMOB_EVALUATIONS_TABLE_NAME=ImobEvaluations
+      - IMOB_SCRIPTS_TABLE_NAME=ImobScripts
+      - IMOB_INVITES_TABLE_NAME=ImobInvites
+      - IMOB_USER_PROFILES_TABLE_NAME=ImobUserProfiles
+      - IMOB_USER_WORKSPACE_RELATIONS_TABLE_NAME=ImobUserWorkspaceRelations
       - IMOB_BUCKET_NAME=imob-app-bucket
       - IMOB_MOCK_AUTH=false
       - QUARKUS_DYNAMODB_ENDPOINT_OVERRIDE=http://dynamodb:8000
