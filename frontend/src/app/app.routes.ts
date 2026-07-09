@@ -6,6 +6,8 @@ import { PropertyDetailsComponent } from './pages/properties/property-details.co
 import { ScriptsComponent } from './pages/scripts/scripts.component';
 import { ScriptBuilderComponent } from './pages/script-builder/script-builder.component';
 import { EvaluationFormComponent } from './pages/evaluation/evaluation-form.component';
+import { InviteAcceptComponent } from './pages/invite-accept/invite-accept.component';
+import { WorkspacesManagementComponent } from './pages/workspaces-management/workspaces-management.component';
 import { authGuard, guestGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
@@ -18,8 +20,11 @@ export const routes: Routes = [
   { path: 'roteiros/builder/:id', component: ScriptBuilderComponent, canActivate: [authGuard], data: { animation: 'ScriptBuilderPage' } },
   { path: 'evaluate/:propertyId', component: EvaluationFormComponent, canActivate: [authGuard], data: { animation: 'EvaluatePage' } },
   { path: 'evaluate/:propertyId/edit/:createdAt', component: EvaluationFormComponent, canActivate: [authGuard], data: { animation: 'EvaluatePage' } },
+  { path: 'invite/:token', component: InviteAcceptComponent, canActivate: [authGuard] },
+  { path: 'environments', component: WorkspacesManagementComponent, canActivate: [authGuard], data: { animation: 'EnvironmentsPage' } },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' }
 ];
+// Force dev server rebuild: 3
 
 

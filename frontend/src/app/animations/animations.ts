@@ -117,3 +117,13 @@ export const routeAnimations = trigger('routeAnimations', [
   ])
 ]);
 
+export const slideUpMobile = trigger('slideUpMobile', [
+  transition(':enter', [
+    style({ transform: 'translateY(100%)' }),
+    animate('280ms cubic-bezier(0.16, 1, 0.3, 1)', style({ transform: 'translateY(0)' }))
+  ]),
+  transition(':leave', [
+    animate('180ms ease-in', style({ transform: 'translateY(100%)' }))
+  ])
+]);
+

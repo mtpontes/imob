@@ -2,10 +2,34 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: AWS SAM template for ImobApp backend and infrastructure
 
+Parameters:
+  GoogleClientId:
+    Type: String
+    Description: Google OAuth2 Client ID (do Google Cloud Console)
+    Default: ''
+  GoogleClientSecret:
+    Type: String
+    Description: Google OAuth2 Client Secret (do Google Cloud Console)
+    Default: ''
+    NoEcho: true
+  EnableMockAuth:
+    Type: String
+    Description: Habilita autenticacao mock para ambiente local (true/false)
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
+  FrontendCallbackUrl:
+    Type: String
+    Description: URL do frontend para callbacks OAuth (localhost em dev, URL da Vercel em prod)
+    Default: 'http://localhost:4200'
 Globals:
   Function:
     Timeout: 30
     MemorySize: 512
+
+Conditions:
+  CreateGoogleIdP: !Not [ !Equals [ !Ref GoogleClientId, '' ] ]
 
 Resources:
   # 1. Cognito User Pool para autenticacao
@@ -25,6 +49,29 @@ Resources:
           RequireSymbols: true
           RequireUppercase: true
 
+  # Dominio do Cognito Hosted UI (necessario para o fluxo OAuth com Google)
+  ImobAppUserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      Domain: !Sub imobapp-auth-${AWS::StackName}
+      UserPoolId: !Ref ImobAppUserPool
+
+  # Google como Identity Provider (requer GoogleClientId e GoogleClientSecret preenchidos)
+  ImobAppGoogleIdP:
+    Type: AWS::Cognito::UserPoolIdentityProvider
+    Condition: CreateGoogleIdP
+    Properties:
+      UserPoolId: !Ref ImobAppUserPool
+      ProviderName: Google
+      ProviderType: Google
+      ProviderDetails:
+        client_id: !Ref GoogleClientId
+        client_secret: !Ref GoogleClientSecret
+        authorize_scopes: email openid profile
+      AttributeMapping:
+        email: email
+        username: sub
+
   ImobAppUserPoolClient:
     Type: AWS::Cognito::UserPoolClient
     Properties:
@@ -35,6 +82,25 @@ Resources:
         - ALLOW_USER_PASSWORD_AUTH
         - ALLOW_REFRESH_TOKEN_AUTH
         - ALLOW_USER_SRP_AUTH
+      AllowedOAuthFlows:
+        - implicit
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthScopes:
+        - email
+        - openid
+        - profile
+      CallbackURLs:
+        - !Ref FrontendCallbackUrl
+        - https://imob-beta-dev.vercel.app
+      LogoutURLs:
+        - !Ref FrontendCallbackUrl
+        - https://imob-beta-dev.vercel.app
+      SupportedIdentityProviders:
+        !If
+          - CreateGoogleIdP
+          - - !Ref ImobAppGoogleIdP
+            - COGNITO
+          - - COGNITO
 
   # 2. API Gateway HTTP API (Sem Cognito obrigatorio por enquanto)
   ImobAppHttpApi:
@@ -55,22 +121,127 @@ Resources:
           - '*'
         MaxAge: 3600
 
-  # 3. Tabela DynamoDB com Single-Table Design
-  ImobAppTable:
+  # 3. Novas Tabelas DynamoDB (Multi-Table Design)
+  ImobWorkspacesTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub ${AWS::StackName}-DB
+      TableName: !Sub ${AWS::StackName}-Workspaces
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
-        - AttributeName: PK
-          AttributeType: S
-        - AttributeName: SK
+        - AttributeName: id
           AttributeType: S
       KeySchema:
-        - AttributeName: PK
+        - AttributeName: id
           KeyType: HASH
-        - AttributeName: SK
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  ImobPropertiesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-Properties
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: workspaceId
+          AttributeType: S
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: workspaceId
+          KeyType: HASH
+        - AttributeName: id
           KeyType: RANGE
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  ImobEvaluationsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-Evaluations
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: workspaceId
+          AttributeType: S
+        - AttributeName: propertyId_createdAt
+          AttributeType: S
+      KeySchema:
+        - AttributeName: workspaceId
+          KeyType: HASH
+        - AttributeName: propertyId_createdAt
+          KeyType: RANGE
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  ImobScriptsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-Scripts
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: workspaceId
+          AttributeType: S
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: workspaceId
+          KeyType: HASH
+        - AttributeName: id
+          KeyType: RANGE
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  ImobInvitesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-Invites
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: token
+          AttributeType: S
+      KeySchema:
+        - AttributeName: token
+          KeyType: HASH
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  ImobUserProfilesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-UserProfiles
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  ImobUserWorkspaceRelationsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AWS::StackName}-UserWorkspaceRelations
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: S
+        - AttributeName: workspaceId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+        - AttributeName: workspaceId
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: WorkspaceIndex
+          KeySchema:
+            - AttributeName: workspaceId
+              KeyType: HASH
+            - AttributeName: email
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: true
 
@@ -108,14 +279,32 @@ Resources:
       CodeUri: api/target/function.zip
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref ImobAppTable
+            TableName: !Ref ImobWorkspacesTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ImobPropertiesTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ImobEvaluationsTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ImobScriptsTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ImobInvitesTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ImobUserProfilesTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ImobUserWorkspaceRelationsTable
         - S3CrudPolicy:
             BucketName: !Sub ${AWS::StackName}-photos-bucket
       Environment:
         Variables:
-          IMOB_TABLE_NAME: !Ref ImobAppTable
+          IMOB_WORKSPACES_TABLE_NAME: !Ref ImobWorkspacesTable
+          IMOB_PROPERTIES_TABLE_NAME: !Ref ImobPropertiesTable
+          IMOB_EVALUATIONS_TABLE_NAME: !Ref ImobEvaluationsTable
+          IMOB_SCRIPTS_TABLE_NAME: !Ref ImobScriptsTable
+          IMOB_INVITES_TABLE_NAME: !Ref ImobInvitesTable
+          IMOB_USER_PROFILES_TABLE_NAME: !Ref ImobUserProfilesTable
+          IMOB_USER_WORKSPACE_RELATIONS_TABLE_NAME: !Ref ImobUserWorkspaceRelationsTable
           IMOB_BUCKET_NAME: !Sub ${AWS::StackName}-photos-bucket
-          IMOB_MOCK_AUTH: true
+          IMOB_MOCK_AUTH: !Ref EnableMockAuth
           DISABLE_SIGNAL_HANDLERS: true
       Events:
         HttpApiProxy:
@@ -155,6 +344,9 @@ Outputs:
   UserPoolClientId:
     Description: Cognito User Pool Client ID
     Value: !Ref ImobAppUserPoolClient
+  CognitoDomain:
+    Description: Cognito Hosted UI Domain (para configurar no frontend)
+    Value: !Sub https://imobapp-auth-${AWS::StackName}.auth.${AWS::Region}.amazoncognito.com
   BucketName:
     Description: S3 Bucket Name
     Value: !Ref ImobAppBucket

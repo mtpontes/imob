@@ -39,22 +39,36 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_DEFAULT_REGION || 'us-east-1' }}
 
-      - name: Fetch API Gateway URL from AWS SAM Stack
-        id: fetch_api_url
+      - name: Fetch API Gateway URL and Cognito Outputs from AWS SAM Stack
+        id: fetch_aws_outputs
         run: |
           STACK_NAME="imob-app-infra-${{ github.event.inputs.environment || 'dev' }}"
-          API_URL=$(aws cloudformation describe-stacks \
-            --stack-name "$STACK_NAME" \
-            --query "Stacks[0].Outputs[?OutputKey=='ApiUrl'].OutputValue" \
-            --output text)
           
-          if [ -z "$API_URL" ] || [ "$API_URL" = "None" ]; then
-            echo "ERROR: Could not fetch API Gateway URL from stack $STACK_NAME"
+          # Consulta a stack CloudFormation completa em formato JSON
+          STACK_JSON=$(aws cloudformation describe-stacks --stack-name "$STACK_NAME" --output json)
+          
+          # Extrai os outputs usando jq
+          API_URL=$(echo "$STACK_JSON" | jq -r '.Stacks[0].Outputs[] | select(.OutputKey=="ApiUrl") | .OutputValue')
+          USER_POOL_ID=$(echo "$STACK_JSON" | jq -r '.Stacks[0].Outputs[] | select(.OutputKey=="UserPoolId") | .OutputValue')
+          USER_POOL_CLIENT_ID=$(echo "$STACK_JSON" | jq -r '.Stacks[0].Outputs[] | select(.OutputKey=="UserPoolClientId") | .OutputValue')
+          COGNITO_DOMAIN=$(echo "$STACK_JSON" | jq -r '.Stacks[0].Outputs[] | select(.OutputKey=="CognitoDomain") | .OutputValue')
+          
+          if [ -z "$API_URL" ] || [ "$API_URL" = "null" ]; then
+            echo "ERROR: Could not fetch API Gateway URL"
             exit 1
           fi
           
-          echo "API URL fetched: $API_URL"
+          # Exporta para as variaveis de ambiente do Github Actions
           echo "API_URL=$API_URL" >> $GITHUB_ENV
+          echo "COGNITO_USER_POOL_ID=$USER_POOL_ID" >> $GITHUB_ENV
+          echo "COGNITO_USER_POOL_CLIENT_ID=$USER_POOL_CLIENT_ID" >> $GITHUB_ENV
+          echo "COGNITO_DOMAIN=$COGNITO_DOMAIN" >> $GITHUB_ENV
+          
+          echo "AWS Outputs obtidos com sucesso:"
+          echo "API_URL: $API_URL"
+          echo "UserPoolId: $USER_POOL_ID"
+          echo "UserPoolClientId: $USER_POOL_CLIENT_ID"
+          echo "CognitoDomain: $COGNITO_DOMAIN"
 
       - name: Generate vercel.json with dynamic rewrites
         run: |
@@ -83,31 +97,19 @@ jobs:
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          if [ "${{ github.event.inputs.environment || 'dev' }}" = "prod" ]; then
-            vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-          else
-            vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-          fi
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Project Artifacts
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          if [ "${{ github.event.inputs.environment || 'dev' }}" = "prod" ]; then
-            vercel build --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
-          else
-            vercel build --yes --token=${{ secrets.VERCEL_TOKEN }}
-          fi
+          NG_APP_COGNITO_USER_POOL_ID: ${{ env.COGNITO_USER_POOL_ID }}
+          NG_APP_COGNITO_CLIENT_ID: ${{ env.COGNITO_USER_POOL_CLIENT_ID }}
+          NG_APP_COGNITO_DOMAIN: ${{ env.COGNITO_DOMAIN }}
+        run: vercel build --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy Project to Vercel
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          if [ "${{ github.event.inputs.environment || 'dev' }}" = "prod" ]; then
-            vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-          else
-            vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
-          fi
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}

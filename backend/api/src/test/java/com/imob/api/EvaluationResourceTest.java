@@ -3,7 +3,8 @@ package com.imob.api;
 import com.imob.dto.CriteriaDTO;
 import com.imob.entity.ScriptEntity;
 import com.imob.entity.EvaluationEntity;
-import com.imob.repository.DynamoDbRepository;
+import com.imob.repository.EvaluationRepository;
+import com.imob.repository.ScriptRepository;
 import com.imob.service.S3Service;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
@@ -26,7 +27,10 @@ import static org.hamcrest.CoreMatchers.is;
 public class EvaluationResourceTest {
 
     @InjectMock
-    DynamoDbRepository repository;
+    EvaluationRepository repository;
+
+    @InjectMock
+    ScriptRepository scriptRepository;
 
     @InjectMock
     DynamoDbClient dynamoDbClient;
@@ -49,7 +53,7 @@ public class EvaluationResourceTest {
         // Arrange
         String scriptId = "script-nonexistent";
 
-        Mockito.when(this.repository.getScript("workspace_test", scriptId))
+        Mockito.when(this.scriptRepository.getScript("workspace_test", scriptId))
                 .thenReturn(null);
 
         Map<String, Object> payload = Map.of(
@@ -89,7 +93,7 @@ public class EvaluationResourceTest {
         script.setId(scriptId);
         script.setCriteria(List.of(c1));
 
-        Mockito.when(this.repository.getScript("workspace_test", scriptId))
+        Mockito.when(this.scriptRepository.getScript("workspace_test", scriptId))
                 .thenReturn(script);
 
         // Answers contem 'c2' que nao pertence ao roteiro (apenas 'c1' pertence)
@@ -130,7 +134,7 @@ public class EvaluationResourceTest {
         script.setId(scriptId);
         script.setCriteria(List.of(c1));
 
-        Mockito.when(this.repository.getScript("workspace_test", scriptId))
+        Mockito.when(this.scriptRepository.getScript("workspace_test", scriptId))
                 .thenReturn(script);
 
         Map<String, Object> payload = Map.of(
@@ -306,7 +310,7 @@ public class EvaluationResourceTest {
         script.setId(scriptId);
         script.setCriteria(List.of());
 
-        Mockito.when(this.repository.getScript("workspace_test", scriptId))
+        Mockito.when(this.scriptRepository.getScript("workspace_test", scriptId))
                 .thenReturn(script);
 
         Map<String, Object> payload = Map.of(

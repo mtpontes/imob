@@ -3,7 +3,8 @@ package com.imob.api;
 import com.imob.dto.CriteriaDTO;
 import com.imob.entity.ScriptEntity;
 import com.imob.entity.EvaluationEntity;
-import com.imob.repository.DynamoDbRepository;
+import com.imob.repository.ScriptRepository;
+import com.imob.repository.EvaluationRepository;
 import com.imob.service.S3Service;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
@@ -26,7 +27,10 @@ import static org.hamcrest.CoreMatchers.is;
 public class ScriptResourceTest {
 
     @InjectMock
-    DynamoDbRepository repository;
+    ScriptRepository repository;
+
+    @InjectMock
+    EvaluationRepository evaluationRepository;
 
     @InjectMock
     DynamoDbClient dynamoDbClient;
@@ -179,7 +183,7 @@ public class ScriptResourceTest {
         evalOther.setScriptId("other-script");
         evalOther.setMediaKeys(List.of("workspace_test/uploads/foto3.jpg"));
 
-        Mockito.when(this.repository.getEvaluations("workspace_test"))
+        Mockito.when(this.evaluationRepository.getEvaluations("workspace_test"))
                 .thenReturn(List.of(eval1, eval2, evalOther));
 
         // Act & Assert
@@ -197,11 +201,11 @@ public class ScriptResourceTest {
         Mockito.verify(this.s3Service, Mockito.never())
                 .deleteObject("workspace_test/uploads/foto3.jpg");
 
-        Mockito.verify(this.repository, Mockito.times(1))
+        Mockito.verify(this.evaluationRepository, Mockito.times(1))
                 .deleteEvaluation("workspace_test", "prop-1", "2026-06-18T10:00:00Z");
-        Mockito.verify(this.repository, Mockito.times(1))
+        Mockito.verify(this.evaluationRepository, Mockito.times(1))
                 .deleteEvaluation("workspace_test", "prop-2", "2026-06-18T11:00:00Z");
-        Mockito.verify(this.repository, Mockito.never())
+        Mockito.verify(this.evaluationRepository, Mockito.never())
                 .deleteEvaluation("workspace_test", "prop-3", "2026-06-18T12:00:00Z");
 
         Mockito.verify(this.repository, Mockito.times(1))

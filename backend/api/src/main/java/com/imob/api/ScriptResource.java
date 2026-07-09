@@ -6,7 +6,8 @@ import com.imob.dto.ScriptResponse;
 import com.imob.dto.UpdateScriptRequest;
 import com.imob.entity.ScriptEntity;
 import com.imob.entity.EvaluationEntity;
-import com.imob.repository.DynamoDbRepository;
+import com.imob.repository.ScriptRepository;
+import com.imob.repository.EvaluationRepository;
 import com.imob.service.S3Service;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -35,7 +36,8 @@ import java.util.UUID;
 public class ScriptResource {
 
     private final UserContext userContext;
-    private final DynamoDbRepository repository;
+    private final ScriptRepository repository;
+    private final EvaluationRepository evaluationRepository;
     private final S3Service s3Service;
 
     @GET
@@ -113,13 +115,13 @@ public class ScriptResource {
                     .entity("{\"error\":\"Roteiro nao encontrado\"}")
                     .build();
 
-        List<EvaluationEntity> evaluations = this.repository.getEvaluations(workspaceId);
+        List<EvaluationEntity> evaluations = this.evaluationRepository.getEvaluations(workspaceId);
         for (EvaluationEntity eval : evaluations)
             if (scriptId.equals(eval.getScriptId())) {
                 if (eval.getMediaKeys() != null)
                     for (String key : eval.getMediaKeys())
                         this.s3Service.deleteObject(key);
-                this.repository.deleteEvaluation(workspaceId, eval.getPropertyId(), eval.getCreatedAt());
+                this.evaluationRepository.deleteEvaluation(workspaceId, eval.getPropertyId(), eval.getCreatedAt());
             }
 
         this.repository.deleteScript(workspaceId, scriptId);

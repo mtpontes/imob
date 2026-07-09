@@ -1,33 +1,33 @@
 {
   "frontend/src/app/app.component.spec.ts": {
-    "mtime": 1781834495.9120953,
-    "ast_hash": "aaf9db6441b45eac485d110f9a4e1144",
+    "mtime": 1783208153.5319355,
+    "ast_hash": "a87d962e431f59a11732f4a256ca36d7",
     "semantic_hash": ""
   },
   "frontend/src/app/app.component.ts": {
-    "mtime": 1781841014.746486,
-    "ast_hash": "b67073574ce2b36a677b02de83b7fa80",
+    "mtime": 1783542853.4292176,
+    "ast_hash": "677dfbc7fcf312b0667be175ac83a09d",
     "semantic_hash": ""
   },
   "frontend/src/app/app.config.ts": {
-    "mtime": 1782351126.1655116,
-    "ast_hash": "929ee6425898a73387ac701f26d233aa",
+    "mtime": 1783472914.0455353,
+    "ast_hash": "850e2afd54586147a46c31d77ba2f536",
     "semantic_hash": ""
   },
   "frontend/src/app/app.routes.ts": {
-    "mtime": 1782172337.1225228,
-    "ast_hash": "8238c78dc2172ba084fd8332cb34123e",
+    "mtime": 1783474624.363796,
+    "ast_hash": "43d19828e6a2f2d3d750c74e7cbbca13",
     "semantic_hash": ""
   },
   "frontend/src/app/guards/auth.guard.ts": {
-    "mtime": 1781054114.256277,
-    "ast_hash": "aea0f6c0cfcfd04cd225acb47dd45f3a",
-    "semantic_hash": "aea0f6c0cfcfd04cd225acb47dd45f3a"
+    "mtime": 1783456635.2334714,
+    "ast_hash": "64c6914692e6f027ba36c6a2a087fe10",
+    "semantic_hash": ""
   },
   "frontend/src/app/interceptors/auth.interceptor.ts": {
-    "mtime": 1780599608.9390194,
-    "ast_hash": "be87a33d0625a5e2601288d2beab4ecf",
-    "semantic_hash": "be87a33d0625a5e2601288d2beab4ecf"
+    "mtime": 1783207779.9304078,
+    "ast_hash": "712e2dcf7c8f1f8d14d2ba53fa348f74",
+    "semantic_hash": ""
   },
   "frontend/src/app/pages/evaluation/evaluation-form.component.spec.ts": {
     "mtime": 1782172522.7494626,
@@ -40,14 +40,14 @@
     "semantic_hash": ""
   },
   "frontend/src/app/pages/login/login.component.spec.ts": {
-    "mtime": 1780811223.0975327,
-    "ast_hash": "0bfe73bacb6a201a586bf4043cb8538b",
-    "semantic_hash": "0bfe73bacb6a201a586bf4043cb8538b"
+    "mtime": 1783542939.721869,
+    "ast_hash": "88a3511f1db45d1025266914261368d7",
+    "semantic_hash": ""
   },
   "frontend/src/app/pages/login/login.component.ts": {
-    "mtime": 1780811038.5706787,
-    "ast_hash": "94cdfb484e57acc7dc5fb44e3ee9c69a",
-    "semantic_hash": "94cdfb484e57acc7dc5fb44e3ee9c69a"
+    "mtime": 1783456649.2331371,
+    "ast_hash": "705a9e97885cc4dae77ff0d5480e5307",
+    "semantic_hash": ""
   },
   "frontend/src/app/pages/properties/properties.component.spec.ts": {
     "mtime": 1781833944.846092,
@@ -75,8 +75,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/pages/properties/property-details.component.ts": {
-    "mtime": 1783048416.132143,
-    "ast_hash": "3c4bdac3e30b735615ca4695fb0459db",
+    "mtime": 1783205100.4702826,
+    "ast_hash": "8e053fdfe9291a96776ef4bbf6a8ff21",
     "semantic_hash": ""
   },
   "frontend/src/app/pages/script-builder/script-builder.component.spec.ts": {
@@ -100,9 +100,9 @@
     "semantic_hash": ""
   },
   "frontend/src/app/services/auth.service.ts": {
-    "mtime": 1780599661.0877497,
-    "ast_hash": "ff18f0dfec287d26e389526d2e832671",
-    "semantic_hash": "ff18f0dfec287d26e389526d2e832671"
+    "mtime": 1783207735.708948,
+    "ast_hash": "8c50d1319705d0c8f1399e4ed608d669",
+    "semantic_hash": ""
   },
   "frontend/src/app/services/evaluation.service.spec.ts": {
     "mtime": 1782172516.9628563,
@@ -135,8 +135,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/types/index.ts": {
-    "mtime": 1782257072.638718,
-    "ast_hash": "d1994a803e72fdffbca9bb5b1720fa85",
+    "mtime": 1783456613.7029507,
+    "ast_hash": "699cf86547e13afd5eaa5f6433a1758b",
     "semantic_hash": ""
   },
   "frontend/src/main.ts": {
@@ -145,8 +145,8 @@
     "semantic_hash": "b5c1d106e573fea21ef1ad9e4360e77a"
   },
   "frontend/src/app/animations/animations.ts": {
-    "mtime": 1781901729.8774107,
-    "ast_hash": "1e8e210c320413759d9856abd556447c",
+    "mtime": 1783395848.2721777,
+    "ast_hash": "635d5c7a1a77c4a35b363109b0fa6a79",
     "semantic_hash": ""
   },
   "backend/media-processor/index.js": {
@@ -164,36 +164,6 @@
     "ast_hash": "abd62dcc82529650f3314cafd33f6526",
     "semantic_hash": ""
   },
-  "frontend/.vercel/output/functions/api/proxy.func/frontend/api/proxy.js": {
-    "mtime": 1782353043.7025406,
-    "ast_hash": "e3c8d27f4e1954c59e7135ad6e5a7537",
-    "semantic_hash": ""
-  },
-  "frontend/.vercel/output/static/main-JJGQAZNR.js": {
-    "mtime": 1782353043.5448668,
-    "ast_hash": "3803aeb2f4c8613be026586e607c248e",
-    "semantic_hash": ""
-  },
-  "frontend/.vercel/output/static/ngsw-worker.js": {
-    "mtime": 1780599494.8765306,
-    "ast_hash": "9726ae8c6a87e69ce919af7c93f0c7fa",
-    "semantic_hash": ""
-  },
-  "frontend/.vercel/output/static/polyfills-5CFQRCPP.js": {
-    "mtime": 1782353043.5448668,
-    "ast_hash": "41da3262ca56b0745a8b7fe7e7600db7",
-    "semantic_hash": ""
-  },
-  "frontend/.vercel/output/static/safety-worker.js": {
-    "mtime": 1780599494.883542,
-    "ast_hash": "56747b008a542a447b32cf21d9a6278a",
-    "semantic_hash": ""
-  },
-  "frontend/.vercel/output/static/worker-basic.min.js": {
-    "mtime": 1780599494.883542,
-    "ast_hash": "56747b008a542a447b32cf21d9a6278a",
-    "semantic_hash": ""
-  },
   "frontend/api/proxy.js": {
     "mtime": 1782352991.196272,
     "ast_hash": "d5e7a4364082536da1d187d7d68edbf6",
@@ -205,18 +175,18 @@
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/api/EvaluationResource.java": {
-    "mtime": 1782594039.0240462,
-    "ast_hash": "457d0ccc852bf594a81db48c329952d6",
+    "mtime": 1783202489.4385884,
+    "ast_hash": "06ef284ad86fe007ad77fc456cb8737f",
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/api/PropertyResource.java": {
-    "mtime": 1781754555.220083,
-    "ast_hash": "0fa86ab3af587e63fc211b0a93b064b3",
+    "mtime": 1783202478.051833,
+    "ast_hash": "b6749f4822151eebca4c42a75b1691d2",
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/api/ScriptResource.java": {
-    "mtime": 1782172155.0485475,
-    "ast_hash": "a67f54b3b127aa4bfadcfe7cff6d1932",
+    "mtime": 1783202561.2407281,
+    "ast_hash": "dc32d8ab6618650694e96e59b8b5b1bb",
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/config/S3PresignerProducer.java": {
@@ -300,23 +270,23 @@
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/entity/EvaluationEntity.java": {
-    "mtime": 1782172017.9368734,
-    "ast_hash": "0dc3e2bcee888fc4690b36de4ea67bb5",
+    "mtime": 1783621521.4024596,
+    "ast_hash": "2c3506d3e63d98f82e07fe6e10006628",
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/entity/PropertyEntity.java": {
-    "mtime": 1780851472.854256,
-    "ast_hash": "cd18465f2cb3fa35893cabc8a4e488b2",
+    "mtime": 1783621515.7628715,
+    "ast_hash": "9938e6bf4a74a2f4f40e0e0009bd1b2a",
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/entity/ScriptEntity.java": {
-    "mtime": 1782172011.931842,
-    "ast_hash": "021fc077123fafbd033c2c396f3f8502",
+    "mtime": 1783621526.0932019,
+    "ast_hash": "2d2470bbd9f815a67e71cd1207b3c683",
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/entity/UserProfileEntity.java": {
-    "mtime": 1780851488.4869442,
-    "ast_hash": "921d0594fcda7430a8a3ee239642dfcf",
+    "mtime": 1783621537.082615,
+    "ast_hash": "bed2eb5df013726a446d86f5fdc9fe00",
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/exception/EvaluationErrorCode.java": {
@@ -335,13 +305,8 @@
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/filter/AuthFilter.java": {
-    "mtime": 1782352804.747152,
-    "ast_hash": "93fb6861da7d29697d65479bf86c2593",
-    "semantic_hash": ""
-  },
-  "backend/api/src/main/java/com/imob/repository/DynamoDbRepository.java": {
-    "mtime": 1782172053.6646824,
-    "ast_hash": "039ea7754aeb2db6fdb3a61828a99a17",
+    "mtime": 1783621608.4348571,
+    "ast_hash": "6957c23e8ad3ecc2dadf7b07d2ca5efa",
     "semantic_hash": ""
   },
   "backend/api/src/main/java/com/imob/service/EvaluationValidator.java": {
@@ -355,23 +320,23 @@
     "semantic_hash": ""
   },
   "backend/api/src/test/java/com/imob/api/EvaluationResourceTest.java": {
-    "mtime": 1782257046.2686281,
-    "ast_hash": "7a3c37d58e7038af8c2c3f24d226f91e",
+    "mtime": 1783202539.7568321,
+    "ast_hash": "91a9151537d2d99a80becdc2d2bf3877",
     "semantic_hash": ""
   },
   "backend/api/src/test/java/com/imob/api/PropertyResourceTest.java": {
-    "mtime": 1781754569.0832865,
-    "ast_hash": "0e3f8e49bd71c7e023c0e1078471411e",
+    "mtime": 1783202516.365902,
+    "ast_hash": "bad2ce8212039a4747317229ec0ccd29",
     "semantic_hash": ""
   },
   "backend/api/src/test/java/com/imob/api/ScriptResourceTest.java": {
-    "mtime": 1782172091.8020167,
-    "ast_hash": "c761c1ba1555b6506396da859327a5de",
+    "mtime": 1783202570.4457078,
+    "ast_hash": "ad2077d477aa12ec40b4d045ce386a8f",
     "semantic_hash": ""
   },
   "backend/api/src/test/java/com/imob/filter/AuthFilterTest.java": {
-    "mtime": 1781057929.6176226,
-    "ast_hash": "7af380f9e847def4df0dcdb6da59c5c6",
+    "mtime": 1783201073.109736,
+    "ast_hash": "aa5e7fb62ccc0a42652cdedc5ecc2ab2",
     "semantic_hash": ""
   },
   "backend/api/src/test/java/com/imob/service/S3ServiceTest.java": {
@@ -387,6 +352,141 @@
   "assets/app_demo_mobile.webp": {
     "mtime": 1782676854.1017318,
     "ast_hash": "1b6578f2b98a3f70765a12016956b89e",
+    "semantic_hash": ""
+  },
+  "backend/api/src/main/java/com/imob/api/WorkspaceResource.java": {
+    "mtime": 1783472900.5759284,
+    "ast_hash": "219c39986da8be3fb8d928b63a0aed86",
+    "semantic_hash": ""
+  },
+  "backend/api/src/main/java/com/imob/dto/ChangeActiveWorkspaceRequest.java": {
+    "mtime": 1783201012.2652237,
+    "ast_hash": "a914f12c967ec6517165c03cfb2e6bc0",
+    "semantic_hash": ""
+  },
+  "backend/api/src/main/java/com/imob/dto/CreateWorkspaceRequest.java": {
+    "mtime": 1783201005.3453274,
+    "ast_hash": "3c959bf06d1234ec72754e5ccff49b3e",
+    "semantic_hash": ""
+  },
+  "backend/api/src/main/java/com/imob/dto/InviteUserRequest.java": {
+    "mtime": 1783456387.5196235,
+    "ast_hash": "8b2f9df31099bd632c8351b4c3e700a9",
+    "semantic_hash": ""
+  },
+  "backend/api/src/main/java/com/imob/dto/WorkspaceResponse.java": {
+    "mtime": 1783201001.7603757,
+    "ast_hash": "2c54f6852fb1c5b5a0beb0663e98cc9c",
+    "semantic_hash": ""
+  },
+  "backend/api/src/main/java/com/imob/entity/UserWorkspaceRelationEntity.java": {
+    "mtime": 1783621542.5298157,
+    "ast_hash": "7a692991117607ba86b829874b1deb26",
+    "semantic_hash": ""
+  },
+  "backend/api/src/main/java/com/imob/entity/WorkspaceEntity.java": {
+    "mtime": 1783621508.6883278,
+    "ast_hash": "ff0a4f55cda33fdb4f669a809f3bdfa8",
+    "semantic_hash": ""
+  },
+  "backend/api/src/test/java/com/imob/api/WorkspaceResourceTest.java": {
+    "mtime": 1783473005.7702854,
+    "ast_hash": "da909ba4e90417ce39f28d70a8224045",
+    "semantic_hash": ""
+  },
+  "frontend/src/app/services/workspace.service.ts": {
+    "mtime": 1783472907.9004178,
+    "ast_hash": "a17d2f62a6f0435f779c3fbef81a712e",
+    "semantic_hash": ""
+  },
+  "backend/api/src/main/java/com/imob/repository/EvaluationRepository.java": {
+    "mtime": 1783621575.2696576,
+    "ast_hash": "741f0b16829f695cc6a992e6c841a152",
+    "semantic_hash": ""
+  },
+  "backend/api/src/main/java/com/imob/repository/PropertyRepository.java": {
+    "mtime": 1783621569.3528557,
+    "ast_hash": "8c8a4ccdbb850763dd80814aea3979c2",
+    "semantic_hash": ""
+  },
+  "backend/api/src/main/java/com/imob/repository/ScriptRepository.java": {
+    "mtime": 1783621676.6266418,
+    "ast_hash": "15404442b81a9987e040e0b66a2f2f0b",
+    "semantic_hash": ""
+  },
+  "backend/api/src/main/java/com/imob/repository/WorkspaceRepository.java": {
+    "mtime": 1783621563.0197246,
+    "ast_hash": "cf7e8e8a20b872d5e7d96d1b8770b2d4",
+    "semantic_hash": ""
+  },
+  "frontend/src/env.d.ts": {
+    "mtime": 1783210418.2876544,
+    "ast_hash": "81e6675775c71343d6b83d4518b783c7",
+    "semantic_hash": ""
+  },
+  "frontend/src/environments/environment.production.ts": {
+    "mtime": 1783210315.198688,
+    "ast_hash": "00946a2dbdc1d145c385a86a11d57cad",
+    "semantic_hash": ""
+  },
+  "frontend/src/environments/environment.ts": {
+    "mtime": 1783210304.6753335,
+    "ast_hash": "e29a5a8addb0f429da3e1ba194e5cd4c",
+    "semantic_hash": ""
+  },
+  "frontend/src/polyfills.ts": {
+    "mtime": 1783207929.6877027,
+    "ast_hash": "0fa3200a33cf8c773d623b2dfbebcafc",
+    "semantic_hash": ""
+  },
+  "scripts/deploy-sam.js": {
+    "mtime": 1783391599.6264637,
+    "ast_hash": "9977c756f962942ac2e9e624305a5f22",
+    "semantic_hash": ""
+  },
+  "scripts/sync.js": {
+    "mtime": 1783451615.416936,
+    "ast_hash": "67df8068ae0ef6d0dd859f8dea29c7ab",
+    "semantic_hash": ""
+  },
+  "backend/api/src/main/java/com/imob/dto/InviteDetailsResponse.java": {
+    "mtime": 1783456401.6447482,
+    "ast_hash": "68fbb15a95441de03e428a0b92646365",
+    "semantic_hash": ""
+  },
+  "backend/api/src/main/java/com/imob/dto/InviteResponse.java": {
+    "mtime": 1783456394.7897484,
+    "ast_hash": "840e6b4b1f4f6a257d658074a30069b8",
+    "semantic_hash": ""
+  },
+  "backend/api/src/main/java/com/imob/entity/InviteEntity.java": {
+    "mtime": 1783621531.270009,
+    "ast_hash": "ad8e172766bf70b13682b3ae97ad2cf5",
+    "semantic_hash": ""
+  },
+  "backend/api/src/main/java/com/imob/repository/InviteRepository.java": {
+    "mtime": 1783621589.0448208,
+    "ast_hash": "7d7a29e01c3a6f705ec91f2de665eb53",
+    "semantic_hash": ""
+  },
+  "frontend/src/app/pages/invite-accept/invite-accept.component.ts": {
+    "mtime": 1783456665.4077387,
+    "ast_hash": "025adcbd3cd9f1fac30b24db7f33037f",
+    "semantic_hash": ""
+  },
+  "backend/api/src/main/java/com/imob/dto/UpdateWorkspaceRequest.java": {
+    "mtime": 1783472867.3916767,
+    "ast_hash": "881b17a5a20419f746b7a209fecb71ec",
+    "semantic_hash": ""
+  },
+  "frontend/src/app/pages/workspaces-management/workspaces-management.component.ts": {
+    "mtime": 1783472932.3991814,
+    "ast_hash": "77ed7903134c0846920c37e1a672d462",
+    "semantic_hash": ""
+  },
+  "scripts/migrate-to-multitable.js": {
+    "mtime": 1783621866.8746586,
+    "ast_hash": "286fb894e50635d7d2485a89c57d6d3a",
     "semantic_hash": ""
   }
 }

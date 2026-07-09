@@ -1,0 +1,151 @@
+<section class="workspaces-list-section">
+  <div class="page-header">
+    <div class="page-title-area">
+      <div class="title-with-back">
+        <div>
+          <h1>Meus Ambientes</h1>
+          <p>Gerencie seus workspaces de avaliação de imóveis</p>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary" (click)="openCreateModal()" id="btn-create-workspace-redirect">
+      <lucide-icon name="plus"></lucide-icon>
+      <span>Novo Ambiente</span>
+    </button>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert error-alert">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="successMessage" class="alert success-alert">
+    {{ successMessage }}
+  </div>
+
+  <div *ngIf="workspaces.length === 0 && !loading" class="empty-state glass" id="workspaces-empty-state">
+    <lucide-icon name="briefcase"></lucide-icon>
+    <h3>Nenhum ambiente cadastrado</h3>
+    <p>Crie um ambiente para começar a gerenciar e avaliar seus imóveis.</p>
+    <button class="btn btn-primary" (click)="openCreateModal()" style="margin-top: 1rem;">
+      <lucide-icon name="plus"></lucide-icon>
+      <span>Criar Novo Ambiente</span>
+    </button>
+  </div>
+
+  <!-- Loading Skeletons -->
+  <div class="workspaces-list-container" *ngIf="loading">
+    <div class="workspace-row glass animate-pulse" *ngFor="let i of [1, 2]">
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 0.5rem;">
+        <div class="skeleton-line" style="width: 40%; height: 1.2rem;"></div>
+        <div class="skeleton-line" style="width: 25%; height: 0.8rem;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Listagem de Workspaces -->
+  <div class="workspaces-list-container" *ngIf="workspaces.length > 0 && !loading" [@listStaggerTrigger]="workspaces.length">
+    <div *ngFor="let ws of workspaces" class="workspace-row glass" [class.workspace-active]="ws.active">
+      <div class="workspace-row-info">
+        <div class="workspace-title-line">
+          <h3>{{ ws.workspaceName }}</h3>
+          <span class="active-badge" *ngIf="ws.active">
+            <lucide-icon name="check-circle" size="14"></lucide-icon>
+            Ativo
+          </span>
+        </div>
+        <div class="workspace-row-meta">
+          <span>Papel: <strong>{{ ws.role === 'OWNER' ? 'Proprietário' : 'Convidado' }}</strong></span>
+          <span>•</span>
+          <span>Vinculado em: {{ ws.joinedAt | date:'dd/MM/yyyy' }}</span>
+        </div>
+      </div>
+      
+      <div class="workspace-row-actions">
+        <!-- Acoes para OWNER -->
+        <ng-container *ngIf="ws.role === 'OWNER'">
+          <button class="btn btn-outline" (click)="openEditModal($event, ws)" id="btn-edit-workspace-{{ ws.workspaceId }}">
+            <lucide-icon name="edit-3"></lucide-icon>
+            <span>Renomear</span>
+          </button>
+          <button class="btn btn-danger" (click)="requestDeleteWorkspace($event, ws)" id="btn-delete-workspace-{{ ws.workspaceId }}">
+            <lucide-icon name="trash-2"></lucide-icon>
+            <span>Excluir</span>
+          </button>
+        </ng-container>
+        
+        <!-- Label para CONVIDADOS -->
+        <ng-container *ngIf="ws.role !== 'OWNER'">
+          <span class="invited-label-badge">
+            <lucide-icon name="briefcase" size="14"></lucide-icon>
+            Convidado
+          </span>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Criar / Editar Ambiente -->
+  <div class="modal-wrapper" *ngIf="isModalOpen" @modalTrigger>
+    <div class="modal-backdrop" (click)="closeModal()"></div>
+    <div class="modal-content delete-confirm-modal-content glass">
+      <div class="modal-drag-indicator"></div>
+      <div class="delete-confirm-body">
+        <div class="alert-icon-wrapper" style="background: hsla(250, 84%, 67%, 0.1); border-color: rgba(139, 92, 246, 0.2); color: var(--primary-light);">
+          <lucide-icon name="briefcase"></lucide-icon>
+        </div>
+        <h3>{{ modalTitle }}</h3>
+        <p>Insira o nome do ambiente de trabalho para organizar seus imóveis e avaliações.</p>
+        
+        <div class="form-group" style="width: 100%; text-align: left; margin-top: 1rem;">
+          <label for="workspaceName">Nome do Ambiente</label>
+          <div class="input-wrapper">
+            <lucide-icon name="edit-3"></lucide-icon>
+            <input 
+              type="text" 
+              id="workspaceName" 
+              [(ngModel)]="workspaceNameInput" 
+              placeholder="Ex: Minha Imobiliária, Workspace Sul"
+              required
+              #nameModel="ngModel"
+              (keyup.enter)="workspaceNameInput.trim() && saveWorkspace()"
+            />
+          </div>
+          <div *ngIf="nameModel.invalid && (nameModel.dirty || nameModel.touched)" class="validation-error">
+            O nome do ambiente é obrigatório.
+          </div>
+        </div>
+      </div>
+
+      <div class="delete-confirm-footer">
+        <button class="btn btn-outline" (click)="closeModal()">Cancelar</button>
+        <button class="btn btn-primary" [disabled]="!workspaceNameInput.trim()" (click)="saveWorkspace()">
+          <span>Salvar</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmação de Exclusão -->
+  <div id="confirm-delete-workspace-modal" class="modal-wrapper" *ngIf="isConfirmDeleteOpen" @modalTrigger>
+    <div class="modal-backdrop" (click)="cancelDelete()"></div>
+    <div class="modal-content delete-confirm-modal-content glass">
+      <div class="modal-drag-indicator"></div>
+      <div class="delete-confirm-body">
+        <div class="alert-icon-wrapper">
+          <lucide-icon name="alert-triangle"></lucide-icon>
+        </div>
+        <h3>Excluir Ambiente?</h3>
+        <p><strong>Aviso importante:</strong> Esta ação removerá permanentemente o ambiente <strong>"{{ workspaceToDelete?.workspaceName }}"</strong>.</p>
+        <p class="warning-alert-desc">Isso apagará todos os imóveis, avaliações, roteiros e dados de vistorias associados. Esta ação não poderá ser desfeita.</p>
+      </div>
+
+      <div class="delete-confirm-footer">
+        <button class="btn btn-outline" (click)="cancelDelete()" id="btn-cancel-delete-workspace">Cancelar</button>
+        <button class="btn btn-danger-filled" (click)="confirmDelete()" id="btn-confirm-delete-workspace-exec">
+          <lucide-icon name="trash-2"></lucide-icon>
+          <span>Excluir Permanentemente</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

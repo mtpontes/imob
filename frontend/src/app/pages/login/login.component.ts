@@ -1,68 +1,48 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, LucideAngularModule],
+  imports: [CommonModule, LucideAngularModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  loginForm: FormGroup;
   errorMessage: string = '';
   loading: boolean = false;
 
   constructor(
-    private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
-  ) {
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
-    });
-  }
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
-  onSubmit(): void {
-    if (this.loginForm.invalid) {
-      return;
+  loginWithGoogle(): void {
+    try {
+      const url = this.authService.getGoogleLoginUrl();
+      window.location.href = url;
+    } catch (err: any) {
+      this.errorMessage = 'Cognito nao configurado. Use o Acesso Rapido para testes locais.';
+      console.error('Erro ao gerar URL de login com Google:', err);
     }
-
-    this.loading = true;
-    this.errorMessage = '';
-
-    const { email, password } = this.loginForm.value;
-
-    this.authService.login(email, password).subscribe({
-      next: () => {
-        this.loading = false;
-        this.router.navigate(['/properties']);
-      },
-      error: (err) => {
-        this.loading = false;
-        this.errorMessage = 'Erro ao realizar login. Verifique suas credenciais.';
-      }
-    });
   }
 
   bypassLogin(): void {
     this.loading = true;
     this.errorMessage = '';
 
-    this.authService.login('demo@imobapp.com.br', 'Password123!').subscribe({
-      next: () => {
-        this.loading = false;
-        this.router.navigate(['/properties']);
-      },
-      error: () => {
-        this.loading = false;
-        this.errorMessage = 'Erro ao realizar login de bypass.';
-      }
-    });
+    try {
+      this.authService.bypassLogin('demo@imobapp.com.br');
+      this.loading = false;
+      const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+      this.router.navigateByUrl(returnUrl ?? '/properties');
+    } catch (err: any) {
+      this.loading = false;
+      this.errorMessage = 'Erro ao realizar login de bypass.';
+    }
   }
 }

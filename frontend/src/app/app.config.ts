@@ -14,6 +14,7 @@ import {
   LogOut, 
   Plus, 
   Search, 
+  User, 
   Home, 
   ClipboardList, 
   ChevronLeft, 
@@ -36,6 +37,7 @@ import {
   Trash2, 
   X, 
   CheckCircle, 
+  Circle,
   AlertTriangle, 
   AlertCircle,
   Clipboard,
@@ -49,7 +51,11 @@ import {
   TrendingUp,
   TrendingDown,
   Play,
-  PlayCircle
+  PlayCircle,
+  Copy,
+  Users,
+  XCircle,
+  Settings
 } from 'lucide-angular';
 
 import { routes } from './app.routes';
@@ -78,6 +84,7 @@ export const appConfig: ApplicationConfig = {
         LogOut, 
         Plus, 
         Search, 
+        User, 
         Home, 
         ClipboardList, 
         ChevronLeft, 
@@ -100,6 +107,7 @@ export const appConfig: ApplicationConfig = {
         Trash2, 
         X, 
         CheckCircle, 
+        Circle,
         AlertTriangle, 
         AlertCircle,
         Clipboard,
@@ -113,7 +121,11 @@ export const appConfig: ApplicationConfig = {
         TrendingUp,
         TrendingDown,
         Play,
-        PlayCircle
+        PlayCircle,
+        Copy,
+        Users,
+        XCircle,
+        Settings
       })
     )
   ]

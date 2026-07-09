@@ -28,13 +28,13 @@ public class EvaluationEntity {
 
     public Map<String, AttributeValue> toAttributeMap() {
         Map<String, AttributeValue> map = new HashMap<>();
-        map.put("PK", AttributeValue.builder().s("WORKSPACE#" + this.workspaceId).build());
-        map.put("SK", AttributeValue.builder().s("EVALUATION#" + this.propertyId + "#" + this.createdAt).build());
+        map.put("workspaceId", AttributeValue.builder().s(this.workspaceId).build());
+        map.put("propertyId_createdAt", AttributeValue.builder().s(this.propertyId + "#" + this.createdAt).build());
         map.put("propertyId", AttributeValue.builder().s(this.propertyId).build());
         map.put("createdAt", AttributeValue.builder().s(this.createdAt).build());
         map.put("scriptId", AttributeValue.builder().s(this.scriptId).build());
 
-        if (this.notes != null)
+        if (this.notes != null) 
             map.put("notes", AttributeValue.builder().s(this.notes).build());
 
         try {
@@ -57,9 +57,9 @@ public class EvaluationEntity {
     public static EvaluationEntity fromAttributeMap(Map<String, AttributeValue> map) {
         if (map == null || map.isEmpty())
             return null;
+
         EvaluationEntity entity = new EvaluationEntity();
-        String pk = map.get("PK").s();
-        entity.setWorkspaceId(pk.substring("WORKSPACE#".length()));
+        entity.setWorkspaceId(map.get("workspaceId").s());
         entity.setPropertyId(map.get("propertyId").s());
         entity.setCreatedAt(map.get("createdAt").s());
         entity.setScriptId(map.get("scriptId").s());

@@ -25,8 +25,7 @@ public class ScriptEntity {
     private static final ObjectMapper objectMapper = new ObjectMapper();
     public Map<String, AttributeValue> toAttributeMap() {
         Map<String, AttributeValue> map = new HashMap<>();
-        map.put("PK", AttributeValue.builder().s("WORKSPACE#" + this.workspaceId).build());
-        map.put("SK", AttributeValue.builder().s("SCRIPT#" + this.id).build());
+        map.put("workspaceId", AttributeValue.builder().s(this.workspaceId).build());
         map.put("id", AttributeValue.builder().s(this.id).build());
         map.put("createdAt", AttributeValue.builder().s(this.createdAt).build());
         map.put("name", AttributeValue.builder().s(this.name != null ? this.name : "").build());
@@ -41,15 +40,13 @@ public class ScriptEntity {
     public static ScriptEntity fromAttributeMap(Map<String, AttributeValue> map) {
         if (map == null || map.isEmpty())
             return null;
+
         ScriptEntity entity = new ScriptEntity();
-        
-        String pk = map.get("PK").s();
-        entity.setWorkspaceId(pk.substring("WORKSPACE#".length()));
+        entity.setWorkspaceId(map.get("workspaceId").s());
         entity.setId(map.get("id").s());
         entity.setCreatedAt(map.get("createdAt").s());
-        if (map.containsKey("name")) {
+        if (map.containsKey("name")) 
             entity.setName(map.get("name").s());
-        }
         if (map.containsKey("criteria")) {
             try {
                 String json = map.get("criteria").s();

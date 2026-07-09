@@ -2,7 +2,8 @@ package com.imob.api;
 
 import com.imob.entity.PropertyEntity;
 import com.imob.entity.EvaluationEntity;
-import com.imob.repository.DynamoDbRepository;
+import com.imob.repository.PropertyRepository;
+import com.imob.repository.EvaluationRepository;
 import com.imob.service.S3Service;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
@@ -25,7 +26,10 @@ import static org.hamcrest.CoreMatchers.is;
 public class PropertyResourceTest {
 
     @InjectMock
-    DynamoDbRepository repository;
+    PropertyRepository repository;
+
+    @InjectMock
+    EvaluationRepository evaluationRepository;
 
     @InjectMock
     DynamoDbClient dynamoDbClient;
@@ -140,7 +144,7 @@ public class PropertyResourceTest {
         eval2.setCreatedAt("2026-06-18T11:00:00Z");
         eval2.setMediaKeys(List.of());
 
-        Mockito.when(this.repository.getEvaluationsByProperty("workspace_test", propertyId))
+        Mockito.when(this.evaluationRepository.getEvaluationsByProperty("workspace_test", propertyId))
                 .thenReturn(List.of(eval1, eval2));
 
         // Act & Assert
@@ -154,9 +158,9 @@ public class PropertyResourceTest {
         Mockito.verify(this.s3Service, Mockito.times(1))
                 .deleteObject("workspace_test/prop-123/foto1.jpg");
 
-        Mockito.verify(this.repository, Mockito.times(1))
+        Mockito.verify(this.evaluationRepository, Mockito.times(1))
                 .deleteEvaluation("workspace_test", propertyId, "2026-06-18T10:00:00Z");
-        Mockito.verify(this.repository, Mockito.times(1))
+        Mockito.verify(this.evaluationRepository, Mockito.times(1))
                 .deleteEvaluation("workspace_test", propertyId, "2026-06-18T11:00:00Z");
 
         Mockito.verify(this.repository, Mockito.times(1))

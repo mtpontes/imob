@@ -9,7 +9,8 @@ import com.imob.dto.MediaItemDto;
 import com.imob.dto.UpdateEvaluationRequest;
 import com.imob.entity.EvaluationEntity;
 import com.imob.entity.ScriptEntity;
-import com.imob.repository.DynamoDbRepository;
+import com.imob.repository.EvaluationRepository;
+import com.imob.repository.ScriptRepository;
 import com.imob.service.EvaluationValidator;
 import com.imob.service.S3Service;
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -39,7 +40,8 @@ import java.util.UUID;
 public class EvaluationResource {
 
     private final UserContext userContext;
-    private final DynamoDbRepository repository;
+    private final EvaluationRepository repository;
+    private final ScriptRepository scriptRepository;
 
     private final S3Service s3Service;
     private final EvaluationValidator evaluationValidator;
@@ -48,7 +50,7 @@ public class EvaluationResource {
     public Response createEvaluation(CreateEvaluationRequest request) {
         String workspaceId = this.userContext.getWorkspaceId();
         
-        ScriptEntity script = this.repository.getScript(workspaceId, request.getScriptId());
+        ScriptEntity script = this.scriptRepository.getScript(workspaceId, request.getScriptId());
         this.evaluationValidator.validate(request, script);
 
         EvaluationEntity entity = new EvaluationEntity();
@@ -129,7 +131,7 @@ public class EvaluationResource {
         if (entity == null)
             return Response.status(Response.Status.NOT_FOUND).build();
 
-        ScriptEntity script = this.repository.getScript(workspaceId, entity.getScriptId());
+        ScriptEntity script = this.scriptRepository.getScript(workspaceId, entity.getScriptId());
         this.evaluationValidator.validate(request, script);
 
         entity.setNotes(request.getNotes());

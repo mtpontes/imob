@@ -96,10 +96,17 @@ jobs:
 
       - name: SAM Deploy
         run: |
+          # Validar se as credenciais do Google estão presentes nos Secrets do GitHub
+          if [ -z "${{ secrets.GOOGLE_CLIENT_ID }}" ] || [ -z "${{ secrets.GOOGLE_CLIENT_SECRET }}" ]; then
+            echo "::error::ERRO: As credenciais do Google (GOOGLE_CLIENT_ID e GOOGLE_CLIENT_SECRET) não estão configuradas nos Secrets do repositório."
+            exit 1
+          fi
+
           sam deploy \
             --template-file backend/template.yaml \
             --stack-name imob-app-infra-$DEPLOY_ENV \
             --resolve-s3 \
             --capabilities CAPABILITY_IAM \
             --no-confirm-changeset \
-            --no-fail-on-empty-changeset
+            --no-fail-on-empty-changeset \
+            --parameter-overrides "EnableMockAuth=false GoogleClientId=${{ secrets.GOOGLE_CLIENT_ID }} GoogleClientSecret=${{ secrets.GOOGLE_CLIENT_SECRET }}"
