@@ -20,7 +20,7 @@ jobs:
   deploy-vercel:
     name: Deploy to Vercel
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment || 'dev' }}
+    environment: ${{ github.event.inputs.environment || (github.ref_name == 'master' && 'prod' || 'dev') }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -42,7 +42,14 @@ jobs:
       - name: Fetch API Gateway URL and Cognito Outputs from AWS SAM Stack
         id: fetch_aws_outputs
         run: |
-          STACK_NAME="imob-app-infra-${{ github.event.inputs.environment || 'dev' }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            ENV_NAME="${{ github.event.inputs.environment }}"
+          elif [ "${{ github.ref_name }}" = "master" ]; then
+            ENV_NAME="prod"
+          else
+            ENV_NAME="dev"
+          fi
+          STACK_NAME="imob-app-infra-$ENV_NAME"
           
           # Consulta a stack CloudFormation completa em formato JSON
           STACK_JSON=$(aws cloudformation describe-stacks --stack-name "$STACK_NAME" --output json)

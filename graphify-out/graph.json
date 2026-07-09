@@ -7247,7 +7247,7 @@
       "label": "environment",
       "file_type": "code",
       "source_file": "frontend/src/environments/environment.production.ts",
-      "source_location": "L4",
+      "source_location": "L6",
       "_origin": "ast",
       "id": "environments_environment_production_environment",
       "community": 73,
@@ -7267,7 +7267,7 @@
       "label": "environment",
       "file_type": "code",
       "source_file": "frontend/src/environments/environment.ts",
-      "source_location": "L4",
+      "source_location": "L6",
       "_origin": "ast",
       "id": "environments_environment_environment",
       "community": 12,
@@ -22884,9 +22884,9 @@
       "source_file": "scripts/migrate-to-multitable.js",
       "source_location": "L249",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "scripts_migrate_to_multitable",
-      "target": "scripts_migrate_to_multitable_asciistringify",
-      "confidence_score": 1.0
+      "target": "scripts_migrate_to_multitable_asciistringify"
     },
     {
       "relation": "contains",
@@ -23040,5 +23040,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "b9f4ace0c019b1ae4d84aba30a889287771cc86b"
+  "built_at_commit": "524324af81758885bd4e0dc6f3477863c7158fab"
 }
