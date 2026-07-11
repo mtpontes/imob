@@ -57,6 +57,12 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
   touchEndY: number = 0;
   lastWheelTime: number = 0;
 
+  // Propriedades para o Gráfico de Evolução e Pontos Críticos
+  chartPoints: any[] = [];
+  svgPath: string = '';
+  svgAreaPath: string = '';
+  criticalIssues: any[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -107,6 +113,13 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
 
   calculateEvaluationsScores(): void {
     this.evaluationScores = {};
+    if (this.evaluations.length === 0) {
+      this.generateChartData();
+      this.findCriticalIssues();
+      return;
+    }
+
+    let processedCount = 0;
     this.evaluations.forEach(ev => {
       this.scriptService.getScript(ev.scriptId).subscribe({
         next: (script) => {
@@ -115,16 +128,118 @@ export class PropertyDetailsComponent implements OnInit, DoCheck, OnDestroy {
             ...this.evaluationScores,
             [`${ev.propertyId}_${ev.createdAt}`]: score
           };
+          processedCount++;
+          if (processedCount === this.evaluations.length) {
+            this.generateChartData();
+            this.findCriticalIssues();
+          }
         },
         error: () => {
           this.evaluationScores = {
             ...this.evaluationScores,
             [`${ev.propertyId}_${ev.createdAt}`]: 0
           };
+          processedCount++;
+          if (processedCount === this.evaluations.length) {
+            this.generateChartData();
+            this.findCriticalIssues();
+          }
         }
       });
     });
   }
+
+  generateChartData(): void {
+    this.chartPoints = [];
+    this.svgPath = '';
+    this.svgAreaPath = '';
+
+    if (this.evaluations.length < 2) {
+      return;
+    }
+
+    // Ordena as avaliações por data crescente (cronológica) para o gráfico
+    const sortedEvals = [...this.evaluations]
+      .filter(ev => this.evaluationScores[`${ev.propertyId}_${ev.createdAt}`] !== undefined)
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+
+    if (sortedEvals.length < 2) {
+      return;
+    }
+
+    const width = 500;
+    const height = 160;
+    const paddingLeft = 40;
+    const paddingRight = 20;
+    const paddingTop = 20;
+    const paddingBottom = 30;
+
+    const chartWidth = width - paddingLeft - paddingRight;
+    const chartHeight = height - paddingTop - paddingBottom;
+    const count = sortedEvals.length;
+
+    const points: { x: number; y: number; score: number; dateStr: string; label: string }[] = [];
+
+    sortedEvals.forEach((ev, i) => {
+      const score = this.evaluationScores[`${ev.propertyId}_${ev.createdAt}`] ?? 0;
+      const x = paddingLeft + (i * chartWidth) / (count - 1);
+      const y = paddingTop + chartHeight - (score * chartHeight) / 100;
+      
+      const date = new Date(ev.createdAt);
+      const dateStr = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}`;
+      
+      const scr = this.scripts.find(s => s.id === ev.scriptId);
+      const label = scr && scr.name ? scr.name : `Visita #${i + 1}`;
+
+      points.push({ x, y, score, dateStr, label });
+    });
+
+    this.chartPoints = points;
+
+    let pathD = `M ${points[0].x} ${points[0].y}`;
+    for (let i = 1; i < points.length; i++) {
+      pathD += ` L ${points[i].x} ${points[i].y}`;
+    }
+    this.svgPath = pathD;
+
+    const bottomY = paddingTop + chartHeight;
+    this.svgAreaPath = `${pathD} L ${points[points.length - 1].x} ${bottomY} L ${points[0].x} ${bottomY} Z`;
+  }
+
+  findCriticalIssues(): void {
+    this.criticalIssues = [];
+    if (this.evaluations.length === 0) return;
+
+    const latestEv = this.evaluations[0];
+    
+    this.scriptService.getScript(latestEv.scriptId).subscribe({
+      next: (script) => {
+        const issues: any[] = [];
+        script.criteria.forEach(criteria => {
+          if (!criteria.isScorable || criteria.weight >= 0) return;
+          
+          const val = latestEv.answers[criteria.id];
+          if (val === true || val === 'true') {
+            issues.push({
+              label: criteria.label,
+              value: 'Sim'
+            });
+          } else if (criteria.type === 'range' && val !== null && val !== undefined) {
+            const numVal = Number(val);
+            if (numVal > 0) {
+              issues.push({
+                label: criteria.label,
+                value: `${numVal}/5`
+              });
+            }
+          }
+        });
+        this.criticalIssues = issues;
+      },
+      error: () => {}
+    });
+  }
+
 
   loadScripts(): void {
     this.scriptService.getActiveScripts().subscribe({

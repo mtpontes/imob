@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/pages/evaluation/evaluation-form.component.ts": {
-    "mtime": 1782172323.6349242,
-    "ast_hash": "071355d7d257d12ec5cd48687d32b9f4",
+    "mtime": 1783655619.9773266,
+    "ast_hash": "55984774b27822171dd394ec9b16a9f7",
     "semantic_hash": ""
   },
   "frontend/src/app/pages/login/login.component.spec.ts": {
@@ -75,8 +75,8 @@
     "semantic_hash": ""
   },
   "frontend/src/app/pages/properties/property-details.component.ts": {
-    "mtime": 1783632370.5841691,
-    "ast_hash": "5c94961d6436f33b8f60be90f5d1c00f",
+    "mtime": 1783801807.5607111,
+    "ast_hash": "1d93b0723e72168f763a6380aad1ef45",
     "semantic_hash": ""
   },
   "frontend/src/app/pages/script-builder/script-builder.component.spec.ts": {

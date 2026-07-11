@@ -4371,3 +4371,598 @@ app-evaluation-form {
 .criteria-item-row.cdk-drag-animating {
   transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* ==========================================================================
+   INTERACTIVE SCORE EVOLUTION CHART (SVG)
+   ========================================================================== */
+
+.score-chart-card {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+}
+
+.score-chart-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+.score-chart-container {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  margin-top: 1.5rem;
+  overflow: visible;
+}
+
+.chart-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.chart-line {
+  fill: none;
+  stroke: url(#chart-gradient);
+  stroke-width: 4;
+  stroke-linecap: round;
+  filter: drop-shadow(0 6px 12px var(--primary-glow));
+}
+
+.chart-line-draw {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: drawChartLine 1.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes drawChartLine {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.chart-line-bg {
+  fill: url(#chart-area-gradient);
+  opacity: 0.15;
+}
+
+.chart-point {
+  fill: var(--bg-secondary);
+  stroke: var(--primary-light);
+  stroke-width: 3;
+  cursor: pointer;
+  transition: transform 0.2s ease, stroke-width 0.2s ease, fill 0.2s ease;
+  transform-origin: center;
+}
+
+.chart-point:hover {
+  transform: scale(1.4);
+  stroke: var(--accent);
+  fill: var(--text-primary);
+  stroke-width: 4;
+}
+
+.chart-grid-line {
+  stroke: var(--glass-border);
+  stroke-width: 1;
+  stroke-dasharray: 4 6;
+}
+
+.chart-axis-text {
+  fill: var(--text-muted);
+  font-size: 10px;
+  font-family: var(--font-body);
+}
+
+.chart-tooltip-group {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.chart-point-group:hover .chart-tooltip-group {
+  opacity: 1;
+}
+
+.chart-tooltip-bg {
+  fill: hsla(223, 47%, 12%, 0.95);
+  stroke: var(--glass-border-focus);
+  stroke-width: 1;
+  rx: 6;
+}
+
+.chart-tooltip-text {
+  fill: var(--text-primary);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  text-anchor: middle;
+}
+
+.chart-tooltip-date {
+  fill: var(--text-secondary);
+  font-size: 9px;
+  font-family: var(--font-body);
+  text-anchor: middle;
+}
+
+/* ==========================================================================
+   FLOATING AND LIVE SCORE INDICATOR (EVALUATION)
+   ========================================================================== */
+
+.eval-score-sticky-card {
+  position: sticky;
+  top: 90px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 250px;
+}
+
+.eval-score-sticky-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  font-family: var(--font-heading);
+}
+
+.score-circular-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-circular-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.score-circle-bg {
+  fill: none;
+  stroke: var(--glass-border);
+  stroke-width: 10;
+}
+
+.score-circle-progress {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.4s ease, stroke 0.4s ease;
+}
+
+.score-circle-progress.none { stroke: var(--text-muted); }
+.score-circle-progress.danger { stroke: var(--danger); }
+.score-circle-progress.low { stroke: var(--danger); }
+.score-circle-progress.medium { stroke: var(--warning); }
+.score-circle-progress.high { stroke: var(--success); }
+
+.score-center-text {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.score-center-text.pulse-anim {
+  animation: scoreBounce 0.35s ease-out;
+}
+
+@keyframes scoreBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.score-number-big {
+  font-size: 2.2rem;
+  font-weight: 800;
+  font-family: var(--font-heading);
+  line-height: 1;
+}
+
+.score-label-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 0.15rem;
+}
+
+.score-status-badge-flat {
+  margin-top: 1.25rem;
+  padding: 0.35rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: 50px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.score-status-badge-flat.none { background: rgba(255,255,255,0.05); color: var(--text-muted); }
+.score-status-badge-flat.danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+.score-status-badge-flat.low { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+.score-status-badge-flat.medium { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+.score-status-badge-flat.high { background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); }
+
+.score-answered-count {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Mobile sticky indicator */
+.mobile-score-indicator-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 150;
+  padding: 0.85rem 1.25rem;
+  background: hsla(222, 47%, 9%, 0.95);
+  backdrop-filter: blur(15px);
+  border-top: 1px solid var(--glass-border-focus);
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.5);
+  animation: slideUpMobileIndicator 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUpMobileIndicator {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.mobile-score-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mobile-score-circle-sm {
+  width: 44px;
+  height: 44px;
+}
+
+.mobile-score-texts {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-score-val {
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.mobile-score-status {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.mobile-score-status.none { color: var(--text-muted); }
+.mobile-score-status.danger { color: var(--danger); }
+.mobile-score-status.low { color: var(--danger); }
+.mobile-score-status.medium { color: var(--warning); }
+.mobile-score-status.high { color: var(--success); }
+
+/* Adaptações responsivas para tela de avaliação */
+@media (max-width: 992px) {
+  .evaluation-container-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+  
+  .eval-score-sticky-card {
+    display: none;
+  }
+  
+  .mobile-score-indicator-bar {
+    display: flex;
+  }
+  
+  /* Adiciona espaçamento extra para o formulário não ficar sob a barra mobile */
+  .evaluation-form-section {
+    padding-bottom: 5rem;
+  }
+}
+
+/* ==========================================================================
+   CRITICAL ISSUES PANEL
+   ========================================================================== */
+
+.critical-issues-card {
+  margin-top: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  border-left: 4px solid var(--danger);
+  background: hsla(350, 80%, 60%, 0.04);
+}
+
+.critical-issues-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--danger);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.critical-issues-card h3 i {
+  color: var(--danger);
+}
+
+.critical-issues-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.critical-issue-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(239, 68, 68, 0.1);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.critical-issue-item:last-child {
+  border-bottom: none;
+}
+
+.critical-issue-item i {
+  color: var(--danger);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   PRINT STYLES (@media print)
+   ========================================================================== */
+
+@media print {
+  /* Reset Geral para Impressão */
+  body {
+    background: #ffffff !important;
+    color: #111111 !important;
+    font-family: 'Inter', Arial, sans-serif !important;
+    font-size: 12pt !important;
+    line-height: 1.4 !important;
+    min-height: auto !important;
+  }
+
+  body::before,
+  body::after {
+    display: none !important;
+  }
+
+  /* Ocultar elementos desnecessários da UI */
+  .app-header,
+  .app-nav,
+  .page-actions,
+  .filters-bar,
+  .btn,
+  .modal-drag-zone,
+  .modal-drag-indicator,
+  .modal-backdrop,
+  .modal-actions,
+  .lightbox-wrapper,
+  #btn-details-delete-prop,
+  #btn-details-new-eval,
+  #btn-details-empty-new-eval,
+  #btn-modal-edit-eval,
+  #btn-modal-delete-eval,
+  .meta-separator,
+  .score-chart-card {
+    display: none !important;
+  }
+
+  /* Redimensionar contêiner principal */
+  .app-main {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .property-details-section,
+  .modal-content {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* Layout de Detalhes do Imóvel para Impressão */
+  .details-layout-grid {
+    display: block !important;
+  }
+
+  .details-info-card,
+  .details-history-card {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-bottom: 2rem !important;
+    width: 100% !important;
+  }
+
+  .details-info-card h3,
+  .details-history-card h3 {
+    color: #111111 !important;
+    border-bottom: 2px solid #222222 !important;
+    padding-bottom: 0.5rem !important;
+    margin-bottom: 1rem !important;
+    font-size: 14pt !important;
+  }
+
+  .property-specs-list {
+    margin-top: 1rem !important;
+  }
+
+  .spec-item {
+    border-bottom: 1px solid #dddddd !important;
+    padding: 0.5rem 0 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+  }
+
+  .spec-label {
+    color: #444444 !important;
+    font-weight: 600 !important;
+  }
+
+  .spec-value {
+    color: #111111 !important;
+    font-weight: 400 !important;
+  }
+
+  .spec-value.highlight {
+    color: #111111 !important;
+    font-weight: 700 !important;
+  }
+
+  /* Lista de avaliações em impressão */
+  .history-item-card {
+    background: none !important;
+    border: 1px solid #cccccc !important;
+    border-radius: 4px !important;
+    padding: 1rem !important;
+    margin-bottom: 1rem !important;
+    page-break-inside: avoid !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    color: #111111 !important;
+    box-shadow: none !important;
+  }
+
+  .history-item-score-badge {
+    background: #eeeeee !important;
+    color: #111111 !important;
+    border: 1px solid #cccccc !important;
+    border-radius: 4px !important;
+    padding: 0.4rem 0.8rem !important;
+    font-weight: 700 !important;
+    height: auto !important;
+    width: auto !important;
+    min-width: 50px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .history-item-info {
+    margin-left: 1rem !important;
+    flex: 1 !important;
+  }
+
+  .history-item-info h4 {
+    color: #111111 !important;
+    font-size: 11pt !important;
+  }
+
+  .history-item-meta {
+    color: #666666 !important;
+    font-size: 9pt !important;
+  }
+
+  .history-item-right {
+    display: none !important;
+  }
+
+  /* Detalhes da avaliação em impressão (Modal impresso) */
+  .modal-wrapper {
+    position: static !important;
+    z-index: auto !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  .modal-content.expanded {
+    max-height: none !important;
+  }
+
+  .modal-header h3 {
+    font-size: 16pt !important;
+    color: #111111 !important;
+  }
+
+  .modal-score-banner {
+    display: flex !important;
+    gap: 2rem !important;
+    background: #f5f5f5 !important;
+    border: 1px solid #cccccc !important;
+    border-radius: 6px !important;
+    padding: 1rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .score-banner-item .label {
+    color: #666666 !important;
+    font-size: 9pt !important;
+  }
+
+  .score-banner-item .value {
+    color: #111111 !important;
+    font-size: 14pt !important;
+    font-weight: 700 !important;
+  }
+
+  .modal-answers-section h4,
+  .modal-notes-section h4 {
+    font-size: 12pt !important;
+    color: #111111 !important;
+    border-bottom: 1px solid #cccccc !important;
+    padding-bottom: 0.25rem !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .answer-item {
+    border-bottom: 1px solid #eeeeee !important;
+    padding: 0.5rem 0 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    page-break-inside: avoid !important;
+    font-size: 10pt !important;
+  }
+
+  .answer-item .crit-title {
+    color: #222222 !important;
+  }
+
+  .answer-item .crit-ans {
+    color: #111111 !important;
+    font-weight: 600 !important;
+  }
+
+  .modal-photos-section {
+    display: none !important; /* Esconde fotos na impressão para economizar papel/tinta */
+  }
+
+  /* Ajustes de Quebras de Página */
+  h1, h2, h3 {
+    page-break-after: avoid !important;
+  }
+}

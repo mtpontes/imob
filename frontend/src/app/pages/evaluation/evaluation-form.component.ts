@@ -40,6 +40,8 @@ export class EvaluationFormComponent implements OnInit {
   uploadedMediaKeys: string[] = [];
   uploads: UploadItem[] = [];
   isDragOver: boolean = false;
+  animatePulse: boolean = false;
+  pulseTimeout: any;
 
   loading: boolean = false;
   errorMessage: string = '';
@@ -247,8 +249,22 @@ export class EvaluationFormComponent implements OnInit {
 
     // Inscreve no valueChanges para calcular score local em tempo real
     this.evaluationForm.valueChanges.subscribe(() => {
+      const oldScore = this.currentScore;
       this.calculateLocalScore();
+      if (this.currentScore !== oldScore) {
+        this.triggerScorePulse();
+      }
     });
+  }
+
+  triggerScorePulse(): void {
+    this.animatePulse = true;
+    if (this.pulseTimeout) {
+      clearTimeout(this.pulseTimeout);
+    }
+    this.pulseTimeout = setTimeout(() => {
+      this.animatePulse = false;
+    }, 350);
   }
 
   calculateLocalScore(): void {
