@@ -1,5 +1,5 @@
 <div [class.logged-out]="!isLoggedIn()" [class.invite-flow]="isInviteRoute" class="app-container">
-  
+
   <!-- Header Geral (Oculto em Login) -->
   <header class="app-header glass" *ngIf="isLoggedIn()">
     <div class="header-brand">
@@ -13,18 +13,17 @@
       <div class="workspace-selector-container desktop-only">
         <div class="workspace-badge clickable" (click)="toggleWorkspaceMenu($event)" id="current-workspace-badge">
           <lucide-icon name="briefcase"></lucide-icon>
-          <span id="workspace-name-display">{{ activeWorkspace ? activeWorkspace.workspaceName : 'Carregando...' }}</span>
+          <span id="workspace-name-display">{{ activeWorkspace ? activeWorkspace.workspaceName : 'Carregando...'
+            }}</span>
           <lucide-icon name="chevron-down" class="chevron-workspace"></lucide-icon>
         </div>
-        
+
         <!-- Menu Dropdown de Workspaces -->
         <div class="workspace-dropdown glass" *ngIf="isWorkspaceMenuOpen" id="workspace-dropdown-menu">
           <div class="dropdown-header">Meus Ambientes</div>
           <div class="workspace-list">
-            <div *ngFor="let ws of workspaces" 
-                 class="workspace-item" 
-                 [class.active]="ws.active"
-                 (click)="selectWorkspace(ws)">
+            <div *ngFor="let ws of workspaces" class="workspace-item" [class.active]="ws.active"
+              (click)="selectWorkspace(ws)">
               <lucide-icon name="check" class="active-icon" *ngIf="ws.active"></lucide-icon>
               <div class="workspace-item-details">
                 <span class="workspace-item-name">{{ ws.workspaceName }}</span>
@@ -33,18 +32,20 @@
             </div>
           </div>
           <div class="dropdown-divider"></div>
-          <button routerLink="/environments" (click)="closeWorkspaceMenu()" class="dropdown-item" id="btn-manage-environments">
+          <button routerLink="/environments" (click)="closeWorkspaceMenu()" class="dropdown-item"
+            id="btn-manage-environments">
             <lucide-icon name="settings"></lucide-icon>
             <span>Gerenciar Ambientes</span>
           </button>
-          <button (click)="inviteUser()" class="dropdown-item" [style.display]="activeWorkspace?.role === 'OWNER' ? 'flex' : 'none'">
+          <button (click)="inviteUser()" class="dropdown-item"
+            [style.display]="activeWorkspace?.role === 'OWNER' ? 'flex' : 'none'">
             <lucide-icon name="plus-circle"></lucide-icon>
             <span>Convidar Usuário</span>
           </button>
         </div>
       </div>
     </div>
-    
+
     <div class="header-actions">
       <div class="user-profile-menu-container">
         <!-- Perfil clicável -->
@@ -76,15 +77,13 @@
 
   <!-- Bottom Sheet de Perfil (Mobile Only) -->
   <div class="profile-sheet-mobile mobile-only" *ngIf="isProfileMenuOpen" id="profile-sheet-mobile-menu"
-       [@slideUpMobile]
-       (touchstart)="onProfileTouchStart($event)"
-       (touchmove)="onProfileTouchMove($event)"
-       (touchend)="onProfileTouchEnd($event)">
+    [@slideUpMobile] (touchstart)="onProfileTouchStart($event)" (touchmove)="onProfileTouchMove($event)"
+    (touchend)="onProfileTouchEnd($event)">
     <!-- Drag bar no mobile -->
     <div class="modal-drag-zone">
       <div class="modal-drag-indicator"></div>
     </div>
-    
+
     <div class="dropdown-user-details">
       <lucide-icon name="user" class="user-avatar-icon"></lucide-icon>
       <div class="user-details-text">
@@ -92,20 +91,18 @@
         <span class="dropdown-user-email">{{ userEmail }}</span>
       </div>
     </div>
-    
+
     <div class="dropdown-divider"></div>
-    
+
     <div class="workspace-section-mobile">
       <div class="section-title">
         <lucide-icon name="briefcase"></lucide-icon>
         <span>Seus Ambientes</span>
       </div>
-      
+
       <div class="workspace-list-mobile">
-        <div *ngFor="let ws of workspaces" 
-             class="workspace-item-mobile" 
-             [class.active]="ws.active"
-             (click)="selectWorkspace(ws)">
+        <div *ngFor="let ws of workspaces" class="workspace-item-mobile" [class.active]="ws.active"
+          (click)="selectWorkspace(ws)">
           <div class="ws-info">
             <lucide-icon name="check-circle" class="ws-active-icon" *ngIf="ws.active"></lucide-icon>
             <lucide-icon name="circle" class="ws-inactive-icon" *ngIf="!ws.active"></lucide-icon>
@@ -116,21 +113,22 @@
           </span>
         </div>
       </div>
-      
+
       <div class="workspace-mobile-actions">
-        <button routerLink="/environments" (click)="closeProfileMenu()" class="workspace-mobile-action btn-add-workspace" id="btn-manage-environments-mobile">
+        <button routerLink="/environments" (click)="closeProfileMenu()" class="workspace-mobile-action btn-add-workspace" id="btn-manage-environments-mobile" [style.display]="'flex'">
           <lucide-icon name="settings"></lucide-icon>
           <span>Gerenciar Ambientes</span>
         </button>
-        <button (click)="inviteUser()" class="workspace-mobile-action btn-invite-user" [style.display]="activeWorkspace?.role === 'OWNER' ? 'flex' : 'none'">
+        <button (click)="inviteUser()" class="workspace-mobile-action btn-invite-user"
+          [style.display]="activeWorkspace?.role === 'OWNER' ? 'flex' : 'none'">
           <lucide-icon name="plus-circle"></lucide-icon>
           <span>Convidar</span>
         </button>
       </div>
     </div>
-    
+
     <div class="dropdown-divider"></div>
-    
+
     <button (click)="logout()" id="btn-logout-mobile" class="dropdown-item btn-logout-item">
       <lucide-icon name="log-out"></lucide-icon>
       <span>Sair da conta</span>
@@ -160,30 +158,28 @@
     <div class="modal-content delete-confirm-modal-content glass">
       <div class="modal-drag-indicator"></div>
       <div class="delete-confirm-body">
-        <div class="alert-icon-wrapper" style="background: hsla(250, 84%, 67%, 0.1); border-color: rgba(139, 92, 246, 0.2); color: var(--primary-light);">
+        <div class="alert-icon-wrapper"
+          style="background: hsla(250, 84%, 67%, 0.1); border-color: rgba(139, 92, 246, 0.2); color: var(--primary-light);">
           <lucide-icon name="briefcase"></lucide-icon>
         </div>
         <h3>Criar Novo Ambiente</h3>
         <p>Insira o nome do ambiente de trabalho para organizar seus imóveis e avaliações.</p>
-        
+
         <div class="form-group" style="width: 100%; text-align: left; margin-top: 1rem;">
           <label for="newWorkspaceName">Nome do Ambiente</label>
           <div class="input-wrapper">
             <lucide-icon name="edit-3"></lucide-icon>
-            <input 
-              type="text" 
-              id="newWorkspaceName" 
-              [(ngModel)]="newWorkspaceName"
-              placeholder="Ex: Minha Imobiliária"
-              (keyup.enter)="submitCreateWorkspace()"
-            />
+            <input type="text" id="newWorkspaceName" [(ngModel)]="newWorkspaceName" placeholder="Ex: Minha Imobiliária"
+              (keyup.enter)="submitCreateWorkspace()" />
           </div>
         </div>
       </div>
 
       <div class="delete-confirm-footer">
-        <button class="btn btn-outline" (click)="closeCreateWorkspaceModal()" id="btn-cancel-create-ws">Cancelar</button>
-        <button class="btn btn-primary" (click)="submitCreateWorkspace()" [disabled]="!newWorkspaceName.trim()" id="btn-confirm-create-ws-exec">
+        <button class="btn btn-outline" (click)="closeCreateWorkspaceModal()"
+          id="btn-cancel-create-ws">Cancelar</button>
+        <button class="btn btn-primary" (click)="submitCreateWorkspace()" [disabled]="!newWorkspaceName.trim()"
+          id="btn-confirm-create-ws-exec">
           <span>Criar Ambiente</span>
         </button>
       </div>
@@ -195,21 +191,26 @@
     <div class="modal-backdrop" (click)="closeInviteUserModal()"></div>
     <div class="modal-content delete-confirm-modal-content glass">
       <div class="modal-drag-indicator"></div>
-      
+
       <!-- Passo 1: Configuracao do convite -->
       <ng-container *ngIf="!isInviteLinkGenerated">
         <div class="delete-confirm-body">
-          <div class="alert-icon-wrapper" style="background: hsla(250, 84%, 67%, 0.1); border-color: rgba(139, 92, 246, 0.2); color: var(--primary-light);">
+          <div class="alert-icon-wrapper"
+            style="background: hsla(250, 84%, 67%, 0.1); border-color: rgba(139, 92, 246, 0.2); color: var(--primary-light);">
             <lucide-icon name="plus-circle"></lucide-icon>
           </div>
           <h3>Convidar para o Ambiente</h3>
           <p>Selecione a permissao do usuario que ira acessar este ambiente atraves do link gerado.</p>
-          
+
           <div class="form-group" style="width: 100%; text-align: left; margin-top: 1rem;">
             <label for="inviteUserRole">Nivel de Permissao</label>
-            <select id="inviteUserRole" [(ngModel)]="inviteUserRole" class="select-styled" style="width: 100%; cursor: pointer; margin-top: 0.5rem;">
-              <option value="MEMBER" style="background: var(--color-surface, #1a1a1a); color: var(--color-text, #f1f5f9);">Membro</option>
-              <option value="ADMIN" style="background: var(--color-surface, #1a1a1a); color: var(--color-text, #f1f5f9);">Administrador</option>
+            <select id="inviteUserRole" [(ngModel)]="inviteUserRole" class="select-styled"
+              style="width: 100%; cursor: pointer; margin-top: 0.5rem;">
+              <option value="MEMBER"
+                style="background: var(--color-surface, #1a1a1a); color: var(--color-text, #f1f5f9);">Membro</option>
+              <option value="ADMIN"
+                style="background: var(--color-surface, #1a1a1a); color: var(--color-text, #f1f5f9);">Administrador
+              </option>
             </select>
           </div>
         </div>
@@ -225,17 +226,19 @@
       <!-- Passo 2: Link Gerado -->
       <ng-container *ngIf="isInviteLinkGenerated">
         <div class="delete-confirm-body">
-          <div class="alert-icon-wrapper" style="background: hsla(150, 84%, 67%, 0.1); border-color: rgba(34, 197, 94, 0.2); color: var(--success);">
+          <div class="alert-icon-wrapper"
+            style="background: hsla(150, 84%, 67%, 0.1); border-color: rgba(34, 197, 94, 0.2); color: var(--success);">
             <lucide-icon name="check-circle"></lucide-icon>
           </div>
           <h3>Link Gerado com Sucesso!</h3>
           <p>Copie o link temporario abaixo e envie para o convidado. O convite e valido por 7 dias.</p>
-          
+
           <div class="form-group" style="width: 100%; text-align: left; margin-top: 1rem;">
             <label>Link de Acesso</label>
             <div class="invite-link-container">
               <span class="invite-url-text">{{ generatedInviteUrl }}</span>
-              <button type="button" class="btn-copy" (click)="copyInviteUrl()" id="btn-copy-invite-link" title="Copiar Link">
+              <button type="button" class="btn-copy" (click)="copyInviteUrl()" id="btn-copy-invite-link"
+                title="Copiar Link">
                 <lucide-icon name="copy" [size]="16"></lucide-icon>
               </button>
             </div>
@@ -253,8 +256,10 @@
   </div>
 
   <!-- Toast de Notificação Customizado (Premium) -->
-  <div class="toast-message" [class.visible]="toast.show" [class.success]="toast.type === 'success'" [class.error]="toast.type === 'error'" [class.warning]="toast.type === 'warning'">
-    <lucide-icon [name]="toast.icon" [style.color]="toast.type === 'success' ? 'var(--success)' : (toast.type === 'error' ? 'var(--danger)' : 'var(--warning)')"></lucide-icon>
+  <div class="toast-message" [class.visible]="toast.show" [class.success]="toast.type === 'success'"
+    [class.error]="toast.type === 'error'" [class.warning]="toast.type === 'warning'">
+    <lucide-icon [name]="toast.icon"
+      [style.color]="toast.type === 'success' ? 'var(--success)' : (toast.type === 'error' ? 'var(--danger)' : 'var(--warning)')"></lucide-icon>
     <span>{{ toast.message }}</span>
   </div>
 
