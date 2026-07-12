@@ -410,7 +410,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "api_scriptresource",
-      "community": 13,
+      "community": 42,
       "norm_label": "scriptresource.java"
     },
     {
@@ -420,7 +420,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "api_scriptresource_scriptresource",
-      "community": 13,
+      "community": 42,
       "norm_label": "scriptresource"
     },
     {
@@ -430,7 +430,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "api_scriptresource_scriptresource_getactivescripts",
-      "community": 13,
+      "community": 42,
       "norm_label": ".getactivescripts()"
     },
     {
@@ -440,7 +440,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "backend_api_src_main_java_com_imob_api_scriptresource_java_list",
-      "community": 13,
+      "community": 42,
       "norm_label": "list"
     },
     {
@@ -450,7 +450,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "scriptresponse",
-      "community": 13,
+      "community": 42,
       "norm_label": "scriptresponse"
     },
     {
@@ -460,7 +460,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "backend_api_src_main_java_com_imob_api_scriptresource_java_get",
-      "community": 13,
+      "community": 42,
       "norm_label": "get"
     },
     {
@@ -470,7 +470,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "api_scriptresource_scriptresource_getscriptbyid",
-      "community": 13,
+      "community": 42,
       "norm_label": ".getscriptbyid()"
     },
     {
@@ -480,7 +480,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "backend_api_src_main_java_com_imob_api_scriptresource_java_string",
-      "community": 13,
+      "community": 42,
       "norm_label": "string"
     },
     {
@@ -490,7 +490,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "backend_api_src_main_java_com_imob_api_scriptresource_java_response",
-      "community": 13,
+      "community": 42,
       "norm_label": "response"
     },
     {
@@ -500,7 +500,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "backend_api_src_main_java_com_imob_api_scriptresource_java_path",
-      "community": 13,
+      "community": 42,
       "norm_label": "path"
     },
     {
@@ -510,7 +510,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "api_scriptresource_scriptresource_createscript",
-      "community": 13,
+      "community": 42,
       "norm_label": ".createscript()"
     },
     {
@@ -520,7 +520,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "createscriptrequest",
-      "community": 13,
+      "community": 42,
       "norm_label": "createscriptrequest"
     },
     {
@@ -530,7 +530,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "backend_api_src_main_java_com_imob_api_scriptresource_java_post",
-      "community": 13,
+      "community": 42,
       "norm_label": "post"
     },
     {
@@ -540,7 +540,7 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "api_scriptresource_scriptresource_updatescript",
-      "community": 13,
+      "community": 42,
       "norm_label": ".updatescript()"
     },
     {
@@ -550,7 +550,7 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "updatescriptrequest",
-      "community": 13,
+      "community": 42,
       "norm_label": "updatescriptrequest"
     },
     {
@@ -560,7 +560,7 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "backend_api_src_main_java_com_imob_api_scriptresource_java_put",
-      "community": 13,
+      "community": 42,
       "norm_label": "put"
     },
     {
@@ -570,7 +570,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "api_scriptresource_scriptresource_deletescript",
-      "community": 13,
+      "community": 42,
       "norm_label": ".deletescript()"
     },
     {
@@ -580,7 +580,7 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "backend_api_src_main_java_com_imob_api_scriptresource_java_delete",
-      "community": 13,
+      "community": 42,
       "norm_label": "delete"
     },
     {
@@ -590,7 +590,7 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "api_scriptresource_scriptresource_maptoresponse",
-      "community": 13,
+      "community": 42,
       "norm_label": ".maptoresponse()"
     },
     {
@@ -600,7 +600,7 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "backend_api_src_main_java_com_imob_api_scriptresource_java_scriptentity",
-      "community": 13,
+      "community": 42,
       "norm_label": "scriptentity"
     },
     {
@@ -3160,7 +3160,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "service_s3service",
-      "community": 13,
+      "community": 42,
       "norm_label": "s3service.java"
     },
     {
@@ -3170,7 +3170,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "service_s3service_s3service",
-      "community": 13,
+      "community": 42,
       "norm_label": "s3service"
     },
     {
@@ -3180,7 +3180,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "service_s3service_s3service_s3service",
-      "community": 13,
+      "community": 42,
       "norm_label": ".s3service()"
     },
     {
@@ -3190,7 +3190,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "backend_api_src_main_java_com_imob_service_s3service_java_string",
-      "community": 13,
+      "community": 42,
       "norm_label": "string"
     },
     {
@@ -3200,7 +3200,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "backend_api_src_main_java_com_imob_service_s3service_java_s3presigner",
-      "community": 13,
+      "community": 42,
       "norm_label": "s3presigner"
     },
     {
@@ -3210,7 +3210,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "s3client",
-      "community": 13,
+      "community": 42,
       "norm_label": "s3client"
     },
     {
@@ -3220,7 +3220,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "service_s3service_s3service_generateputpresignedurl",
-      "community": 13,
+      "community": 42,
       "norm_label": ".generateputpresignedurl()"
     },
     {
@@ -3230,7 +3230,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "duration",
-      "community": 13,
+      "community": 42,
       "norm_label": "duration"
     },
     {
@@ -3240,7 +3240,7 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "service_s3service_s3service_generategetpresignedurl",
-      "community": 13,
+      "community": 42,
       "norm_label": ".generategetpresignedurl()"
     },
     {
@@ -3250,7 +3250,7 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "service_s3service_s3service_deleteobject",
-      "community": 13,
+      "community": 42,
       "norm_label": ".deleteobject()"
     },
     {
@@ -4127,7 +4127,7 @@
       "label": "s3",
       "file_type": "code",
       "source_file": "backend/media-processor/index.js",
-      "source_location": "L31",
+      "source_location": "L35",
       "_origin": "ast",
       "id": "media_processor_index_s3",
       "community": 17,
@@ -4137,7 +4137,7 @@
       "label": "getExtension()",
       "file_type": "code",
       "source_file": "backend/media-processor/index.js",
-      "source_location": "L34",
+      "source_location": "L38",
       "_origin": "ast",
       "id": "media_processor_index_getextension",
       "community": 17,
@@ -4147,7 +4147,7 @@
       "label": "isVideo()",
       "file_type": "code",
       "source_file": "backend/media-processor/index.js",
-      "source_location": "L40",
+      "source_location": "L44",
       "_origin": "ast",
       "id": "media_processor_index_isvideo",
       "community": 17,
@@ -4157,7 +4157,7 @@
       "label": "isImage()",
       "file_type": "code",
       "source_file": "backend/media-processor/index.js",
-      "source_location": "L46",
+      "source_location": "L50",
       "_origin": "ast",
       "id": "media_processor_index_isimage",
       "community": 17,
@@ -4167,7 +4167,7 @@
       "label": "getThumbnailKey()",
       "file_type": "code",
       "source_file": "backend/media-processor/index.js",
-      "source_location": "L52",
+      "source_location": "L56",
       "_origin": "ast",
       "id": "media_processor_index_getthumbnailkey",
       "community": 17,
@@ -4177,7 +4177,7 @@
       "label": "saveStreamToFile()",
       "file_type": "code",
       "source_file": "backend/media-processor/index.js",
-      "source_location": "L67",
+      "source_location": "L71",
       "_origin": "ast",
       "id": "media_processor_index_savestreamtofile",
       "community": 17,
@@ -4187,7 +4187,7 @@
       "label": "handler()",
       "file_type": "code",
       "source_file": "backend/media-processor/index.js",
-      "source_location": "L76",
+      "source_location": "L80",
       "_origin": "ast",
       "id": "media_processor_index_handler",
       "community": 17,
@@ -4297,7 +4297,7 @@
       "label": "getThumbnailKey()",
       "file_type": "code",
       "source_file": "backend/media-processor/watch-local.js",
-      "source_location": "L18",
+      "source_location": "L22",
       "_origin": "ast",
       "id": "media_processor_watch_local_getthumbnailkey",
       "community": 17,
@@ -4307,7 +4307,7 @@
       "label": "checkThumbnailExists()",
       "file_type": "code",
       "source_file": "backend/media-processor/watch-local.js",
-      "source_location": "L32",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "media_processor_watch_local_checkthumbnailexists",
       "community": 17,
@@ -4317,7 +4317,7 @@
       "label": "runWatcher()",
       "file_type": "code",
       "source_file": "backend/media-processor/watch-local.js",
-      "source_location": "L51",
+      "source_location": "L55",
       "_origin": "ast",
       "id": "media_processor_watch_local_runwatcher",
       "community": 17,
@@ -4460,7 +4460,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "app_app_component_appcomponent_constructor",
-      "community": 75,
+      "community": 13,
       "norm_label": ".constructor()"
     },
     {
@@ -4520,7 +4520,7 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "app_app_component_appcomponent_selectworkspace",
-      "community": 75,
+      "community": 13,
       "norm_label": ".selectworkspace()"
     },
     {
@@ -6410,7 +6410,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent",
-      "community": 75,
+      "community": 39,
       "norm_label": "workspacesmanagementcomponent"
     },
     {
@@ -6420,7 +6420,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_constructor",
-      "community": 75,
+      "community": 13,
       "norm_label": ".constructor()"
     },
     {
@@ -6430,7 +6430,7 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_ngoninit",
-      "community": 75,
+      "community": 39,
       "norm_label": ".ngoninit()"
     },
     {
@@ -6440,7 +6440,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_loadworkspaces",
-      "community": 75,
+      "community": 39,
       "norm_label": ".loadworkspaces()"
     },
     {
@@ -6450,7 +6450,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_opencreatemodal",
-      "community": 75,
+      "community": 39,
       "norm_label": ".opencreatemodal()"
     },
     {
@@ -6460,7 +6460,7 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_openeditmodal",
-      "community": 75,
+      "community": 13,
       "norm_label": ".openeditmodal()"
     },
     {
@@ -6470,7 +6470,7 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_closemodal",
-      "community": 75,
+      "community": 39,
       "norm_label": ".closemodal()"
     },
     {
@@ -6480,7 +6480,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_saveworkspace",
-      "community": 75,
+      "community": 39,
       "norm_label": ".saveworkspace()"
     },
     {
@@ -6490,7 +6490,7 @@
       "source_location": "L122",
       "_origin": "ast",
       "id": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_requestdeleteworkspace",
-      "community": 75,
+      "community": 13,
       "norm_label": ".requestdeleteworkspace()"
     },
     {
@@ -6500,7 +6500,7 @@
       "source_location": "L128",
       "_origin": "ast",
       "id": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_canceldelete",
-      "community": 75,
+      "community": 39,
       "norm_label": ".canceldelete()"
     },
     {
@@ -6510,37 +6510,37 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_confirmdelete",
-      "community": 75,
+      "community": 39,
       "norm_label": ".confirmdelete()"
     },
     {
       "label": ".goBack()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/workspaces-management/workspaces-management.component.ts",
-      "source_location": "L159",
+      "source_location": "L160",
       "_origin": "ast",
       "id": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_goback",
-      "community": 75,
+      "community": 39,
       "norm_label": ".goback()"
     },
     {
       "label": ".ngDoCheck()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/workspaces-management/workspaces-management.component.ts",
-      "source_location": "L163",
+      "source_location": "L164",
       "_origin": "ast",
       "id": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_ngdocheck",
-      "community": 75,
+      "community": 39,
       "norm_label": ".ngdocheck()"
     },
     {
       "label": ".ngOnDestroy()",
       "file_type": "code",
       "source_file": "frontend/src/app/pages/workspaces-management/workspaces-management.component.ts",
-      "source_location": "L173",
+      "source_location": "L174",
       "_origin": "ast",
       "id": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_ngondestroy",
-      "community": 75,
+      "community": 39,
       "norm_label": ".ngondestroy()"
     },
     {
@@ -6950,7 +6950,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "services_workspace_service_workspaceservice",
-      "community": 75,
+      "community": 13,
       "norm_label": "workspaceservice"
     },
     {
@@ -6960,7 +6960,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "services_workspace_service_workspaceservice_constructor",
-      "community": 75,
+      "community": 13,
       "norm_label": ".constructor()"
     },
     {
@@ -6970,7 +6970,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "services_workspace_service_workspaceservice_getworkspaces",
-      "community": 75,
+      "community": 13,
       "norm_label": ".getworkspaces()"
     },
     {
@@ -6980,7 +6980,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "services_workspace_service_workspaceservice_createworkspace",
-      "community": 75,
+      "community": 13,
       "norm_label": ".createworkspace()"
     },
     {
@@ -6990,7 +6990,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "services_workspace_service_workspaceservice_changeactiveworkspace",
-      "community": 75,
+      "community": 13,
       "norm_label": ".changeactiveworkspace()"
     },
     {
@@ -7010,7 +7010,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "services_workspace_service_workspaceservice_getinvitedetails",
-      "community": 75,
+      "community": 13,
       "norm_label": ".getinvitedetails()"
     },
     {
@@ -7020,7 +7020,7 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "services_workspace_service_workspaceservice_acceptinvite",
-      "community": 75,
+      "community": 13,
       "norm_label": ".acceptinvite()"
     },
     {
@@ -7030,7 +7030,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "services_workspace_service_workspaceservice_updateworkspace",
-      "community": 75,
+      "community": 13,
       "norm_label": ".updateworkspace()"
     },
     {
@@ -7040,7 +7040,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "services_workspace_service_workspaceservice_deleteworkspace",
-      "community": 75,
+      "community": 13,
       "norm_label": ".deleteworkspace()"
     },
     {
@@ -7180,7 +7180,7 @@
       "source_location": "L92",
       "_origin": "ast",
       "id": "types_index_workspaceresponse",
-      "community": 75,
+      "community": 13,
       "norm_label": "workspaceresponse"
     },
     {
@@ -7190,7 +7190,7 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "types_index_createworkspacerequest",
-      "community": 75,
+      "community": 13,
       "norm_label": "createworkspacerequest"
     },
     {
@@ -21346,9 +21346,9 @@
       "source_file": "frontend/src/app/pages/workspaces-management/workspaces-management.component.ts",
       "source_location": "L128",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent",
-      "target": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_canceldelete"
+      "target": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_canceldelete",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -21366,9 +21366,9 @@
       "source_file": "frontend/src/app/pages/workspaces-management/workspaces-management.component.ts",
       "source_location": "L133",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent",
-      "target": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_confirmdelete"
+      "target": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_confirmdelete",
+      "confidence_score": 1.0
     },
     {
       "relation": "method",
@@ -21513,17 +21513,6 @@
       "confidence_score": 1.0,
       "source": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_requestdeleteworkspace",
       "target": "types_index_workspaceresponse"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "frontend/src/app/pages/workspaces-management/workspaces-management.component.ts",
-      "source_location": "L136",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_confirmdelete",
-      "target": "workspaces_management_workspaces_management_component_workspacesmanagementcomponent_canceldelete"
     },
     {
       "relation": "imports_from",
@@ -23122,5 +23111,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "b29e8c733b16dc5eaa898281c014bd834b14e9d0"
+  "built_at_commit": "24fe93f1c57f1b814ec701f5e573d2e04eaee324"
 }
