@@ -125,8 +125,8 @@
     </div>
   </div>
 
-  <!-- Modal de Confirmação de Exclusão -->
-  <div id="confirm-delete-workspace-modal" class="modal-wrapper" *ngIf="isConfirmDeleteOpen" @modalTrigger>
+  <!-- Modal customizado de confirmação de exclusão -->
+  <div id="confirm-delete-modal" class="modal-wrapper" *ngIf="isConfirmDeleteOpen" @modalTrigger>
     <div class="modal-backdrop" (click)="cancelDelete()"></div>
     <div class="modal-content delete-confirm-modal-content glass">
       <div class="modal-drag-indicator"></div>
@@ -135,17 +135,17 @@
           <lucide-icon name="alert-triangle"></lucide-icon>
         </div>
         <h3>Excluir Ambiente?</h3>
-        <p><strong>Aviso importante:</strong> Esta ação removerá permanentemente o ambiente <strong>"{{ workspaceToDelete?.workspaceName }}"</strong>.</p>
-        <p class="warning-alert-desc">Isso apagará todos os imóveis, avaliações, roteiros e dados de vistorias associados. Esta ação não poderá ser desfeita.</p>
+        <p>Esta ação não pode ser desfeita. O ambiente selecionado, assim como todas as suas propriedades, avaliações e dados associados, serão excluídos permanentemente.</p>
       </div>
 
       <div class="delete-confirm-footer">
-        <button class="btn btn-outline" (click)="cancelDelete()" id="btn-cancel-delete-workspace">Cancelar</button>
-        <button class="btn btn-danger-filled" (click)="confirmDelete()" id="btn-confirm-delete-workspace-exec">
+        <button class="btn btn-outline" (click)="cancelDelete()" id="btn-cancel-delete">Cancelar</button>
+        <button class="btn btn-danger-filled" (click)="confirmDelete()" id="btn-confirm-delete-exec">
           <lucide-icon name="trash-2"></lucide-icon>
-          <span>Excluir Permanentemente</span>
+          <span>Confirmar Exclusão</span>
         </button>
       </div>
     </div>
   </div>
+
 </section>

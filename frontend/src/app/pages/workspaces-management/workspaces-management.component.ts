@@ -132,17 +132,18 @@ export class WorkspacesManagementComponent implements OnInit, DoCheck, OnDestroy
 
   confirmDelete(): void {
     if (!this.workspaceToDelete) return;
-    const wsToDelete = this.workspaceToDelete;
-    this.cancelDelete();
+    
+    const ws = this.workspaceToDelete;
+    this.isConfirmDeleteOpen = false;
+    this.workspaceToDelete = null;
 
-    this.workspaceService.deleteWorkspace(wsToDelete.workspaceId).subscribe({
+    this.workspaceService.deleteWorkspace(ws.workspaceId).subscribe({
       next: () => {
-        this.successMessage = `Ambiente "${wsToDelete.workspaceName}" excluído com sucesso.`;
+        this.successMessage = `Ambiente "${ws.workspaceName}" excluído com sucesso.`;
         setTimeout(() => this.successMessage = '', 3000);
 
-        if (wsToDelete.active) {
-          // Se o deletado era o ativo, o backend selecionou outro ou limpou. Recarrega a página.
-          localStorage.setItem('pending_toast_message', `Ambiente "${wsToDelete.workspaceName}" excluído. Um novo ambiente ativo foi selecionado.`);
+        if (ws.active) {
+          localStorage.setItem('pending_toast_message', `Ambiente "${ws.workspaceName}" excluído. Um novo ambiente ativo foi selecionado.`);
           localStorage.setItem('pending_toast_type', 'success');
           window.location.reload();
         } else {

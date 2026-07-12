@@ -143,21 +143,6 @@
   margin-top: 0.25rem;
 }
 
-/* Ajuste de alinhamento e dimensao dos botoes do modal de exclusao */
-.delete-confirm-footer {
-  display: flex;
-  align-items: center !important;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
-}
-
-.delete-confirm-footer .btn {
-  flex: 1;
-  height: 42px !important;
-  box-sizing: border-box;
-}
-
 /* Responsividade para telas mobile */
 @media (max-width: 768px) {
   .workspaces-list-section {
