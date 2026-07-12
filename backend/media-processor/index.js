@@ -27,6 +27,10 @@ const s3Config = {};
 if (process.env.AWS_ENDPOINT_URL) {
     s3Config.endpoint = process.env.AWS_ENDPOINT_URL;
     s3Config.forcePathStyle = true;
+    s3Config.credentials = {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID || 'AKIAIOSFODNN7EXAMPLE',
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY'
+    };
 }
 const s3 = new S3Client(s3Config);
 

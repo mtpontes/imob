@@ -150,8 +150,8 @@
     "semantic_hash": ""
   },
   "backend/media-processor/index.js": {
-    "mtime": 1783632370.5737174,
-    "ast_hash": "e62102429a58431960017d2096a24c40",
+    "mtime": 1783801944.94481,
+    "ast_hash": "9b3b2f5a46a541257b9d4b48d19b599d",
     "semantic_hash": ""
   },
   "backend/media-processor/index.test.js": {
@@ -160,8 +160,8 @@
     "semantic_hash": ""
   },
   "backend/media-processor/watch-local.js": {
-    "mtime": 1783632370.574371,
-    "ast_hash": "7ac40874657a635b8462e2ec1d4a01ec",
+    "mtime": 1783801940.5006077,
+    "ast_hash": "571a72353952178a9c934fb1ec458d9a",
     "semantic_hash": ""
   },
   "frontend/api/proxy.js": {
