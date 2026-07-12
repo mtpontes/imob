@@ -61,7 +61,7 @@ graph TD
         APIGateway[API Gateway HTTP API]:::cloud
         Lambda[Fat Lambda Quarkus / Java 25]:::backend
         MediaProcessor[Lambda Media Processor / Node.js]:::backend
-        DynamoDB[(DynamoDB Single-Table)]:::cloud
+        DynamoDB[(DynamoDB Multi-Table)]:::cloud
         S3Bucket[(S3 Bucket Storage)]:::cloud
         Cognito[Cognito User Pool]:::cloud
     end
@@ -168,11 +168,18 @@ O frontend estará disponível em `http://localhost:4200`.
 
 A infraestrutura serverless na AWS é provisionada via **AWS SAM** a partir do arquivo [backend/template.yaml](backend/template.yaml). Ele declara os seguintes recursos:
 
-*   **ImobAppTable (DynamoDB):** Tabela no padrão Single-Table Design usando chaves genéricas `PK` e `SK` com modo de cobrança sob demanda (`PAY_PER_REQUEST`).
+*   **Tabelas DynamoDB (Multi-Table Design):** Tabelas separadas por entidade com chaves específicas sob demanda (`PAY_PER_REQUEST`):
+    *   `Workspaces`: ID do Workspace (`id` como HASH).
+    *   `Properties`: Imóveis (`workspaceId` como HASH e `id` como RANGE).
+    *   `Evaluations`: Avaliações (`workspaceId` como HASH e `propertyId_createdAt` como RANGE).
+    *   `Scripts`: Protocolos/Modelos (`workspaceId` como HASH e `id` como RANGE).
+    *   `Invites`: Convites de acesso (`token` como HASH).
+    *   `UserProfiles`: Perfis de usuário (`email` como HASH).
+    *   `UserWorkspaceRelations`: Relação usuário-workspace (`email` como HASH e `workspaceId` como RANGE, com índice secundário `WorkspaceIndex`).
 *   **ImobAppBucket (S3):** Bucket para armazenamento de fotos das vistorias, configurado com regras de CORS estritas e bloqueio de acesso público direto (acesso binário via URLs pré-assinadas de PUT e GET).
 *   **ImobAppUserPool e UserPoolClient (Cognito):** Provedor de Identidade configurado para login via e-mail e senha.
 *   **ImobAppHttpApi (API Gateway):** Gateway de API HTTP integrado via proxy com a Lambda. Por padrão, a validação de assinatura de JWT Cognito está configurada como não-obrigatória no Gateway para permitir o uso de logins simulados em ambientes de staging.
-*   **ImobAppFunction (Lambda):** Função executando o Quarkus em Imagem Nativa (GraalVM) sob o runtime customizado `provided.al2023`. Recebe os nomes dos recursos criados dinamicamente via variáveis de ambiente (`IMOB_TABLE_NAME` e `IMOB_BUCKET_NAME`).
+*   **ImobAppFunction (Lambda):** Função executando o Quarkus em Imagem Nativa (GraalVM) sob o runtime customizado `provided.al2023`. Recebe os nomes dos recursos criados dinamicamente via variáveis de ambiente (como `IMOB_WORKSPACES_TABLE_NAME`, `IMOB_PROPERTIES_TABLE_NAME`, `IMOB_EVALUATIONS_TABLE_NAME`, etc., além de `IMOB_BUCKET_NAME`).
 
 Para validar a integridade do arquivo SAM localmente, execute:
 ```bash
@@ -239,7 +246,7 @@ Se o ambiente exigir restrições estritas de segurança, configure uma polític
     *   `iam:DetachRolePolicy`
 *   **AWS Lambda (`lambda:*`):** Para publicar e atualizar a Lambda com Quarkus Native.
 *   **Amazon S3 (`s3:*`):** Para o bucket de deploy do SAM e o bucket de fotos do aplicativo.
-*   **Amazon DynamoDB (`dynamodb:*`):** Para criar e gerenciar a tabela do sistema.
+*   **Amazon DynamoDB (`dynamodb:*`):** Para criar e gerenciar as tabelas do sistema.
 *   **Amazon Cognito (`cognito-idp:*`):** Para provisionar os pools de usuário e clientes de aplicativo.
 *   **Amazon API Gateway (`apigateway:*`):** Para criar o gateway HTTP, rotas e estágios.
 
