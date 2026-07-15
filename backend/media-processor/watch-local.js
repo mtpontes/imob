@@ -94,6 +94,8 @@ async function runWatcher() {
         // Ignora erros de conexao se o LocalStack ainda estiver iniciando
         if (err.code === 'ECONNREFUSED' || err.message?.includes('fetch failed')) {
             console.log('[Watcher] Aguardando inicializacao do LocalStack S3 na porta 4566...');
+        } else if (err.name === 'NoSuchBucket' || err.message?.includes('NoSuchBucket') || err.message?.includes('does not exist')) {
+            console.log('[Watcher] Aguardando criacao do bucket imob-app-bucket no LocalStack...');
         } else {
             console.error('[Watcher] Erro na execucao do monitor de midias:', err.message);
         }
