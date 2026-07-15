@@ -160,8 +160,8 @@
     "semantic_hash": ""
   },
   "backend/media-processor/watch-local.js": {
-    "mtime": 1783820222.37772,
-    "ast_hash": "571a72353952178a9c934fb1ec458d9a",
+    "mtime": 1783989536.4550762,
+    "ast_hash": "23c0980d869e34799d55c1dd2a61ac38",
     "semantic_hash": ""
   },
   "frontend/api/proxy.js": {
